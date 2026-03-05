@@ -1,0 +1,42 @@
+[tools]
+node = "24"
+pnpm = "10"
+
+# Dockerコンテナ管理タスク
+
+[tasks."up"]
+description = "Dockerコンテナをバックグラウンドで起動する"
+run = "docker compose up -d"
+
+[tasks."down"]
+description = "Dockerコンテナを停止して削除する（ボリュームは残る）"
+run = "docker compose down"
+
+[tasks."logs"]
+description = "コンテナのログをリアルタイム表示する"
+run = "docker compose logs -f"
+
+[tasks."sh"]
+description = "payloadコンテナ(Next.js)の中に入ってシェル(sh)を実行する"
+run = "docker compose exec payload sh"
+
+# パッケージ管理タスク
+
+[tasks.add]
+description = "コンテナ側でパッケージを追加する（例: mise run add lucide-react）"
+run = "docker compose exec payload pnpm add {{arg(0)}}"
+
+[tasks.add-D]
+description = "コンテナ側で開発用パッケージを追加する（例: mise run add-D vitest）"
+run = "docker compose exec payload pnpm add -D {{arg(0)}}"
+
+[tasks.rm]
+description = "コンテナ側でパッケージを削除する"
+run = "docker compose exec payload pnpm rm {{arg(0)}}"
+
+[tasks.install]
+description = "手元とコンテナの両方で依存関係をクリーンにインストールし直す"
+run = [
+  "pnpm install",
+  "docker compose exec payload pnpm install"
+]

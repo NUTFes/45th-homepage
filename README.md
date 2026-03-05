@@ -1,67 +1,143 @@
-# Payload Blank Template
+# 第45回 技大祭ホームページ (45th-homepage)
 
-This template comes configured with the bare minimum to get started on anything you need.
+Next.js + Payload CMS + PostgreSQL を利用したホームページプロジェクトです。
+開発環境は Docker と `mise` を活用し、ローカル環境の差異をなくして効率的に開発できるように構築されています。
 
-## Quick start
+## 前提条件
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+このプロジェクトの開発には以下のツールが必要です。
 
-## Quick Start - local setup
+- **Docker** (Docker Compose)
+- **mise** ([mise-en-place](https://mise.jdx.dev/)): Node.jsやpnpmのバージョン管理、およびタスクランナーとして使用します。
 
-To spin up this template locally, follow these steps:
+### `mise` のセットアップ
 
-### Clone
+まだインストールしていない場合は、公式ドキュメントに従って `mise` をインストールしてください。
+その後、プロジェクトフォルダ直下で以下のコマンドを実行し、指定されたバージョンのNode.jsとpnpmをインストールします。
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+```bash
+mise install
+```
 
-### Development
+## ローカル開発手順
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URL` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+このプロジェクトでは、ホスト側（手元のPC）とコンテナ側で `node_modules` を分離しています。
+そのため、基本的には `mise` で定義されたタスク経由で Docker コンテナを操作して開発を進めます。
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+### 1. 起動と停止
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+- **起動**:
 
-#### Docker (Optional)
+  ```bash
+  mise run up
+  ```
 
-If you prefer to use Docker for local development instead of a local MongoDB instance, the provided docker-compose.yml file can be used.
+  バックグラウンドでコンテナ（Payload + PostgreSQL）が立ち上がります。
 
-To do so, follow these steps:
+- **停止**:
 
-- Modify the `MONGODB_URL` in your `.env` file to `mongodb://127.0.0.1/<dbname>`
-- Modify the `docker-compose.yml` file's `MONGODB_URL` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
+  ```bash
+  mise run down
+  ```
 
-## How it works
+  コンテナを停止して削除します（データベースのデータは保持されます）。
 
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
+- **ログの確認**:
+  ```bash
+  mise run logs
+  ```
 
-### Collections
+### 2. アプリケーションへのアクセス
 
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
+コンテナ起動後は以下のURLにアクセスして開発を行います：
 
-- #### Users (Authentication)
+- アプリケーション: [http://localhost:3000](http://localhost:3000)
+- 管理画面 (Payload Admin): [http://localhost:3000/admin](http://localhost:3000/admin)
 
-  Users are auth-enabled collections that have access to the admin panel.
+### 3. パッケージ（依存関係）の管理
 
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/main/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
+ホスト側で単に `pnpm add` を実行してもコンテナ側にはインストールされず、「Module not found」エラーの原因になります。
+パッケージの追加・削除は、必ず以下の `mise` コマンドを使用してください。
 
-- #### Media
+- **通常パッケージの追加**:
 
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
+  ```bash
+  mise run add <パッケージ名>
+  # 例: mise run add lucide-react
+  ```
 
-### Docker
+- **開発用パッケージの追加**:
 
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
+  ```bash
+  mise run add-D <パッケージ名>
+  # 例: mise run add-D vitest
+  ```
 
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
+- **パッケージの削除**:
 
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
+  ```bash
+  mise run rm <パッケージ名>
+  ```
 
-## Questions
+- **依存関係のクリーンインストール**:
+  ```bash
+  mise run install
+  ```
+  ※ブランチを切り替えた際など、手元とコンテナ内の依存関係を同期し直したい場合に使います。
 
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+### 4. コンテナへのログイン
+
+デバッグ等でNext.js (Payload) コンテナの内部に入りたい場合は以下を実行します:
+
+```bash
+mise run sh
+```
+
+## 開発ルール
+
+### ブランチ名の命名規則
+
+機能追加やバグ修正を行う際は、以下のルールに従ってブランチを作成してください。
+
+```text
+[type]/[name]/[task description]
+```
+
+- **type**: 変更の種類
+  - `feat`: 新機能の追加
+  - `fix`: バグ修正
+  - `refactor`: リファクタリング（機能追加やバグ修正を伴わないコードの改善）
+  - `chore`: パッケージの更新やビルドツールの設定変更など、ソースコード以外の作業
+  - `docs`: ドキュメントのみの変更
+- **name**: 作業者の名前（例: `yama`, `tsukachan`）
+- **task description**: 作業内容の簡潔な説明（英語のケバブケース推奨）
+
+**例:**
+
+- `feat/yama/initial-task` （yamaが初期化タスクを実装）
+- `fix/tsukachan/header-layout` （tsukachanがヘッダーのレイアウト崩れを修正）
+- `chore/kiyo/update-deps` （kiyoが依存パッケージを更新）
+
+### コミットメッセージのルール
+
+Conventional Commits の標準的なルールに従い、コミットメッセージの先頭に `type`（変更の種類）をつけてください。
+
+```text
+[type]: [コミットの簡単な説明]
+```
+
+**type の種類:**
+
+- `feat`: 新機能の追加
+- `fix`: バグ修正
+- `refactor`: リファクタリング（機能追加やバグ修正を伴わないコードの改善）
+- `chore`: パッケージの更新やビルドツールの設定変更など、ソースコード以外の作業
+- `docs`: ドキュメントのみの変更
+- `test`: テストコードの追加・修正
+- `style`: コードの動作に影響しないフォーマットの変更（空白、カンマなど）
+
+**例:**
+
+- `feat: お知らせ一覧ページを追加`
+- `fix: スマホ表示時にメニューが重なる問題を修正`
+- `chore: vitest を追加`
