@@ -6,6 +6,8 @@ import { fileURLToPath } from 'url'
 
 import config from '@/payload.config'
 import './styles.css'
+import { Select, SelectItem } from '@/components/ui/Select'
+
 
 export default async function HomePage() {
   const headers = await getHeaders()
@@ -21,6 +23,15 @@ export default async function HomePage() {
         <h1 className="text-3xl font-bold underline">
       Hello world!
         </h1>
+
+        <Select label="Favorite animal">
+  <SelectItem>Aardvark</SelectItem>
+  <SelectItem>Cat</SelectItem>
+  <SelectItem>Dog</SelectItem>
+  <SelectItem>Kangaroo</SelectItem>
+  <SelectItem>Panda</SelectItem>
+  <SelectItem>Snake</SelectItem>
+</Select>
         <picture>
           <source srcSet="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-favicon.svg" />
           <Image

@@ -1,4 +1,8 @@
 @import "tailwindcss";
+
+@plugin "tailwindcss-react-aria-components";
+@plugin "tailwindcss-animate";
+
 :root {
   --font-mono: 'Roboto Mono', monospace;
 }

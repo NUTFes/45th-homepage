@@ -26,13 +26,20 @@
     "cross-env": "^7.0.3",
     "dotenv": "16.4.7",
     "graphql": "^16.8.1",
+    "lucide-react": "^0.577.0",
     "next": "15.4.11",
     "payload": "3.79.0",
     "postcss": "^8.5.8",
     "react": "19.2.1",
+    "react-aria": "^3.47.0",
+    "react-aria-components": "^1.16.0",
     "react-dom": "19.2.1",
     "sharp": "0.34.2",
-    "tailwindcss": "^4.2.1"
+    "tailwind-merge": "^3.5.0",
+    "tailwind-variants": "^3.2.2",
+    "tailwindcss": "^4.2.1",
+    "tailwindcss-animate": "^1.0.7",
+    "tailwindcss-react-aria-components": "^2.0.1"
   },
   "devDependencies": {
     "@playwright/test": "1.58.2",
