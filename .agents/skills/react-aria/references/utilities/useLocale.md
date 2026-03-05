@@ -16,10 +16,10 @@ so that the browser knows which language and direction the user interface should
 ## Example
 
 ```tsx
-import {useLocale} from 'react-aria';
+import { useLocale } from "react-aria";
 
 function YourApp() {
-  let {locale, direction} = useLocale();
+  let { locale, direction } = useLocale();
 
   return (
     <div lang={locale} dir={direction}>

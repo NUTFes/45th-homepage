@@ -3,11 +3,11 @@
 Provides the locale for the application to all child components.
 
 ```tsx
-import {I18nProvider} from '@react-aria/i18n';
+import { I18nProvider } from "@react-aria/i18n";
 
 <I18nProvider locale="fr-FR">
   <YourApp />
-</I18nProvider>
+</I18nProvider>;
 ```
 
 ## Introduction
@@ -21,7 +21,7 @@ information via [useLocale](useLocale.md).
 
 ### I18nProvider
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `children` | `React.ReactNode` | — | Contents that should have the locale applied. |
-| `locale` | `string | undefined` | — | The locale to apply to the children. |
+| Name       | Type              | Default    | Description                                   |
+| ---------- | ----------------- | ---------- | --------------------------------------------- | ------------------------------------ |
+| `children` | `React.ReactNode` | —          | Contents that should have the locale applied. |
+| `locale`   | `string           | undefined` | —                                             | The locale to apply to the children. |

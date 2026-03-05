@@ -5,27 +5,28 @@ Focus rings are visible only when the user is interacting with a keyboard,
 not with a mouse, touch, or other input methods.
 
 ```tsx
-'use client';
-import {useFocusRing} from 'react-aria';
+"use client";
+import { useFocusRing } from "react-aria";
 
 function Example() {
-  let {isFocusVisible, focusProps} = useFocusRing();
+  let { isFocusVisible, focusProps } = useFocusRing();
 
   return (
     <button
       {...focusProps}
       style={{
-        WebkitAppearance: 'none',
-        appearance: 'none',
-        background: 'green',
-        border: 'none',
-        color: 'white',
+        WebkitAppearance: "none",
+        appearance: "none",
+        background: "green",
+        border: "none",
+        color: "white",
         fontSize: 14,
-        padding: '8px 12px',
+        padding: "8px 12px",
         borderRadius: 8,
-        outline: isFocusVisible ? '2px solid dodgerblue' : 'none',
-        outlineOffset: 2
-      }}>
+        outline: isFocusVisible ? "2px solid dodgerblue" : "none",
+        outlineOffset: 2,
+      }}
+    >
       Test
     </button>
   );
@@ -50,16 +51,16 @@ If CSS classes are being used for styling, see the [FocusRing](FocusRing.md) com
 
 ### AriaFocusRingProps
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `within` | `boolean | undefined` | 'false' | Whether to show the focus ring when something inside the container element has focus (true), or only if the container itself has focus (false). |
-| `isTextInput` | `boolean | undefined` | — | Whether the element is a text input. |
-| `autoFocus` | `boolean | undefined` | — | Whether the element will be auto focused. |
+| Name          | Type     | Default    | Description |
+| ------------- | -------- | ---------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `within`      | `boolean | undefined` | 'false'     | Whether to show the focus ring when something inside the container element has focus (true), or only if the container itself has focus (false). |
+| `isTextInput` | `boolean | undefined` | —           | Whether the element is a text input.                                                                                                            |
+| `autoFocus`   | `boolean | undefined` | —           | Whether the element will be auto focused.                                                                                                       |
 
 ### FocusRingAria
 
-| Name | Type | Description |
-|------|------|-------------|
-| `isFocused` \* | `boolean` | Whether the element is currently focused. |
-| `isFocusVisible` \* | `boolean` | Whether keyboard focus should be visible. |
-| `focusProps` \* | `DOMAttributes<FocusableElement>` | Props to apply to the container element with the focus ring. |
+| Name                | Type                              | Description                                                  |
+| ------------------- | --------------------------------- | ------------------------------------------------------------ |
+| `isFocused` \*      | `boolean`                         | Whether the element is currently focused.                    |
+| `isFocusVisible` \* | `boolean`                         | Whether keyboard focus should be visible.                    |
+| `focusProps` \*     | `DOMAttributes<FocusableElement>` | Props to apply to the container element with the focus ring. |

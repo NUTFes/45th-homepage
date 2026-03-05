@@ -16,13 +16,13 @@ information.
 This example includes two textfields and compares the values of the two fields using a collator according to the current locale.
 
 ```tsx
-'use client';
-import React from 'react';
-import {useCollator} from 'react-aria';
+"use client";
+import React from "react";
+import { useCollator } from "react-aria";
 
 function Example() {
-  let [first, setFirst] = React.useState('');
-  let [second, setSecond] = React.useState('');
+  let [first, setFirst] = React.useState("");
+  let [second, setSecond] = React.useState("");
 
   let collator = useCollator();
   let result = collator.compare(first, second);
@@ -31,23 +31,16 @@ function Example() {
     <>
       <div>
         <label htmlFor="first-string">First string</label>
-        <input
-          id="first-string"
-          value={first}
-          onChange={e => setFirst(e.target.value)} />
+        <input id="first-string" value={first} onChange={(e) => setFirst(e.target.value)} />
         <label htmlFor="second-string">Second string</label>
-        <input
-          id="second-string"
-          value={second}
-          onChange={e => setSecond(e.target.value)} />
+        <input id="second-string" value={second} onChange={(e) => setSecond(e.target.value)} />
       </div>
       <p>
         {result === 0
-          ? 'The strings are the same'
+          ? "The strings are the same"
           : result < 0
-            ? 'First comes before second'
-            : 'Second comes before first'
-        }
+            ? "First comes before second"
+            : "Second comes before first"}
       </p>
     </>
   );

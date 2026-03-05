@@ -18,11 +18,11 @@ wrapping your application.
 ## Example
 
 ```tsx
-import {useIsSSR} from 'react-aria';
+import { useIsSSR } from "react-aria";
 
 function MyComponent() {
   let isSSR = useIsSSR();
-  return <span>{isSSR ? 'Server' : 'Client'}</span>;
+  return <span>{isSSR ? "Server" : "Client"}</span>;
 }
 ```
 

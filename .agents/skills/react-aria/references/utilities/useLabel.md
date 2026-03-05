@@ -9,11 +9,11 @@ The `useLabel` hook associates a label with a field. It automatically handles
 creating an id for the field and associates the label with it.
 
 ```tsx
-'use client';
-import {useLabel} from 'react-aria';
+"use client";
+import { useLabel } from "react-aria";
 
 function ColorField(props) {
-  let {labelProps, fieldProps} = useLabel(props);
+  let { labelProps, fieldProps } = useLabel(props);
 
   return (
     <>
@@ -27,7 +27,7 @@ function ColorField(props) {
   );
 }
 
-<ColorField label="Favorite color" />
+<ColorField label="Favorite color" />;
 ```
 
 By default, `useLabel` assumes that the label is a native HTML label element.
@@ -46,19 +46,19 @@ for examples of how `useLabel` is used by components.
 
 ### LabelAriaProps
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `labelElementType` | `ElementType | undefined` | 'label' | The HTML element used to render the label, e.g. 'label', or 'span'. |
-| `label` | `ReactNode` | — | The content to display as the label. |
-| `id` | `string | undefined` | — | The element's unique identifier. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id). |
-| `aria-label` | `string | undefined` | — | Defines a string value that labels the current element. |
-| `aria-labelledby` | `string | undefined` | — | Identifies the element (or elements) that labels the current element. |
-| `aria-describedby` | `string | undefined` | — | Identifies the element (or elements) that describes the object. |
-| `aria-details` | `string | undefined` | — | Identifies the element (or elements) that provide a detailed, extended description for the object. |
+| Name               | Type         | Default    | Description                          |
+| ------------------ | ------------ | ---------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| `labelElementType` | `ElementType | undefined` | 'label'                              | The HTML element used to render the label, e.g. 'label', or 'span'.                                                 |
+| `label`            | `ReactNode`  | —          | The content to display as the label. |
+| `id`               | `string      | undefined` | —                                    | The element's unique identifier. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id). |
+| `aria-label`       | `string      | undefined` | —                                    | Defines a string value that labels the current element.                                                             |
+| `aria-labelledby`  | `string      | undefined` | —                                    | Identifies the element (or elements) that labels the current element.                                               |
+| `aria-describedby` | `string      | undefined` | —                                    | Identifies the element (or elements) that describes the object.                                                     |
+| `aria-details`     | `string      | undefined` | —                                    | Identifies the element (or elements) that provide a detailed, extended description for the object.                  |
 
 ### LabelAria
 
-| Name | Type | Description |
-|------|------|-------------|
-| `labelProps` \* | `DOMAttributes<FocusableElement> | LabelHTMLAttributes<HTMLLabelElement>` | Props to apply to the label container element. |
-| `fieldProps` \* | `AriaLabelingProps & DOMProps` | Props to apply to the field container element being labeled. |
+| Name            | Type                             | Description                                                  |
+| --------------- | -------------------------------- | ------------------------------------------------------------ | ---------------------------------------------- |
+| `labelProps` \* | `DOMAttributes<FocusableElement> | LabelHTMLAttributes<HTMLLabelElement>`                       | Props to apply to the label container element. |
+| `fieldProps` \* | `AriaLabelingProps & DOMProps`   | Props to apply to the field container element being labeled. |

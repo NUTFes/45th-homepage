@@ -7,8 +7,8 @@ Many components display a collection of items, and provide functionality such as
 A **static collection** is a collection that does not change over time (e.g. hard coded). This is common for components like menus where the items are built into the application rather than user data.
 
 ```tsx
-import {MenuTrigger, Menu, MenuItem} from 'vanilla-starter/Menu';
-import {Button} from 'vanilla-starter/Button';
+import { MenuTrigger, Menu, MenuItem } from "vanilla-starter/Menu";
+import { Button } from "vanilla-starter/Button";
 
 <MenuTrigger>
   <Button>Menu</Button>
@@ -17,7 +17,7 @@ import {Button} from 'vanilla-starter/Button';
     <MenuItem>Edit</MenuItem>
     <MenuItem>Delete</MenuItem>
   </Menu>
-</MenuTrigger>
+</MenuTrigger>;
 ```
 
 ### Sections
@@ -27,9 +27,9 @@ Sections or groups of items can be constructed by wrapping the items in a sectio
 ## Menu example
 
 ```tsx
-import {MenuTrigger, Menu, MenuItem, MenuSection} from 'vanilla-starter/Menu';
-import {Button} from 'vanilla-starter/Button';
-import {Header} from 'react-aria-components';
+import { MenuTrigger, Menu, MenuItem, MenuSection } from "vanilla-starter/Menu";
+import { Button } from "vanilla-starter/Button";
+import { Header } from "react-aria-components";
 
 <MenuTrigger>
   <Button>Menu</Button>
@@ -48,14 +48,14 @@ import {Header} from 'react-aria-components';
       <MenuItem>Right</MenuItem>
     </MenuSection>
   </Menu>
-</MenuTrigger>
+</MenuTrigger>;
 ```
 
 ## ListBox example
 
 ```tsx
-import {ListBox, ListBoxItem, ListBoxSection} from 'vanilla-starter/ListBox';
-import {Header} from 'react-aria-components';
+import { ListBox, ListBoxItem, ListBoxSection } from "vanilla-starter/ListBox";
+import { Header } from "react-aria-components";
 
 <ListBox aria-label="Text style" selectionMode="multiple">
   {/*- begin highlight -*/}
@@ -71,7 +71,7 @@ import {Header} from 'react-aria-components';
     <ListBoxItem>Middle</ListBoxItem>
     <ListBoxItem>Right</ListBoxItem>
   </ListBoxSection>
-</ListBox>
+</ListBox>;
 ```
 
 ## Dynamic collections
@@ -81,32 +81,31 @@ A **dynamic collection** is a collection that is based on external data, for exa
 Use the `items` prop to provide an array of objects, and a function to render each item as the `children`. This is similar to using `array.map` to render the children, but automatically memoizes the rendering of each item to improve performance.
 
 ```tsx
-import {ListBox, ListBoxItem} from 'vanilla-starter/ListBox';
-import {Button} from 'vanilla-starter/Button';
-import {useState} from 'react';
+import { ListBox, ListBoxItem } from "vanilla-starter/ListBox";
+import { Button } from "vanilla-starter/Button";
+import { useState } from "react";
 
 function Example() {
   let [animals, setAnimals] = useState([
-    {id: 1, name: 'Aardvark'},
-    {id: 2, name: 'Kangaroo'},
-    {id: 3, name: 'Snake'}
+    { id: 1, name: "Aardvark" },
+    { id: 2, name: "Kangaroo" },
+    { id: 3, name: "Snake" },
   ]);
 
   let addItem = () => {
-    setAnimals([
-      ...animals,
-      {id: animals.length + 1, name: 'Lion'}
-    ]);
+    setAnimals([...animals, { id: animals.length + 1, name: "Lion" }]);
   };
 
   return (
     <div>
       {/*- begin highlight -*/}
       <ListBox aria-label="Animals" items={animals}>
-        {item => <ListBoxItem>{item.name}</ListBoxItem>}
+        {(item) => <ListBoxItem>{item.name}</ListBoxItem>}
       </ListBox>
       {/*- end highlight -*/}
-      <Button onPress={addItem} style={{marginTop: 8}}>Add item</Button>
+      <Button onPress={addItem} style={{ marginTop: 8 }}>
+        Add item
+      </Button>
     </div>
   );
 }
@@ -122,21 +121,17 @@ function Example() {
 All items in a collection must have a unique id, which is used for [selection](selection.md) and to track item updates. By default, React Aria looks for an `id` property on each object in the `items` array. You can also specify an `id` prop when rendering each item. This example uses `item.name` as the `id`.
 
 ```tsx
-let animals = [
-  {name: 'Aardvark'},
-  {name: 'Kangaroo'},
-  {name: 'Snake'}
-];
+let animals = [{ name: "Aardvark" }, { name: "Kangaroo" }, { name: "Snake" }];
 
 <ListBox items={animals}>
-  {item => (
+  {(item) => (
     /*- begin highlight -*/
     <ListBoxItem id={item.name}>
-    {/*- end highlight -*/}
+      {/*- end highlight -*/}
       {item.name}
     </ListBoxItem>
   )}
-</ListBox>
+</ListBox>;
 ```
 
 <InlineAlert variant="notice">
@@ -149,32 +144,33 @@ let animals = [
 Dynamic collections are automatically memoized to improve performance. Rendered item elements are cached based on the object identity of the list item. If rendering an item depends on additional external state, the `dependencies` prop must be provided. This invalidates rendered elements similar to dependencies in React's `useMemo` hook.
 
 ```tsx
-import {ListBox, ListBoxItem} from 'vanilla-starter/ListBox';
-import {Text} from 'react-aria-components';
-import {ToggleButtonGroup} from 'vanilla-starter/ToggleButtonGroup';
-import {ToggleButton} from 'vanilla-starter/ToggleButton';
-import {useState} from 'react';
+import { ListBox, ListBoxItem } from "vanilla-starter/ListBox";
+import { Text } from "react-aria-components";
+import { ToggleButtonGroup } from "vanilla-starter/ToggleButtonGroup";
+import { ToggleButton } from "vanilla-starter/ToggleButton";
+import { useState } from "react";
 
 const items = [
-  {id: 1, name: 'Charizard', type: 'Fire, Flying'},
-  {id: 2, name: 'Blastoise', type: 'Water'},
-  {id: 3, name: 'Venusaur', type: 'Grass, Poison'},
-  {id: 4, name: 'Pikachu', type: 'Electric'}
+  { id: 1, name: "Charizard", type: "Fire, Flying" },
+  { id: 2, name: "Blastoise", type: "Water" },
+  { id: 3, name: "Venusaur", type: "Grass, Poison" },
+  { id: 4, name: "Pikachu", type: "Electric" },
 ];
 
-type Orientation = 'vertical' | 'horizontal';
+type Orientation = "vertical" | "horizontal";
 
 export default function Example() {
-  let [layout, setLayout] = useState<Orientation>('vertical');
+  let [layout, setLayout] = useState<Orientation>("vertical");
 
   return (
     <div>
       <ToggleButtonGroup
         aria-label="Layout"
         selectedKeys={[layout]}
-        onSelectionChange={keys => setLayout([...keys][0] as Orientation)}
+        onSelectionChange={(keys) => setLayout([...keys][0] as Orientation)}
         disallowEmptySelection
-        style={{marginBottom: 8}}>
+        style={{ marginBottom: 8 }}
+      >
         <ToggleButton id="vertical">Vertical</ToggleButton>
         <ToggleButton id="horizontal">Horizontal</ToggleButton>
       </ToggleButtonGroup>
@@ -182,15 +178,17 @@ export default function Example() {
         items={items}
         selectionMode="multiple"
         /*- begin highlight -*/
-        dependencies={[layout]}>
+        dependencies={[layout]}
+      >
         {/*- end highlight -*/}
-        {item => (
+        {(item) => (
           <MyItem
             /*- begin highlight -*/
             layout={layout}
             /*- end highlight -*/
             name={item.name}
-            type={item.type} />
+            type={item.type}
+          />
         )}
       </ListBox>
     </div>
@@ -198,20 +196,21 @@ export default function Example() {
 }
 
 interface MyItemProps {
-  layout: 'horizontal' | 'vertical',
-  name: string,
-  type: string
+  layout: "horizontal" | "vertical";
+  name: string;
+  type: string;
 }
 
 function MyItem(props: MyItemProps) {
   return (
     <ListBoxItem
       style={{
-        display: 'flex',
-        flexDirection: props.layout === 'horizontal' ? 'row' : 'column',
-        justifyContent: 'space-between',
-        alignItems: props.layout === 'horizontal' ? 'center' : 'start'
-      }}>
+        display: "flex",
+        flexDirection: props.layout === "horizontal" ? "row" : "column",
+        justifyContent: "space-between",
+        alignItems: props.layout === "horizontal" ? "center" : "start",
+      }}
+    >
       <Text slot="label">{props.name}</Text>
       <Text slot="description">{props.type}</Text>
     </ListBoxItem>
@@ -219,26 +218,26 @@ function MyItem(props: MyItemProps) {
 }
 ```
 
-Note that adding dependencies will result in the *entire* list being invalidated when a dependency changes. To avoid this and invalidate only an individual item, update the item object itself rather than accessing external state.
+Note that adding dependencies will result in the _entire_ list being invalidated when a dependency changes. To avoid this and invalidate only an individual item, update the item object itself rather than accessing external state.
 
 ### Combining collections
 
 To combine multiple sources of data, or mix static and dynamic items, use the `<Collection>` component.
 
 ```tsx
-import {ListBox, ListBoxSection, ListBoxItem} from 'vanilla-starter/ListBox';
-import {Collection, Header} from 'react-aria-components';
+import { ListBox, ListBoxSection, ListBoxItem } from "vanilla-starter/ListBox";
+import { Collection, Header } from "react-aria-components";
 
 let animals = [
-  {id: 1, species: 'Aardvark'},
-  {id: 2, species: 'Kangaroo'},
-  {id: 3, species: 'Snake'}
+  { id: 1, species: "Aardvark" },
+  { id: 2, species: "Kangaroo" },
+  { id: 3, species: "Snake" },
 ];
 
 let people = [
-  {id: 4, name: 'David'},
-  {id: 5, name: 'Mike'},
-  {id: 6, name: 'Jane'}
+  { id: 4, name: "David" },
+  { id: 5, name: "Mike" },
+  { id: 6, name: "Jane" },
 ];
 
 <ListBox aria-label="Grouped items">
@@ -246,17 +245,17 @@ let people = [
     <Header>Animals</Header>
     {/*- begin highlight -*/}
     <Collection items={animals}>
-      {item => <ListBoxItem id={item.species}>{item.species}</ListBoxItem>}
+      {(item) => <ListBoxItem id={item.species}>{item.species}</ListBoxItem>}
     </Collection>
     {/*- end highlight -*/}
   </ListBoxSection>
   <ListBoxSection>
     <Header>People</Header>
     <Collection items={people}>
-      {item => <ListBoxItem id={item.name}>{item.name}</ListBoxItem>}
+      {(item) => <ListBoxItem id={item.name}>{item.name}</ListBoxItem>}
     </Collection>
   </ListBoxSection>
-</ListBox>
+</ListBox>;
 ```
 
 <InlineAlert variant="notice">
@@ -271,29 +270,26 @@ Data can be loaded asynchronously using any data fetching library. [useAsyncList
 Several components also support infinite scrolling by rendering a `LoadMoreItem` at the end of the list. These trigger loading of additional pages of items and display a loading spinner. Multiple load more items can be rendered at once, e.g. when loading multiple levels of a tree or sections in a list.
 
 ```tsx
-import {Collection, ListBoxLoadMoreItem, useAsyncList} from 'react-aria-components';
-import {ListBox, ListBoxItem} from 'vanilla-starter/ListBox';
-import {ProgressCircle} from 'vanilla-starter/ProgressCircle';
+import { Collection, ListBoxLoadMoreItem, useAsyncList } from "react-aria-components";
+import { ListBox, ListBoxItem } from "vanilla-starter/ListBox";
+import { ProgressCircle } from "vanilla-starter/ProgressCircle";
 
 interface Character {
-  name: string
+  name: string;
 }
 
 function AsyncLoadingExample() {
   /*- begin focus -*/
   let list = useAsyncList<Character>({
-    async load({signal, cursor}) {
-      let res = await fetch(
-        cursor || `https://pokeapi.co/api/v2/pokemon`,
-        {signal}
-      );
+    async load({ signal, cursor }) {
+      let res = await fetch(cursor || `https://pokeapi.co/api/v2/pokemon`, { signal });
       let json = await res.json();
 
       return {
         items: json.results,
-        cursor: json.next
+        cursor: json.next,
       };
-    }
+    },
   });
   /*- end focus -*/
 
@@ -301,15 +297,15 @@ function AsyncLoadingExample() {
     <ListBox
       aria-label="Pick a Pokemon"
       selectionMode="single"
-      renderEmptyState={() => (
-        <ProgressCircle isIndeterminate aria-label="Loading..." />
-      )}>
+      renderEmptyState={() => <ProgressCircle isIndeterminate aria-label="Loading..." />}
+    >
       <Collection items={list.items}>
         {(item) => <ListBoxItem id={item.name}>{item.name}</ListBoxItem>}
       </Collection>
       <ListBoxLoadMoreItem
         onLoadMore={list.loadMore}
-        isLoading={list.loadingState === 'loadingMore'}>
+        isLoading={list.loadingState === "loadingMore"}
+      >
         <ProgressCircle isIndeterminate aria-label="Loading more..." />
       </ListBoxLoadMoreItem>
     </ListBox>

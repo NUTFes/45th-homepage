@@ -17,6 +17,7 @@ React Aria Components is a library of unstyled, accessible UI components that yo
 The `references/` directory contains detailed documentation organized as follows:
 
 ### Guides
+
 - [Collections](references/guides/collections.md): Many components display a collection of items, and provide functionality such as keyboard navigation, and selection. Learn how to load and render collections using React Aria's compositional API.
 - [Customization](references/guides/customization.md): React Aria is built using a flexible and composable API. Learn how to use contexts and slots to create custom component patterns, or mix and match with the lower level Hook-based API for even more control over rendering and behavior.
 - [Drag and Drop](references/guides/dnd.md): React Aria collection components support drag and drop with mouse and touch interactions, and full keyboard and screen reader accessibility. Learn how to provide drag data and handle drop events to move, insert, or reorder items.
@@ -29,6 +30,7 @@ The `references/` directory contains detailed documentation organized as follows
 - [Working with AI](references/guides/ai.md): Learn how to use the React Aria MCP Server, Agent Skills, and more to help you build with AI.
 
 ### Components
+
 - [Autocomplete](references/components/Autocomplete.md): An autocomplete allows users to search or filter a list of suggestions.
 - [Breadcrumbs](references/components/Breadcrumbs.md): Breadcrumbs display a hierarchy of links to the current page or resource in an application.
 - [Button](references/components/Button.md): A button allows a user to perform an action, with mouse, touch, and keyboard interactions.
@@ -83,6 +85,7 @@ The `references/` directory contains detailed documentation organized as follows
 - [Virtualizer](references/components/Virtualizer.md): A Virtualizer renders a scrollable collection of data using customizable layouts.
 
 ### Interactions
+
 - [FocusRing](references/interactions/FocusRing.md): A utility component that applies a CSS class when an element has keyboard focus.
 - [FocusScope](references/interactions/FocusScope.md): A FocusScope manages focus for its descendants. It supports containing focus inside
 - [useClipboard](references/interactions/useClipboard.md): Handles clipboard interactions for a focusable element. Supports items of multiple
@@ -100,6 +103,7 @@ The `references/` directory contains detailed documentation organized as follows
 - [usePress](references/interactions/usePress.md): Handles press interactions across mouse, touch, keyboard, and screen readers.
 
 ### Utilities
+
 - [I18nProvider](references/utilities/I18nProvider.md): Provides the locale for the application to all child components.
 - [mergeProps](references/utilities/mergeProps.md): Merges multiple props objects together. Event handlers are chained,
 - [PortalProvider](references/utilities/PortalProvider.md): Sets the portal container for all overlay elements rendered by its children.
@@ -117,6 +121,7 @@ The `references/` directory contains detailed documentation organized as follows
 - [VisuallyHidden](references/utilities/VisuallyHidden.md): VisuallyHidden hides its children visually, while keeping content visible
 
 ### Internationalization
+
 - [Calendar](references/internationalized/date/Calendar.md)
 - [CalendarDate](references/internationalized/date/CalendarDate.md)
 - [CalendarDateTime](references/internationalized/date/CalendarDateTime.md)
@@ -129,6 +134,7 @@ The `references/` directory contains detailed documentation organized as follows
 - [ZonedDateTime](references/internationalized/date/ZonedDateTime.md)
 
 ### Testing
+
 - [Testing CheckboxGroup](references/testing/CheckboxGroup/testing.md)
 - [Testing ComboBox](references/testing/ComboBox/testing.md)
 - [Testing GridList](references/testing/GridList/testing.md)

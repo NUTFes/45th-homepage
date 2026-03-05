@@ -17,19 +17,17 @@ This example displays a currency value for two locales: USA, and Germany. Two in
 using the [I18nProvider](I18nProvider.md) to specify the locale to display.
 
 ```tsx
-'use client';
-import {I18nProvider, useNumberFormatter} from 'react-aria';
+"use client";
+import { I18nProvider, useNumberFormatter } from "react-aria";
 
-function Currency({value, currency}) {
+function Currency({ value, currency }) {
   let formatter = useNumberFormatter({
-    style: 'currency',
+    style: "currency",
     currency,
-    minimumFractionDigits: 0
+    minimumFractionDigits: 0,
   });
 
-  return (
-    <p>{formatter.format(value)}</p>
-  );
+  return <p>{formatter.format(value)}</p>;
 }
 
 <>
@@ -39,7 +37,7 @@ function Currency({value, currency}) {
   <I18nProvider locale="de-DE">
     <Currency value={350000} currency="EUR" />
   </I18nProvider>
-</>
+</>;
 ```
 
 ## API

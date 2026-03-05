@@ -9,7 +9,7 @@ A `Time` object represents a clock time without any date components. If you need
 A `Time` can be created using the constructor. This example creates a time that represents 9:45 AM.
 
 ```tsx
-import {Time} from '@internationalized/date';
+import { Time } from "@internationalized/date";
 
 let time = new Time(9, 45);
 ```
@@ -17,9 +17,9 @@ let time = new Time(9, 45);
 You can also create a `Time` by parsing an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) formatted string using the `parseTime` function.
 
 ```tsx
-import {parseTime} from '@internationalized/date';
+import { parseTime } from "@internationalized/date";
 
-let time = parseTime('09:45');
+let time = parseTime("09:45");
 ```
 
 Once you have a `Time` object, you can read its properties, or manipulate it as described in the [Manipulating times](#manipulating-times) section below. You can also convert it to an ISO 8601 string, or another representation. See the [Conversion](#conversion) section below for details.
@@ -33,12 +33,12 @@ time.toString(); // '09:45:00'
 
 ### Constructor
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `hour` | `number` | — |
-| `minute` | `number` | — |
-| `second` | `number` | — |
-| `millisecond` | `number` | — |
+| Parameter     | Type     | Description |
+| ------------- | -------- | ----------- |
+| `hour`        | `number` | —           |
+| `minute`      | `number` | —           |
+| `second`      | `number` | —           |
+| `millisecond` | `number` | —           |
 
 ## Manipulating times
 
@@ -48,25 +48,25 @@ A `TimeDuration` is an object that represents an amount of time, with fields suc
 
 ```tsx
 let time = new Time(9, 45);
-time.add({hours: 1}); // 10:45:00
-time.add({minutes: 1}); // 09:46:00
-time.add({seconds: 1}); // 09:45:01
+time.add({ hours: 1 }); // 10:45:00
+time.add({ minutes: 1 }); // 09:46:00
+time.add({ seconds: 1 }); // 09:45:01
 ```
 
-Adding or subtracting a duration that goes beyond the limits of a particular field will cause the time to be *balanced*. For example, adding one minute to `09:59` results in `10:00`.
+Adding or subtracting a duration that goes beyond the limits of a particular field will cause the time to be _balanced_. For example, adding one minute to `09:59` results in `10:00`.
 
 ### Parsing durations
 
 The `parseDuration` function can be used to convert a [ISO 8601 duration string](https://en.wikipedia.org/wiki/ISO_8601#Durations) into a `DateTimeDuration` object. The smallest time unit may include decimal values written with a comma or period, and negative values can be written by prefixing the entire string with a minus sign.
 
 ```tsx
-parseDuration('PT20H35M15S')
+parseDuration("PT20H35M15S");
 // => {hours: 20, minutes: 35, seconds: 15}
 
-parseDuration('-PT20H35M15S')
+parseDuration("-PT20H35M15S");
 // =>  {hours: -20, minutes: -35, seconds: -15}
 
-parseDuration('PT20H35M15,75S')
+parseDuration("PT20H35M15,75S");
 // => {hours: 20, minutes: 35, seconds: 15.75}
 ```
 
@@ -76,16 +76,16 @@ parseDuration('PT20H35M15,75S')
 
 ```tsx
 let time = new Time(9, 45);
-time.set({hour: 12}); // 12:45
-time.set({minute: 5}); // 9:05
+time.set({ hour: 12 }); // 12:45
+time.set({ minute: 5 }); // 9:05
 ```
 
-Setting a field to a value that is outside the valid range will cause it to be *constrained*.
+Setting a field to a value that is outside the valid range will cause it to be _constrained_.
 
 ```tsx
 let time = new Time(9, 45);
-time.set({hour: 36}); // 23:45
-time.set({minute: 75}); // 09:59
+time.set({ hour: 36 }); // 23:45
+time.set({ minute: 75 }); // 09:59
 ```
 
 ### Cycling fields
@@ -94,12 +94,12 @@ The `cycle` method allows incrementing or decrementing a single field. It is sim
 
 ```tsx
 let time = new Time(23, 59);
-time.cycle('hour', 1); // 00:59
-time.cycle('minute', 1); // 23:00
+time.cycle("hour", 1); // 00:59
+time.cycle("minute", 1); // 23:00
 
 let time = new Time(0, 0);
-time.cycle('hour', -1); // 23:00
-time.cycle('minute', -1); // 00:59
+time.cycle("hour", -1); // 23:00
+time.cycle("minute", -1); // 00:59
 ```
 
 The `round` option may also be passed, which causes the value to be rounded to increments of the given amount. For example, you could round the minute to increments of 15.
@@ -107,23 +107,23 @@ The `round` option may also be passed, which causes the value to be rounded to i
 ```tsx
 let time = new Time(9, 22);
 
-time.cycle('minute', 15); // 09:37
-time.cycle('minute', 15, {round: true}); // 09:30
+time.cycle("minute", 15); // 09:37
+time.cycle("minute", 15, { round: true }); // 09:30
 
-time.cycle('minute', -15); // 09:07
-time.cycle('minute', -15, {round: true}); // 09:15
+time.cycle("minute", -15); // 09:07
+time.cycle("minute", -15, { round: true }); // 09:15
 ```
 
 By default, the `hour` field is cycled within a 24 hour range. The `hourCycle` option can be set to `12` to use a 12 hour clock instead, which will preserve the AM/PM value when formatted.
 
 ```tsx
 let time = new Time(11);
-time.cycle('hour', 1); // 12:00
-time.cycle('hour', 1, {hourCycle: 12}); // 00:00
+time.cycle("hour", 1); // 12:00
+time.cycle("hour", 1, { hourCycle: 12 }); // 00:00
 
 let time = new Time(23);
-time.cycle('hour', 1); // 00:00
-time.cycle('hour', 1, {hourCycle: 12}); // 12:00
+time.cycle("hour", 1); // 00:00
+time.cycle("hour", 1, { hourCycle: 12 }); // 12:00
 ```
 
 ## Conversion
@@ -142,7 +142,7 @@ date.toString(); // '09:45:00'
 A `Time` can be combined with a [CalendarDate](CalendarDate.md) to produce a [CalendarDateTime](CalendarDateTime.md) object using the `toCalendarDateTime` function.
 
 ```tsx
-import {toCalendarDateTime, CalendarDate} from '@internationalized/date';
+import { toCalendarDateTime, CalendarDate } from "@internationalized/date";
 
 let date = new CalendarDate(2022, 2, 3);
 let time = new Time(8, 30);
@@ -155,13 +155,13 @@ A `CalendarDateTime` represents a date with a time, but not in any specific time
 The `toZoned` function can be used to convert a `CalendarDateTime` to a `ZonedDateTime`.
 
 ```tsx
-import {toZoned, toCalendarDateTime, CalendarDate} from '@internationalized/date';
+import { toZoned, toCalendarDateTime, CalendarDate } from "@internationalized/date";
 
 let date = new CalendarDate(2022, 2, 3);
 let time = new Time(8, 30);
 
 let dateTime = toCalendarDateTime(date, time); // 2022-02-03T08:30:00
-toZoned(dateTime, 'America/Los_Angeles'); // 2021-02-03T08:30-07:00[America/Los_Angeles]
+toZoned(dateTime, "America/Los_Angeles"); // 2021-02-03T08:30-07:00[America/Los_Angeles]
 ```
 
 ## Queries
@@ -190,12 +190,12 @@ Parses an ISO 8601 time string.
 
 Represents an amount of time, for use whe performing arithmetic.
 
-| Name | Type | Description |
-|------|------|-------------|
-| `hours` | `number | undefined` | The number of hours to add or subtract. |
-| `minutes` | `number | undefined` | The number of minutes to add or subtract. |
-| `seconds` | `number | undefined` | The number of seconds to add or subtract. |
-| `milliseconds` | `number | undefined` | The number of milliseconds to add or subtract. |
+| Name           | Type    | Description |
+| -------------- | ------- | ----------- | ---------------------------------------------- |
+| `hours`        | `number | undefined`  | The number of hours to add or subtract.        |
+| `minutes`      | `number | undefined`  | The number of minutes to add or subtract.      |
+| `seconds`      | `number | undefined`  | The number of seconds to add or subtract.      |
+| `milliseconds` | `number | undefined`  | The number of milliseconds to add or subtract. |
 
 ### parseDuration
 
@@ -207,16 +207,16 @@ Parses an ISO 8601 duration string (e.g. "P3Y6M6W4DT12H30M5S").
 
 Represents an amount of time with both date and time components, for use when performing arithmetic.
 
-| Name | Type | Description |
-|------|------|-------------|
-| `years` | `number | undefined` | The number of years to add or subtract. |
-| `months` | `number | undefined` | The number of months to add or subtract. |
-| `weeks` | `number | undefined` | The number of weeks to add or subtract. |
-| `days` | `number | undefined` | The number of days to add or subtract. |
-| `hours` | `number | undefined` | The number of hours to add or subtract. |
-| `minutes` | `number | undefined` | The number of minutes to add or subtract. |
-| `seconds` | `number | undefined` | The number of seconds to add or subtract. |
-| `milliseconds` | `number | undefined` | The number of milliseconds to add or subtract. |
+| Name           | Type    | Description |
+| -------------- | ------- | ----------- | ---------------------------------------------- |
+| `years`        | `number | undefined`  | The number of years to add or subtract.        |
+| `months`       | `number | undefined`  | The number of months to add or subtract.       |
+| `weeks`        | `number | undefined`  | The number of weeks to add or subtract.        |
+| `days`         | `number | undefined`  | The number of days to add or subtract.         |
+| `hours`        | `number | undefined`  | The number of hours to add or subtract.        |
+| `minutes`      | `number | undefined`  | The number of minutes to add or subtract.      |
+| `seconds`      | `number | undefined`  | The number of seconds to add or subtract.      |
+| `milliseconds` | `number | undefined`  | The number of milliseconds to add or subtract. |
 
 ### toCalendarDateTime
 
@@ -227,12 +227,12 @@ of the resulting value, otherwise it will default to midnight.
 
 ### Properties
 
-| Name | Type | Description |
-|------|------|-------------|
-| `hour` \* | `number` | — |
-| `minute` \* | `number` | — |
-| `second` \* | `number` | — |
-| `millisecond` \* | `number` | — |
+| Name             | Type     | Description |
+| ---------------- | -------- | ----------- |
+| `hour` \*        | `number` | —           |
+| `minute` \*      | `number` | —           |
+| `second` \*      | `number` | —           |
+| `millisecond` \* | `number` | —           |
 
 ### Methods
 

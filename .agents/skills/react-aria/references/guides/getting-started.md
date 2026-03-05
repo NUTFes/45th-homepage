@@ -17,7 +17,7 @@ Copy and paste the CSS or [Tailwind](https://tailwindcss.com) examples into your
 ## Vanilla CSS example
 
 ```tsx
-import {Select, SelectItem} from 'vanilla-starter/Select';
+import { Select, SelectItem } from "vanilla-starter/Select";
 
 <Select label="Favorite animal">
   <SelectItem>Aardvark</SelectItem>
@@ -26,29 +26,32 @@ import {Select, SelectItem} from 'vanilla-starter/Select';
   <SelectItem>Kangaroo</SelectItem>
   <SelectItem>Panda</SelectItem>
   <SelectItem>Snake</SelectItem>
-</Select>
+</Select>;
 ```
 
 ### Select.tsx
 
 ```tsx
-'use client';
+"use client";
 import {
   ListBoxItemProps,
   Select as AriaSelect,
   SelectProps as AriaSelectProps,
   SelectValue,
   ValidationResult,
-  ListBoxProps
-} from 'react-aria-components';
-import {Button} from './Button';
-import {DropdownItem, DropdownListBox} from './ListBox';
-import {ChevronDown} from 'lucide-react';
-import {Popover} from './Popover';
-import {Label, FieldError, Description} from './Form';
-import './Select.css';
+  ListBoxProps,
+} from "react-aria-components";
+import { Button } from "./Button";
+import { DropdownItem, DropdownListBox } from "./ListBox";
+import { ChevronDown } from "lucide-react";
+import { Popover } from "./Popover";
+import { Label, FieldError, Description } from "./Form";
+import "./Select.css";
 
-export interface SelectProps<T extends object, M extends 'single' | 'multiple'> extends Omit<AriaSelectProps<T, M>, 'children'> {
+export interface SelectProps<T extends object, M extends "single" | "multiple"> extends Omit<
+  AriaSelectProps<T, M>,
+  "children"
+> {
   label?: string;
   description?: string;
   errorMessage?: string | ((validation: ValidationResult) => string);
@@ -56,26 +59,27 @@ export interface SelectProps<T extends object, M extends 'single' | 'multiple'> 
   children: React.ReactNode | ((item: T) => React.ReactNode);
 }
 
-export function Select<T extends object, M extends 'single' | 'multiple' = 'single'>(
-  { label, description, errorMessage, children, items, ...props }: SelectProps<T, M>
-) {
+export function Select<T extends object, M extends "single" | "multiple" = "single">({
+  label,
+  description,
+  errorMessage,
+  children,
+  items,
+  ...props
+}: SelectProps<T, M>) {
   return (
-    (
-      <AriaSelect {...props}>
-        {label && <Label>{label}</Label>}
-        <Button>
-          <SelectValue />
-          <ChevronDown />
-        </Button>
-        {description && <Description>{description}</Description>}
-        <FieldError>{errorMessage}</FieldError>
-        <Popover hideArrow className="select-popover">
-          <SelectListBox items={items}>
-            {children}
-          </SelectListBox>
-        </Popover>
-      </AriaSelect>
-    )
+    <AriaSelect {...props}>
+      {label && <Label>{label}</Label>}
+      <Button>
+        <SelectValue />
+        <ChevronDown />
+      </Button>
+      {description && <Description>{description}</Description>}
+      <FieldError>{errorMessage}</FieldError>
+      <Popover hideArrow className="select-popover">
+        <SelectListBox items={items}>{children}</SelectListBox>
+      </Popover>
+    </AriaSelect>
   );
 }
 
@@ -86,7 +90,6 @@ export function SelectListBox<T extends object>(props: ListBoxProps<T>) {
 export function SelectItem(props: ListBoxItemProps) {
   return <DropdownItem {...props} />;
 }
-
 ```
 
 ### Select.css
@@ -128,23 +131,22 @@ export function SelectItem(props: ListBoxItemProps) {
   }
 
   .react-aria-SelectValue {
-    [slot=description] {
+    [slot="description"] {
       display: none;
     }
   }
 }
 
-.select-popover[data-trigger=Select] {
+.select-popover[data-trigger="Select"] {
   width: var(--trigger-width);
   padding: 0;
 }
-
 ```
 
 ## Tailwind example
 
 ```tsx
-import {Select, SelectItem} from 'tailwind-starter/Select';
+import { Select, SelectItem } from "tailwind-starter/Select";
 
 <Select label="Favorite animal">
   <SelectItem>Aardvark</SelectItem>
@@ -153,15 +155,15 @@ import {Select, SelectItem} from 'tailwind-starter/Select';
   <SelectItem>Kangaroo</SelectItem>
   <SelectItem>Panda</SelectItem>
   <SelectItem>Snake</SelectItem>
-</Select>
+</Select>;
 ```
 
 ### Select.tsx
 
 ```tsx
-'use client';
-import { ChevronDown } from 'lucide-react';
-import React from 'react';
+"use client";
+import { ChevronDown } from "lucide-react";
+import React from "react";
 import {
   Select as AriaSelect,
   SelectProps as AriaSelectProps,
@@ -169,26 +171,30 @@ import {
   ListBox,
   ListBoxItemProps,
   SelectValue,
-  ValidationResult
-} from 'react-aria-components';
-import { tv } from 'tailwind-variants';
-import { Description, FieldError, Label } from './Field';
-import { DropdownItem, DropdownSection, DropdownSectionProps } from './ListBox';
-import { Popover } from './Popover';
-import { composeTailwindRenderProps, focusRing } from './utils';
+  ValidationResult,
+} from "react-aria-components";
+import { tv } from "tailwind-variants";
+import { Description, FieldError, Label } from "./Field";
+import { DropdownItem, DropdownSection, DropdownSectionProps } from "./ListBox";
+import { Popover } from "./Popover";
+import { composeTailwindRenderProps, focusRing } from "./utils";
 
 const styles = tv({
   extend: focusRing,
-  base: 'flex items-center text-start gap-4 w-full font-sans border border-black/10 dark:border-white/10 cursor-default rounded-lg pl-3 pr-2 h-9 min-w-[180px] transition bg-neutral-50 dark:bg-neutral-700 [-webkit-tap-highlight-color:transparent]',
+  base: "flex items-center text-start gap-4 w-full font-sans border border-black/10 dark:border-white/10 cursor-default rounded-lg pl-3 pr-2 h-9 min-w-[180px] transition bg-neutral-50 dark:bg-neutral-700 [-webkit-tap-highlight-color:transparent]",
   variants: {
     isDisabled: {
-      false: 'text-neutral-800 dark:text-neutral-300 hover:bg-neutral-100 pressed:bg-neutral-200 dark:hover:bg-neutral-600 dark:pressed:bg-neutral-500 group-invalid:outline group-invalid:outline-red-600 forced-colors:group-invalid:outline-[Mark]',
-      true: 'border-transparent dark:border-transparent text-neutral-200 dark:text-neutral-600 forced-colors:text-[GrayText] bg-neutral-100 dark:bg-neutral-800'
-    }
-  }
+      false:
+        "text-neutral-800 dark:text-neutral-300 hover:bg-neutral-100 pressed:bg-neutral-200 dark:hover:bg-neutral-600 dark:pressed:bg-neutral-500 group-invalid:outline group-invalid:outline-red-600 forced-colors:group-invalid:outline-[Mark]",
+      true: "border-transparent dark:border-transparent text-neutral-200 dark:text-neutral-600 forced-colors:text-[GrayText] bg-neutral-100 dark:bg-neutral-800",
+    },
+  },
 });
 
-export interface SelectProps<T extends object, M extends 'single' | 'multiple'> extends Omit<AriaSelectProps<T, M>, 'children'> {
+export interface SelectProps<T extends object, M extends "single" | "multiple"> extends Omit<
+  AriaSelectProps<T, M>,
+  "children"
+> {
   label?: string;
   description?: string;
   errorMessage?: string | ((validation: ValidationResult) => string);
@@ -196,22 +202,39 @@ export interface SelectProps<T extends object, M extends 'single' | 'multiple'> 
   children: React.ReactNode | ((item: T) => React.ReactNode);
 }
 
-export function Select<T extends object, M extends 'single' | 'multiple' = 'single'>(
-  { label, description, errorMessage, children, items, ...props }: SelectProps<T, M>
-) {
+export function Select<T extends object, M extends "single" | "multiple" = "single">({
+  label,
+  description,
+  errorMessage,
+  children,
+  items,
+  ...props
+}: SelectProps<T, M>) {
   return (
-    <AriaSelect {...props} className={composeTailwindRenderProps(props.className, 'group flex flex-col gap-1 relative font-sans')}>
+    <AriaSelect
+      {...props}
+      className={composeTailwindRenderProps(
+        props.className,
+        "group flex flex-col gap-1 relative font-sans",
+      )}
+    >
       {label && <Label>{label}</Label>}
       <Button className={styles}>
         <SelectValue className="flex-1 text-sm">
-          {({selectedText, defaultChildren}) => selectedText || defaultChildren}
+          {({ selectedText, defaultChildren }) => selectedText || defaultChildren}
         </SelectValue>
-        <ChevronDown aria-hidden className="w-4 h-4 text-neutral-600 dark:text-neutral-400 forced-colors:text-[ButtonText] group-disabled:text-neutral-200 dark:group-disabled:text-neutral-600 forced-colors:group-disabled:text-[GrayText]" />
+        <ChevronDown
+          aria-hidden
+          className="w-4 h-4 text-neutral-600 dark:text-neutral-400 forced-colors:text-[ButtonText] group-disabled:text-neutral-200 dark:group-disabled:text-neutral-600 forced-colors:group-disabled:text-[GrayText]"
+        />
       </Button>
       {description && <Description>{description}</Description>}
       <FieldError>{errorMessage}</FieldError>
       <Popover className="min-w-(--trigger-width)">
-        <ListBox items={items} className="outline-hidden box-border p-1 max-h-[inherit] overflow-auto [clip-path:inset(0_0_0_0_round_.75rem)]">
+        <ListBox
+          items={items}
+          className="outline-hidden box-border p-1 max-h-[inherit] overflow-auto [clip-path:inset(0_0_0_0_round_.75rem)]"
+        >
           {children}
         </ListBox>
       </Popover>
@@ -226,7 +249,6 @@ export function SelectItem(props: ListBoxItemProps) {
 export function SelectSection<T extends object>(props: DropdownSectionProps<T>) {
   return <DropdownSection {...props} />;
 }
-
 ```
 
 ### shadcn CLI
@@ -272,6 +294,7 @@ In this tutorial, we'll build a custom [Select](Select.md) component.
       </Popover>
     </Select>
     ```
+
   </Step>
 
   <Step>
@@ -293,6 +316,7 @@ In this tutorial, we'll build a custom [Select](Select.md) component.
     ```
 
     You can also override these defaults with a custom `className` prop, and access states via render props. Check out our [styling guide](styling.md) to learn more.
+
   </Step>
 
   <Step>
@@ -330,6 +354,7 @@ In this tutorial, we'll build a custom [Select](Select.md) component.
       return <ListBoxItem {...props} className="select-item" />;
     }
     ```
+
   </Step>
 
   <Step>
@@ -350,6 +375,7 @@ In this tutorial, we'll build a custom [Select](Select.md) component.
       );
     }
     ```
+
   </Step>
 </StepList>
 

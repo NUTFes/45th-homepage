@@ -7,10 +7,10 @@ Learn how to use the React Aria MCP Server, Agent Skills, and more to help you b
 [Node.js](https://nodejs.org/) must be installed on your system to run the MCP server.
 
 <Tabs
-  aria-label="MCP Clients"
-  density="compact"
->
-  <TabList><Tab id="cursor">Cursor</Tab><Tab id="vscode">VS Code</Tab><Tab id="claude-code">Claude Code</Tab><Tab id="codex">Codex</Tab><Tab id="gemini-cli">Gemini CLI</Tab><Tab id="other">Other</Tab></TabList>
+aria-label="MCP Clients"
+density="compact"
+
+> <TabList><Tab id="cursor">Cursor</Tab><Tab id="vscode">VS Code</Tab><Tab id="claude-code">Claude Code</Tab><Tab id="codex">Codex</Tab><Tab id="gemini-cli">Gemini CLI</Tab><Tab id="other">Other</Tab></TabList>
 
   <TabPanel id="cursor">
     Click the button to install:
@@ -29,6 +29,7 @@ Learn how to use the React Aria MCP Server, Agent Skills, and more to help you b
       }
     }
     ```
+
   </TabPanel>
 
   <TabPanel id="vscode">
@@ -52,6 +53,7 @@ Learn how to use the React Aria MCP Server, Agent Skills, and more to help you b
       }
     }
     ```
+
   </TabPanel>
 
   <TabPanel id="claude-code">
@@ -62,6 +64,7 @@ Learn how to use the React Aria MCP Server, Agent Skills, and more to help you b
     ```
 
     For more information, see the [Claude Code MCP documentation](https://docs.claude.com/en/docs/claude-code/mcp).
+
   </TabPanel>
 
   <TabPanel id="codex">
@@ -74,6 +77,7 @@ Learn how to use the React Aria MCP Server, Agent Skills, and more to help you b
     ```
 
     For more information, see the [Codex MCP documentation](https://github.com/openai/codex/blob/main/docs/config.md#mcp_servers).
+
   </TabPanel>
 
   <TabPanel id="gemini-cli">
@@ -84,6 +88,7 @@ Learn how to use the React Aria MCP Server, Agent Skills, and more to help you b
     ```
 
     For more information, see the [Gemini CLI MCP documentation](https://github.com/google-gemini/gemini-cli/blob/main/docs/tools/mcp-server.md#how-to-set-up-your-mcp-server).
+
   </TabPanel>
 
   <TabPanel id="other">
@@ -99,6 +104,7 @@ Learn how to use the React Aria MCP Server, Agent Skills, and more to help you b
       }
     }
     ```
+
   </TabPanel>
 </Tabs>
 

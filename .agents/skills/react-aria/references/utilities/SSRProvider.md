@@ -9,11 +9,11 @@ This ensures that auto generated ids are consistent between the client and serve
 </InlineAlert>
 
 ```tsx
-import {SSRProvider} from '@react-aria/ssr';
+import { SSRProvider } from "@react-aria/ssr";
 
 <SSRProvider>
   <YourApp />
-</SSRProvider>
+</SSRProvider>;
 ```
 
 ## Introduction
@@ -26,6 +26,6 @@ between the client and server by resetting the id internal counter on each reque
 
 ### SSRProvider
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `children` | `React.ReactNode` | — | Your application here. |
+| Name       | Type              | Default | Description            |
+| ---------- | ----------------- | ------- | ---------------------- |
+| `children` | `React.ReactNode` | —       | Your application here. |

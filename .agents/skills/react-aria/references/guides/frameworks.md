@@ -3,10 +3,10 @@
 Learn how to integrate React Aria with your framework.
 
 <Tabs
-  aria-label="Frameworks"
-  density="compact"
->
-  <TabList><Tab id="next"><Nextjs/><Text>Next.js</Text></Tab><Tab id="react-router"><ReactRouter/><Text>React Router</Text></Tab><Tab id="parcel"><Parcel/><Text>Parcel</Text></Tab><Tab id="vite"><Vite/><Text>Vite</Text></Tab><Tab id="webpack"><Webpack/><Text>webpack</Text></Tab><Tab id="rollup"><Rollup/><Text>Rollup</Text></Tab><Tab id="esbuild"><ESBuild/><Text>ESBuild</Text></Tab></TabList>
+aria-label="Frameworks"
+density="compact"
+
+> <TabList><Tab id="next"><Nextjs/><Text>Next.js</Text></Tab><Tab id="react-router"><ReactRouter/><Text>React Router</Text></Tab><Tab id="parcel"><Parcel/><Text>Parcel</Text></Tab><Tab id="vite"><Vite/><Text>Vite</Text></Tab><Tab id="webpack"><Webpack/><Text>webpack</Text></Tab><Tab id="rollup"><Rollup/><Text>Rollup</Text></Tab><Tab id="esbuild"><ESBuild/><Text>ESBuild</Text></Tab></TabList>
 
   <TabPanel id="next">
     To integrate with Next.js (app router), ensure the locale on the server matches the client.
@@ -59,6 +59,7 @@ Learn how to integrate React Aria with your framework.
         ```
       </Step>
     </StepList>
+
   </TabPanel>
 
   <TabPanel id="react-router">
@@ -181,6 +182,7 @@ Learn how to integrate React Aria with your framework.
         ```
       </Step>
     </StepList>
+
   </TabPanel>
 
   <TabPanel id="parcel">
@@ -216,6 +218,7 @@ Learn how to integrate React Aria with your framework.
         ```
       </Step>
     </StepList>
+
   </TabPanel>
 
   <TabPanel id="vite">
@@ -251,6 +254,7 @@ Learn how to integrate React Aria with your framework.
         ```
       </Step>
     </StepList>
+
   </TabPanel>
 
   <TabPanel id="webpack">
@@ -283,6 +287,7 @@ Learn how to integrate React Aria with your framework.
         ```
       </Step>
     </StepList>
+
   </TabPanel>
 
   <TabPanel id="rollup">
@@ -315,6 +320,7 @@ Learn how to integrate React Aria with your framework.
         ```
       </Step>
     </StepList>
+
   </TabPanel>
 
   <TabPanel id="esbuild">
@@ -347,5 +353,6 @@ Learn how to integrate React Aria with your framework.
         ```
       </Step>
     </StepList>
+
   </TabPanel>
 </Tabs>
