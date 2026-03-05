@@ -1,71 +1,94 @@
-# To use this Dockerfile, you have to set `output: 'standalone'` in your next.config.mjs file.
-# From https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
+# syntax=docker/dockerfile:1
 
-FROM node:22.17.0-alpine AS base
+# ============================================
+# Stage 1: Dependencies Installation Stage
+# ============================================
 
-# Install dependencies only when needed
-FROM base AS deps
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat
+# IMPORTANT: Node.js Version Maintenance
+# This Dockerfile uses Node.js 24.13.0-slim, which was the latest LTS version at the time of writing.
+# To ensure security and compatibility, regularly update the NODE_VERSION ARG to the latest LTS version.
+ARG NODE_VERSION=24.13.0-slim
+
+FROM node:${NODE_VERSION} AS dependencies
+
+# Set working directory
 WORKDIR /app
 
-# Install dependencies based on the preferred package manager
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
+# Copy package-related files first to leverage Docker's caching mechanism
+COPY package.json pnpm-lock.yaml .npmrc* ./
 
+# Install project dependencies with frozen lockfile for reproducible builds
+RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
+  corepack enable pnpm && pnpm install --frozen-lockfile
 
-# Rebuild the source code only when needed
-FROM base AS builder
+# ============================================
+# Stage 2: Build Next.js application in standalone mode
+# ============================================
+
+FROM node:${NODE_VERSION} AS builder
+
+# Set working directory
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+
+# Copy project dependencies from dependencies stage
+COPY --from=dependencies /app/node_modules ./node_modules
+
+# Copy application source code
 COPY . .
+
+ENV NODE_ENV=production
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
-# ENV NEXT_TELEMETRY_DISABLED 1
+# ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN \
-  if [ -f yarn.lock ]; then yarn run build; \
-  elif [ -f package-lock.json ]; then npm run build; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
+# Build Next.js application
+RUN corepack enable pnpm && pnpm build
 
-# Production image, copy all the files and run next
-FROM base AS runner
+# ============================================
+# Stage 3: Run Next.js application
+# ============================================
+
+FROM node:${NODE_VERSION} AS runner
+
+# Set working directory
 WORKDIR /app
 
-ENV NODE_ENV production
-# Uncomment the following line in case you want to disable telemetry during runtime.
-# ENV NEXT_TELEMETRY_DISABLED 1
+# Set production environment variables
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+# Next.js collects completely anonymous telemetry data about general usage.
+# Learn more here: https://nextjs.org/telemetry
+# Uncomment the following line in case you want to disable telemetry during the run time.
+# ENV NEXT_TELEMETRY_DISABLED=1
 
-# Remove this line if you do not have this folder
-COPY --from=builder /app/public ./public
+# Copy production assets
+COPY --from=builder --chown=node:node /app/public ./public
 
 # Set the correct permission for prerender cache
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
+RUN mkdir .next && chown node:node .next
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=node:node /app/.next/standalone ./
+COPY --from=builder --chown=node:node /app/.next/static ./.next/static
 
-USER nextjs
+# If you want to persist the fetch cache generated during the build so that
+# cached responses are available immediately on startup, uncomment this line:
+# COPY --from=builder --chown=node:node /app/.next/cache ./.next/cache
 
+# Switch to non-root user for security best practices
+USER node
+
+# Expose port 3000 to allow HTTP traffic
 EXPOSE 3000
 
-ENV PORT 3000
+# Health check for container orchestration
+HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
+  CMD ["node", "-e", "const http = require('http'); const req = http.get('http://localhost:3000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1); }); req.on('error', () => process.exit(1)); req.end();"]
 
-# server.js is created by next build from the standalone output
-# https://nextjs.org/docs/pages/api-reference/next-config-js/output
-CMD HOSTNAME="0.0.0.0" node server.js
+# Start Next.js standalone server
+CMD ["node", "server.js"]
