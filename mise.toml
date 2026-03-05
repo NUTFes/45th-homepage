@@ -36,7 +36,4 @@ run = "docker compose exec payload pnpm rm {{arg(0)}}"
 
 [tasks.install]
 description = "手元とコンテナの両方で依存関係をクリーンにインストールし直す"
-run = [
-  "pnpm install",
-  "docker compose exec payload pnpm install"
-]
+run = ["pnpm install", "docker compose exec payload pnpm install"]
