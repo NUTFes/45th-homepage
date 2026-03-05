@@ -1,37 +1,34 @@
-import { headers as getHeaders } from 'next/headers.js'
-import Image from 'next/image'
-import { getPayload } from 'payload'
-import React from 'react'
-import { fileURLToPath } from 'url'
+import { headers as getHeaders } from "next/headers.js";
+import Image from "next/image";
+import { getPayload } from "payload";
+import React from "react";
+import { fileURLToPath } from "url";
 
-import config from '@/payload.config'
-import './styles.css'
-import { Select, SelectItem } from '@/components/ui/Select'
-
+import config from "@/payload.config";
+import "./styles.css";
+import { Select, SelectItem } from "@/components/ui/Select";
 
 export default async function HomePage() {
-  const headers = await getHeaders()
-  const payloadConfig = await config
-  const payload = await getPayload({ config: payloadConfig })
-  const { user } = await payload.auth({ headers })
+  const headers = await getHeaders();
+  const payloadConfig = await config;
+  const payload = await getPayload({ config: payloadConfig });
+  const { user } = await payload.auth({ headers });
 
-  const fileURL = `vscode://file/${fileURLToPath(import.meta.url)}`
+  const fileURL = `vscode://file/${fileURLToPath(import.meta.url)}`;
 
   return (
     <div className="home">
       <div className="content">
-        <h1 className="text-3xl font-bold underline">
-      Hello world!
-        </h1>
+        <h1 className="text-3xl font-bold underline">Hello world!</h1>
 
         <Select label="Favorite animal">
-  <SelectItem>Aardvark</SelectItem>
-  <SelectItem>Cat</SelectItem>
-  <SelectItem>Dog</SelectItem>
-  <SelectItem>Kangaroo</SelectItem>
-  <SelectItem>Panda</SelectItem>
-  <SelectItem>Snake</SelectItem>
-</Select>
+          <SelectItem>Aardvark</SelectItem>
+          <SelectItem>Cat</SelectItem>
+          <SelectItem>Dog</SelectItem>
+          <SelectItem>Kangaroo</SelectItem>
+          <SelectItem>Panda</SelectItem>
+          <SelectItem>Snake</SelectItem>
+        </Select>
         <picture>
           <source srcSet="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-favicon.svg" />
           <Image
@@ -69,5 +66,5 @@ export default async function HomePage() {
         </a>
       </div>
     </div>
-  )
+  );
 }
