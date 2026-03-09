@@ -1,4 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
 @import "tailwindcss";
 
 @plugin "tailwindcss-react-aria-components";
 @plugin "tailwindcss-animate";
+
+@theme {
+  --color-base: #1b339b;
+  --color-base-dark: #192085;
+  --color-main: #3Ce0e8;
+  --color-secondary: #f6f8ff;
+  --color-button-line: #3ce0e8;
+  --color-button-start: #7b61ff;
+  --color-button-end: #624ecc;
+  --color-font-main: #f6f8ff;
+
+
+  --font-goldman: 'Goldman', cursive;
+  --font-sans: 'Zen Kaku Gothic New', sans-serif;
+  --default-font-family: var(--font-sans);
+
+
+  --font-size-title: 28px;
+  --font-size-title-large: [36px, {fontWeight: 700, fontFamily: var(--font-goldman)}];
+  --font-size-title-small: [20px, {fontWeight: 500}];
+  --font-size-button: [16px, {fontWeight: 700}];
+
+  --font-size-text: [16px, {lineHeight: 20px, fontWeight: 500}];
+  --font-size-text-large: [18px, {lineHeight: 22px, fontWeight: 500}];
+  --font-size-text-small: [12px, {fontWeight: 500}];
+
+
+  --spacing-ss: 8px;
+  --spacing-xs: 12px; /* 使用頻度 少 */
+  --spacing-s: 16px;
+  --spacing-m: 20px;
+  --spacing-l: 28px;
+  --spacing-ll: 32px;
+  --spacing-3l: 40px;
+  --spacing-4l: 60px;
+  --spacing-5l: 80px; /* 使用頻度 少 */
+
+}
+
+  .button-gradient {
+    background: linear-gradient(
+      to right,
+      var(--color-button-start) 20%,
+      var(--color-button-end) 100%
+    );
+  }
