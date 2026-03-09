@@ -15,9 +15,8 @@
   --color-button-end: #624ecc;
   --color-font-main: #f6f8ff;
 
-
-  --font-goldman: 'Goldman', sans-serif;
-  --font-sans: 'Zen Kaku Gothic New', sans-serif;
+  --font-goldman: "Goldman", sans-serif;
+  --font-sans: "Zen Kaku Gothic New", sans-serif;
   --default-font-family: var(--font-sans);
 
   --font-size-title: 28px;
