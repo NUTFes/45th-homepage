@@ -1,0 +1,135 @@
+name: Lighthouse CI
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "24.13.0"
+  PNPM_VERSION: "10.28.1"
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: mysecretpassword
+  POSTGRES_DB: payload
+  DATABASE_URL: postgres://postgres:mysecretpassword@localhost:5432/payload
+  PAYLOAD_SECRET: ci_secret_key
+jobs:
+  lighthouse:
+    name: Lighthouse CI
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: mysecretpassword
+          POSTGRES_DB: payload
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d payload"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline
+
+      - name: Build Next.js
+        run: pnpm run build
+
+      - name: Run Lighthouse CI
+        id: lhci
+        uses: treosh/lighthouse-ci-action@fcd65974f7c4c2bf0ee9d09b84d2489183c29726
+        with:
+          configPath: ./lighthouserc.cjs
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+      - name: Comment on PR
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd
+        if: ${{ always() && github.event_name == 'pull_request' }}
+        env:
+          LINKS_JSON: ${{ steps.lhci.outputs.links }}
+          RESULTS_PATH: ${{ steps.lhci.outputs.resultsPath }}
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const links = JSON.parse(process.env.LINKS_JSON || '{}');
+            const resultsPath = process.env.RESULTS_PATH;
+
+            let comment = '## ⚡️ Lighthouse CI Results\n\n';
+
+            try {
+              const manifestStr = fs.readFileSync(path.join(resultsPath, 'manifest.json'), 'utf8');
+              const manifest = JSON.parse(manifestStr);
+              
+              comment += '| URL | Performance | Accessibility | Best Practices | SEO | Report |\n';
+              comment += '| --- | --- | --- | --- | --- | --- |\n';
+              
+              manifest.filter(res => res.isRepresentativeRun).forEach(res => {
+                const url = res.url;
+                const link = links[url] || '#';
+                const s = res.summary || {};
+                
+                const fmt = (score) => {
+                  if (score === undefined) return '-';
+                  const val = Math.round(score * 100);
+                  let icon = '🟢';
+                  if (val < 90) icon = '🟠';
+                  if (val < 50) icon = '🔴';
+                  return `${icon} ${val}`;
+                };
+                
+                comment += `| ${url} | ${fmt(s.performance)} | ${fmt(s.accessibility)} | ${fmt(s['best-practices'])} | ${fmt(s.seo)} | [View Report](${link}) |\n`;
+              });
+            } catch (error) {
+              comment += '⚠️ Could not parse Lighthouse results.\n';
+              console.error(error);
+            }
+
+            const { data: comments } = await github.rest.issues.listComments({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            const botComment = comments.find(c => c.user.type === 'Bot' && c.body.includes('## ⚡️ Lighthouse CI Results'));
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                comment_id: botComment.id,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment
+              });
+            } else {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment
+              });
+            }
