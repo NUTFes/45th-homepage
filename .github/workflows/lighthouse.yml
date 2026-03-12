@@ -15,8 +15,6 @@ env:
   POSTGRES_DB: payload
   DATABASE_URL: postgres://postgres:mysecretpassword@localhost:5432/payload
   PAYLOAD_SECRET: ci_secret_key
-  NODE_ENV: production
-
 jobs:
   lighthouse:
     name: Lighthouse CI
