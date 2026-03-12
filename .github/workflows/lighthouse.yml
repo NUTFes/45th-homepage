@@ -66,8 +66,6 @@ jobs:
         id: lhci
         uses: treosh/lighthouse-ci-action@fcd65974f7c4c2bf0ee9d09b84d2489183c29726
         with:
-          urls: |
-            http://localhost:3000/
           configPath: ./lighthouserc.cjs
           uploadArtifacts: true
           temporaryPublicStorage: true
