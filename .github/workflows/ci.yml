@@ -76,7 +76,7 @@ jobs:
 
       - name: React Doctor
         id: react_doctor
-        uses: millionco/react-doctor@bf21a87d53e09d2c519e72b02fd7bd1680544c93 # v0.0.1
+        uses: millionco/react-doctor@ec4a41fd827c29d79f9b27a588cde598e054d059 # main
         with:
           directory: .
           verbose: true
