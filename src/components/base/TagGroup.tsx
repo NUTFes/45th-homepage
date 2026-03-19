@@ -14,7 +14,7 @@ import {
 } from "react-aria-components";
 import { twMerge } from "tailwind-merge";
 import { tv } from "tailwind-variants";
-import { Description, Label } from "@/components/ui/Field";
+import { Description, Label } from "@/components/base/Field";
 import { focusRing } from "@/lib/react-aria-utils";
 
 const colors = {

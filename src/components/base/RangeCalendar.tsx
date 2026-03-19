@@ -10,7 +10,7 @@ import {
   Text,
 } from "react-aria-components";
 import { tv } from "tailwind-variants";
-import { CalendarGridHeader, CalendarHeader } from "@/components/ui/Calendar";
+import { CalendarGridHeader, CalendarHeader } from "@/components/base/Calendar";
 import { composeTailwindRenderProps, focusRing } from "@/lib/react-aria-utils";
 
 export interface RangeCalendarProps<T extends DateValue> extends Omit<

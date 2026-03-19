@@ -10,7 +10,7 @@ import {
 } from "react-aria-components";
 import { ChevronRight } from "lucide-react";
 import { tv } from "tailwind-variants";
-import { Checkbox } from "@/components/ui/Checkbox";
+import { Checkbox } from "@/components/base/Checkbox";
 import { composeTailwindRenderProps, focusRing } from "@/lib/react-aria-utils";
 
 const itemStyles = tv({

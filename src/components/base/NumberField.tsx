@@ -15,7 +15,7 @@ import {
   Input,
   Label,
   fieldBorderStyles,
-} from "@/components/ui/Field";
+} from "@/components/base/Field";
 import { composeTailwindRenderProps } from "@/lib/react-aria-utils";
 
 export interface NumberFieldProps extends AriaNumberFieldProps {

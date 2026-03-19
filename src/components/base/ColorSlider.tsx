@@ -7,9 +7,9 @@ import {
   SliderTrack,
 } from "react-aria-components";
 import { tv } from "tailwind-variants";
-import { Label } from "@/components/ui/Field";
+import { Label } from "@/components/base/Field";
 import { composeTailwindRenderProps } from "@/lib/react-aria-utils";
-import { ColorThumb } from "@/components/ui/ColorThumb";
+import { ColorThumb } from "@/components/base/ColorThumb";
 
 const trackStyles = tv({
   base: "group col-span-2 rounded-md",

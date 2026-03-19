@@ -11,9 +11,9 @@ import {
   ValidationResult,
 } from "react-aria-components";
 import { tv } from "tailwind-variants";
-import { Description, FieldError, Label } from "@/components/ui/Field";
-import { DropdownItem, DropdownSection, DropdownSectionProps } from "@/components/ui/ListBox";
-import { Popover } from "@/components/ui/Popover";
+import { Description, FieldError, Label } from "@/components/base/Field";
+import { DropdownItem, DropdownSection, DropdownSectionProps } from "@/components/base/ListBox";
+import { Popover } from "@/components/base/Popover";
 import { composeTailwindRenderProps, focusRing } from "@/lib/react-aria-utils";
 
 const styles = tv({

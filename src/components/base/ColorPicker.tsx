@@ -6,12 +6,12 @@ import {
   ColorPickerProps as AriaColorPickerProps,
   DialogTrigger,
 } from "react-aria-components";
-import { ColorSwatch } from "@/components/ui/ColorSwatch";
-import { ColorArea } from "@/components/ui/ColorArea";
-import { ColorSlider } from "@/components/ui/ColorSlider";
-import { ColorField } from "@/components/ui/ColorField";
-import { Dialog } from "@/components/ui/Dialog";
-import { Popover } from "@/components/ui/Popover";
+import { ColorSwatch } from "@/components/base/ColorSwatch";
+import { ColorArea } from "@/components/base/ColorArea";
+import { ColorSlider } from "@/components/base/ColorSlider";
+import { ColorField } from "@/components/base/ColorField";
+import { Dialog } from "@/components/base/Dialog";
+import { Popover } from "@/components/base/Popover";
 import { tv } from "tailwind-variants";
 import { focusRing } from "@/lib/react-aria-utils";
 

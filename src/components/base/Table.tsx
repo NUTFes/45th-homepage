@@ -24,7 +24,7 @@ import {
 } from "react-aria-components";
 import { twMerge } from "tailwind-merge";
 import { tv } from "tailwind-variants";
-import { Checkbox } from "@/components/ui/Checkbox";
+import { Checkbox } from "@/components/base/Checkbox";
 import { composeTailwindRenderProps, focusRing } from "@/lib/react-aria-utils";
 
 interface TableProps extends Omit<AriaTableProps, "className"> {

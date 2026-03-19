@@ -10,7 +10,7 @@ import {
   ValidationResult,
 } from "react-aria-components";
 import { tv } from "tailwind-variants";
-import { Description, FieldError, Label, fieldGroupStyles } from "@/components/ui/Field";
+import { Description, FieldError, Label, fieldGroupStyles } from "@/components/base/Field";
 import { composeTailwindRenderProps } from "@/lib/react-aria-utils";
 
 export interface DateFieldProps<T extends DateValue> extends AriaDateFieldProps<T> {

@@ -6,7 +6,7 @@ import {
   ValidationResult,
 } from "react-aria-components";
 import { tv } from "tailwind-variants";
-import { Description, FieldError, Input, Label, fieldBorderStyles } from "@/components/ui/Field";
+import { Description, FieldError, Input, Label, fieldBorderStyles } from "@/components/base/Field";
 import { composeTailwindRenderProps, focusRing } from "@/lib/react-aria-utils";
 
 const inputStyles = tv({

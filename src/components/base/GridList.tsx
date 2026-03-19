@@ -10,7 +10,7 @@ import {
   GridListProps,
 } from "react-aria-components";
 import { tv } from "tailwind-variants";
-import { Checkbox } from "@/components/ui/Checkbox";
+import { Checkbox } from "@/components/base/Checkbox";
 import { composeTailwindRenderProps, focusRing } from "@/lib/react-aria-utils";
 import { HTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";

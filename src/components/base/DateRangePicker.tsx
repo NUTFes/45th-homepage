@@ -7,12 +7,12 @@ import {
   DateValue,
   ValidationResult,
 } from "react-aria-components";
-import { DateInput } from "@/components/ui/DateField";
-import { Description, FieldError, FieldGroup, Label } from "@/components/ui/Field";
-import { Popover } from "@/components/ui/Popover";
-import { RangeCalendar } from "@/components/ui/RangeCalendar";
+import { DateInput } from "@/components/base/DateField";
+import { Description, FieldError, FieldGroup, Label } from "@/components/base/Field";
+import { Popover } from "@/components/base/Popover";
+import { RangeCalendar } from "@/components/base/RangeCalendar";
 import { composeTailwindRenderProps } from "@/lib/react-aria-utils";
-import { FieldButton } from "@/components/ui/FieldButton";
+import { FieldButton } from "@/components/base/FieldButton";
 
 export interface DateRangePickerProps<T extends DateValue> extends AriaDateRangePickerProps<T> {
   label?: string;

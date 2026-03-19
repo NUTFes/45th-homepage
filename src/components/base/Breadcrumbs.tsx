@@ -9,7 +9,7 @@ import {
   LinkProps,
 } from "react-aria-components";
 import { twMerge } from "tailwind-merge";
-import { Link } from "@/components/ui/Link";
+import { Link } from "@/components/base/Link";
 import { composeTailwindRenderProps } from "@/lib/react-aria-utils";
 
 export function Breadcrumbs<T extends object>(props: BreadcrumbsProps<T>) {

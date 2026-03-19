@@ -5,7 +5,7 @@ import {
   CheckboxGroupProps as AriaCheckboxGroupProps,
   ValidationResult,
 } from "react-aria-components";
-import { Description, FieldError, Label } from "@/components/ui/Field";
+import { Description, FieldError, Label } from "@/components/base/Field";
 import { composeTailwindRenderProps } from "@/lib/react-aria-utils";
 
 export interface CheckboxGroupProps extends Omit<AriaCheckboxGroupProps, "children"> {

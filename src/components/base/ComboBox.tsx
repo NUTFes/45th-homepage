@@ -9,11 +9,11 @@ import {
   ListBoxItemProps,
   ValidationResult,
 } from "react-aria-components";
-import { Description, FieldError, FieldGroup, Input, Label } from "@/components/ui/Field";
-import { DropdownItem, DropdownSection, DropdownSectionProps } from "@/components/ui/ListBox";
-import { Popover } from "@/components/ui/Popover";
+import { Description, FieldError, FieldGroup, Input, Label } from "@/components/base/Field";
+import { DropdownItem, DropdownSection, DropdownSectionProps } from "@/components/base/ListBox";
+import { Popover } from "@/components/base/Popover";
 import { composeTailwindRenderProps } from "@/lib/react-aria-utils";
-import { FieldButton } from "@/components/ui/FieldButton";
+import { FieldButton } from "@/components/base/FieldButton";
 
 export interface ComboBoxProps<T extends object, M extends "single" | "multiple"> extends Omit<
   AriaComboBoxProps<T, M>,

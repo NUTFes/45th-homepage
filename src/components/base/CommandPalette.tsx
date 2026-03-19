@@ -6,9 +6,9 @@ import {
   useFilter,
   Dialog,
 } from "react-aria-components";
-import { Menu } from "@/components/ui/Menu";
-import { SearchField } from "@/components/ui/SearchField";
-import { Modal } from "@/components/ui/Modal";
+import { Menu } from "@/components/base/Menu";
+import { SearchField } from "@/components/base/SearchField";
+import { Modal } from "@/components/base/Modal";
 import React, { useEffect } from "react";
 
 export interface CommandPaletteProps<T extends object>

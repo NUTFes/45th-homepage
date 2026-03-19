@@ -18,8 +18,8 @@ import {
   SubmenuTriggerProps,
   MenuTriggerProps as AriaMenuTriggerProps,
 } from "react-aria-components";
-import { dropdownItemStyles } from "@/components/ui/ListBox";
-import { Popover, PopoverProps } from "@/components/ui/Popover";
+import { dropdownItemStyles } from "@/components/base/ListBox";
+import { Popover, PopoverProps } from "@/components/base/Popover";
 
 export function Menu<T extends object>(props: MenuProps<T>) {
   return (

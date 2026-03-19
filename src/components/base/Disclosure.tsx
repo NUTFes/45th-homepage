@@ -9,7 +9,7 @@ import {
   Heading,
   DisclosureStateContext,
 } from "react-aria-components";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/base/Button";
 import { tv } from "tailwind-variants";
 import { ChevronRight } from "lucide-react";
 import { composeTailwindRenderProps } from "@/lib/react-aria-utils";

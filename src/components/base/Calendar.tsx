@@ -15,7 +15,7 @@ import {
   useLocale,
 } from "react-aria-components";
 import { tv } from "tailwind-variants";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/base/Button";
 import { composeTailwindRenderProps, focusRing } from "@/lib/react-aria-utils";
 
 const cellStyles = tv({

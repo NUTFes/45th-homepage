@@ -7,7 +7,7 @@ import {
   ColorSwatchPickerProps,
   composeRenderProps,
 } from "react-aria-components";
-import { ColorSwatch } from "@/components/ui/ColorSwatch";
+import { ColorSwatch } from "@/components/base/ColorSwatch";
 import { focusRing } from "@/lib/react-aria-utils";
 import { tv } from "tailwind-variants";
 
