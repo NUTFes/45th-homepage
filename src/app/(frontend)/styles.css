@@ -2,6 +2,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap");
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Kaisotai Next";
+  src: url("/font/Kaisotai-Next-UP-B.woff2") format("woff2");
+}
+
 @plugin "tailwindcss-react-aria-components";
 @plugin "tailwindcss-animate";
 
@@ -15,11 +20,12 @@
   --color-button-end: #624ecc;
   --color-font-main: #f6f8ff;
 
+  --font-kaisotai: "Kaisotai Next", sans-serif;
   --font-goldman: "Goldman", sans-serif;
   --font-sans: "Zen Kaku Gothic New", sans-serif;
   --default-font-family: var(--font-sans);
 
-  --font-size-title: 28px;
+  --font-size-title: [28px, {fontWeight: 700, fontFamily: var(--font-kaisotai)}];
   --font-size-title-large: [36px, {fontWeight: 700, fontFamily: var(--font-goldman)}];
   --font-size-title-small: [20px, {fontWeight: 500}];
   --font-size-button: [16px, {fontWeight: 700}];
