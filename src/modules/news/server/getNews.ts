@@ -1,2 +1,1 @@
-export const getNews = async (limit?: number) => {
-};
+export const getNews = async (limit?: number) => {};

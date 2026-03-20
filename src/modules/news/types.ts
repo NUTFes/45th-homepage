@@ -1,2 +1,1 @@
-export type NewsItem = {
-};
+export type NewsItem = {};
