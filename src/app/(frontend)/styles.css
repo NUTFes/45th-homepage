@@ -1,11 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap");
+@import "tailwindcss";
+
 @font-face {
   font-family: "Kaisotai Next";
   src: url("/font/Kaisotai-Next-UP-B.woff2") format("woff2");
 }
-
-@import url("https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap");
-@import "tailwindcss";
 
 @plugin "tailwindcss-react-aria-components";
 @plugin "tailwindcss-animate";
