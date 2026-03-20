@@ -1,6 +1,7 @@
 @font-face {
   font-family: "Kaisotai Next";
-  src: url("/font/Kaisotai-Next-UP-B.woff2") format("woff2");}
+  src: url("/font/Kaisotai-Next-UP-B.woff2") format("woff2");
+}
 
 @import url("https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap");
@@ -24,7 +25,7 @@
   --font-sans: "Zen Kaku Gothic New", sans-serif;
   --default-font-family: var(--font-sans);
 
-  --font-size-title: [28px,{ fontWeight: 700, fontFamily: var(--font-kaisotai) }];
+  --font-size-title: [28px, {fontWeight: 700, fontFamily: var(--font-kaisotai)}];
   --font-size-title-large: [36px, {fontWeight: 700, fontFamily: var(--font-goldman)}];
   --font-size-title-small: [20px, {fontWeight: 500}];
   --font-size-button: [16px, {fontWeight: 700}];
