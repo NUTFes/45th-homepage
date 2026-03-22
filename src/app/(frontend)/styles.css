@@ -25,14 +25,25 @@
   --font-sans: "Zen Kaku Gothic New", sans-serif;
   --default-font-family: var(--font-sans);
 
-  --font-size-title: [28px, {fontWeight: 700, fontFamily: var(--font-kaisotai)}];
-  --font-size-title-large: [36px, {fontWeight: 700, fontFamily: var(--font-goldman)}];
-  --font-size-title-small: [20px, {fontWeight: 500}];
-  --font-size-button: [16px, {fontWeight: 700}];
+  --text-title: 28px;
+  --text-title--font-weight: 700; 
+  --text-title--font-family: var(--font-kaisotai);
+  --text-title-large: 36px;
+  --text-title-large--font-weight: 700;
+  --text-title-large--font-family: var(--font-goldman);
+  --text-title-small: 20px;
+  --text-title-small--font-weight: 500;
+  --text-button: 16px;
+  --text-button--font-weight: 700;
 
-  --font-size-text: [16px, {lineHeight: 20px, fontWeight: 500}];
-  --font-size-text-large: [18px, {lineHeight: 22px, fontWeight: 500}];
-  --font-size-text-small: [12px, {fontWeight: 500}];
+  --text-text: 16px;
+  --text-text--line-height: 20px;
+  --text-text--font-weight: 500;
+  --text-text-large: 18px;
+  --text-text-large--line-height: 22px;
+  --text-text-large--font-weight: 500;
+  --text-text-small: 12px;
+  --text-text-small--font-weight: 500;
 
   --spacing-ss: 8px;
   --spacing-xs: 12px; /* 使用頻度 少 */
