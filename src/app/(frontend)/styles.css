@@ -27,10 +27,8 @@
 
   --text-title: 28px;
   --text-title--font-weight: 700; 
-  --text-title--font-family: var(--font-kaisotai);
   --text-title-large: 36px;
   --text-title-large--font-weight: 700;
-  --text-title-large--font-family: var(--font-goldman);
   --text-title-small: 20px;
   --text-title-small--font-weight: 500;
   --text-button: 16px;
