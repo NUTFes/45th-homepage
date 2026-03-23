@@ -8,6 +8,8 @@ import config from "@/payload.config";
 import "./styles.css";
 import { Select, SelectItem } from "@/components/aria/Select";
 
+import BottomNavigation from "@/components/layout/Bottom";
+
 export default async function HomePage() {
   const headers = await getHeaders();
   const payloadConfig = await config;
@@ -20,6 +22,8 @@ export default async function HomePage() {
     <div className="home">
       <div className="content">
         <h1 className="text-3xl font-bold underline">Hello world!</h1>
+
+
 
         <Select label="Favorite animal">
           <SelectItem>Aardvark</SelectItem>
@@ -65,6 +69,8 @@ export default async function HomePage() {
           <code>app/(frontend)/page.tsx</code>
         </a>
       </div>
+      <BottomNavigation />
     </div>
+
   );
 }
