@@ -56,9 +56,9 @@ export function Button(props: ButtonProps) {
         <>
           {children}
           {isPending && (
-            <span aria-hidden className="flex absolute inset-0 justify-center items-center">
+            <span aria-hidden className="absolute inset-0 flex items-center justify-center">
               <svg
-                className="w-4 h-4 text-white animate-spin"
+                className="h-4 w-4 animate-spin text-white"
                 viewBox="0 0 24 24"
                 stroke={
                   props.variant === "secondary" || props.variant === "quiet"

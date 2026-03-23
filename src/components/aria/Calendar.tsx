@@ -69,7 +69,7 @@ export function CalendarHeader() {
   let { direction } = useLocale();
 
   return (
-    <header className="flex items-center gap-1 pb-4 px-1 border-box">
+    <header className="border-box flex items-center gap-1 px-1 pb-4">
       <Button variant="quiet" slot="previous">
         {direction === "rtl" ? (
           <ChevronRight aria-hidden size={18} />
@@ -77,7 +77,7 @@ export function CalendarHeader() {
           <ChevronLeft aria-hidden size={18} />
         )}
       </Button>
-      <Heading className="flex-1 font-sans font-semibold [font-variation-settings:normal] text-base text-center mx-2 my-0 text-neutral-900 dark:text-neutral-200" />
+      <Heading className="mx-2 my-0 flex-1 text-center font-sans font-semibold text-base text-neutral-900 [font-variation-settings:normal] dark:text-neutral-200" />
       <Button variant="quiet" slot="next">
         {direction === "rtl" ? (
           <ChevronLeft aria-hidden size={18} />
@@ -93,7 +93,7 @@ export function CalendarGridHeader() {
   return (
     <AriaCalendarGridHeader>
       {(day) => (
-        <CalendarHeaderCell className="text-xs text-neutral-500 font-semibold">
+        <CalendarHeaderCell className="text-xs font-semibold text-neutral-500">
           {day}
         </CalendarHeaderCell>
       )}

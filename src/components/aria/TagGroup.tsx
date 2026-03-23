@@ -119,7 +119,7 @@ export function Tag({ children, color, ...props }: TagProps) {
           {children}
           {allowsRemoving && (
             <Button slot="remove" className={removeButtonStyles}>
-              <XIcon aria-hidden className="w-3 h-3" />
+              <XIcon aria-hidden className="h-3 w-3" />
             </Button>
           )}
         </>

@@ -42,8 +42,8 @@ export function ComboBox<T extends object, M extends "single" | "multiple" = "si
       <Label>{label}</Label>
       <FieldGroup>
         <Input className="ps-3 pe-1" />
-        <FieldButton className="w-6 mr-1 outline-offset-0">
-          <ChevronDown aria-hidden className="w-4 h-4" />
+        <FieldButton className="mr-1 w-6 outline-offset-0">
+          <ChevronDown aria-hidden className="h-4 w-4" />
         </FieldButton>
       </FieldGroup>
       {props.selectionMode === "multiple" && (
@@ -57,7 +57,7 @@ export function ComboBox<T extends object, M extends "single" | "multiple" = "si
       <Popover className="w-(--trigger-width)">
         <ListBox
           items={items}
-          className="outline-0 p-1 box-border max-h-[inherit] overflow-auto [clip-path:inset(0_0_0_0_round_.75rem)]"
+          className="box-border max-h-[inherit] overflow-auto p-1 outline-0 [clip-path:inset(0_0_0_0_round_.75rem)]"
         >
           {children}
         </ListBox>

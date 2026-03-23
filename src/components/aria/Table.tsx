@@ -36,13 +36,13 @@ export function Table(props: TableProps) {
     <ResizableTableContainer
       onScroll={props.onScroll}
       className={twMerge(
-        "w-full max-h-[320px] overflow-auto scroll-pt-[2.281rem] relative bg-white dark:bg-neutral-900 box-border border border-neutral-300 dark:border-neutral-700 rounded-lg font-sans",
+        "relative box-border max-h-[320px] w-full scroll-pt-[2.281rem] overflow-auto rounded-lg border border-neutral-300 bg-white font-sans dark:border-neutral-700 dark:bg-neutral-900",
         props.className,
       )}
     >
       <AriaTable
         {...props}
-        className="border-separate border-spacing-0 box-border overflow-hidden has-[>[data-empty]]:h-full"
+        className="box-border border-separate border-spacing-0 overflow-hidden has-[>[data-empty]]:h-full"
       />
     </ResizableTableContainer>
   );
@@ -73,14 +73,14 @@ export function Column(props: ColumnProps) {
             <span className="truncate">{children}</span>
             {allowsSorting && (
               <span
-                className={`w-4 h-4 flex items-center justify-center transition ${
+                className={`flex h-4 w-4 items-center justify-center transition ${
                   sortDirection === "descending" ? "rotate-180" : ""
                 }`}
               >
                 {sortDirection && (
                   <ArrowUp
                     aria-hidden
-                    className="w-4 h-4 text-neutral-500 dark:text-neutral-400 forced-colors:text-[ButtonText]"
+                    className="h-4 w-4 text-neutral-500 dark:text-neutral-400 forced-colors:text-[ButtonText]"
                   />
                 )}
               </span>
@@ -110,7 +110,7 @@ export function TableHeader<T extends object>(props: TableHeaderProps<T>) {
         <AriaColumn
           width={36}
           minWidth={36}
-          className="box-border p-2 text-sm font-semibold cursor-default text-start"
+          className="box-border cursor-default p-2 text-start text-sm font-semibold"
         >
           {selectionMode === "multiple" && <Checkbox slot="selection" />}
         </AriaColumn>
@@ -121,7 +121,7 @@ export function TableHeader<T extends object>(props: TableHeaderProps<T>) {
 }
 
 export function TableBody<T extends object>(props: TableBodyProps<T>) {
-  return <AriaTableBody {...props} className="empty:italic empty:text-center empty:text-sm" />;
+  return <AriaTableBody {...props} className="empty:text-center empty:text-sm empty:italic" />;
 }
 
 const rowStyles = tv({

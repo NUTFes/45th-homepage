@@ -70,7 +70,7 @@ export function GridListHeader({ children, ...props }: HTMLAttributes<HTMLElemen
     <AriaGridListHeader
       {...props}
       className={twMerge(
-        "text-sm font-semibold text-neutral-500 dark:text-neutral-300 px-4 py-1 -mt-px z-10 bg-neutral-100/60 dark:bg-neutral-700/60 backdrop-blur-md supports-[-moz-appearance:none]:bg-neutral-100 border-y border-y-neutral-200 dark:border-y-neutral-700",
+        "z-10 -mt-px border-y border-y-neutral-200 bg-neutral-100/60 px-4 py-1 text-sm font-semibold text-neutral-500 backdrop-blur-md supports-[-moz-appearance:none]:bg-neutral-100 dark:border-y-neutral-700 dark:bg-neutral-700/60 dark:text-neutral-300",
         props.className,
       )}
     >
