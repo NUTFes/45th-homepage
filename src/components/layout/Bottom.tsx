@@ -1,11 +1,11 @@
 import { House, Clock, MapPin, CalendarDays, Menu} from 'lucide-react';
 
 const navItems = [
-    { name: 'ホーム' , icon: House, href: '/', size: 36},
-    { name: 'スケジュール' , icon: Clock, href: '/', size: 36},
-    { name: 'マップ' , icon: MapPin, href: '/', size: 36},
-    { name: '企画' , icon: CalendarDays, href: '/', size: 36},
-    { name: 'メニュー' , icon: Menu, href: '/', size: 36},
+    { name: 'ホーム' , icon: House,  size: 36},
+    { name: 'スケジュール' , icon: Clock,  size: 36},
+    { name: 'マップ' , icon: MapPin,  size: 36},
+    { name: '企画' , icon: CalendarDays,  size: 36},
+    { name: 'メニュー' , icon: Menu,  size: 36},
 ];
 
 export default function BottomNavigation(){
