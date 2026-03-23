@@ -35,19 +35,19 @@ export function DateRangePicker<T extends DateValue>({
       )}
     >
       {label && <Label>{label}</Label>}
-      <FieldGroup className="min-w-[208px] w-auto cursor-text disabled:cursor-default">
-        <div className="flex-1 w-fit flex items-center overflow-x-auto overflow-y-clip [scrollbar-width:none]">
+      <FieldGroup className="w-auto min-w-[208px] cursor-text disabled:cursor-default">
+        <div className="flex w-fit flex-1 items-center overflow-x-auto overflow-y-clip [scrollbar-width:none]">
           <DateInput slot="start" className="ps-3 pe-2 text-sm" />
           <span
             aria-hidden="true"
-            className="text-neutral-800 dark:text-neutral-200 forced-colors:text-[ButtonText] group-disabled:text-neutral-200 dark:group-disabled:text-neutral-600 forced-colors:group-disabled:text-[GrayText]"
+            className="text-neutral-800 group-disabled:text-neutral-200 dark:text-neutral-200 dark:group-disabled:text-neutral-600 forced-colors:text-[ButtonText] forced-colors:group-disabled:text-[GrayText]"
           >
             –
           </span>
           <DateInput slot="end" className="flex-1 ps-2 pe-3 text-sm" />
         </div>
-        <FieldButton className="w-6 mr-1 outline-offset-0">
-          <CalendarIcon aria-hidden className="w-4 h-4" />
+        <FieldButton className="mr-1 w-6 outline-offset-0">
+          <CalendarIcon aria-hidden className="h-4 w-4" />
         </FieldButton>
       </FieldGroup>
       {description && <Description>{description}</Description>}

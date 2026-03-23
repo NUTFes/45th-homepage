@@ -81,7 +81,7 @@ export function Tab(props: TabProps) {
       {composeRenderProps(props.children, (children) => (
         <>
           {children}
-          <SelectionIndicator className="absolute top-0 left-0 w-full h-full z-10 bg-white rounded-full mix-blend-difference group-disabled:bg-neutral-400 group-disabled:mix-blend-normal group-disabled:dark:bg-neutral-600 group-disabled:-z-1 motion-safe:transition-[translate,width,height] " />
+          <SelectionIndicator className="absolute top-0 left-0 z-10 h-full w-full rounded-full bg-white mix-blend-difference group-disabled:-z-1 group-disabled:bg-neutral-400 group-disabled:mix-blend-normal motion-safe:transition-[translate,width,height] group-disabled:dark:bg-neutral-600" />
         </>
       ))}
     </RACTab>
@@ -93,7 +93,7 @@ export function TabPanels<T extends object>(props: TabPanelsProps<T>) {
     <RACTabPanels
       {...props}
       className={twMerge(
-        "relative h-(--tab-panel-height) motion-safe:transition-[height] overflow-clip",
+        "relative h-(--tab-panel-height) overflow-clip motion-safe:transition-[height]",
         props.className,
       )}
     />

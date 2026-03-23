@@ -26,7 +26,7 @@ export function Breadcrumb(props: BreadcrumbProps & Omit<LinkProps, "className">
         <>
           <Link variant="secondary" {...props} />
           {!isCurrent && (
-            <ChevronRight className="w-3 h-3 text-neutral-600 dark:text-neutral-400" />
+            <ChevronRight className="h-3 w-3 text-neutral-600 dark:text-neutral-400" />
           )}
         </>
       )}

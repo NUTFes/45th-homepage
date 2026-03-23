@@ -53,13 +53,13 @@ export function RangeCalendar<T extends DateValue>({
       )}
     >
       <CalendarHeader />
-      <CalendarGrid className="[&_td]:px-0 [&_td]:py-px border-spacing-0">
+      <CalendarGrid className="border-spacing-0 [&_td]:px-0 [&_td]:py-px">
         <CalendarGridHeader />
         <CalendarGridBody>
           {(date) => (
             <CalendarCell
               date={date}
-              className="group w-[calc(100cqw/7)] aspect-square text-sm outline outline-0 cursor-default outside-month:text-neutral-300 selected:bg-blue-100 dark:selected:bg-blue-700/30 forced-colors:selected:bg-[Highlight] invalid:selected:bg-red-100 dark:invalid:selected:bg-red-700/30 forced-colors:invalid:selected:bg-[Mark] [td:first-child_&]:rounded-s-full selection-start:rounded-s-full [td:last-child_&]:rounded-e-full selection-end:rounded-e-full [-webkit-tap-highlight-color:transparent]"
+              className="group aspect-square w-[calc(100cqw/7)] cursor-default text-sm outline outline-0 [-webkit-tap-highlight-color:transparent] outside-month:text-neutral-300 selected:bg-blue-100 invalid:selected:bg-red-100 dark:selected:bg-blue-700/30 dark:invalid:selected:bg-red-700/30 forced-colors:selected:bg-[Highlight] forced-colors:invalid:selected:bg-[Mark] selection-start:rounded-s-full selection-end:rounded-e-full [td:first-child_&]:rounded-s-full [td:last-child_&]:rounded-e-full"
             >
               {({
                 formattedDate,
