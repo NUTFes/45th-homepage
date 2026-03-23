@@ -54,7 +54,7 @@ export function ListBoxItem(props: ListBoxItemProps) {
       {composeRenderProps(props.children, (children) => (
         <>
           {children}
-          <div className="absolute left-4 right-4 bottom-0 h-px bg-white/20 forced-colors:bg-[HighlightText] hidden [.group[data-selected]:has(+[data-selected])_&]:block" />
+          <div className="absolute right-4 bottom-0 left-4 hidden h-px bg-white/20 forced-colors:bg-[HighlightText] [.group[data-selected]:has(+[data-selected])_&]:block" />
         </>
       ))}
     </AriaListBoxItem>
@@ -91,11 +91,11 @@ export function DropdownItem(props: ListBoxItemProps) {
     <AriaListBoxItem {...props} textValue={textValue} className={dropdownItemStyles}>
       {composeRenderProps(props.children, (children, { isSelected }) => (
         <>
-          <span className="flex items-center flex-1 gap-2 font-normal truncate group-selected:font-semibold">
+          <span className="flex flex-1 items-center gap-2 truncate font-normal group-selected:font-semibold">
             {children}
           </span>
-          <span className="flex items-center w-5">
-            {isSelected && <Check className="w-4 h-4" />}
+          <span className="flex w-5 items-center">
+            {isSelected && <Check className="h-4 w-4" />}
           </span>
         </>
       ))}
@@ -110,8 +110,8 @@ export interface DropdownSectionProps<T> extends SectionProps<T> {
 
 export function DropdownSection<T extends object>(props: DropdownSectionProps<T>) {
   return (
-    <ListBoxSection className="first:-mt-[5px] after:content-[''] after:block after:h-[5px] last:after:hidden">
-      <Header className="text-sm font-semibold text-neutral-500 dark:text-neutral-300 px-4 py-1 truncate sticky -top-[5px] -mt-px -mx-1 z-10 bg-neutral-100/60 dark:bg-neutral-700/60 backdrop-blur-md supports-[-moz-appearance:none]:bg-neutral-100 border-y border-y-neutral-200 dark:border-y-neutral-700 [&+*]:mt-1">
+    <ListBoxSection className="after:block after:h-[5px] after:content-[''] first:-mt-[5px] last:after:hidden">
+      <Header className="sticky -top-[5px] z-10 -mx-1 -mt-px truncate border-y border-y-neutral-200 bg-neutral-100/60 px-4 py-1 text-sm font-semibold text-neutral-500 backdrop-blur-md supports-[-moz-appearance:none]:bg-neutral-100 dark:border-y-neutral-700 dark:bg-neutral-700/60 dark:text-neutral-300 [&+*]:mt-1">
         {props.title}
       </Header>
       <Collection items={props.items}>{props.children}</Collection>

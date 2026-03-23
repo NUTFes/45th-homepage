@@ -77,13 +77,13 @@ export function TreeItem(props: TreeItemProps) {
             {selectionMode !== "none" && selectionBehavior === "toggle" && (
               <Checkbox slot="selection" />
             )}
-            <div className="shrink-0 w-[calc(calc(var(--tree-item-level)_-_1)_*_calc(var(--spacing)_*_3))]" />
+            <div className="w-[calc(calc(var(--tree-item-level)_-_1)_*_calc(var(--spacing)_*_3))] shrink-0" />
             {hasChildItems ? (
               <Button slot="chevron" className={expandButton({ isDisabled })}>
                 <ChevronRight aria-hidden className={chevron({ isExpanded, isDisabled })} />
               </Button>
             ) : (
-              <div className="shrink-0 w-8 h-8" />
+              <div className="h-8 w-8 shrink-0" />
             )}
             {props.title}
           </div>

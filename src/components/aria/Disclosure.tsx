@@ -54,7 +54,7 @@ export interface DisclosureHeaderProps {
 export function DisclosureHeader({ children }: DisclosureHeaderProps) {
   let { isExpanded } = useContext(DisclosureStateContext)!;
   return (
-    <Heading className="text-lg font-semibold m-0">
+    <Heading className="m-0 text-lg font-semibold">
       <Button slot="trigger" variant="quiet" className="w-full justify-start font-medium">
         {({ isDisabled }) => (
           <>
