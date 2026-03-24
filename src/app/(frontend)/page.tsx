@@ -23,8 +23,6 @@ export default async function HomePage() {
       <div className="content">
         <h1 className="text-3xl font-bold underline">Hello world!</h1>
 
-
-
         <Select label="Favorite animal">
           <SelectItem>Aardvark</SelectItem>
           <SelectItem>Cat</SelectItem>
@@ -71,6 +69,5 @@ export default async function HomePage() {
       </div>
       <BottomNavigation />
     </div>
-
   );
 }
