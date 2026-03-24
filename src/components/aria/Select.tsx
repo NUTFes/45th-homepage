@@ -62,7 +62,7 @@ export function Select<T extends object, M extends "single" | "multiple" = "sing
         </SelectValue>
         <ChevronDown
           aria-hidden
-          className="w-4 h-4 text-neutral-600 dark:text-neutral-400 forced-colors:text-[ButtonText] group-disabled:text-neutral-200 dark:group-disabled:text-neutral-600 forced-colors:group-disabled:text-[GrayText]"
+          className="h-4 w-4 text-neutral-600 group-disabled:text-neutral-200 dark:text-neutral-400 dark:group-disabled:text-neutral-600 forced-colors:text-[ButtonText] forced-colors:group-disabled:text-[GrayText]"
         />
       </Button>
       {description && <Description>{description}</Description>}
@@ -70,7 +70,7 @@ export function Select<T extends object, M extends "single" | "multiple" = "sing
       <Popover className="min-w-(--trigger-width)">
         <ListBox
           items={items}
-          className="outline-hidden box-border p-1 max-h-[inherit] overflow-auto [clip-path:inset(0_0_0_0_round_.75rem)]"
+          className="box-border max-h-[inherit] overflow-auto p-1 outline-hidden [clip-path:inset(0_0_0_0_round_.75rem)]"
         >
           {children}
         </ListBox>
