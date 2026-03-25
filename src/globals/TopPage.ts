@@ -16,9 +16,6 @@ export const TopPage: GlobalConfig = {
       en: "Configure top-page sections such as pickup and news.",
     },
   },
-  access: {
-    read: () => true,
-  },
   fields: [
     {
       name: "pickups",
