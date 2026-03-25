@@ -27,4 +27,3 @@ export type CarouselMotionOptions = {
   autoPlay?: CarouselAutoPlayOption;
   autoScroll?: CarouselAutoScrollOption;
 };
-

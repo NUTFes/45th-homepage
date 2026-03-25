@@ -14,4 +14,3 @@ export type {
   CarouselImageSlide,
   CarouselMotionOptions,
 } from "./types";
-

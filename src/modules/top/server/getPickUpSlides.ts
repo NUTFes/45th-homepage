@@ -31,10 +31,7 @@ const normalizeHref = (rawHref?: string | null): string | undefined => {
   return undefined;
 };
 
-const toPickUpSlide = (
-  pickup: Pickup,
-  index: number,
-): CarouselImageSlide | null => {
+const toPickUpSlide = (pickup: Pickup, index: number): CarouselImageSlide | null => {
   if (!isMediaDoc(pickup.image) || !pickup.image.url) {
     return null;
   }
