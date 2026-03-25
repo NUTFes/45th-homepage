@@ -16,9 +16,7 @@ export default function DevPageModulesIndexPage() {
             className="space-y-xs rounded-lg border border-base/10 p-m transition-colors hover:bg-secondary"
           >
             <h3 className="text-title-small text-base-dark">Top Page</h3>
-            <p className="text-text text-base-dark/80">
-              src/modules/top/ui のコンポーネント確認
-            </p>
+            <p className="text-text text-base-dark/80">src/modules/top/ui のコンポーネント確認</p>
             <p className="text-text-small text-base-dark underline">Open →</p>
           </Link>
         </div>
