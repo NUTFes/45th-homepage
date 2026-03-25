@@ -87,8 +87,12 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'top-page': TopPage;
+  };
+  globalsSelect: {
+    'top-page': TopPageSelect<false> | TopPageSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -118,6 +122,8 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * Manage users who can sign in to the admin panel.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -143,11 +149,16 @@ export interface User {
   collection: 'users';
 }
 /**
+ * Manage images used on pages such as the top page.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
   id: number;
+  /**
+   * Used when image cannot be displayed or for screen readers.
+   */
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -314,6 +325,46 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * Configure top-page sections such as pickup and news.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "top-page".
+ */
+export interface TopPage {
+  id: number;
+  /**
+   * Slides are displayed in order. Add as many as needed.
+   */
+  pickups?:
+    | {
+        image: number | Media;
+        /**
+         * If empty, the image will not be clickable.
+         */
+        href?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "top-page_select".
+ */
+export interface TopPageSelect<T extends boolean = true> {
+  pickups?:
+    | T
+    | {
+        image?: T;
+        href?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
