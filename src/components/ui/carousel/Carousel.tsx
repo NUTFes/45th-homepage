@@ -19,7 +19,10 @@ import {
 } from "react";
 import { twMerge } from "tailwind-merge";
 
-import type { CarouselAutoPlayOption, CarouselAutoScrollOption } from "@/components/ui/carousel/types";
+import type {
+  CarouselAutoPlayOption,
+  CarouselAutoScrollOption,
+} from "@/components/ui/carousel/types";
 
 type CarouselRootProps = {
   ariaLabel: string;
@@ -112,7 +115,9 @@ const defaultAutoScrollOption = {
   stopOnInteraction: false,
 } as const;
 
-const toStableMotionKey = (option: CarouselAutoPlayOption | CarouselAutoScrollOption | undefined) => {
+const toStableMotionKey = (
+  option: CarouselAutoPlayOption | CarouselAutoScrollOption | undefined,
+) => {
   if (option === undefined) {
     return "undefined";
   }
@@ -130,7 +135,9 @@ const toStableMotionKey = (option: CarouselAutoPlayOption | CarouselAutoScrollOp
 const normalizeAutoPlay = (autoPlay: CarouselAutoPlayOption): Parameters<typeof Autoplay>[0] =>
   typeof autoPlay === "object" ? autoPlay : defaultAutoPlayOption;
 
-const normalizeAutoScroll = (autoScroll: CarouselAutoScrollOption): Parameters<typeof AutoScroll>[0] =>
+const normalizeAutoScroll = (
+  autoScroll: CarouselAutoScrollOption,
+): Parameters<typeof AutoScroll>[0] =>
   typeof autoScroll === "object" ? autoScroll : defaultAutoScrollOption;
 
 const getMotionPlugins = (emblaApi: EmblaApi | undefined): MotionPlugin[] => {
@@ -359,11 +366,7 @@ export const CarouselRoot = ({
 
   return (
     <CarouselContext.Provider value={contextValue}>
-      <section
-        aria-label={ariaLabel}
-        aria-roledescription="carousel"
-        className={className}
-      >
+      <section aria-label={ariaLabel} aria-roledescription="carousel" className={className}>
         <span aria-live={runtimeState.isMotionPlaying ? "off" : "polite"} className="sr-only">
           Slide {runtimeState.selectedIndex + 1} of {Math.max(runtimeState.slideCount, 1)}
         </span>
@@ -387,7 +390,13 @@ export const CarouselViewport = ({
   );
 };
 
-export const CarouselSlide = ({ ariaLabel, children, className, index, style }: CarouselSlideProps) => {
+export const CarouselSlide = ({
+  ariaLabel,
+  children,
+  className,
+  index,
+  style,
+}: CarouselSlideProps) => {
   const { slideCount } = useCarousel();
   const safeSlideCount = Math.max(slideCount, index + 1);
 
@@ -469,7 +478,10 @@ export const CarouselMotionButton = ({
   );
 };
 
-export const CarouselPrevButton = ({ className, label = "Previous slide" }: CarouselArrowButtonProps) => {
+export const CarouselPrevButton = ({
+  className,
+  label = "Previous slide",
+}: CarouselArrowButtonProps) => {
   const { canScrollPrev, prev } = useCarousel();
 
   return (
@@ -485,7 +497,10 @@ export const CarouselPrevButton = ({ className, label = "Previous slide" }: Caro
   );
 };
 
-export const CarouselNextButton = ({ className, label = "Next slide" }: CarouselArrowButtonProps) => {
+export const CarouselNextButton = ({
+  className,
+  label = "Next slide",
+}: CarouselArrowButtonProps) => {
   const { canScrollNext, next } = useCarousel();
 
   return (
