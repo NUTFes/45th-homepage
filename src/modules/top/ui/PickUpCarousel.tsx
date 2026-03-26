@@ -17,7 +17,6 @@ type PickUpCarouselProps = CarouselMotionOptions & {
   slides: CarouselImageSlide[];
 };
 
-const FRAME_WIDTH = 393;
 const fallbackSlide: CarouselImageSlide = {
   id: "fallback",
   imageAlt: "Carousel placeholder",
@@ -55,7 +54,7 @@ export const PickUpCarousel = ({ slides, autoPlay, autoScroll }: PickUpCarouselP
                     className="h-full w-full object-cover object-center"
                     height={slide.imageHeight ?? 1080}
                     priority={index === 0}
-                    sizes={`(max-width: ${FRAME_WIDTH}px) 100vw, 100vw`}
+                    sizes="100vw"
                     src={slide.imageUrl}
                     width={slide.imageWidth ?? 1920}
                   />
@@ -71,7 +70,7 @@ export const PickUpCarousel = ({ slides, autoPlay, autoScroll }: PickUpCarouselP
                   width={slide.imageWidth ?? 1920}
                   height={slide.imageHeight ?? 1080}
                   priority={index === 0}
-                  sizes={`(max-width: ${FRAME_WIDTH}px) 100vw, 100vw`}
+                  sizes="100vw"
                 />
               </div>
             )}
