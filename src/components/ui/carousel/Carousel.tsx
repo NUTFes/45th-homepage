@@ -234,7 +234,7 @@ export const CarouselRoot = ({
     }
 
     return motionPlugins;
-  }, [autoPlay, autoPlayKey, autoScroll, autoScrollKey, prefersReducedMotion]);
+  }, [autoPlayKey, autoScrollKey, prefersReducedMotion]);
 
   const [viewportRef, emblaApi] = useEmblaCarousel(
     {
