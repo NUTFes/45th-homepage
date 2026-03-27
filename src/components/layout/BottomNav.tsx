@@ -20,7 +20,7 @@ export default function BottomNavigation() {
               className="flex flex-col items-center h-[57px] justify-center gap-1"
             >
               <item.icon className="text-secondary shrink-0" size={36} />
-              <span className="text-secondary text-text-small text-small--font-weight whitespace-nowrap">
+              <span className="text-secondary text-text-small whitespace-nowrap">
                 {item.name}
               </span>
             </Link>
