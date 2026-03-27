@@ -11,18 +11,18 @@ const navItems = [
 
 export default function BottomNavigation() {
   return (
-    <nav className="flex bg-base-dark sticky bottom-0 right-0 left-0 px-s py-ss md:hidden">
-      <ul className="flex justify-between w-full list-none">
+    <nav className="sticky right-0 bottom-0 left-0 flex bg-base-dark px-s py-ss md:hidden">
+      <ul className="flex w-full list-none justify-between">
         {navItems.map((item) => (
           <li key={item.name} className="flex-1">
             <Link
               href={item.href}
-              className="flex flex-col items-center h-[57px] justify-center gap-1"
+              className="flex h-14.25 flex-col items-center justify-center gap-1"
             >
-              <item.icon className="text-secondary shrink-0" size={36} />
-              <span className="text-secondary text-text-small whitespace-nowrap">
-                {item.name}
-              </span>
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center">
+                <item.icon className="shrink-0 text-secondary" size={30} />
+              </div>
+              <span className="text-text-small whitespace-nowrap text-secondary">{item.name}</span>
             </Link>
           </li>
         ))}
