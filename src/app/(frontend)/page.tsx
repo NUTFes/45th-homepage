@@ -8,7 +8,6 @@ import config from "@/payload.config";
 import "./styles.css";
 import { Select, SelectItem } from "@/components/aria/Select";
 
-
 export default async function HomePage() {
   const headers = await getHeaders();
   const payloadConfig = await config;
