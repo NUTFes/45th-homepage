@@ -22,14 +22,14 @@ export default function Footer() {
 						<p>大学ホームページ</p>
 					</div>
 
-					<div className="flex flex-col gap-1">
+					<div className="flex flex-col gap-ss">
 						<h3 className="text-text">お問い合わせ</h3>
-						<address className="not-italic text-[14px] leading-normal">
+						<address className="pl-xs not-italic text-[14px] leading-[17px]">
 							<p>〒940-2188</p>
 							<p>新潟県長岡市上富岡町1603-1</p>
 							<p>長岡技術科学大学</p>
 						</address>
-						<div className="flex flex-col gap-1 text-[14px] leading-normal">
+						<div className="flex flex-col gap-1 text-[14px] leading-[17px]">
 							<p className="flex items-center gap-1.5">
 								<MessageCircle className="size-4 text-base-dark" strokeWidth={2.2} />
 								<span>インスタDM</span>
