@@ -20,9 +20,9 @@ export default function DevTopPageModulesPage() {
           </PickUpFrame>
         </DevPanel>
       </DevSection>
-       <DevPanel title="SponsorSection (src/modules/top/ui)">
-            <SponsorSection/>
-        </DevPanel>
+      <DevPanel title="SponsorSection (src/modules/top/ui)">
+        <SponsorSection />
+      </DevPanel>
     </DevPageContainer>
   );
 }

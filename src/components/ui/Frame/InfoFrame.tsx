@@ -4,11 +4,11 @@ export default function InfoFrame(props: { children: React.ReactNode }) {
 
   return (
     <div className="px-ll">
-    <div className="bg-main">
-        <div className="bg-base-dark border-main border-2 rounded-3xl text-white px-m py-ll  gap-y-8">
-            {children}
+      <div className="bg-main">
+        <div className="gap-y-8 rounded-3xl border-2 border-main bg-base-dark px-m py-ll text-white">
+          {children}
         </div>
-    </div>
+      </div>
     </div>
   );
 }

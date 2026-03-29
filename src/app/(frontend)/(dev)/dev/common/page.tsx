@@ -50,7 +50,9 @@ export default function DevCommonComponentsPage() {
         </DevPanel>
 
         <DevPanel title="InfoFrame">
-          <InfoFrame>本文本文テキストテキストテキスト笹かま笹かま笹かま笹かま笹かま笹かま笹かま笹かま笹かま笹カービィ</InfoFrame>
+          <InfoFrame>
+            本文本文テキストテキストテキスト笹かま笹かま笹かま笹かま笹かま笹かま笹かま笹かま笹かま笹カービィ
+          </InfoFrame>
         </DevPanel>
         <DevPanel title="InfoBlock">
           <InfoFrame>
