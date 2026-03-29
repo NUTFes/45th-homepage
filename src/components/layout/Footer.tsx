@@ -1,4 +1,4 @@
-import { Mail, MessageCircle } from "lucide-react";
+import { Mail, MessageCircleMore } from "lucide-react";
 import Image from "next/image";
 
 export default function Footer() {
@@ -31,7 +31,12 @@ export default function Footer() {
 						</address>
 						<div className="flex flex-col gap-1 text-[14px] leading-[17px]">
 							<p className="flex items-center gap-1.5">
-								<MessageCircle className="size-4 text-base-dark" strokeWidth={2.2} />
+								<MessageCircleMore
+									className="size-4"
+									fill="var(--color-base-dark)"
+									stroke="#ffffff"
+									strokeWidth={2.2}
+								/>
 								<span>インスタDM</span>
 							</p>
 							<p className="flex items-center gap-1.5">
