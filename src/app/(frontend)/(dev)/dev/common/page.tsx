@@ -7,6 +7,8 @@ import {
   CarouselSlide,
   CarouselViewport,
 } from "@/components/ui/carousel";
+import InfoFrame from "@/components/ui/Frame/InfoFrame";
+import InfoBlock from "@/components/ui/Frame/InfoBlock";
 
 import { DevPageContainer } from "../_components/DevPageContainer";
 import { DevPanel } from "../_components/DevPanel";
@@ -45,6 +47,17 @@ export default function DevCommonComponentsPage() {
               <CarouselNextButton className="rounded-md border border-base/20 px-s py-xs text-text-small disabled:opacity-50" />
             </div>
           </CarouselRoot>
+        </DevPanel>
+
+        <DevPanel title="InfoFrame">
+          <InfoFrame>本文本文テキストテキストテキスト笹かま笹かま笹かま笹かま笹かま笹かま笹かま笹かま笹かま笹カービィ</InfoFrame>
+        </DevPanel>
+        <DevPanel title="InfoBlock">
+          <InfoFrame>
+            <InfoBlock Icon="Apple" title="タイトル">
+              本文本文テキストテキストテキスト笹かま笹かま笹かま笹かま笹かま笹かま笹かま笹かま笹かま笹カービィ
+            </InfoBlock>
+          </InfoFrame>
         </DevPanel>
       </DevSection>
     </DevPageContainer>
