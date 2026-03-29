@@ -8,7 +8,7 @@ export default function InfoBlock(props: { Icon: string; title:string ;children:
     const { Icon , title,children} = props;
     const LucideIcon = (Icons as any)[Icon];
     return(
-        <InfoFrame>
+
             <div className="flex flex-col gap-ss">
                 <div className="flex justify-content items-center px-ss pb-1 border-b border-white w-fit">
                     {LucideIcon ? (
@@ -23,6 +23,5 @@ export default function InfoBlock(props: { Icon: string; title:string ;children:
                     {children}
                 </div>
             </div>
-        </InfoFrame>
     );
 }
