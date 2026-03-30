@@ -38,7 +38,7 @@ export function Tooltip({ children, ...props }: TooltipProps) {
           width={8}
           height={8}
           viewBox="0 0 8 8"
-          className="block fill-neutral-700 dark:fill-neutral-600 forced-colors:fill-[Canvas] stroke-neutral-800 dark:stroke-white/10 forced-colors:stroke-[ButtonBorder] group-placement-bottom:rotate-180 group-placement-left:-rotate-90 group-placement-right:rotate-90"
+          className="block fill-neutral-700 stroke-neutral-800 group-placement-left:-rotate-90 group-placement-right:rotate-90 group-placement-bottom:rotate-180 dark:fill-neutral-600 dark:stroke-white/10 forced-colors:fill-[Canvas] forced-colors:stroke-[ButtonBorder]"
         >
           <path d="M0 0 L4 4 L8 0" />
         </svg>

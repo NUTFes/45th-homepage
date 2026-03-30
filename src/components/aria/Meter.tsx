@@ -28,13 +28,13 @@ export function Meter({ label, ...props }: MeterProps) {
               {percentage >= 80 && (
                 <AlertTriangle
                   aria-label="Alert"
-                  className="inline-block w-4 h-4 align-text-bottom"
+                  className="inline-block h-4 w-4 align-text-bottom"
                 />
               )}
               {" " + valueText}
             </span>
           </div>
-          <div className="w-64 max-w-full h-2 rounded-full bg-neutral-300 dark:bg-neutral-700 outline outline-1 -outline-offset-1 outline-transparent relative">
+          <div className="relative h-2 w-64 max-w-full rounded-full bg-neutral-300 outline outline-1 -outline-offset-1 outline-transparent dark:bg-neutral-700">
             <div
               className={`absolute top-0 left-0 h-full rounded-full ${getColor(percentage)} forced-colors:bg-[Highlight]`}
               style={{ width: percentage + "%" }}
