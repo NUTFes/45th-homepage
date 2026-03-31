@@ -20,8 +20,8 @@ export default function SponsorSection() {
           </div>
           <div className="shadow-[1px_2px_2px_rgba(8,18,94,1.0)]">
             <Button className="fix forced-colors:none rounded-1 h-fit gap-x-s rounded-sm bg-white px-[28px] py-s text-base-dark hover:bg-main">
-              <LucideFile className="base-dark" size={24} />
-              <div className="text-title-small text-base-dark">資料を見る</div>
+              <LucideFile size={24} />
+              <div className="text-title-small">資料を見る</div>
             </Button>
           </div>
         </div>
