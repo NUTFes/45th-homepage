@@ -3,6 +3,11 @@ import Link from "next/link";
 import { DevPageContainer } from "../_components/DevPageContainer";
 import { DevSection } from "../_components/DevSection";
 
+export const metadata = {
+  title: "Page Modules - Dev",
+  description: "ページ単位のコンポーネント群をカテゴリ別で確認",
+};
+
 export default function DevPageModulesIndexPage() {
   return (
     <DevPageContainer
@@ -17,6 +22,14 @@ export default function DevPageModulesIndexPage() {
           >
             <h3 className="text-title-small text-base-dark">Top Page</h3>
             <p className="text-text text-base-dark/80">src/modules/top/ui のコンポーネント確認</p>
+            <p className="text-text-small text-base-dark underline">Open →</p>
+          </Link>
+          <Link
+            href="/dev/pages/news"
+            className="space-y-xs rounded-lg border border-base/10 p-m transition-colors hover:bg-secondary"
+          >
+            <h3 className="text-title-small text-base-dark">News Page</h3>
+            <p className="text-text text-base-dark/80">src/modules/news/ui のコンポーネント確認</p>
             <p className="text-text-small text-base-dark underline">Open →</p>
           </Link>
         </div>
