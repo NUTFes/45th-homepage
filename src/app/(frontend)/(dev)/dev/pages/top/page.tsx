@@ -5,7 +5,7 @@ import { DevPageContainer } from "../../_components/DevPageContainer";
 import { DevPanel } from "../../_components/DevPanel";
 import { DevSection } from "../../_components/DevSection";
 import { topModuleSlides } from "../../_data/topModuleSlides";
-import SponsorSection from "@/components/top/SponsorSection";
+import SponsorSection from "@/modules/top/ui/SponsorSection";
 
 export default function DevTopPageModulesPage() {
   return (
