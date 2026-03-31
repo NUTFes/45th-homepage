@@ -44,6 +44,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --prefer-offline
 
+      - name: Sync with remote
+        run: git pull --rebase origin $(git branch --show-current) || true
+
       - name: Oxfmt Format
         run: pnpm run fmt
 
