@@ -1,4 +1,3 @@
-import InfoFrame from "@/components/ui/InfoFrame";
 import * as Icons from "lucide-react";
 
 //Icon="~"で使用したいアイコンの名前を指定　例：Icon="Camera"
