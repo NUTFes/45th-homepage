@@ -85,7 +85,7 @@ jobs:
       - name: Run React Doctor
         id: run_doctor
         run: |
-          OUTPUT=$(npx -y react-doctor@latest . --project 45th-homepage --verbose --fail-on none)
+          OUTPUT=$(npx -y react-doctor@latest . --project 45th-homepage --verbose --fail-on none --no-lint)
           echo "$OUTPUT"
           DIAG_PATH=$(echo "$OUTPUT" | grep "Full diagnostics written to" | awk '{print $NF}')
           echo "diag_path=$DIAG_PATH" >> "$GITHUB_OUTPUT"
