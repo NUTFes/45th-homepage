@@ -1,4 +1,3 @@
-import React from "react";
 import InfoFrame from "@/components/ui/InfoFrame";
 import { Button } from "../../../components/aria/Button";
 import { LucideFile } from "lucide-react";
