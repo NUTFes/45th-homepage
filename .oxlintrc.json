@@ -1,8 +1,15 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "jsPlugins": ["oxlint-tailwindcss"],
   "plugins": null,
   "categories": {},
-  "rules": {},
+  "rules": {
+    "tailwindcss/no-unknown-classes": "error",
+    "tailwindcss/no-duplicate-classes": "error",
+    "tailwindcss/no-conflicting-classes": "warn",
+    "tailwindcss/no-deprecated-classes": "error",
+    "tailwindcss/no-unnecessary-whitespace": "warn"
+  },
   "settings": {
     "jsx-a11y": {
       "polymorphicPropName": null,
@@ -36,5 +43,17 @@
     "builtin": true
   },
   "globals": {},
-  "ignorePatterns": []
+  "ignorePatterns": [],
+  "overrides": [
+    {
+      "files": ["src/components/aria/**"],
+      "rules": {
+        "tailwindcss/no-unknown-classes": "off",
+        "tailwindcss/no-duplicate-classes": "off",
+        "tailwindcss/no-conflicting-classes": "off",
+        "tailwindcss/no-deprecated-classes": "off",
+        "tailwindcss/no-unnecessary-whitespace": "off"
+      }
+    }
+  ]
 }
