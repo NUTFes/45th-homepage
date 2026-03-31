@@ -45,7 +45,7 @@ jobs:
         run: pnpm install --frozen-lockfile --prefer-offline
 
       - name: Sync with remote
-        run: git pull --rebase origin $(git branch --show-current) || true
+        run: git pull --rebase origin $(git branch --show-current) || git rebase --abort
 
       - name: Oxfmt Format
         run: pnpm run fmt
