@@ -7,8 +7,8 @@ import {
   CarouselSlide,
   CarouselViewport,
 } from "@/components/ui/carousel";
-import InfoFrame from "@/components/ui/frame/InfoFrame";
-import InfoBlock from "@/components/ui/frame/InfoBlock";
+import InfoFrame from "@/components/ui/InfoFrame";
+import InfoBlock from "@/components/ui/InfoBlock";
 
 import { DevPageContainer } from "../_components/DevPageContainer";
 import { DevPanel } from "../_components/DevPanel";

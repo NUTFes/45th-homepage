@@ -1,5 +1,5 @@
 import React from "react";
-import InfoFrame from "@/components/ui/frame/InfoFrame";
+import InfoFrame from "@/components/ui/InfoFrame";
 import { Button } from "../aria/Button";
 import { LucideFile } from "lucide-react";
 export default function SponsorSection() {
