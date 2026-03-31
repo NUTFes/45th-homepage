@@ -20,7 +20,7 @@ export default function SponsorSection() {
             ご関心をお持ちの方は、以下の資料をご覧いただき、メールにてご連絡ください。
           </div>
           <div className="shadow-[1px_2px_2px_rgba(8,18,94,1.0)]">
-            <Button className="fix gap-x-s forced-colors:none rounded-1 h-fit rounded-sm bg-white px-[28px] py-s text-base-dark hover:bg-main">
+            <Button className="fix forced-colors:none rounded-1 h-fit gap-x-s rounded-sm bg-white px-[28px] py-s text-base-dark hover:bg-main">
               <LucideFile className="base-dark" size={24} />
               <div className="text-title-small text-base-dark">資料を見る</div>
             </Button>
