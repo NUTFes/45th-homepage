@@ -1,4 +1,3 @@
-import React from "react";
 export default function InfoFrame(props: { children: React.ReactNode }) {
   const { children } = props;
 
