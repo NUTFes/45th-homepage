@@ -8,7 +8,7 @@ export default function SponsorSection() {
         <div className="flex flex-col items-center gap-y-s">
           <div className="flex flex-col items-center">
             <div className="border-b border-white">
-              <div className="w-fit text-center pb-1 font-kaisotai text-title text-shadow-[1px_2px_2px_rgba(8,18,94,1.0)]">
+              <div className="w-fit pb-1 text-center font-kaisotai text-title text-shadow-[1px_2px_2px_rgba(8,18,94,1.0)]">
                 企業協賛大募集！
               </div>
             </div>
