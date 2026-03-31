@@ -8,7 +8,7 @@ export default function SponsorSection() {
         <div className="flex flex-col items-center gap-y-s">
           <div className="flex flex-col items-center">
             <div className="border-b border-white">
-              <div className="w-fit text-center font-kaisotai text-title text-shadow-[1px_2px_2px_rgba(8,18,94,1.0)]">
+              <div className="w-fit text-center pb-1 font-kaisotai text-title text-shadow-[1px_2px_2px_rgba(8,18,94,1.0)]">
                 企業協賛大募集！
               </div>
             </div>
@@ -19,7 +19,7 @@ export default function SponsorSection() {
             ご関心をお持ちの方は、以下の資料をご覧いただき、メールにてご連絡ください。
           </div>
           <div className="shadow-[1px_2px_2px_rgba(8,18,94,1.0)]">
-            <Button className="fix forced-colors:none rounded-1 h-fit gap-x-s rounded-sm bg-white px-[28px] py-s text-base-dark hover:bg-main">
+            <Button className="forced-colors:none rounded-1 h-fit gap-x-s rounded-sm bg-white px-[28px] py-s text-base-dark hover:bg-main">
               <LucideFile size={24} />
               <div className="text-title-small">資料を見る</div>
             </Button>
