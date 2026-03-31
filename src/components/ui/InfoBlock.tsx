@@ -18,7 +18,7 @@ export default function InfoBlock(props: {
         ) : (
           <Icons.HelpCircle size={28} /> //見つからない時に代わりに表示するアイコン
         )}
-        <div className="color-main text-title-small">{title}</div>
+        <div className="text-whitetext-title-small">{title}</div>
       </div>
       <div className="pl-3 text-text">{children}</div>
     </div>
