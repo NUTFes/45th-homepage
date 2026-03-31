@@ -17,8 +17,8 @@ export default async function HomePage() {
   const fileURL = `vscode://file/${fileURLToPath(import.meta.url)}`;
 
   return (
-    <div className="home">
-      <div className="content">
+    <div>
+      <div>
         <h1 className="text-3xl font-bold underline">Hello world!</h1>
 
         <Select label="Favorite animal">
@@ -40,28 +40,18 @@ export default async function HomePage() {
         </picture>
         {!user && <h1>Welcome to your new project.</h1>}
         {user && <h1>Welcome back, {user.email}</h1>}
-        <div className="links">
-          <a
-            className="admin"
-            href={payloadConfig.routes.admin}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
+        <div>
+          <a href={payloadConfig.routes.admin} rel="noopener noreferrer" target="_blank">
             Go to admin panel
           </a>
-          <a
-            className="docs"
-            href="https://payloadcms.com/docs"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
+          <a href="https://payloadcms.com/docs" rel="noopener noreferrer" target="_blank">
             Documentation
           </a>
         </div>
       </div>
-      <div className="footer">
+      <div>
         <p>Update this page by editing</p>
-        <a className="codeLink" href={fileURL}>
+        <a href={fileURL}>
           <code>app/(frontend)/page.tsx</code>
         </a>
       </div>
