@@ -26,7 +26,7 @@ export default function NewsPagination({
       <div className="flex items-center gap-ss">
         <button
           type="button"
-          className={`flex size-[20px] items-center justify-center hover:scale-110 active:scale-95 motion-safe:transition-transform ${
+          className={`flex size-5 items-center justify-center hover:scale-110 active:scale-95 motion-safe:transition-transform ${
             !showPrev ? "invisible" : ""
           }`}
           onClick={() => onPageChange(currentPage - 1)}
