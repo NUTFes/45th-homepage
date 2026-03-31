@@ -12,7 +12,7 @@ export default function InfoBlock(props: {
   const LucideIcon = (Icons as any)[Icon];
   return (
     <div className="flex flex-col gap-ss">
-      <div className="justify-content flex w-fit items-center gap-2.5 border-b border-white px-ss pb-1">
+      <div className="flex w-fit items-center gap-2.5 border-b border-white px-ss pb-1">
         {LucideIcon ? (
           <LucideIcon size={28} />
         ) : (
