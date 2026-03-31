@@ -20,7 +20,7 @@ export default function InfoBlock(props: {
         )}
         <div className="color-main text-title-small">{title}</div>
       </div>
-      <div className="text-text pl-3">{children}</div>
+      <div className="pl-3 text-text">{children}</div>
     </div>
   );
 }
