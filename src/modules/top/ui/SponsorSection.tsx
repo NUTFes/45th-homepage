@@ -1,6 +1,6 @@
 import InfoFrame from "@/components/ui/InfoFrame";
 import { Button } from "../../../components/aria/Button";
-import { LucideFile } from "lucide-react";
+import { Copy, LucideFile } from "lucide-react";
 export default function SponsorSection() {
   return (
     <InfoFrame>
@@ -19,16 +19,24 @@ export default function SponsorSection() {
             ご関心をお持ちの方は、以下の資料をご覧いただき、メールにてご連絡ください。
           </div>
           <div className="shadow-[1px_2px_2px_rgba(8,18,94,1.0)]">
-            <Button className="forced-colors:none rounded-1 h-fit gap-x-s rounded-sm bg-white px-[28px] py-s text-base-dark hover:bg-main">
+            <Button className="forced-colors:none rounded-1 h-fit gap-x-s rounded-sm bg-white px-m py-m text-base-dark hover:bg-main">
               <LucideFile size={24} />
-              <div className="text-title-small">資料を見る</div>
+              <div className="text-title-small px-l">資料を見る</div>
             </Button>
           </div>
         </div>
-        <div className="flex flex-col items-center gap-y-ss px-ss">
+        <div className="flex flex-col items-center gap-y-s">
+        <div className="px-ss">
           協賛のお問い合わせは、以下のメールアドレスからご連絡ください。
-          <div>nutfes_kyosan@googlegroups.com</div>
-        </div>
+          </div>
+          <div className="shadow-[1px_2px_2px_rgba(8,18,94,1.0)]">
+            <Button className="forced-colors:none rounded-1 h-fit gap-x-s rounded-sm bg-white px-m py-s text-base-dark hover:bg-main">
+              <Copy size={24} />
+              <div className="text-title-small text-start">メールアドレスを<br/>コピー</div>
+            </Button>
+          </div>
+          </div>
+
       </div>
     </InfoFrame>
   );
