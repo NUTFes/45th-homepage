@@ -56,9 +56,52 @@ export default function DevCommonComponentsPage() {
         </DevPanel>
         <DevPanel title="InfoBlock">
           <InfoFrame>
-            <InfoBlock Icon="Apple" title="タイトル">
-              本文本文テキストテキストテキスト笹かま笹かま笹かま笹かま笹かま笹かま笹かま笹かま笹かま笹カービィ
+            <div className="flex flex-col gap-y-8">
+              title→Icom名
+            <InfoBlock Icon="Clock" title="Clock">
+              営業時間や受付時間に関する案内です。
             </InfoBlock>
+
+            <InfoBlock Icon="TriangleAlert" title="TriangleAlert">
+              注意が必要な項目や重要なお知らせを示しています。
+            </InfoBlock>
+
+            <InfoBlock Icon="Tickets" title="Tickets">
+              チケットの購入・確認・入場に関する情報です。
+            </InfoBlock>
+
+            <InfoBlock Icon="Users" title="Users">
+              利用者や参加者に関する案内をまとめています。
+            </InfoBlock>
+
+            <InfoBlock Icon="DoorOpen" title="DoorOpen">
+              出入口や入退場に関するルールや案内です。
+            </InfoBlock>
+
+            <InfoBlock Icon="CameraOff" title="CameraOff">
+              撮影禁止エリアや撮影に関する注意事項です。
+            </InfoBlock>
+
+            <InfoBlock Icon="CandyOff" title="CandyOff">
+              飲食物の持ち込み制限や禁止事項についての案内です。
+            </InfoBlock>
+
+            <InfoBlock Icon="CigaretteOff" title="CigaretteOff">
+              喫煙禁止エリアや喫煙に関するルールです。
+            </InfoBlock>
+
+            <InfoBlock Icon="Beer" title="Beer">
+              アルコールの提供や飲酒に関する注意事項です。
+            </InfoBlock>
+
+            <InfoBlock Icon="BusFront" title="BusFront">
+              バスや交通アクセスに関する案内です。
+            </InfoBlock>
+
+            <InfoBlock Icon="HelpCircle" title="HelpCircle">
+              上記以外のアイコン名が入力された際に表示されます。
+            </InfoBlock>
+            </div>
           </InfoFrame>
         </DevPanel>
       </DevSection>
