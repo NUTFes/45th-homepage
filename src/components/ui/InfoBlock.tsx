@@ -1,4 +1,16 @@
-import {Clock,TriangleAlert,Tickets,Users,DoorOpen,CameraOff,CandyOff,CigaretteOff,Beer,BusFront,HelpCircle} from "lucide-react";
+import {
+  Clock,
+  TriangleAlert,
+  Tickets,
+  Users,
+  DoorOpen,
+  CameraOff,
+  CandyOff,
+  CigaretteOff,
+  Beer,
+  BusFront,
+  HelpCircle,
+} from "lucide-react";
 
 //Icon="~"で使用したいアイコンの名前を指定　例：Icon="Camera"
 //title="~"でタイトルの文字列を入力
@@ -9,20 +21,20 @@ export default function InfoBlock(props: {
   children: React.ReactNode;
 }) {
   const { Icon, title, children } = props;
-const iconMap = {
-Clock,
-TriangleAlert,
-Tickets,
-Users,
-DoorOpen,
-CameraOff,
-CandyOff,
-CigaretteOff,
-Beer,
-BusFront,
-HelpCircle
-} as const;
- const LucideIcon = iconMap[Icon as keyof typeof iconMap] ?? HelpCircle;
+  const iconMap = {
+    Clock,
+    TriangleAlert,
+    Tickets,
+    Users,
+    DoorOpen,
+    CameraOff,
+    CandyOff,
+    CigaretteOff,
+    Beer,
+    BusFront,
+    HelpCircle,
+  } as const;
+  const LucideIcon = iconMap[Icon as keyof typeof iconMap] ?? HelpCircle;
   return (
     <div className="flex flex-col gap-ss">
       <div className="flex w-fit items-center gap-2.5 border-b border-white px-ss pb-1">
