@@ -4,15 +4,15 @@ import InfoFrame from "@/components/ui/InfoFrame";
 import { Button } from "../../../components/aria/Button";
 import { Copy, LucideFile } from "lucide-react";
 
-const SPONSOR_EMAIL = "sponsor@example.com";
+const SPONSOR_EMAIL = "nutfes_kyosan@googlegroups.com";
 
 export default function SponsorSection() {
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(SPONSOR_EMAIL);
-      alert("技大祭企業協賛募集メールアドレスをコピーしました");
+      alert("企業協賛募集メールアドレスをコピーしました");
     } catch (err) {
-      console.error("Failed to copy email:", err);
+      console.error("メールアドレスのコピーに失敗しました", err);
     }
   };
 
