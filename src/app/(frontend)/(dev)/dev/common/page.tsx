@@ -13,6 +13,7 @@ import InfoBlock from "@/components/ui/InfoBlock";
 import { DevPageContainer } from "../_components/DevPageContainer";
 import { DevPanel } from "../_components/DevPanel";
 import { DevSection } from "../_components/DevSection";
+import { Beer, BusFront, CameraOff, CandyOff, CigaretteOff, Clock, DoorOpen, Tickets, TriangleAlert, Users } from "lucide-react";
 
 const previewSlides = ["Slide 1", "Slide 2", "Slide 3"];
 
@@ -57,40 +58,49 @@ export default function DevCommonComponentsPage() {
         <DevPanel title="InfoBlock">
           <InfoFrame>
             <div className="flex flex-col gap-y-8">
-              title→Icom名
-              <InfoBlock Icon="Clock" title="Clock">
-                営業時間や受付時間に関する案内です。
-              </InfoBlock>
-              <InfoBlock Icon="TriangleAlert" title="TriangleAlert">
-                注意が必要な項目や重要なお知らせを示しています。
-              </InfoBlock>
-              <InfoBlock Icon="Tickets" title="Tickets">
-                チケットの購入・確認・入場に関する情報です。
-              </InfoBlock>
-              <InfoBlock Icon="Users" title="Users">
-                利用者や参加者に関する案内をまとめています。
-              </InfoBlock>
-              <InfoBlock Icon="DoorOpen" title="DoorOpen">
-                出入口や入退場に関するルールや案内です。
-              </InfoBlock>
-              <InfoBlock Icon="CameraOff" title="CameraOff">
-                撮影禁止エリアや撮影に関する注意事項です。
-              </InfoBlock>
-              <InfoBlock Icon="CandyOff" title="CandyOff">
-                飲食物の持ち込み制限や禁止事項についての案内です。
-              </InfoBlock>
-              <InfoBlock Icon="CigaretteOff" title="CigaretteOff">
-                喫煙禁止エリアや喫煙に関するルールです。
-              </InfoBlock>
-              <InfoBlock Icon="Beer" title="Beer">
-                アルコールの提供や飲酒に関する注意事項です。
-              </InfoBlock>
-              <InfoBlock Icon="BusFront" title="BusFront">
-                バスや交通アクセスに関する案内です。
-              </InfoBlock>
-              <InfoBlock Icon="HelpCircle" title="HelpCircle">
-                上記以外のアイコン名が入力された際に表示されます。
-              </InfoBlock>
+<InfoBlock icon={Clock} title="Clock">
+  営業時間や受付時間に関する案内です。
+</InfoBlock>
+
+<InfoBlock icon={TriangleAlert} title="TriangleAlert">
+  注意が必要な項目や重要なお知らせを示しています。
+</InfoBlock>
+
+<InfoBlock icon={Tickets} title="Tickets">
+  チケットの購入・確認・入場に関する情報です。
+</InfoBlock>
+
+<InfoBlock icon={Users} title="Users">
+  利用者や参加者に関する案内をまとめています。
+</InfoBlock>
+
+<InfoBlock icon={DoorOpen} title="DoorOpen">
+  出入口や入退場に関するルールや案内です。
+</InfoBlock>
+
+<InfoBlock icon={CameraOff} title="CameraOff">
+  撮影禁止エリアや撮影に関する注意事項です。
+</InfoBlock>
+
+<InfoBlock icon={CandyOff} title="CandyOff">
+  飲食物の持ち込み制限や禁止事項についての案内です。
+</InfoBlock>
+
+<InfoBlock icon={CigaretteOff} title="CigaretteOff">
+  喫煙禁止エリアや喫煙に関するルールです。
+</InfoBlock>
+
+<InfoBlock icon={Beer} title="Beer">
+  アルコールの提供や飲酒に関する注意事項です。
+</InfoBlock>
+
+<InfoBlock icon={BusFront} title="BusFront">
+  バスや交通アクセスに関する案内です。
+</InfoBlock>
+
+<InfoBlock title="HelpCircle">
+  icon変数の記載がない場合にデフォルトで表示。
+</InfoBlock>
             </div>
           </InfoFrame>
         </DevPanel>
