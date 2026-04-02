@@ -50,7 +50,7 @@ export default function SponsorSection() {
           <div className="shadow-[1px_2px_2px_rgba(8,18,94,1.0)]">
             <Button
               onPress={handleCopy}
-              className="forced-colors:none rounded-1 h-fit gap-x-s rounded-sm bg-white px-m py-s text-base-dark hover:bg-main"
+              className="forced-colors:none h-fit gap-x-s rounded-sm bg-white px-m py-s text-base-dark hover:bg-main"
             >
               <Copy size={24} />
               <div className="text-start text-title-small">
