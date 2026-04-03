@@ -5,6 +5,7 @@ import { DevPageContainer } from "../../_components/DevPageContainer";
 import { DevPanel } from "../../_components/DevPanel";
 import { DevSection } from "../../_components/DevSection";
 import { topModuleSlides } from "../../_data/topModuleSlides";
+import SponsorSection from "@/modules/top/ui/SponsorSection";
 
 export default function DevTopPageModulesPage() {
   return (
@@ -17,6 +18,11 @@ export default function DevTopPageModulesPage() {
           <PickUpFrame>
             <PickUpCarousel slides={[...topModuleSlides]} autoPlay={{ delay: 2500 }} />
           </PickUpFrame>
+        </DevPanel>
+      </DevSection>
+      <DevSection title="Sponsor">
+        <DevPanel title="SponsorSection (src/modules/top/ui)">
+          <SponsorSection />
         </DevPanel>
       </DevSection>
     </DevPageContainer>
