@@ -119,7 +119,7 @@ run = '''
 #!/usr/bin/env bash
 set -euo pipefail
 
-git pull
+git pull origin "$(git branch --show-current)"
 docker compose --env-file .env.production -f compose.prod.yml build payload
 docker rollout --env-file .env.production -f compose.prod.yml --timeout 120 payload
 '''

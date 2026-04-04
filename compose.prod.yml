@@ -192,7 +192,7 @@ services:
   # Traefik Reverse Proxy (for Zero Downtime)
   # ----------------------------------------------------------
   traefik:
-    image: traefik:v3.1
+    image: traefik:v3.6
     restart: unless-stopped
     command:
       - "--providers.docker=true"
