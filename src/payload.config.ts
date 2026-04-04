@@ -19,6 +19,7 @@ const dirname = path.dirname(filename);
 function getRequiredEnv(key: string): string {
   const value = process.env[key]?.trim();
   const isBuildPhase = process.env.NEXT_PHASE === "phase-production-build";
+  const isDev = process.env.NODE_ENV === "development";
 
   if (!value) {
     if (isBuildPhase) {
@@ -29,7 +30,7 @@ function getRequiredEnv(key: string): string {
   }
 
   if (/your_|replace_|_here|change_?me|todo/i.test(value)) {
-    if (isBuildPhase) return value;
+    if (isBuildPhase || isDev) return value;
     throw new Error(
       `Environment variable ${key} contains a placeholder value. Please set a real value in .env`,
     );
