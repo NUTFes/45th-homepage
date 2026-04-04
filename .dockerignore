@@ -54,6 +54,7 @@ playwright.config.*
 .env*.local
 .env.development
 .env.test
+.env.production
 .env.production.local
 
 # Docker configuration files (not needed inside build context)

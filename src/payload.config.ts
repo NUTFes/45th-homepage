@@ -15,26 +15,36 @@ import { migrations } from "./migrations";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
-const payloadSecret = process.env.PAYLOAD_SECRET;
-const databaseUrl = process.env.DATABASE_URL;
-const s3Bucket = process.env.S3_BUCKET;
-const s3Endpoint = process.env.S3_ENDPOINT;
-const s3AccessKeyId = process.env.S3_ACCESS_KEY_ID;
-const s3SecretAccessKey = process.env.S3_SECRET_ACCESS_KEY;
 
-if (!payloadSecret) {
-  throw new Error("PAYLOAD_SECRET is required");
+function getRequiredEnv(key: string): string {
+  const value = process.env[key]?.trim();
+  const isBuildPhase = process.env.NEXT_PHASE === "phase-production-build";
+
+  if (!value) {
+    if (isBuildPhase) {
+      if (key === "DATABASE_URL") return "postgres://localhost:5432/dummy";
+      return "dummy";
+    }
+    throw new Error(`Environment variable ${key} is not set`);
+  }
+
+  if (/your_|replace_|_here|change_?me|todo/i.test(value)) {
+    if (isBuildPhase) return value;
+    throw new Error(
+      `Environment variable ${key} contains a placeholder value. Please set a real value in .env`,
+    );
+  }
+  return value;
 }
 
-if (!databaseUrl) {
-  throw new Error("DATABASE_URL is required");
-}
-
-if (!s3Bucket || !s3AccessKeyId || !s3SecretAccessKey || !s3Endpoint) {
-  throw new Error(
-    "S3_BUCKET, S3_ENDPOINT, S3_ACCESS_KEY_ID, and S3_SECRET_ACCESS_KEY are required",
-  );
-}
+const env = {
+  PAYLOAD_SECRET: getRequiredEnv("PAYLOAD_SECRET"),
+  DATABASE_URL: getRequiredEnv("DATABASE_URL"),
+  S3_BUCKET: getRequiredEnv("S3_BUCKET"),
+  S3_ACCESS_KEY_ID: getRequiredEnv("S3_ACCESS_KEY_ID"),
+  S3_SECRET_ACCESS_KEY: getRequiredEnv("S3_SECRET_ACCESS_KEY"),
+  S3_ENDPOINT: getRequiredEnv("S3_ENDPOINT"),
+};
 
 export default buildConfig({
   admin: {
@@ -66,13 +76,13 @@ export default buildConfig({
   collections: [Users, Media],
   globals: [TopPage],
   editor: lexicalEditor(),
-  secret: payloadSecret,
+  secret: env.PAYLOAD_SECRET,
   typescript: {
     outputFile: path.resolve(dirname, "payload-types.ts"),
   },
   db: postgresAdapter({
     pool: {
-      connectionString: databaseUrl,
+      connectionString: env.DATABASE_URL,
     },
     prodMigrations: migrations,
   }),
@@ -83,14 +93,14 @@ export default buildConfig({
       collections: {
         media: true,
       },
-      bucket: s3Bucket!,
+      bucket: env.S3_BUCKET,
       config: {
         credentials: {
-          accessKeyId: s3AccessKeyId!,
-          secretAccessKey: s3SecretAccessKey!,
+          accessKeyId: env.S3_ACCESS_KEY_ID,
+          secretAccessKey: env.S3_SECRET_ACCESS_KEY,
         },
         region: process.env.S3_REGION || "us-east-1",
-        endpoint: s3Endpoint,
+        endpoint: env.S3_ENDPOINT,
         forcePathStyle: true,
       },
     }),
