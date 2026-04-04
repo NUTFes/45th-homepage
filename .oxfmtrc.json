@@ -3,7 +3,14 @@
   "ignorePatterns": [
     "src/payload-types.ts",
     "src/app/(payload)/admin/importMap.js",
-    "src/migrations"
+    "src/migrations",
+    "node_modules",
+    ".next",
+    "pnpm-lock.yaml",
+    "skills-lock.json",
+    ".agent",
+    ".cursor",
+    ".vscode"
   ],
   "sortTailwindcss": {
     "stylesheet": "src/app/(frontend)/styles.css",

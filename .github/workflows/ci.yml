@@ -82,11 +82,10 @@ jobs:
       - name: Run React Doctor
         id: run_doctor
         run: |
-          OUTPUT=$(npx -y react-doctor@latest . --project 45th-homepage --verbose --no-lint --fail-on none)
-          echo "$OUTPUT"
-          DIAG_PATH=$(echo "$OUTPUT" | grep "Full diagnostics written to" | awk '{print $NF}')
+          npx -y react-doctor@latest . --project 45th-homepage --verbose --no-lint --fail-on none
+          DIAG_PATH=$(ls -dt /tmp/react-doctor-* 2>/dev/null | head -1)
           echo "diag_path=$DIAG_PATH" >> "$GITHUB_OUTPUT"
-          SCORE=$(echo "$OUTPUT" | grep -oE '[0-9]+ / 100' | head -n 1 | awk '{print $1}')
+          SCORE=$(npx -y react-doctor@latest . --project 45th-homepage --score --no-lint --no-dead-code 2>/dev/null || echo "0")
           echo "score=$SCORE" >> "$GITHUB_OUTPUT"
 
       - name: Comment React Doctor Report
