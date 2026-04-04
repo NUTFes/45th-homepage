@@ -5,9 +5,9 @@ export default function NewsItem({ date, title, content }: NewsItemProps) {
   return (
     <li className="flex flex-col gap-ss border-b border-font-main px-ss pb-ss text-text text-font-main">
       <time dateTime={date}>{displayDate}</time>
-      <h2 className="-ml-[0.5em] text-button before:content-['［_'] after:content-['_］']">
+      <div className="-ml-[0.5em] text-button before:content-['［_'] after:content-['_］']">
         {title}
-      </h2>
+      </div>
       <p className="text-justify whitespace-pre-wrap">{content}</p>
     </li>
   );
