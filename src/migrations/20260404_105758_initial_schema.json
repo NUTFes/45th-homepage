@@ -331,42 +331,6 @@
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
-        },
-        "sizes_card_url": {
-          "name": "sizes_card_url",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "sizes_card_width": {
-          "name": "sizes_card_width",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "sizes_card_height": {
-          "name": "sizes_card_height",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "sizes_card_mime_type": {
-          "name": "sizes_card_mime_type",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "sizes_card_filesize": {
-          "name": "sizes_card_filesize",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "sizes_card_filename": {
-          "name": "sizes_card_filename",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
         }
       },
       "indexes": {
@@ -420,21 +384,6 @@
           "columns": [
             {
               "expression": "sizes_thumbnail_filename",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "media_sizes_card_sizes_card_filename_idx": {
-          "name": "media_sizes_card_sizes_card_filename_idx",
-          "columns": [
-            {
-              "expression": "sizes_card_filename",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -1207,6 +1156,6 @@
     "tables": {},
     "columns": {}
   },
-  "id": "51dc62c1-383a-4825-b45f-3e3924f48ffe",
+  "id": "8359b74a-0325-47a7-a2b6-c600b5e88f4a",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }
