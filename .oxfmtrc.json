@@ -1,6 +1,10 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": ["src/payload-types.ts", "src/app/(payload)/admin/importMap.js"],
+  "ignorePatterns": [
+    "src/payload-types.ts",
+    "src/app/(payload)/admin/importMap.js",
+    "src/migrations"
+  ],
   "sortTailwindcss": {
     "stylesheet": "src/app/(frontend)/styles.css",
     "functions": ["twMerge"]
