@@ -241,7 +241,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "test ! -f /tmp/drain && node -e \"const http = require('http'); const req = http.request('http://127.0.0.1:3000/api/health?strict=1', { headers: { 'x-health-key': process.env.HEALTH_CHECK_KEY } }, (res) => { process.exit(res.statusCode === 200 ? 0 : 1); }); req.on('error', () => process.exit(1)); req.end();\"",
+          'test ! -f /tmp/drain && node -e "const http = require(''http''); const req = http.request(''http://127.0.0.1:3000/api/health?strict=1'', { headers: { ''x-health-key'': process.env.HEALTH_CHECK_KEY } }, (res) => { process.exit(res.statusCode === 200 ? 0 : 1); }); req.on(''error'', () => process.exit(1)); req.end();"',
         ]
       interval: 5s
       timeout: 5s
