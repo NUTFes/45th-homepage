@@ -14,11 +14,14 @@ FROM node:${NODE_VERSION} AS dependencies
 # Set working directory
 WORKDIR /app
 
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+
 # Copy package-related files first to leverage Docker's caching mechanism
 COPY package.json pnpm-lock.yaml .npmrc* ./
 
 # Install project dependencies with frozen lockfile for reproducible builds
-RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
+RUN --mount=type=cache,target=/pnpm/store \
   corepack enable pnpm && pnpm install --frozen-lockfile
 
 # ============================================
@@ -29,6 +32,9 @@ FROM node:${NODE_VERSION} AS builder
 
 # Set working directory
 WORKDIR /app
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
 
 # Copy project dependencies from dependencies stage
 COPY --from=dependencies /app/node_modules ./node_modules
@@ -69,7 +75,7 @@ ENV HOSTNAME="0.0.0.0"
 COPY --from=builder --chown=node:node /app/public ./public
 
 # Set the correct permission for prerender cache
-RUN mkdir .next && chown node:node .next
+RUN mkdir -p .next/cache && chown -R node:node .next
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing

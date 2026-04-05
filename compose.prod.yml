@@ -1,40 +1,27 @@
-services:
-  payload:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    restart: always
-    ports:
-      - "3000:3000"
-    env_file:
-      - .env
-    environment:
-      - NODE_ENV=production
-    depends_on:
-      postgres:
-        condition: service_healthy
-        restart: true
-    deploy:
-      resources:
-        limits:
-          memory: 1g
-          cpus: "1.0"
-        reservations:
-          memory: 256m
-          cpus: "0.25"
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"
+# ============================================================
+# Docker Compose — Single Host Production (e.g. Proxmox Ubuntu LXC)
+# ============================================================
+# Deploy:
+#   docker compose --env-file .env.production -f compose.prod.yml up -d --build
+# Prerequisites:
+#   1. .env.production file present with all required variables
 
+# ============================================================
+
+services:
+  # ----------------------------------------------------------
+  # PostgreSQL
+  # ----------------------------------------------------------
   postgres:
     image: postgres:18-alpine
-    restart: always
+    restart: unless-stopped
+    command: ["postgres", "-c", "shared_buffers=256MB", "-c", "max_connections=200"]
+    env_file:
+      - .env.production
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER is required}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+      POSTGRES_DB: ${POSTGRES_DB:?POSTGRES_DB is required}
     volumes:
       - pgdata:/var/lib/postgresql/data
     expose:
@@ -45,19 +32,273 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
-    deploy:
-      resources:
-        limits:
-          memory: 512m
-          cpus: "0.5"
-        reservations:
-          memory: 128m
-          cpus: "0.1"
+    networks:
+      - internal
     logging:
       driver: json-file
       options:
         max-size: "10m"
         max-file: "3"
 
+  # ----------------------------------------------------------
+  # PostgreSQL Backup
+  # ----------------------------------------------------------
+  pg-backup:
+    image: prodrigestivill/postgres-backup-local
+    restart: unless-stopped
+    env_file:
+      - .env.production
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: ${POSTGRES_DB:?POSTGRES_DB is required}
+      POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER is required}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+      SCHEDULE: "@every 6h"
+      BACKUP_KEEP_DAYS: 7
+    volumes:
+      - pgbackup:/backups
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - internal
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "3"
+
+  # ----------------------------------------------------------
+  # SeaweedFS — Master
+  # ----------------------------------------------------------
+  seaweedfs-master:
+    image: chrislusf/seaweedfs:4.18
+    restart: unless-stopped
+    command: master -ip=seaweedfs-master -volumeSizeLimitMB=1024 -ip.bind=0.0.0.0
+    volumes:
+      - seaweedfs-master-data:/data
+    expose:
+      - "9333"
+      - "19333"
+    healthcheck:
+      test:
+        ["CMD-SHELL", "wget -qO- http://127.0.0.1:9333/cluster/status > /dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - internal
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "3"
+
+  # ----------------------------------------------------------
+  # SeaweedFS — Volume Server
+  # ----------------------------------------------------------
+  seaweedfs-volume:
+    image: chrislusf/seaweedfs:4.18
+    restart: unless-stopped
+    command: volume -mserver=seaweedfs-master:9333 -ip=seaweedfs-volume -port=8080 -max=0 -preStopSeconds=1 -ip.bind=0.0.0.0
+    volumes:
+      - seaweedfs-volume-data:/data
+    depends_on:
+      seaweedfs-master:
+        condition: service_healthy
+    expose:
+      - "8080"
+      - "18080"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8080/status > /dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - internal
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "3"
+
+  # ----------------------------------------------------------
+  # SeaweedFS — Filer
+  # ----------------------------------------------------------
+  seaweedfs-filer:
+    image: chrislusf/seaweedfs:4.18
+    restart: unless-stopped
+    command: filer -master=seaweedfs-master:9333 -ip=seaweedfs-filer -ip.bind=0.0.0.0
+    volumes:
+      - seaweedfs-filer-data:/data
+    depends_on:
+      seaweedfs-master:
+        condition: service_healthy
+      seaweedfs-volume:
+        condition: service_healthy
+    expose:
+      - "8888"
+      - "18888"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8888/ > /dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - internal
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "3"
+
+  # ----------------------------------------------------------
+  # SeaweedFS — S3 Gateway
+  # ----------------------------------------------------------
+  seaweedfs-s3:
+    image: chrislusf/seaweedfs:4.18
+    restart: unless-stopped
+    command: "s3 -filer=seaweedfs-filer:8888 -ip.bind=0.0.0.0"
+    depends_on:
+      seaweedfs-filer:
+        condition: service_healthy
+    expose:
+      - "8333"
+    environment:
+      AWS_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID:?S3_ACCESS_KEY_ID is required}
+      AWS_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY:?S3_SECRET_ACCESS_KEY is required}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget -S -O /dev/null http://127.0.0.1:8333/ 2>&1 | grep -Eq 'HTTP/[0-9.]+ (200|403)'",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - internal
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "3"
+
+  # ----------------------------------------------------------
+  # Traefik Reverse Proxy (for Zero Downtime)
+  # ----------------------------------------------------------
+  traefik:
+    image: traefik:v3.6
+    restart: unless-stopped
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - internal
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "3"
+
+  # ----------------------------------------------------------
+  # Payload CMS (Next.js)
+  # ----------------------------------------------------------
+  payload:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ${PAYLOAD_IMAGE:-45th-homepage:local}
+    restart: unless-stopped
+    stop_grace_period: 30s
+    labels:
+      docker-rollout.pre-stop-hook: "touch /tmp/drain && sleep 10"
+      traefik.enable: "true"
+      traefik.http.routers.payload.rule: "PathPrefix(`/`)"
+      traefik.http.routers.payload.entrypoints: "web"
+      traefik.http.services.payload.loadbalancer.server.port: "3000"
+    expose:
+      - "3000"
+    env_file:
+      - .env.production
+    environment:
+      NODE_ENV: production
+      S3_ENDPOINT: http://seaweedfs-s3:8333
+      HEALTH_CHECK_KEY: ${HEALTH_CHECK_KEY:?HEALTH_CHECK_KEY is required}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      seaweedfs-s3:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          'test ! -f /tmp/drain && node -e "const http = require(''http''); const req = http.request(''http://127.0.0.1:3000/api/health?strict=1'', { headers: { ''x-health-key'': process.env.HEALTH_CHECK_KEY } }, (res) => { process.exit(res.statusCode === 200 ? 0 : 1); }); req.on(''error'', () => process.exit(1)); req.end();"',
+        ]
+      interval: 5s
+      timeout: 5s
+      start_period: 60s
+      retries: 1
+    networks:
+      - internal
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ----------------------------------------------------------
+  # Cloudflare Tunnel
+  # ----------------------------------------------------------
+  cloudflared:
+    image: cloudflare/cloudflared:2026.3.0
+    restart: unless-stopped
+    command: tunnel --no-autoupdate --metrics 0.0.0.0:60123 run
+    environment:
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN:?CLOUDFLARE_TUNNEL_TOKEN is required}
+    depends_on:
+      payload:
+        condition: service_healthy
+    networks:
+      - internal
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "3"
+
+  dozzle-agent:
+    image: amir20/dozzle:latest
+    command: agent
+    container_name: dozzle-agent-45th-homepage
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - "7007:7007"
+    environment:
+      - DOZZLE_HOSTNAME=45th-homepage
+    restart: always
+    healthcheck:
+      test: ["CMD", "/dozzle", "healthcheck"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+
 volumes:
   pgdata:
+  pgbackup:
+  seaweedfs-master-data:
+  seaweedfs-volume-data:
+  seaweedfs-filer-data:
+
+networks:
+  internal:
+    driver: bridge

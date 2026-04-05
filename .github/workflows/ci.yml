@@ -82,24 +82,18 @@ jobs:
       - name: Run React Doctor
         id: run_doctor
         run: |
-          OUTPUT=$(npx -y react-doctor@latest . --project 45th-homepage --verbose --fail-on none)
+          OUTPUT=$(npx -y react-doctor@latest . --project 45th-homepage --verbose --no-lint --fail-on none 2>&1)
           echo "$OUTPUT"
-          DIAG_PATH=$(echo "$OUTPUT" | grep "Full diagnostics written to" | awk '{print $NF}')
-          echo "diag_path=$DIAG_PATH" >> "$GITHUB_OUTPUT"
-          SCORE=$(echo "$OUTPUT" | grep -oE '[0-9]+ / 100' | head -n 1 | awk '{print $1}')
-          echo "score=$SCORE" >> "$GITHUB_OUTPUT"
+          SCORE=$(echo "$OUTPUT" | grep -oE '[0-9]+ / 100' | head -1 | grep -oE '^[0-9]+')
+          echo "score=${SCORE:-0}" >> "$GITHUB_OUTPUT"
 
       - name: Comment React Doctor Report
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         if: ${{ always() && github.event_name == 'pull_request' }}
         env:
-          DIAG_PATH: ${{ steps.run_doctor.outputs.diag_path }}
           SCORE: ${{ steps.run_doctor.outputs.score }}
         with:
           script: |
-            const fs = require('fs');
-            const path = require('path');
-            const diagPath = process.env.DIAG_PATH;
             const score = parseInt(process.env.SCORE || '0');
 
             let comment = '## 🩺 React Doctor Report\n\n';
@@ -112,44 +106,11 @@ jobs:
 
             comment += `### Health Score: ${getHealthColor(score)} **${score} / 100**\n\n`;
 
-            try {
-              if (!diagPath) throw new Error('No diagnostics path found');
-              const diagFile = path.join(diagPath, 'diagnostics.json');
-              if (!fs.existsSync(diagFile)) throw new Error('diagnostics.json not found');
-              
-              const diagnostics = JSON.parse(fs.readFileSync(diagFile, 'utf8'));
-              
-              if (diagnostics.length === 0) {
-                comment += '✅ **No issues found! Your codebase is in great health.**\n';
-              } else {
-                const categories = {};
-                diagnostics.forEach(d => {
-                  const cat = d.category || 'Other';
-                  if (!categories[cat]) categories[cat] = [];
-                  categories[cat].push(d);
-                });
-                
-                comment += '| Category | Count |\n| --- | --- |\n';
-                Object.keys(categories).forEach(cat => {
-                  comment += `| ${cat} | ${categories[cat].length} |\n`;
-                });
-                
-                comment += '\n<details>\n<summary>🔍 View Detailed Findings</summary>\n\n';
-                
-                Object.keys(categories).sort().forEach(cat => {
-                  comment += `#### ${cat}\n`;
-                  comment += '| File | Line | Issue | Help |\n| --- | --- | --- | --- |\n';
-                  categories[cat].forEach(d => {
-                    const fileLink = `[${d.filePath}](/${context.repo.owner}/${context.repo.repo}/blob/${context.sha}/${d.filePath}#L${d.line})`;
-                    comment += `| ${fileLink} | ${d.line} | ${d.message} | ${d.help || '-'} |\n`;
-                  });
-                  comment += '\n';
-                });
-                
-                comment += '</details>\n';
-              }
-            } catch (err) {
-              comment += `⚠️ Could not parse detailed diagnostics: ${err.message}\n`;
+            if (score === 100) {
+              comment += '✅ **No issues found! Your codebase is in great health.**\n';
+            } else {
+              comment += `⚠️ Score is below 100. Check your React code for potential issues.\n`;
+              comment += `Run \`npx react-doctor@latest . --project 45th-homepage --verbose\` locally for details.\n`;
             }
 
             const marker = '<!-- react-doctor-report -->';
@@ -182,6 +143,13 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     needs: [quality, react-doctor]
+    env:
+      PAYLOAD_SECRET: ci_secret_key
+      DATABASE_URL: postgres://postgres:mysecretpassword@localhost:5432/payload
+      S3_BUCKET: media
+      S3_ENDPOINT: http://localhost:8333
+      S3_ACCESS_KEY_ID: ci_access_key
+      S3_SECRET_ACCESS_KEY: ci_secret_key
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
