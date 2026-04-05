@@ -10,9 +10,7 @@ import {
 import InfoFrame from "@/components/ui/InfoFrame";
 import InfoBlock from "@/components/ui/InfoBlock";
 
-import { DevPageContainer } from "../_components/DevPageContainer";
-import { DevPanel } from "../_components/DevPanel";
-import { DevSection } from "../_components/DevSection";
+import NewsItem from "@/components/ui/NewsItem";
 import {
   Beer,
   BusFront,
@@ -25,6 +23,10 @@ import {
   TriangleAlert,
   Users,
 } from "lucide-react";
+
+import { DevPageContainer } from "../_components/DevPageContainer";
+import { DevPanel } from "../_components/DevPanel";
+import { DevSection } from "../_components/DevSection";
 
 const previewSlides = ["Slide 1", "Slide 2", "Slide 3"];
 
@@ -61,6 +63,15 @@ export default function DevCommonComponentsPage() {
           </CarouselRoot>
         </DevPanel>
 
+        <DevPanel title="NewsItem">
+          <div className="bg-base">
+            <NewsItem
+              date="2026-mm-dd"
+              title="タイトル"
+              content={"1行目のテキストです。\n2行目のテキストです。\n3行目のテキストです。"}
+            />
+          </div>
+        </DevPanel>
         <DevPanel title="InfoFrame">
           <InfoFrame>
             本文本文テキストテキストテキスト笹かま笹かま笹かま笹かま笹かま笹かま笹かま笹かま笹かま笹カービィ
