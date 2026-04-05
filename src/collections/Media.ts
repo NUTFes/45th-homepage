@@ -47,6 +47,7 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: {
+    pasteURL: false,
     imageSizes: [
       {
         name: "thumbnail",
