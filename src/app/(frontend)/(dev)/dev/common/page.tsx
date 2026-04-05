@@ -11,6 +11,7 @@ import {
 import { DevPageContainer } from "../_components/DevPageContainer";
 import { DevPanel } from "../_components/DevPanel";
 import { DevSection } from "../_components/DevSection";
+import NewsItem from "@/components/ui/NewsItem";
 
 const previewSlides = ["Slide 1", "Slide 2", "Slide 3"];
 
@@ -45,6 +46,16 @@ export default function DevCommonComponentsPage() {
               <CarouselNextButton className="rounded-md border border-base/20 px-s py-xs text-text-small disabled:opacity-50" />
             </div>
           </CarouselRoot>
+        </DevPanel>
+
+        <DevPanel title="NewsItem">
+          <div className="bg-base">
+            <NewsItem
+              date="2026-mm-dd"
+              title="タイトル"
+              content={"1行目のテキストです。\n2行目のテキストです。\n3行目のテキストです。"}
+            />
+          </div>
         </DevPanel>
       </DevSection>
     </DevPageContainer>
