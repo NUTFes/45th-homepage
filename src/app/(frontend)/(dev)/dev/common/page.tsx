@@ -126,7 +126,7 @@ export default function DevCommonComponentsPage() {
           </InfoFrame>
         </DevPanel>
         <DevPanel title="InfoFrame">
-          <ButtonMain href={"/"} title={"タイトルを入力"}/>
+          <ButtonMain href={"/"} title={"タイトルを入力"} />
         </DevPanel>
       </DevSection>
     </DevPageContainer>
