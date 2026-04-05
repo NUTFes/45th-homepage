@@ -6,7 +6,7 @@ import { Button } from "../aria/Button";
 export default function ButtonMain(props: { href: string; title: string }) {
   const { href, title } = props;
   return (
-    <div className="pb-ss">
+    <div className="w-full flex justify-center pb-ss">
       {/* ↑影のぶんのパディング */}
       <Link
         href={href}
