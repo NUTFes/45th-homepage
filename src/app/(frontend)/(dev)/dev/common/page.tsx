@@ -27,6 +27,7 @@ import {
 import { DevPageContainer } from "../_components/DevPageContainer";
 import { DevPanel } from "../_components/DevPanel";
 import { DevSection } from "../_components/DevSection";
+import ButtonMain from "@/components/ui/ButtonMain";
 
 const previewSlides = ["Slide 1", "Slide 2", "Slide 3"];
 
@@ -123,6 +124,9 @@ export default function DevCommonComponentsPage() {
               <InfoBlock title="HelpCircle">icon変数の記載がない場合にデフォルトで表示。</InfoBlock>
             </div>
           </InfoFrame>
+        </DevPanel>
+        <DevPanel title="InfoFrame">
+          <ButtonMain href={"/"} title={"タイトルを入力"}/>
         </DevPanel>
       </DevSection>
     </DevPageContainer>
