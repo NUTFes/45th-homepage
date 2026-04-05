@@ -1,4 +1,8 @@
-import type { NewsItemProps } from "../types";
+type NewsItemProps = {
+  date: string;
+  title: string;
+  content: string;
+};
 
 export default function NewsItem({ date, title, content }: NewsItemProps) {
   const displayDate = date.replaceAll("-", ".");
