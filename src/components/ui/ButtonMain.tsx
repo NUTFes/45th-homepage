@@ -1,7 +1,4 @@
-"use client";
-import React, { use } from "react";
-import { Link } from "react-aria-components";
-import { Button } from "../aria/Button";
+import Link from "next/link";
 
 export default function ButtonMain(props: { href: string; title: string }) {
   const { href, title } = props;
