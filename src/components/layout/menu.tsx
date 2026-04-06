@@ -1,9 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from 'react';
+import { useState } from "react";
 
-import { House, Clock, MapPin, CalendarDays, LucideIcon, Plus, Minus, Building2, UserStar, Info } from "lucide-react";
+import {
+  House,
+  Clock,
+  MapPin,
+  CalendarDays,
+  LucideIcon,
+  Plus,
+  Minus,
+  Building2,
+  UserStar,
+  Info,
+} from "lucide-react";
 
 type SubMenuItem = {
   label: string;
@@ -11,18 +22,18 @@ type SubMenuItem = {
 };
 
 type MenuLeafItem = {
-    label: string
-    icon: LucideIcon
-    href: string
-}
+  label: string;
+  icon: LucideIcon;
+  href: string;
+};
 
 type MenuParentItem = {
-    label: string
-    icon: LucideIcon
-    children: SubMenuItem[]
-}
+  label: string;
+  icon: LucideIcon;
+  children: SubMenuItem[];
+};
 
-type MenuItem = MenuLeafItem | MenuParentItem
+type MenuItem = MenuLeafItem | MenuParentItem;
 
 const menuItems: MenuItem[] = [
   {
@@ -105,49 +116,57 @@ const menuItems: MenuItem[] = [
 ];
 
 type MenuItemProps = {
-    item: MenuItem
-}
+  item: MenuItem;
+};
 
-function MenuItem({ item }: MenuItemProps){
-    const [isOpen, setIsOpen] = useState(false)
+function MenuItem({ item }: MenuItemProps) {
+  const [isOpen, setIsOpen] = useState(false);
 
-    return(
-        <li className="border-b border-font-main">
-                { "children" in item ? (
-                    <>
-                    <button aria-expanded={isOpen} onClick={() => setIsOpen(!isOpen)} className="flex items-center justify-start gap-s w-full px-l py-m">
-                          <item.icon className="shrink-0 text-secondary" size={32}/>
-                          <span className="text-text-large text-font-main">{item.label}</span>
-                          {!isOpen ? <Plus aria-hidden="true" className="text-secondary ml-auto" size={24}/> : <Minus aria-hidden="true" className="text-secondary ml-auto " size={24}/>}
-
-                    </button>
-                    {isOpen &&
-                    <ul className="pl-5l pb-m flex flex-col gap-ss">
-                    {item.children.map((child) => (
-                        <li key={child.label}>
-                            <Link href={child.href}>
-                                <span className="text-text text-font-main">{child.label}</span>
-                            </Link>
-                        </li>
-                    ))}
-                    </ul>}
-                    </>
-                ) : (
-                    <Link href={item.href} className="flex items-center justify-start gap-s px-l py-m">
-                        <item.icon className="shrink-0 text-secondary" size={32}/>
-                        <span className="text-text-large text-font-main">{item.label}</span>
-                    </Link>
-                )}
-            </li>
-    )
+  return (
+    <li className="border-b border-font-main">
+      {"children" in item ? (
+        <>
+          <button
+            aria-expanded={isOpen}
+            onClick={() => setIsOpen(!isOpen)}
+            className="flex w-full items-center justify-start gap-s px-l py-m"
+          >
+            <item.icon className="shrink-0 text-secondary" size={32} />
+            <span className="text-text-large text-font-main">{item.label}</span>
+            {!isOpen ? (
+              <Plus aria-hidden="true" className="ml-auto text-secondary" size={24} />
+            ) : (
+              <Minus aria-hidden="true" className="ml-auto text-secondary" size={24} />
+            )}
+          </button>
+          {isOpen && (
+            <ul className="flex flex-col gap-ss pb-m pl-5l">
+              {item.children.map((child) => (
+                <li key={child.label}>
+                  <Link href={child.href}>
+                    <span className="text-text text-font-main">{child.label}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
+      ) : (
+        <Link href={item.href} className="flex items-center justify-start gap-s px-l py-m">
+          <item.icon className="shrink-0 text-secondary" size={32} />
+          <span className="text-text-large text-font-main">{item.label}</span>
+        </Link>
+      )}
+    </li>
+  );
 }
 
 export default function Menu() {
   return (
-    <nav aria-label="メニュー" className="px-l pt-3l pb-4l bg-base-dark">
+    <nav aria-label="メニュー" className="bg-base-dark px-l pt-3l pb-4l">
       <ul>
         {menuItems.map((item) => (
-           <MenuItem key={item.label} item={item} />
+          <MenuItem key={item.label} item={item} />
         ))}
       </ul>
     </nav>
