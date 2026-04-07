@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { Disclosure, DisclosurePanel, Button } from "react-aria-components";
 
 import {
   House,
@@ -120,26 +120,25 @@ type MenuItemProps = {
 };
 
 function MenuItem({ item }: MenuItemProps) {
-  const [isOpen, setIsOpen] = useState(false);
-
   return (
     <li className="border-b border-font-main">
       {"children" in item ? (
-        <>
-          <button
-            aria-expanded={isOpen}
-            onClick={() => setIsOpen(!isOpen)}
-            className="flex w-full items-center justify-start gap-s px-l py-m"
-          >
+        <Disclosure className="group">
+          <Button slot="trigger" className="flex w-full items-center justify-start gap-s px-l py-m">
             <item.icon className="shrink-0 text-secondary" size={32} />
             <span className="text-text-large text-font-main">{item.label}</span>
-            {!isOpen ? (
-              <Plus aria-hidden="true" className="ml-auto text-secondary" size={24} />
-            ) : (
-              <Minus aria-hidden="true" className="ml-auto text-secondary" size={24} />
-            )}
-          </button>
-          {isOpen && (
+            <span className="relative ml-auto h-6 w-6" aria-hidden="true">
+              <Plus
+                size={24}
+                className="absolute inset-0 text-secondary transition-opacity duration-300 group-data-expanded:opacity-0"
+              />
+              <Minus
+                size={24}
+                className="absolute inset-0 text-secondary opacity-0 transition-opacity duration-300 group-data-expanded:opacity-100"
+              />
+            </span>
+          </Button>
+          <DisclosurePanel className="h-(--disclosure-panel-height) overflow-clip duration-300 motion-safe:transition-[height] [hidden]:block">
             <ul className="flex flex-col gap-ss pb-m pl-5l">
               {item.children.map((child) => (
                 <li key={child.label}>
@@ -149,8 +148,8 @@ function MenuItem({ item }: MenuItemProps) {
                 </li>
               ))}
             </ul>
-          )}
-        </>
+          </DisclosurePanel>
+        </Disclosure>
       ) : (
         <Link href={item.href} className="flex items-center justify-start gap-s px-l py-m">
           <item.icon className="shrink-0 text-secondary" size={32} />
