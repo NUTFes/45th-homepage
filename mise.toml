@@ -2,38 +2,124 @@
 node = "24"
 pnpm = "10"
 
-# Dockerコンテナ管理タスク
+# ============================================================
+# 10s: 開発環境の基本操作 (Development Basics)
+# ============================================================
 
-[tasks."up"]
-description = "Dockerコンテナをバックグラウンドで起動する"
+[tasks."10:up"]
+description = "開発用コンテナを起動する"
+alias = "up"
 run = "docker compose up -d"
 
-[tasks."down"]
-description = "Dockerコンテナを停止して削除する（ボリュームは残る）"
+[tasks."11:down"]
+description = "開発用コンテナを停止して削除する"
+alias = "down"
 run = "docker compose down"
 
-[tasks."logs"]
-description = "コンテナのログをリアルタイム表示する"
+[tasks."12:logs"]
+description = "開発用コンテナのログをリアルタイム表示する"
+alias = "logs"
 run = "docker compose logs -f"
 
-[tasks."sh"]
-description = "payloadコンテナ(Next.js)の中に入ってシェル(sh)を実行する"
+[tasks."13:sh"]
+description = "payloadコンテナ内に入ってシェルを実行する"
+alias = "sh"
 run = "docker compose exec payload sh"
 
-# パッケージ管理タスク
+# ============================================================
+# 20s: パッケージ管理 (Package Management)
+# ============================================================
 
-[tasks.add]
-description = "コンテナ側でパッケージを追加する（例: mise run add lucide-react）"
-run = "docker compose exec payload pnpm add {{arg(0)}}"
-
-[tasks.add-D]
-description = "コンテナ側で開発用パッケージを追加する（例: mise run add-D vitest）"
-run = "docker compose exec payload pnpm add -D {{arg(0)}}"
-
-[tasks.rm]
-description = "コンテナ側でパッケージを削除する"
-run = "docker compose exec payload pnpm rm {{arg(0)}}"
-
-[tasks.install]
-description = "手元とコンテナの両方で依存関係をクリーンにインストールし直す"
+[tasks."20:install"]
+description = "手元とコンテナの両方で依存関係をインストールする"
+alias = ["install", "i"]
 run = ["pnpm install", "docker compose exec payload pnpm install"]
+
+[tasks."21:add"]
+description = "パッケージを追加する"
+alias = "add"
+usage = '''
+  arg "<packages>" var=#true help="追加するパッケージ名（複数可）"
+  flag "-D --dev" help="開発用依存として追加"
+'''
+run = '''
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ "${usage_dev:-false}" == "true" ]]; then
+  pnpm add -D ${usage_packages?}
+else
+  pnpm add ${usage_packages?}
+fi
+
+docker compose exec payload pnpm install
+'''
+
+[tasks."22:rm"]
+description = "パッケージを削除する"
+alias = ["rm", "remove"]
+usage = 'arg "<packages>" var=#true help="削除するパッケージ名（複数可）"'
+run = '''
+#!/usr/bin/env bash
+set -euo pipefail
+
+pnpm rm ${usage_packages?}
+
+docker compose exec payload pnpm install
+'''
+
+# ============================================================
+# 30s: データベース・マイグレーション (Database Migrations)
+# ============================================================
+
+[tasks."30:migrate:create"]
+description = "スキーマ変更からマイグレーションファイルを生成する"
+alias = ["migrate:create", "mc"]
+usage = 'arg "<name>" help="Name of the migration"'
+run = "docker compose exec payload pnpm payload migrate:create ${usage_name?}"
+
+[tasks."31:migrate:status"]
+description = "マイグレーションの実行状況を確認する"
+alias = ["migrate:status", "ms"]
+run = "docker compose exec payload pnpm payload migrate:status"
+
+[tasks."32:migrate"]
+description = "保留中のマイグレーションを手動で実行する (通常は起動時に自動実行されます)"
+alias = ["migrate", "m"]
+run = "docker compose exec payload pnpm payload migrate"
+
+# ============================================================
+# 90s: 本番環境の運用操作 (Production Operations)
+# ============================================================
+
+[tasks."90:prod:up"]
+description = "本番用コンテナをビルドして起動する (.env.productionを使用)"
+alias = "prod:up"
+run = "docker compose --env-file .env.production -f compose.prod.yml up -d --build --remove-orphans"
+
+[tasks."91:prod:down"]
+description = "本番用コンテナを停止して削除する"
+alias = "prod:down"
+run = "docker compose --env-file .env.production -f compose.prod.yml down"
+
+[tasks."92:prod:logs"]
+description = "本番用コンテナのログを表示する"
+alias = "prod:logs"
+run = "docker compose --env-file .env.production -f compose.prod.yml logs -f"
+
+[tasks."93:prod:ps"]
+description = "本番用コンテナのステータスを表示する"
+alias = "prod:ps"
+run = "docker compose --env-file .env.production -f compose.prod.yml ps"
+
+[tasks."94:prod:deploy"]
+description = "本番環境にゼロダウンタイムデプロイする (docker rollout)"
+alias = "prod:deploy"
+run = '''
+#!/usr/bin/env bash
+set -euo pipefail
+
+git pull origin "$(git branch --show-current)"
+docker compose --env-file .env.production -f compose.prod.yml build payload
+docker rollout --env-file .env.production -f compose.prod.yml --timeout 120 payload
+'''

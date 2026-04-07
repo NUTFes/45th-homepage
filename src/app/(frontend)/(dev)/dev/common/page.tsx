@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/carousel";
 import InfoFrame from "@/components/ui/InfoFrame";
 import InfoBlock from "@/components/ui/InfoBlock";
-
 import NewsItem from "@/components/ui/NewsItem";
 import {
   Beer,
@@ -28,6 +27,7 @@ import { DevPageContainer } from "../_components/DevPageContainer";
 import { DevPanel } from "../_components/DevPanel";
 import { DevSection } from "../_components/DevSection";
 import ButtonMain from "@/components/ui/ButtonMain";
+import SectionTitle from "@/components/ui/SectionTitle";
 
 const previewSlides = ["Slide 1", "Slide 2", "Slide 3"];
 
@@ -125,8 +125,15 @@ export default function DevCommonComponentsPage() {
             </div>
           </InfoFrame>
         </DevPanel>
+
         <DevPanel title="ButtonMain">
           <ButtonMain href={"/"} title={"タイトルを入力"} />
+        </DevPanel>
+
+        <DevPanel title="SectionTitle">
+          <div className="bg-base">
+            <SectionTitle title="PICK UP" />
+          </div>
         </DevPanel>
       </DevSection>
     </DevPageContainer>
