@@ -1,7 +1,7 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import BottomNav from "@/components/layout/BottomNav";
-import Menu from "@/components/layout/menu";
+import Menu from "@/components/layout/Menu";
 
 import { DevPageContainer } from "../_components/DevPageContainer";
 import { DevPanel } from "../_components/DevPanel";
