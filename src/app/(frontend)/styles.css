@@ -56,7 +56,7 @@
 
 .button-gradient {
   background: linear-gradient(
-    to right,
+    to bottom,
     var(--color-button-start) 20%,
     var(--color-button-end) 100%
   );
