@@ -1,4 +1,10 @@
-import { UserStar, Building2, TriangleAlert, MessageCircleQuestionMark, BusFront } from "lucide-react";
+import {
+  UserStar,
+  Building2,
+  TriangleAlert,
+  MessageCircleQuestionMark,
+  BusFront,
+} from "lucide-react";
 import Link from "next/link";
 
 const InfoMenuItems = [
@@ -32,14 +38,23 @@ const InfoMenuItems = [
 export default function InfoMenu() {
   return (
     <nav className="bg-base">
-      <ul className="flex  gap-s w-full list-none flex-col">
+      <ul className="flex w-full list-none flex-col gap-s">
         {InfoMenuItems.map((item) => (
           <li key={item.name} className="px-3l">
-            <Link href={item.href} className="flex gap-[10px] items-center pointer-events-none">
-              <div className="flex h-6 w-6 items-center justify-center shrink-0">
-                <item.icon className={/* 本来のフォントカラー　 "text-secondary" */ "text-[#8892b0]"} size={24} />
+            <Link href={item.href} className="pointer-events-none flex items-center gap-[10px]">
+              <div className="flex h-6 w-6 shrink-0 items-center justify-center">
+                <item.icon
+                  className={/* 本来のフォントカラー　 "text-secondary" */ "text-[#8892b0]"}
+                  size={24}
+                />
               </div>
-              <span className={/* 本来のフォントカラー "text-font-main" */ "text-title-small text-[#8892b0]"}>{item.name}</span>
+              <span
+                className={
+                  /* 本来のフォントカラー "text-font-main" */ "text-title-small text-[#8892b0]"
+                }
+              >
+                {item.name}
+              </span>
             </Link>
           </li>
         ))}
