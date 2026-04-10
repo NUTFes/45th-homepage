@@ -7,6 +7,7 @@ import { DevSection } from "../../_components/DevSection";
 import { topModuleSlides } from "../../_data/topModuleSlides";
 import SponsorSection from "@/modules/top/ui/SponsorSection";
 import InfoMenu from "@/modules/top/ui/InfoMenu";
+import LogoInfo from "@/modules/top/ui/LogoInfo";
 
 export default function DevTopPageModulesPage() {
   return (
@@ -29,6 +30,11 @@ export default function DevTopPageModulesPage() {
       <DevSection title="InfoMenu">
         <DevPanel title="InfoMenu (src/modules/top/ui)">
           <InfoMenu />
+        </DevPanel>
+      </DevSection>
+      <DevSection title="LogoInfo">
+        <DevPanel title="LogoInfo (src/modules/top/ui)">
+          <LogoInfo />
         </DevPanel>
       </DevSection>
     </DevPageContainer>
