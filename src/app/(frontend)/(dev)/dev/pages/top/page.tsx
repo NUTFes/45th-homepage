@@ -27,7 +27,9 @@ export default function DevTopPageModulesPage() {
         </DevPanel>
       </DevSection>
       <DevSection title="InfoMenu">
-        <InfoMenu />
+        <DevPanel title = "InfoMenu (src/modules/top/ui)">
+          <InfoMenu />
+        </DevPanel>
       </DevSection>
     </DevPageContainer>
   );
