@@ -16,7 +16,7 @@ export default function Footer() {
 					/>
 				</section>
 
-				<section className="flex w-full max-w-[272px] flex-col gap-xs text-text leading-text">
+				<section className="flex w-full max-w-[272px] flex-col gap-xs text-text">
 					<div className="flex flex-col gap-xs">
 						<p>アンケート</p>
 						<p>大学ホームページ</p>
@@ -47,7 +47,7 @@ export default function Footer() {
 					</div>
 				</section>
 
-        <p className="text-center text-text leading-text">技大祭実行委員会</p>
+		<p className="text-center text-text">技大祭実行委員会</p>
       </div>
     </footer>
   );
