@@ -22,30 +22,30 @@ export default function Footer() {
 						<p>大学ホームページ</p>
 					</div>
 
-					<div className="flex flex-col gap-ss">
-						<h3 className="text-text">お問い合わせ</h3>
-						<address className="pl-xs not-italic text-[14px] leading-[17px]">
-							<p>〒940-2188</p>
-							<p>新潟県長岡市上富岡町1603-1</p>
-							<p>長岡技術科学大学</p>
-						</address>
-						<div className="flex flex-col gap-1 text-[14px] leading-[17px]">
-							<p className="flex items-center gap-1.5">
-								<MessageCircleMore
-									className="size-4"
-									fill="var(--color-base-dark)"
-									stroke="#ffffff"
-									strokeWidth={2.2}
-								/>
-								<span>インスタDM</span>
-							</p>
-							<p className="flex items-center gap-1.5">
-								<Mail className="size-4 text-base-dark" strokeWidth={2.2} />
-								<span className="underline">nutfes.shikobu@gmail.com</span>
-							</p>
-						</div>
-					</div>
-				</section>
+          <div className="flex flex-col gap-ss">
+            <h3 className="text-text">お問い合わせ</h3>
+            <address className="pl-xs text-[14px] leading-[17px] not-italic">
+              <p>〒940-2188</p>
+              <p>新潟県長岡市上富岡町1603-1</p>
+              <p>長岡技術科学大学</p>
+            </address>
+            <div className="flex flex-col gap-1 text-[14px] leading-[17px]">
+              <p className="flex items-center gap-1.5">
+                <MessageCircleMore
+                  className="size-4"
+                  fill="var(--color-base-dark)"
+                  stroke="#ffffff"
+                  strokeWidth={2.2}
+                />
+                <span>インスタDM</span>
+              </p>
+              <p className="flex items-center gap-1.5">
+                <Mail className="size-4 text-base-dark" strokeWidth={2.2} />
+                <span className="underline">nutfes.shikobu@gmail.com</span>
+              </p>
+            </div>
+          </div>
+        </section>
 
 		<p className="text-center text-text">技大祭実行委員会</p>
       </div>
