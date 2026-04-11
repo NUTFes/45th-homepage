@@ -2,25 +2,25 @@ import { Mail, MessageCircleMore } from "lucide-react";
 import Image from "next/image";
 
 export default function Footer() {
-	return (
-		<footer className="bg-secondary px-m py-m text-black">
-			<div className="mx-auto flex w-full max-w-[393px] flex-col items-center gap-ll">
-				<section aria-label="SNS" className="flex flex-col items-center gap-xs">
-					<h2 className="font-kaisotai text-title leading-[1]">FOLLOW US</h2>
-					<Image
-						alt="Instagram"
-						className="size-10"
-						height={40}
-						src="/icon/Instagram_Glyph_Gradient.svg"
-						width={40}
-					/>
-				</section>
+  return (
+    <footer className="bg-secondary px-m py-m text-black">
+      <div className="mx-auto flex w-full max-w-[393px] flex-col items-center gap-ll">
+        <section aria-label="SNS" className="flex flex-col items-center gap-xs">
+          <h2 className="font-kaisotai text-title leading-[1]">FOLLOW US</h2>
+          <Image
+            alt="Instagram"
+            className="size-10"
+            height={40}
+            src="/icon/Instagram_Glyph_Gradient.svg"
+            width={40}
+          />
+        </section>
 
-				<section className="flex w-full max-w-[272px] flex-col gap-xs text-text">
-					<div className="flex flex-col gap-xs">
-						<p>アンケート</p>
-						<p>大学ホームページ</p>
-					</div>
+        <section className="flex w-full max-w-[272px] flex-col gap-xs text-text">
+          <div className="flex flex-col gap-xs">
+            <p>アンケート</p>
+            <p>大学ホームページ</p>
+          </div>
 
           <div className="flex flex-col gap-ss">
             <h3 className="text-text">お問い合わせ</h3>
@@ -47,7 +47,7 @@ export default function Footer() {
           </div>
         </section>
 
-		<p className="text-center text-text">技大祭実行委員会</p>
+        <p className="text-center text-text">技大祭実行委員会</p>
       </div>
     </footer>
   );
