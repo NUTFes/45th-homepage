@@ -6,7 +6,7 @@ export default function Footer() {
 		<footer className="bg-secondary px-m py-m text-black">
 			<div className="mx-auto flex w-full max-w-[393px] flex-col items-center gap-ll">
 				<section aria-label="SNS" className="flex flex-col items-center gap-xs">
-					<h2 className="font-kaisotai text-title font-semibold leading-[1]">FOLLOW US</h2>
+					<h2 className="font-kaisotai text-title leading-[1]">FOLLOW US</h2>
 					<Image
 						alt="Instagram"
 						className="size-10"
