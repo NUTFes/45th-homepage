@@ -1,5 +1,3 @@
-"use client";
-
 import NewsPagination from "@/modules/news/ui/NewsPagination";
 
 type Props = {

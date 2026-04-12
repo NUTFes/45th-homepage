@@ -15,7 +15,14 @@ export const News: CollectionConfig = {
     },
   },
   access: {
-    read: () => true,
+    read: ({ req: { user } }) => {
+      if (user) return true;
+      return {
+        _status: {
+          equals: "published",
+        },
+      };
+    },
   },
   admin: {
     useAsTitle: "title",
@@ -46,6 +53,7 @@ export const News: CollectionConfig = {
       },
       type: "date",
       required: true,
+      index: true,
       defaultValue: () => new Date().toISOString(),
       admin: {
         position: "sidebar",

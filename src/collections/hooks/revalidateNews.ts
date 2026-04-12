@@ -6,7 +6,7 @@ export const revalidateNewsAfterChange: CollectionAfterChangeHook<News> = ({
   doc,
   req: { payload, context },
 }) => {
-  if (!context.disableRevalidate && doc._status === "published") {
+  if (!context.disableRevalidate) {
     payload.logger.info("Revalidating news pages");
     revalidatePath("/news");
     revalidatePath("/");
