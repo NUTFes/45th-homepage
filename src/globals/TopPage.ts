@@ -42,12 +42,6 @@ export const TopPage: GlobalConfig = {
           type: "upload",
           relationTo: "media",
           required: false,
-          validate: (val: unknown) => {
-            if (!val) {
-              return "画像は必須です。";
-            }
-            return true;
-          },
         },
         {
           name: "href",
