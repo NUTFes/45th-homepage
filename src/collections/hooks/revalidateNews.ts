@@ -4,9 +4,13 @@ import type { News } from "@/payload-types";
 
 export const revalidateNewsAfterChange: CollectionAfterChangeHook<News> = ({
   doc,
+  previousDoc,
   req: { payload, context },
 }) => {
-  if (!context.disableRevalidate) {
+  if (
+    !context.disableRevalidate &&
+    (doc._status === "published" || previousDoc?._status === "published")
+  ) {
     payload.logger.info("Revalidating news pages");
     revalidatePath("/news");
     revalidatePath("/");

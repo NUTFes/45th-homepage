@@ -396,7 +396,7 @@ export interface TopPage {
    */
   pickups?:
     | {
-        image: number | Media;
+        image?: (number | null) | Media;
         /**
          * If empty, the image will not be clickable.
          */

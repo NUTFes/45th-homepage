@@ -454,6 +454,21 @@
         }
       },
       "indexes": {
+        "news_date_idx": {
+          "name": "news_date_idx",
+          "columns": [
+            {
+              "expression": "date",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "news_updated_at_idx": {
           "name": "news_updated_at_idx",
           "columns": [
@@ -588,6 +603,21 @@
           "columns": [
             {
               "expression": "parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "_news_v_version_version_date_idx": {
+          "name": "_news_v_version_version_date_idx",
+          "columns": [
+            {
+              "expression": "version_date",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -1515,6 +1545,6 @@
     "tables": {},
     "columns": {}
   },
-  "id": "30980720-6937-4c6a-8a0f-6010b715200b",
+  "id": "e18cbc47-f67d-4679-b450-20cb1ae07395",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }
