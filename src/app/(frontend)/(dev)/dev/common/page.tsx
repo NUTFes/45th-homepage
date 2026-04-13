@@ -67,7 +67,8 @@ export default function DevCommonComponentsPage() {
         <DevPanel title="NewsItem">
           <div className="bg-base">
             <NewsItem
-              date="2026-mm-dd"
+              date="2026.04.08"
+              dateTime="2026-04-08"
               title="タイトル"
               content={"1行目のテキストです。\n2行目のテキストです。\n3行目のテキストです。"}
             />

@@ -41,7 +41,7 @@ export const TopPage: GlobalConfig = {
           },
           type: "upload",
           relationTo: "media",
-          required: true,
+          required: false,
         },
         {
           name: "href",
