@@ -29,7 +29,7 @@ export default function Footer() {
               <p>新潟県長岡市上富岡町1603-1</p>
               <p>長岡技術科学大学</p>
             </address>
-            <div className="flex flex-col gap-1 text-[14px] leading-[17px]">
+            <div className="flex flex-col gap-1 pl-xs text-[14px] leading-[17px]">
               <p className="flex items-center gap-1.5">
                 <MessageCircleMore
                   className="size-4"
