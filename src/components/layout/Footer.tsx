@@ -47,7 +47,7 @@ export default function Footer() {
           </div>
         </section>
 
-		<p className="text-center text-text">技大祭実行委員会</p>
+        <p className="text-center text-text">技大祭実行委員会</p>
       </div>
     </footer>
   );
