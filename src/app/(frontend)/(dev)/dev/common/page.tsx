@@ -82,7 +82,7 @@ export default function DevCommonComponentsPage() {
         </DevPanel>
         <DevPanel title="ImportantFrame">
           <ImportantFrame title="重要なお知らせ">
-            晴れ・雨スケなどの当日変更情報をここに表示して見た目を確認します。
+            晴れスケ・雨スケなどかにかまかにかまかにかまかにかまかにかまかにかま
           </ImportantFrame>
         </DevPanel>
         <DevPanel title="InfoBlock">
