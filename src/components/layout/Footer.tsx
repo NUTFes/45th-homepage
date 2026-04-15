@@ -11,7 +11,7 @@ export default function Footer() {
 						alt="Instagram"
 						className="size-10"
 						height={40}
-						src="/icon/Instagram_Glyph_Gradient.svg"
+						src="/icon/Instagram.png"
 						width={40}
 					/>
 				</section>
