@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 
 type ImportantFrameProps = {
-	title: string;
-	children: ReactNode;
+  title: string;
+  children: ReactNode;
 };
 
 export default function ImportantFrame({ title, children }: ImportantFrameProps) {
