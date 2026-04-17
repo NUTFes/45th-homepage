@@ -68,13 +68,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          fetch-depth: 0
 
       - name: Run React Doctor
         uses: millionco/react-doctor@1d3d514a562bbab42dcefa0badeed2e707ed7ea9
         with:
           directory: .
+          project: 45th-homepage
           verbose: true
           diff: main
           fail-on: none
