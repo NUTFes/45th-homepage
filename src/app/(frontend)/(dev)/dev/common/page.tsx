@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/carousel";
 import InfoFrame from "@/components/ui/InfoFrame";
 import InfoBlock from "@/components/ui/InfoBlock";
+import ImportantFrame from "@/components/ui/ImportantFrame";
 import NewsItem from "@/components/ui/NewsItem";
 import {
   Beer,
@@ -78,6 +79,11 @@ export default function DevCommonComponentsPage() {
           <InfoFrame>
             本文本文テキストテキストテキスト笹かま笹かま笹かま笹かま笹かま笹かま笹かま笹かま笹かま笹カービィ
           </InfoFrame>
+        </DevPanel>
+        <DevPanel title="ImportantFrame">
+          <ImportantFrame title="重要なお知らせ">
+            晴れスケ・雨スケなどかにかまかにかまかにかまかにかまかにかまかにかま
+          </ImportantFrame>
         </DevPanel>
         <DevPanel title="InfoBlock">
           <InfoFrame>
