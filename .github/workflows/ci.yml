@@ -61,11 +61,6 @@ jobs:
   react-doctor:
     name: React Doctor
     runs-on: ubuntu-latest
-    env:
-      LANG: C.UTF-8
-      LC_ALL: C.UTF-8
-      NO_COLOR: "1"
-      FORCE_COLOR: "0"
     permissions:
       contents: read
       issues: write
@@ -74,70 +69,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: Setup Node
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
-        with:
-          node-version: "24"
-
       - name: Run React Doctor
-        id: run_doctor
-        run: |
-          OUTPUT=$(npx -y react-doctor@latest . --project 45th-homepage --verbose --no-lint --fail-on none 2>&1)
-          echo "$OUTPUT"
-          SCORE=$(echo "$OUTPUT" | grep -oE '[0-9]+ / 100' | head -1 | grep -oE '^[0-9]+')
-          echo "score=${SCORE:-0}" >> "$GITHUB_OUTPUT"
-
-      - name: Comment React Doctor Report
-        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
-        if: ${{ always() && github.event_name == 'pull_request' }}
-        env:
-          SCORE: ${{ steps.run_doctor.outputs.score }}
+        uses: millionco/react-doctor@1d3d514a562bbab42dcefa0badeed2e707ed7ea9
         with:
-          script: |
-            const score = parseInt(process.env.SCORE || '0');
-
-            let comment = '## 🩺 React Doctor Report\n\n';
-
-            const getHealthColor = (s) => {
-              if (s >= 90) return '🟢';
-              if (s >= 70) return '🟠';
-              return '🔴';
-            };
-
-            comment += `### Health Score: ${getHealthColor(score)} **${score} / 100**\n\n`;
-
-            if (score === 100) {
-              comment += '✅ **No issues found! Your codebase is in great health.**\n';
-            } else {
-              comment += `⚠️ Score is below 100. Check your React code for potential issues.\n`;
-              comment += `Run \`npx react-doctor@latest . --project 45th-homepage --verbose\` locally for details.\n`;
-            }
-
-            const marker = '<!-- react-doctor-report -->';
-            const body = `${marker}\n${comment}`;
-
-            const { data: comments } = await github.rest.issues.listComments({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            });
-            const botComment = comments.find(c => c.user.type === 'Bot' && c.body.includes(marker));
-
-            if (botComment) {
-              await github.rest.issues.updateComment({
-                comment_id: botComment.id,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: body
-              });
-            } else {
-              await github.rest.issues.createComment({
-                issue_number: context.issue.number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: body
-              });
-            }
+          directory: .
+          project: 45th-homepage
+          verbose: true
+          diff: main
+          fail-on: none
+          node-version: ${{ env.NODE_VERSION }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   build:
     name: Build
