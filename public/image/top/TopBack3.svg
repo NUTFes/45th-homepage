@@ -1,0 +1,26 @@
+<svg width="369" height="405" viewBox="0 0 369 405" fill="none" xmlns="http://www.w3.org/2000/svg">
+<line x1="2.5" y1="315" x2="2.5" y2="385" stroke="#F6F8FF" stroke-opacity="0.5" stroke-width="5"/>
+<line x1="11.5" y1="355" x2="11.5" y2="385" stroke="#F6F8FF" stroke-opacity="0.5" stroke-width="5"/>
+<line x1="20.5" y1="345" x2="20.5" y2="385" stroke="#F6F8FF" stroke-opacity="0.5" stroke-width="5"/>
+<line x1="29.5" y1="365" x2="29.5" y2="385" stroke="#F6F8FF" stroke-opacity="0.5" stroke-width="5"/>
+<line x1="38.5" y1="345" x2="38.5" y2="385" stroke="#F6F8FF" stroke-opacity="0.5" stroke-width="5"/>
+<line x1="47.5" y1="325" x2="47.5" y2="385" stroke="#F6F8FF" stroke-opacity="0.5" stroke-width="5"/>
+<line x1="56.5" y1="350" x2="56.5" y2="385" stroke="#F6F8FF" stroke-opacity="0.5" stroke-width="5"/>
+<line x1="65.5" y1="355" x2="65.5" y2="385" stroke="#F6F8FF" stroke-opacity="0.5" stroke-width="5"/>
+<line x1="74.5" y1="365" x2="74.5" y2="385" stroke="#F6F8FF" stroke-opacity="0.5" stroke-width="5"/>
+<line x1="83.5" y1="345" x2="83.5" y2="385" stroke="#F6F8FF" stroke-opacity="0.5" stroke-width="5"/>
+<line x1="92.5" y1="335" x2="92.5" y2="385" stroke="#F6F8FF" stroke-opacity="0.5" stroke-width="5"/>
+<line x1="101.5" y1="330" x2="101.5" y2="385" stroke="#F6F8FF" stroke-opacity="0.5" stroke-width="5"/>
+<line x1="110.5" y1="345" x2="110.5" y2="385" stroke="#F6F8FF" stroke-opacity="0.5" stroke-width="5"/>
+<line x1="119.5" y1="355" x2="119.5" y2="385" stroke="#F6F8FF" stroke-opacity="0.5" stroke-width="5"/>
+<line x1="128.5" y1="370" x2="128.5" y2="385" stroke="#F6F8FF" stroke-opacity="0.5" stroke-width="5"/>
+<line x1="137.5" y1="350" x2="137.5" y2="385" stroke="#F6F8FF" stroke-opacity="0.5" stroke-width="5"/>
+<line x1="146.5" y1="365" x2="146.5" y2="385" stroke="#F6F8FF" stroke-opacity="0.5" stroke-width="5"/>
+<line x1="155.5" y1="345" x2="155.5" y2="385" stroke="#F6F8FF" stroke-opacity="0.5" stroke-width="5"/>
+<line x1="164.5" y1="355" x2="164.5" y2="385" stroke="#F6F8FF" stroke-opacity="0.5" stroke-width="5"/>
+<line x1="173.5" y1="370" x2="173.5" y2="385" stroke="#F6F8FF" stroke-opacity="0.5" stroke-width="5"/>
+<line x1="182.5" y1="365" x2="182.5" y2="385" stroke="#F6F8FF" stroke-opacity="0.5" stroke-width="5"/>
+<path d="M233 118L249.459 99H369V303H233V210.5V118Z" fill="#D755E0" fill-opacity="0.7"/>
+<rect x="268.5" y="281.5" width="100" height="123" fill="#D755E0" fill-opacity="0.5" stroke="#D755E0"/>
+<path d="M340 352H332V368H316V360H324V352H316V360H308V352H300V344H340V352ZM316 328V320H324V336H300V312H308V328H316ZM332 312V320H324V312H332ZM332 320H340V336H332V320ZM332 296V304H300V296H308V288H316V296H332ZM340 296H332V288H340V296ZM340 272V280H300V272H308V264H316V272H340ZM340 256V264H316V256H340ZM340 224V232H300V224H308V216H316V224H340ZM340 200V208H324V216H316V208H300V200H340ZM332 184V192H300V184H332ZM332 160V168H300V160H332ZM332 168H340V184H332V168ZM340 136V144H308V152H300V128H308V136H340ZM340 112V120H300V88H308V112H316V96H324V112H340ZM332 48H340V80H300V48H308V72H316V56H324V72H332V48ZM308 32H300V8H308V32ZM316 40H308V32H316V40ZM316 32V16H324V32H316ZM332 8V16H324V8H332ZM332 16H340V40H332V16Z" fill="#F6F8FF"/>
+</svg>
