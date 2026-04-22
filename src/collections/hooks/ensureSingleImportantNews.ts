@@ -29,6 +29,7 @@ export const ensureSingleImportantNewsBeforeChange: CollectionBeforeChangeHook<N
     depth: 0,
     pagination: false,
     overrideAccess: true,
+    req,
     where: {
       and: [
         {
