@@ -6,6 +6,7 @@ export type NewsItem = {
   dateTime: News["date"];
   title: News["title"];
   body: News["body"];
+  important: boolean;
 };
 
 export type NewsPageData = {

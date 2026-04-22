@@ -6,7 +6,7 @@ import { DevPageContainer } from "../../_components/DevPageContainer";
 import { DevPanel } from "../../_components/DevPanel";
 import { DevSection } from "../../_components/DevSection";
 import { topModuleSlides } from "../../_data/topModuleSlides";
-import { sampleNewsItems } from "../../_data/sampleNews";
+import { sampleNewsItems, sampleNewsItemsWithoutImportant } from "../../_data/sampleNews";
 import SponsorSection from "@/modules/top/ui/SponsorSection";
 import InfoMenu from "@/modules/top/ui/InfoMenu";
 import LogoInfo from "@/modules/top/ui/LogoInfo";
@@ -30,14 +30,14 @@ export default function DevTopPageModulesPage() {
         </DevPanel>
       </DevSection>
       <DevSection title="News">
-        <DevPanel title="NewsTop (src/modules/top/ui)">
+        <DevPanel title="NewsTop (importantあり)">
           <div className="grid place-items-center bg-base py-m">
             <NewsTop items={sampleNewsItems.slice(0, 3)} />
           </div>
         </DevPanel>
-        <DevPanel title="NewsTop — empty state">
+        <DevPanel title="NewsTop (importantなし)">
           <div className="grid place-items-center bg-base py-m">
-            <NewsTop items={[]} />
+            <NewsTop items={sampleNewsItemsWithoutImportant.slice(0, 3)} />
           </div>
         </DevPanel>
       </DevSection>

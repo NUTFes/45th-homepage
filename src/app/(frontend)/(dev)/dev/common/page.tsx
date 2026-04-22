@@ -29,8 +29,12 @@ import { DevPanel } from "../_components/DevPanel";
 import { DevSection } from "../_components/DevSection";
 import ButtonMain from "@/components/ui/ButtonMain";
 import SectionTitle from "@/components/ui/SectionTitle";
+import { sampleNewsItems } from "../_data/sampleNews";
 
 const previewSlides = ["Slide 1", "Slide 2", "Slide 3"];
+const noImportantNewsMessage = "現在、重要なお知らせはありません。";
+const sampleImportantNewsBody =
+  sampleNewsItems.find((item) => item.important)?.body ?? noImportantNewsMessage;
 
 export default function DevCommonComponentsPage() {
   return (
@@ -81,9 +85,7 @@ export default function DevCommonComponentsPage() {
           </InfoFrame>
         </DevPanel>
         <DevPanel title="ImportantFrame">
-          <ImportantFrame title="重要なお知らせ">
-            晴れスケ・雨スケなどかにかまかにかまかにかまかにかまかにかまかにかま
-          </ImportantFrame>
+          <ImportantFrame title="重要なお知らせ">{sampleImportantNewsBody}</ImportantFrame>
         </DevPanel>
         <DevPanel title="InfoBlock">
           <InfoFrame>
@@ -134,7 +136,9 @@ export default function DevCommonComponentsPage() {
         </DevPanel>
 
         <DevPanel title="ButtonMain">
-          <ButtonMain href={"/"} title={"タイトルを入力"} />
+          <div className="flex w-full justify-center pb-ss">
+            <ButtonMain href={"/"} title={"タイトルを入力"} />
+          </div>
         </DevPanel>
 
         <DevPanel title="SectionTitle">
