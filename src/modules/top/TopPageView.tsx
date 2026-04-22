@@ -28,7 +28,7 @@ function TopPageSkeleton() {
           <div className="w-full md:w-auto md:shrink-0">
             <SectionTitle title="お知らせ" />
           </div>
-          <div className="flex w-full flex-col items-end gap-m md:max-w-190">
+          <div className="flex w-full flex-col items-end gap-m md:max-w-189">
             <div className="w-full bg-base-dark px-ll py-m md:bg-transparent md:px-ss md:py-0">
               <ul className="flex flex-col gap-m md:gap-l">
                 {[...Array(3)].map((_, i) => (
