@@ -146,33 +146,25 @@ function MenuItem({ item }: MenuItemProps) {
     <li className="border-b border-font-main">
       {isLeaf ? (
         enabled ? (
-          <Link
-            href={item.href}
-            className="flex items-center gap-s px-l py-m text-font-main"
-          >
+          <Link href={item.href} className="flex items-center gap-s px-l py-m text-font-main">
             <item.icon className="shrink-0 text-secondary" size={32} />
-                    <span
-          className={
-            enabled
-              ? "text-text-large text-font-main"
-              : "text-text-large text-font-gray"
-          }
-        >
-          {item.label}
-        </span>
+            <span
+              className={
+                enabled ? "text-text-large text-font-main" : "text-text-large text-font-gray"
+              }
+            >
+              {item.label}
+            </span>
           </Link>
         ) : (
-          <div className="flex items-center gap-s px-l py-m text-gray cursor-not-allowed pointer-events-none">
+          <div className="text-gray pointer-events-none flex cursor-not-allowed items-center gap-s px-l py-m">
             <item.icon className="shrink-0 text-font-gray" size={32} />
             <span className="text-text-large text-font-gray">{item.label}</span>
           </div>
         )
       ) : (
         <Disclosure className="group">
-          <Button
-            slot="trigger"
-            className="flex w-full items-center justify-start gap-s px-l py-m"
-          >
+          <Button slot="trigger" className="flex w-full items-center justify-start gap-s px-l py-m">
             <item.icon className="shrink-0 text-font-gray" size={32} />
             <span className="text-text-large text-font-gray">{item.label}</span>
             <span className="relative ml-auto h-6 w-6" aria-hidden="true">
@@ -199,7 +191,7 @@ function MenuItem({ item }: MenuItemProps) {
                         {child.label}
                       </Link>
                     ) : (
-                      <span className="text-text text-font-gray cursor-not-allowed pointer-events-none">
+                      <span className="pointer-events-none cursor-not-allowed text-text text-font-gray">
                         {child.label}
                       </span>
                     )}
@@ -224,4 +216,3 @@ export default function Menu() {
     </nav>
   );
 }
-
