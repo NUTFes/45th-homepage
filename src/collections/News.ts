@@ -1,5 +1,6 @@
 import type { CollectionConfig } from "payload";
 
+import { ensureSingleImportantNewsBeforeChange } from "./hooks/ensureSingleImportantNews";
 import { revalidateNewsAfterChange, revalidateNewsAfterDelete } from "./hooks/revalidateNews";
 
 export const News: CollectionConfig = {
@@ -26,7 +27,7 @@ export const News: CollectionConfig = {
   },
   admin: {
     useAsTitle: "title",
-    defaultColumns: ["_status", "title", "date", "updatedAt"],
+    defaultColumns: ["_status", "important", "title", "date", "updatedAt"],
     group: {
       ja: "コンテンツ",
       en: "Content",
@@ -41,6 +42,7 @@ export const News: CollectionConfig = {
   },
   defaultSort: "-date",
   hooks: {
+    beforeChange: [ensureSingleImportantNewsBeforeChange],
     afterChange: [revalidateNewsAfterChange],
     afterDelete: [revalidateNewsAfterDelete],
   },
@@ -60,6 +62,39 @@ export const News: CollectionConfig = {
         date: {
           displayFormat: "yyyy年MM月dd日",
           pickerAppearance: "dayOnly",
+        },
+      },
+    },
+    {
+      name: "important",
+      label: {
+        ja: "重要表示",
+        en: "Importance",
+      },
+      type: "select",
+      required: true,
+      defaultValue: "normal",
+      options: [
+        {
+          label: {
+            ja: "通常",
+            en: "Normal",
+          },
+          value: "normal",
+        },
+        {
+          label: {
+            ja: "重要",
+            en: "Important",
+          },
+          value: "important",
+        },
+      ],
+      admin: {
+        position: "sidebar",
+        description: {
+          ja: "「重要」を選ぶとトップページの重要なお知らせに表示されます。",
+          en: "Select “Important” to show this in the top-page important notice frame.",
         },
       },
     },

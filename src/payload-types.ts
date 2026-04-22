@@ -193,6 +193,10 @@ export interface Media {
 export interface News {
   id: number;
   date: string;
+  /**
+   * Select “Important” to show this in the top-page important notice frame.
+   */
+  important: 'normal' | 'important';
   title: string;
   body: string;
   updatedAt: string;
@@ -337,6 +341,7 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface NewsSelect<T extends boolean = true> {
   date?: T;
+  important?: T;
   title?: T;
   body?: T;
   updatedAt?: T;
