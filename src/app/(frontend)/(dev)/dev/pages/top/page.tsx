@@ -32,7 +32,7 @@ export default function DevTopPageModulesPage() {
       <DevSection title="News">
         <DevPanel title="NewsTop (importantあり)">
           <div className="grid place-items-center bg-base py-m">
-            <NewsTop items={sampleNewsItems.slice(0, 3)} />
+            <NewsTop items={sampleNewsItems.slice(0, 3)} importantBody={sampleNewsItems.find((item) => item.important)?.body} />
           </div>
         </DevPanel>
         <DevPanel title="NewsTop (importantなし)">
