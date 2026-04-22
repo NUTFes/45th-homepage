@@ -24,7 +24,7 @@ function TopPageSkeleton() {
         <ImportantFrameSkeleton />
       </div>
       <section className="w-full md:bg-base-dark md:px-3l md:py-3l">
-        <div className="mx-auto flex w-full max-w-105 flex-col items-center gap-m md:max-w-260 md:flex-row md:items-start md:justify-start md:gap-4l">
+        <div className="mx-auto flex w-full max-w-105 flex-col items-center gap-m md:max-w-250 md:flex-row md:items-start md:justify-start md:gap-4l">
           <div className="w-full md:w-auto md:shrink-0">
             <SectionTitle title="お知らせ" />
           </div>
