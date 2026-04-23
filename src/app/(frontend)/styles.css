@@ -19,6 +19,7 @@
   --color-button-start: #7b61ff;
   --color-button-end: #624ecc;
   --color-font-main: #f6f8ff;
+  --color-accent: #ff5bef;
 
   --font-kaisotai: "Kaisotai Next", sans-serif;
   --font-goldman: "Goldman", sans-serif;
@@ -43,15 +44,32 @@
   --text-text-small: 12px;
   --text-text-small--font-weight: 500;
 
+  --text-Ptitle: 36px;
+  --text-Ptitle--font-weight: 700;
+  --text-Ptitle-small: 22px;
+  --text-Ptitle-small--font-weight: 700;
+  --text-Pbutton: 18px;
+  --text-Pbutton--font-weight: 700;
+
+  --text-Ptext: 18px;
+  --text-Ptext--line-height: 28px;
+  --text-Ptext--font-weight: 500;
+  --text-Ptext-large: 20px;
+  --text-Ptext-large--line-height: 32px;
+  --text-Ptext-large--font-weight: 500;
+
   --spacing-ss: 8px;
-  --spacing-xs: 12px; /* 使用頻度 少 */
+  --spacing-xs: 12px;
   --spacing-s: 16px;
   --spacing-m: 20px;
   --spacing-l: 28px;
   --spacing-ll: 32px;
   --spacing-3l: 40px;
   --spacing-4l: 60px;
-  --spacing-5l: 80px; /* 使用頻度 少 */
+  --spacing-5l: 80px;
+  --spacing-pm: 120px;
+  --spacing-pl: 200px;
+  --spacing-pll: 240px;
 }
 
 .button-gradient {
