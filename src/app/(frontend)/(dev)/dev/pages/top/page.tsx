@@ -10,7 +10,7 @@ import { sampleNewsItems } from "../../_data/sampleNews";
 import SponsorSection from "@/modules/top/ui/SponsorSection";
 import InfoMenu from "@/modules/top/ui/InfoMenu";
 import LogoInfo from "@/modules/top/ui/LogoInfo";
-import PcLogoInfo from "@/modules/top/ui/PcLogoinfo";
+import PcLogoInfo from "@/modules/top/ui/PcLogoInfo";
 
 export default function DevTopPageModulesPage() {
   return (
