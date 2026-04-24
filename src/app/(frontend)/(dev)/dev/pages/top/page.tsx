@@ -10,6 +10,7 @@ import { sampleNewsItems } from "../../_data/sampleNews";
 import SponsorSection from "@/modules/top/ui/SponsorSection";
 import InfoMenu from "@/modules/top/ui/InfoMenu";
 import LogoInfo from "@/modules/top/ui/LogoInfo";
+import PcLogoInfo from "@/modules/top/ui/PcLogoinfo";
 
 export default function DevTopPageModulesPage() {
   return (
@@ -54,6 +55,11 @@ export default function DevTopPageModulesPage() {
       <DevSection title="LogoInfo">
         <DevPanel title="LogoInfo (src/modules/top/ui)">
           <LogoInfo />
+        </DevPanel>
+      </DevSection>
+      <DevSection title="LogoPcInfo">
+        <DevPanel title="PcLogoInfo (src/modules/top/ui)">
+          <PcLogoInfo />
         </DevPanel>
       </DevSection>
     </DevPageContainer>
