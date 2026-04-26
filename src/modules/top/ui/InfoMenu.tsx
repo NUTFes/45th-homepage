@@ -42,7 +42,7 @@ const InfoMenuItems = [
 
 export default function InfoMenu() {
   return (
-    <nav >
+    <nav>
       <ul className="flex w-full list-none flex-col gap-s">
         {InfoMenuItems.map((item) => (
           <li key={item.name} className="px-3l">

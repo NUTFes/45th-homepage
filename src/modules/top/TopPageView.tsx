@@ -40,80 +40,75 @@ function TopPageSkeleton() {
 
 export default function TopPageView() {
   return (
-      <div className="flex min-h-screen flex-col items-center bg-base pt-4l">
-        <Suspense fallback={<TopPageSkeleton />}>
-          <div className="flex flex-col gap-y-ll items-center">
-            <div className="relative w-full aspect-[393/638]">
-              <Image
-                src="/image/top/HeroAll.png"
-                alt="45thNutfes_HeroHeader"
-                fill
-                className="object-cover"
-              />
-            </div>
-            <LogoInfo />
+    <div className="flex min-h-screen flex-col items-center bg-base pt-4l">
+      <Suspense fallback={<TopPageSkeleton />}>
+        <div className="flex flex-col items-center gap-y-ll">
+          <div className="relative aspect-[393/638] w-full">
+            <Image
+              src="/image/top/HeroAll.png"
+              alt="45thNutfes_HeroHeader"
+              fill
+              className="object-cover"
+            />
           </div>
-          <div className="relative w-full flex flex-col gap-4l">
-
-            <div className="relative flex flex-col gap-4l">
-              --重要なお知らせ--
-
-              <div className="relative">
-                <div className="absolute right-0 bottom-[-200px] z-0 aspect-[393/638]">
-                  <Image
-                    src="/image/top/TopBack1.svg"
-                    alt="45th_Top1"
-                    width={393}
-                    height={638}
-                    className="object-contain object-right-top pointer-events-none"
-                  />
-                </div>
-                <div className="flex flex-col gap-y-m z-10">
-                  <SectionTitle title="PICK UP" />
-                  <PickUpFrame>
-                    <PickUpCarousel slides={[...topModuleSlides]} autoPlay={{ delay: 2500 }} />
-                  </PickUpFrame>
-                </div>
-              </div>
-              <div className="z-10">
-                <SponsorSection />
-              </div>
-              <div className="relative">
-                <div className="absolute right-0 bottom-[-450px] z-0 aspect-[393/638]">
-                  <Image
-                    src="/image/top/TopBack2.svg"
-                    alt="45th_Top2"
-                    width={393}
-                    height={393}
-                    className="object-contain object-right-bottom pointer-events-none"
-                  />
-                </div>
-              </div>
-                <div className="z-10">
-                  <TopPageContent />
-                </div>
-
-              <div className="w-full flex flex-col gap-y-s pb-3l">
-                <SectionTitle title="ご案内" />
-                <InfoMenu />
-              </div>
-            </div>
-            <div className="relative w-full">
-              <div className="absolute right-0 bottom-99 z-0">
+          <LogoInfo />
+        </div>
+        <div className="relative flex w-full flex-col gap-4l">
+          <div className="relative flex flex-col gap-4l">
+            --重要なお知らせ--
+            <div className="relative">
+              <div className="absolute right-0 bottom-[-200px] z-0 aspect-[393/638]">
                 <Image
-                  src="/image/top/TopBack3.svg"
-                  alt="45th_Top3"
+                  src="/image/top/TopBack1.svg"
+                  alt="45th_Top1"
                   width={393}
                   height={638}
-                  className="object-contain object-right-top pointer-events-none"
+                  className="pointer-events-none object-contain object-right-top"
                 />
               </div>
-              <Footer />
+              <div className="z-10 flex flex-col gap-y-m">
+                <SectionTitle title="PICK UP" />
+                <PickUpFrame>
+                  <PickUpCarousel slides={[...topModuleSlides]} autoPlay={{ delay: 2500 }} />
+                </PickUpFrame>
+              </div>
             </div>
-
+            <div className="z-10">
+              <SponsorSection />
+            </div>
+            <div className="relative">
+              <div className="absolute right-0 bottom-[-450px] z-0 aspect-[393/638]">
+                <Image
+                  src="/image/top/TopBack2.svg"
+                  alt="45th_Top2"
+                  width={393}
+                  height={393}
+                  className="pointer-events-none object-contain object-right-bottom"
+                />
+              </div>
+            </div>
+            <div className="z-10">
+              <TopPageContent />
+            </div>
+            <div className="flex w-full flex-col gap-y-s pb-3l">
+              <SectionTitle title="ご案内" />
+              <InfoMenu />
+            </div>
           </div>
-        </Suspense>
-      </div>
-
+          <div className="relative w-full">
+            <div className="absolute right-0 bottom-99 z-0">
+              <Image
+                src="/image/top/TopBack3.svg"
+                alt="45th_Top3"
+                width={393}
+                height={638}
+                className="pointer-events-none object-contain object-right-top"
+              />
+            </div>
+            <Footer />
+          </div>
+        </div>
+      </Suspense>
+    </div>
   );
 }
