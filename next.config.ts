@@ -9,13 +9,6 @@ const dirname = path.dirname(__filename);
 const nextConfig: NextConfig = {
   cacheComponents: true,
   output: "standalone",
-  images: {
-    localPatterns: [
-      {
-        pathname: "/api/media/file/**",
-      },
-    ],
-  },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
       ...webpackConfig.resolve.extensionAlias,

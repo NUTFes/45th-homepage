@@ -44,11 +44,12 @@ const formatNewsDate = (isoDate: string) => {
   return `${year}.${month}.${day}`;
 };
 
-const toNewsItem = (doc: Pick<News, "id" | "date" | "title" | "body">): NewsItem => ({
+const toNewsItem = (doc: Pick<News, "id" | "date" | "title" | "body" | "important">): NewsItem => ({
   body: doc.body,
   date: formatNewsDate(doc.date),
   dateTime: doc.date,
   id: doc.id,
+  important: doc.important === "important",
   title: doc.title,
 });
 
@@ -67,6 +68,7 @@ export const getNews = cache(async (page = 1, limit = DEFAULT_LIMIT): Promise<Ne
       id: true,
       body: true,
       date: true,
+      important: true,
       title: true,
     },
     sort: "-date",
@@ -100,6 +102,7 @@ export const getLatestNews = cache(async (limit = 3): Promise<NewsItem[]> => {
       id: true,
       body: true,
       date: true,
+      important: true,
       title: true,
     },
     sort: "-date",
@@ -111,4 +114,34 @@ export const getLatestNews = cache(async (limit = 3): Promise<NewsItem[]> => {
   });
 
   return result.docs.map(toNewsItem);
+});
+
+export const getImportantNewsBody = cache(async (): Promise<string | null> => {
+  const payload = await getPayload({ config });
+  const result = await payload.find({
+    collection: "news",
+    depth: 0,
+    limit: 1,
+    overrideAccess: true,
+    select: {
+      body: true,
+    },
+    sort: "-date",
+    where: {
+      and: [
+        {
+          _status: {
+            equals: "published",
+          },
+        },
+        {
+          important: {
+            equals: "important",
+          },
+        },
+      ],
+    },
+  });
+
+  return result.docs[0]?.body ?? null;
 });
