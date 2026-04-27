@@ -77,12 +77,12 @@ export default function TopPageView() {
               <SponsorSection />
             </div>
             <div className="relative">
-              <div className="absolute right-0 bottom-[-450px] z-0 aspect-[393/638]">
+              <div className="absolute right-0 bottom-[-450px] z-0">
                 <Image
                   src="/image/top/TopBack2.svg"
                   alt="45th_Top2"
-                  width={393}
-                  height={393}
+                  width={210}
+                  height={198}
                   className="pointer-events-none object-contain object-right-bottom"
                 />
               </div>
