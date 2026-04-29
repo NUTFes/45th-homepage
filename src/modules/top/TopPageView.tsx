@@ -14,6 +14,7 @@ import PickUpFrame from "./ui/PickUpFrame";
 import { topModuleSlides } from "@/app/(frontend)/(dev)/dev/_data/topModuleSlides";
 import InfoMenu from "./ui/InfoMenu";
 import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
 async function TopPageContent() {
   await connection();
   const latestNews = await getLatestNews(3);
@@ -40,7 +41,7 @@ function TopPageSkeleton() {
 
 export default function TopPageView() {
   return (
-    <div className="flex min-h-screen flex-col items-center bg-base pt-4l">
+    <div className="flex min-h-screen flex-col items-center bg-base">
       <Suspense fallback={<TopPageSkeleton />}>
         <div className="flex flex-col items-center gap-y-ll">
           <div className="relative aspect-[393/638] w-full">
@@ -77,7 +78,7 @@ export default function TopPageView() {
               <SponsorSection />
             </div>
             <div className="relative">
-              <div className="absolute right-0 bottom-[-450px] z-0">
+              <div className="absolute right-0 bottom-[-50px] z-0">
                 <Image
                   src="/image/top/TopBack2.svg"
                   alt="45th_Top2"
@@ -96,7 +97,7 @@ export default function TopPageView() {
             </div>
           </div>
           <div className="relative w-full">
-            <div className="absolute right-0 bottom-99 z-0">
+            <div className="absolute right-0 bottom-0 z-0">
               <Image
                 src="/image/top/TopBack3.svg"
                 alt="45th_Top3"
@@ -105,7 +106,6 @@ export default function TopPageView() {
                 className="pointer-events-none object-contain object-right-top"
               />
             </div>
-            <Footer />
           </div>
         </div>
       </Suspense>
