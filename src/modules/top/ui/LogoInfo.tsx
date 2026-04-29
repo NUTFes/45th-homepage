@@ -6,8 +6,14 @@ export default function LogoInfo() {
       aria-label="技大祭について"
       className="flex w-full flex-col items-center justify-center gap-ll bg-linear-to-b from-[#FFFAFA] from-[6.73%] via-[#9399C7] via-[64.42%] to-base py-3l md:flex-row md:gap-pm md:bg-linear-to-r md:from-[8.17%] md:via-[54.81%] md:px-pll md:py-ll"
     >
-      <Image src="/image/45th-LogoBlue.svg" alt="45th技大祭ロゴ" width={260} height={260} className="h-[140px] w-[140px] md:h-[260px] md:w-[260px]"/>
-      <p className="px-12 text-center text-text text-font-main md:flex-1 md:px-0 md:text-Ptext-large md:font-bold">
+      <Image
+        src="/image/45th-LogoBlue.svg"
+        alt="45th技大祭ロゴ"
+        width={260}
+        height={260}
+        className="h-[140px] w-[140px] md:h-[260px] md:w-[260px]"
+      />
+      <p className="px-3l text-center text-text text-font-main md:px-0 md:flex-1 md:text-Ptext-large md:font-bold">
         これは説明文です。これは説明文です。これは説明文です。 これは説明文です。これは説明文です。
         これは説明文です。これは説明文です。これは説明文です。
       </p>
