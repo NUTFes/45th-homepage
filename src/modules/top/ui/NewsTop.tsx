@@ -22,7 +22,7 @@ export default function NewsTop({ items, importantBody }: NewsTopProps) {
         </ImportantFrame>
       </div>
       <div className="flex w-full flex-col items-center gap-m md:gap-ll">
-        <div className="w-full max-w-105 md:ml-pl md:max-w-full">
+        <div className="w-full max-w-105 md:max-w-full md:self-start md:px-pl">
           <SectionTitle title="お知らせ" />
         </div>
         <section className="w-full md:bg-base-dark md:px-pl md:py-3l">
