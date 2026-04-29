@@ -21,37 +21,39 @@ export default function NewsTop({ items, importantBody }: NewsTopProps) {
           <p className="whitespace-pre-wrap">{resolvedImportantBody}</p>
         </ImportantFrame>
       </div>
-      <section className="w-full md:bg-base-dark md:px-3l md:py-3l">
-        <div className="mx-auto flex w-full max-w-105 flex-col items-center gap-m md:max-w-250 md:flex-row md:items-start md:justify-start md:gap-4l">
-          <div className="w-full md:w-auto md:shrink-0">
-            <SectionTitle title="お知らせ" />
-          </div>
-          <div className="flex w-full flex-col items-end gap-m md:max-w-189">
-            <div className="w-full bg-base-dark px-ll py-m md:bg-transparent md:px-ss md:py-0">
-              {items.length > 0 ? (
-                <ul className="flex flex-col gap-m md:gap-l">
-                  {items.map((news) => (
-                    <NewsItem
-                      key={news.id}
-                      date={news.date}
-                      dateTime={news.dateTime}
-                      title={news.title}
-                      content={news.body}
-                    />
-                  ))}
-                </ul>
-              ) : (
-                <p className="px-ll py-m text-center text-text text-font-main">
-                  お知らせはまだありません
-                </p>
-              )}
-            </div>
-            <div className="flex w-full justify-center pb-ss md:justify-end">
-              <ButtonMain href="/news" title="お知らせ一覧を見る ＞" />
-            </div>
-          </div>
+      <div className="flex w-full flex-col items-center gap-m md:gap-ll">
+        <div className="mx-auto w-full max-w-105 md:max-w-[760px] md:px-pl">
+          <SectionTitle title="お知らせ" />
         </div>
-      </section>
+        <section className="w-full md:bg-[rgba(25,45,133,0.8)] md:px-pl md:py-3l">
+          <div className="mx-auto flex w-full max-w-105 flex-col items-center gap-m md:max-w-[760px] md:items-start">
+            <div className="flex w-full flex-col items-end gap-m md:w-full md:max-w-none md:items-start">
+              <div className="w-full bg-base-dark px-ll py-m md:bg-transparent md:px-ss md:py-0">
+                {items.length > 0 ? (
+                  <ul className="flex flex-col gap-m md:gap-l">
+                    {items.map((news) => (
+                      <NewsItem
+                        key={news.id}
+                        date={news.date}
+                        dateTime={news.dateTime}
+                        title={news.title}
+                        content={news.body}
+                      />
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="px-ll py-m text-center text-text text-font-main">
+                    お知らせはまだありません
+                  </p>
+                )}
+              </div>
+              <div className="flex w-full justify-center pb-ss md:justify-center">
+                <ButtonMain href="/news" title="お知らせ一覧を見る ＞" />
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }
