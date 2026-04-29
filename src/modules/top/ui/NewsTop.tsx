@@ -22,11 +22,11 @@ export default function NewsTop({ items, importantBody }: NewsTopProps) {
         </ImportantFrame>
       </div>
       <div className="flex w-full flex-col items-center gap-m md:gap-ll">
-        <div className="mx-auto w-full max-w-105 md:max-w-[760px] md:px-pl">
+        <div className="w-full max-w-105 md:ml-pl md:max-w-full">
           <SectionTitle title="お知らせ" />
         </div>
-        <section className="w-full md:bg-[rgba(25,45,133,0.8)] md:px-pl md:py-3l">
-          <div className="mx-auto flex w-full max-w-105 flex-col items-center gap-m md:max-w-[760px] md:items-start">
+        <section className="w-full md:bg-base-dark md:px-pl md:py-3l">
+          <div className="mx-auto flex w-full max-w-105 flex-col items-center gap-m md:max-w-190 md:items-start">
             <div className="flex w-full flex-col items-end gap-m md:w-full md:max-w-none md:items-start">
               <div className="w-full bg-base-dark px-ll py-m md:bg-transparent md:px-ss md:py-0">
                 {items.length > 0 ? (
