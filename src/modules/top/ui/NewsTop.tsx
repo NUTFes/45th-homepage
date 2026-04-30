@@ -27,7 +27,7 @@ export default function NewsTop({ items, importantBody }: NewsTopProps) {
         </div>
         <section className="w-full md:bg-base-dark md:px-pl md:py-3l">
           <div className="mx-auto flex w-full max-w-105 flex-col items-center gap-m md:max-w-190 md:items-start">
-            <div className="flex w-full flex-col items-end gap-m md:w-full md:max-w-none md:items-start">
+            <div className="flex w-full flex-col items-end gap-m md:w-full md:max-w-none md:items-start md:gap-l">
               <div className="w-full bg-base-dark px-ll py-m md:bg-transparent md:px-ss md:py-0">
                 {items.length > 0 ? (
                   <ul className="flex flex-col gap-m md:gap-l">
