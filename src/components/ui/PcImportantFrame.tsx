@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
 
-type ImportantFrameProps = {
+type PcImportantFrameProps = {
   title: string;
   children: ReactNode;
 };
 
-export default function ImportantFrame({ title, children }: ImportantFrameProps) {
+export default function PcImportantFrame({ title, children }: PcImportantFrameProps) {
   return (
     <div className="w-full border-y-[1.4px] border-main bg-base-dark py-l">
       <div className="mx-auto flex w-full max-w-260 flex-col gap-0.5 px-3l">
