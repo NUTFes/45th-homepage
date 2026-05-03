@@ -43,9 +43,7 @@ export default function PcSponsorSection() {
         </div>
 
         <div className="flex flex-col items-center gap-y-m">
-          <div>
-            協賛のお問い合わせは、以下のメールアドレスからご連絡ください。
-          </div>
+          <div>協賛のお問い合わせは、以下のメールアドレスからご連絡ください。</div>
 
           <div className="shadow-[1px_2px_2px_rgba(8,18,94,1.0)]">
             <Button
@@ -53,9 +51,7 @@ export default function PcSponsorSection() {
               className="forced-colors:none h-fit gap-x-m rounded-md bg-white px-4l py-s text-base-dark hover:bg-main"
             >
               <Copy size={24} />
-              <div className="text-center text-Pbutton">
-                メールアドレスをコピー
-              </div>
+              <div className="text-center text-Pbutton">メールアドレスをコピー</div>
             </Button>
           </div>
         </div>
