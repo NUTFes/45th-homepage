@@ -36,11 +36,11 @@ export const PickUpCarousel = ({ slides, autoPlay, autoScroll }: PickUpCarouselP
       ariaLabel="PICKUP carousel"
       autoPlay={resolvedAutoPlay}
       autoScroll={autoScroll}
-      className="relative h-full w-full"
+      className="relative w-full"
       loop
       options={{ align: "center" }}
     >
-      <CarouselViewport className="absolute inset-0 overflow-hidden">
+      <CarouselViewport className="overflow-hidden" trackClassName="!h-auto">
         {safeSlides.map((slide, index) => (
           <PickUpSlideContent index={index} key={slide.id} slide={slide} />
         ))}
@@ -76,10 +76,10 @@ const PickUpSlideContent = ({ slide, index }: { slide: CarouselImageSlide; index
 
   return (
     <CarouselSlide
-      className="relative h-full min-w-0 flex-[0_0_100%] px-0 md:flex-[0_0_60%]"
+      className="relative aspect-video min-w-0 flex-[0_0_100%] px-0 md:flex-[0_0_60%]"
       index={index}
     >
-      <div className="relative h-full w-full overflow-hidden">
+      <div className="relative aspect-video w-full overflow-hidden">
         {slide.href ? (
           <Link aria-label={slide.imageAlt} className="group block h-full w-full" href={slide.href}>
             <div className="absolute inset-0 flex items-center overflow-hidden">
