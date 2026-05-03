@@ -11,9 +11,7 @@ import {
   sampleNewsItemsWithoutImportant,
 } from "../../_data/sampleNews";
 import SponsorSection from "@/modules/top/ui/SponsorSection";
-import PcSponsorSection from "@/modules/top/ui/PcSponsorSection";
 import InfoMenu from "@/modules/top/ui/InfoMenu";
-import PcInfoMenu from "@/modules/top/ui/PcInfoMenu";
 import LogoInfo from "@/modules/top/ui/LogoInfo";
 
 export default function DevTopPageModulesPage() {
@@ -58,16 +56,10 @@ export default function DevTopPageModulesPage() {
         <DevPanel title="SponsorSection (src/modules/top/ui)">
           <SponsorSection />
         </DevPanel>
-        <DevPanel title="PcSponsorSection (src/modules/top/ui)">
-          <PcSponsorSection />
-        </DevPanel>
       </DevSection>
       <DevSection title="InfoMenu">
         <DevPanel title="InfoMenu (src/modules/top/ui)">
           <InfoMenu />
-        </DevPanel>
-        <DevPanel title="PcInfoMenu (src/modules/top/ui)">
-          <PcInfoMenu />
         </DevPanel>
       </DevSection>
       <DevSection title="LogoInfo">

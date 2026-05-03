@@ -10,7 +10,6 @@ import {
 import InfoFrame from "@/components/ui/InfoFrame";
 import InfoBlock from "@/components/ui/InfoBlock";
 import ImportantFrame from "@/components/ui/ImportantFrame";
-import PcImportantFrame from "@/components/ui/PcImportantFrame";
 import NewsItem from "@/components/ui/NewsItem";
 import {
   Beer,
@@ -98,11 +97,6 @@ export default function DevCommonComponentsPage() {
           </ImportantFrame>
         </DevPanel>
 
-        <DevPanel title="PcImportantFrame">
-          <PcImportantFrame title="重要なお知らせ">
-            {sampleImportantNewsBody}
-          </PcImportantFrame>
-        </DevPanel>
         <DevPanel title="InfoBlock">
           <InfoFrame>
             <div className="flex flex-col gap-y-8">
