@@ -1,9 +1,6 @@
 import { Suspense } from "react";
 import { connection } from "next/server";
-import {
-  getImportantNewsBody,
-  getLatestNews,
-} from "@/modules/news/server/getNews";
+import { getImportantNewsBody, getLatestNews } from "@/modules/news/server/getNews";
 import { getPickUpSlides } from "@/modules/top/server/getPickUpSlides";
 import ButtonMain from "@/components/ui/ButtonMain";
 import ImportantFrame from "@/components/ui/ImportantFrame";
@@ -30,9 +27,7 @@ async function TopPageContent() {
       {/* 重要なお知らせ */}
       <div className="w-full max-w-105 md:max-w-none">
         <ImportantFrame title="重要なお知らせ">
-          <p className="whitespace-pre-wrap">
-            {importantNewsBody ?? NO_IMPORTANT_NEWS_MESSAGE}
-          </p>
+          <p className="whitespace-pre-wrap">{importantNewsBody ?? NO_IMPORTANT_NEWS_MESSAGE}</p>
         </ImportantFrame>
       </div>
 
@@ -111,18 +106,9 @@ function TopPageSkeleton() {
             <div className="flex w-full flex-col items-end gap-m md:w-full md:max-w-none md:items-start md:gap-l">
               <div className="w-full bg-base-dark px-ll py-m md:bg-transparent md:px-ss md:py-0">
                 <ul className="flex flex-col gap-m md:gap-l">
-                  <NewsItemSkeleton
-                    key="news-skeleton-0"
-                    skeletonClassName="bg-base"
-                  />
-                  <NewsItemSkeleton
-                    key="news-skeleton-1"
-                    skeletonClassName="bg-base"
-                  />
-                  <NewsItemSkeleton
-                    key="news-skeleton-2"
-                    skeletonClassName="bg-base"
-                  />
+                  <NewsItemSkeleton key="news-skeleton-0" skeletonClassName="bg-base" />
+                  <NewsItemSkeleton key="news-skeleton-1" skeletonClassName="bg-base" />
+                  <NewsItemSkeleton key="news-skeleton-2" skeletonClassName="bg-base" />
                 </ul>
               </div>
             </div>

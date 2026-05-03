@@ -40,7 +40,7 @@ async function NewsPageContent({ searchParams }: NewsPageViewProps) {
         </ImportantFrame>
       </div>
 
-      <div className="relative mx-auto flex w-full flex-col pt-4l md:pt-5l pb-pm gap-4l">
+      <div className="relative mx-auto flex w-full flex-col gap-4l pt-4l pb-pm md:pt-5l">
         <Image
           src="/image/PageBack1.svg"
           alt=""
@@ -51,7 +51,7 @@ async function NewsPageContent({ searchParams }: NewsPageViewProps) {
           priority={false}
         />
 
-        <div className="relative z-10 flex flex-col gap-s px-ll md:px-pl md:gap-4l">
+        <div className="relative z-10 flex flex-col gap-s px-ll md:gap-4l md:px-pl">
           <SectionTitle title="お知らせ" />
           <div className="mx-auto w-full max-w-190">
             <NewsList items={newsData.items} />
@@ -101,7 +101,7 @@ function NewsPageSkeleton() {
 export default function NewsPageView(props: NewsPageViewProps) {
   return (
     <div className="relative flex min-h-screen flex-col items-center bg-base">
-        <Image
+      <Image
         src="/image/PageBack2.svg"
         alt=""
         aria-hidden="true"
