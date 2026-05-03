@@ -27,9 +27,7 @@ async function TopPageContent() {
       {/* 重要なお知らせ */}
       <div className="w-full max-w-105 md:max-w-none">
         <ImportantFrame title="重要なお知らせ">
-          <p className="whitespace-pre-wrap">
-            {importantNewsBody ?? NO_IMPORTANT_NEWS_MESSAGE}
-          </p>
+          <p className="whitespace-pre-wrap">{importantNewsBody ?? NO_IMPORTANT_NEWS_MESSAGE}</p>
         </ImportantFrame>
       </div>
 
