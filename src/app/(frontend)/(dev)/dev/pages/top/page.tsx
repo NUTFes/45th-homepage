@@ -8,6 +8,7 @@ import { DevSection } from "../../_components/DevSection";
 import { topModuleSlides } from "../../_data/topModuleSlides";
 import { sampleNewsItems, sampleNewsItemsWithoutImportant } from "../../_data/sampleNews";
 import SponsorSection from "@/modules/top/ui/SponsorSection";
+import PcSponsorSection from "@/modules/top/ui/PcSponsorSection";
 import InfoMenu from "@/modules/top/ui/InfoMenu";
 import LogoInfo from "@/modules/top/ui/LogoInfo";
 
@@ -47,6 +48,9 @@ export default function DevTopPageModulesPage() {
       <DevSection title="Sponsor">
         <DevPanel title="SponsorSection (src/modules/top/ui)">
           <SponsorSection />
+        </DevPanel>
+        <DevPanel title="PcSponsorSection (src/modules/top/ui)">
+          <PcSponsorSection />
         </DevPanel>
       </DevSection>
       <DevSection title="InfoMenu">
