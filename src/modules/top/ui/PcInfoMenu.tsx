@@ -40,7 +40,7 @@ const InfoMenuItems = [
   },
 ];
 
-export default function InfoMenu() {
+export default function PcInfoMenu() {
   return (
     <nav className="bg-base">
       <ul className="flex w-full list-none flex-col gap-m">
