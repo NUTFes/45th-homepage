@@ -13,7 +13,7 @@ function NotFoundContent() {
         <div className="flex flex-col items-center justify-center font-kaisotai text-[32px] lg:text-[40px] h-[48px] lg:h-[60px]">PAGE NOT FOUND</div>
         <div className="flex flex-col items-center justify-center text-text lg:text-Ptext-large">お探しのページは見つかりませんでした</div>
       </div>
-      <ButtonMain href="/" title="GO　BACK" px="px-4l" textSizeMd="text-text-large lg:text-Ptitle-small"/>
+      <ButtonMain href="/" title="GO　BACK" px="px-4l" textSize="text-text-large lg:text-Ptitle-small"/>
     </div>
   );
 }
