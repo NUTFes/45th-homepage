@@ -52,21 +52,24 @@ export default function Footer() {
         <p className="text-center text-text">技大祭実行委員会</p>
       </div>
       {/* PCレイアウト */}
+      <div className="w-full px-5l">
       <div className="px-2l hidden items-center justify-between py-3l lg:flex">
-        <div className="flex items-center gap-x-4l">
-          <div className="flex flex-col gap-x-ss">
-            <div className="flex items-center gap-x-s">
-              <Link href="/">
-                <Image src="/icon/45th-logo-top.svg" alt="45thNUTFES ロゴ" width={48} height={48} />
-              </Link>
-              <div className="font-kaisotai text-title text-base-dark">45th NUTFES</div>
+        <div className="flex items-top py-xs gap-x-4l justify-between w-full">
+          <div className="flex gap-x-ss">
+            <div className="flex flex-col gap-y-ss">
+              <div className="flex items-center gap-x-s min-w-[250px]">
+                <Link href="/">
+                  <Image src="/icon/45th-logo-top.svg" alt="45thNUTFES ロゴ" width={48} height={48} />
+                </Link>
+                <div className="font-kaisotai text-title text-base-dark text-[40px]">45th NUTFES</div>
+              </div>
+              <p className="text-[14px]">長岡技術科学大学　技大祭実行委員会</p>
             </div>
-            <p className="text-[14px]">長岡技術科学大学　技大祭実行委員会</p>
-          </div>
-          <div className="flex gap-ll text-button">
-            <p>アンケート</p>
-            <p>大学ホームページ</p>
-            <p>お問い合わせ</p>
+            <div className="flex gap-ll text-button min-w-[400px] w-full h-[48px] items-center pt-[4px]">
+              <div>アンケート</div>
+              <div>大学ホームページ</div>
+              <div>お問い合わせ</div>
+            </div>
           </div>
           <div className="items-top flex gap-x-l py-xs">
             <Image
@@ -97,6 +100,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </footer>
   );
