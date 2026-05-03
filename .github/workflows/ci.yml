@@ -71,6 +71,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Fetch main branch
+        run: git fetch origin main:main
+
       - name: Run React Doctor
         uses: millionco/react-doctor@1d3d514a562bbab42dcefa0badeed2e707ed7ea9
         with:
