@@ -35,7 +35,7 @@ async function TopPageContent() {
       <div className="w-full">
         <PickUpFrame>
           {pickUpSlides.length > 0 ? (
-            <PickUpCarousel slides={pickUpSlides} autoPlay={{ delay: 2500 }} />
+            <PickUpCarousel slides={pickUpSlides} autoPlay={{ delay: 5000 }} />
           ) : (
             <div className="aspect-video w-full bg-base-dark md:mx-auto md:w-[60%]" />
           )}
