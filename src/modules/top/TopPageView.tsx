@@ -32,13 +32,15 @@ async function TopPageContent() {
       </div>
 
       {/* PICKUP カルーセル */}
-      {pickUpSlides.length > 0 && (
-        <div className="w-full">
-          <PickUpFrame>
+      <div className="w-full">
+        <PickUpFrame>
+          {pickUpSlides.length > 0 ? (
             <PickUpCarousel slides={pickUpSlides} autoPlay={{ delay: 2500 }} />
-          </PickUpFrame>
-        </div>
-      )}
+          ) : (
+            <div className="aspect-video w-full bg-base-dark md:mx-auto md:w-[60%]" />
+          )}
+        </PickUpFrame>
+      </div>
 
       {/* お知らせ一覧 */}
       <div className="flex w-full flex-col items-center gap-m md:gap-ll">
@@ -89,7 +91,7 @@ function TopPageSkeleton() {
       {/* PICKUP カルーセルスケルトン */}
       <div className="w-full">
         <PickUpFrame>
-          <div className="aspect-video w-full animate-pulse bg-base-dark" />
+          <div className="aspect-video w-full animate-pulse bg-base-dark md:mx-auto md:w-[60%]" />
         </PickUpFrame>
       </div>
 
