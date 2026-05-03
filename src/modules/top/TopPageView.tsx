@@ -105,9 +105,9 @@ function TopPageSkeleton() {
             <div className="flex w-full flex-col items-end gap-m md:w-full md:max-w-none md:items-start md:gap-l">
               <div className="w-full bg-base-dark px-ll py-m md:bg-transparent md:px-ss md:py-0">
                 <ul className="flex flex-col gap-m md:gap-l">
-                  {[...Array(3)].map((_, i) => (
-                    <NewsItemSkeleton key={i} skeletonClassName="bg-base" />
-                  ))}
+                  <NewsItemSkeleton key="news-skeleton-0" skeletonClassName="bg-base" />
+                  <NewsItemSkeleton key="news-skeleton-1" skeletonClassName="bg-base" />
+                  <NewsItemSkeleton key="news-skeleton-2" skeletonClassName="bg-base" />
                 </ul>
               </div>
             </div>
