@@ -3,8 +3,6 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo } from "react";
-
 import {
   type CarouselImageSlide,
   type CarouselMotionOptions,
@@ -21,32 +19,23 @@ type PickUpCarouselProps = CarouselMotionOptions & {
   slides: CarouselImageSlide[];
 };
 
-const fallbackSlide: CarouselImageSlide = {
-  id: "fallback",
-  imageAlt: "Carousel placeholder",
-  imageUrl: "/icon/45th-logo-top.svg",
-};
-
 export const PickUpCarousel = ({ slides, autoPlay, autoScroll }: PickUpCarouselProps) => {
-  const safeSlides = slides.length > 0 ? slides : [fallbackSlide];
-  const resolvedAutoPlay = useMemo(() => autoPlay ?? { delay: 2000 }, [autoPlay]);
-
   return (
     <CarouselRoot
       ariaLabel="PICKUP carousel"
-      autoPlay={resolvedAutoPlay}
+      autoPlay={autoPlay ?? { delay: 2000 }}
       autoScroll={autoScroll}
       className="relative w-full"
       loop
       options={{ align: "center" }}
     >
       <CarouselViewport className="overflow-hidden" trackClassName="!h-auto">
-        {safeSlides.map((slide, index) => (
+        {slides.map((slide, index) => (
           <PickUpSlideContent
             index={index}
             key={slide.id}
             slide={slide}
-            totalSlides={safeSlides.length}
+            totalSlides={slides.length}
           />
         ))}
       </CarouselViewport>
@@ -66,7 +55,7 @@ export const PickUpCarousel = ({ slides, autoPlay, autoScroll }: PickUpCarouselP
         dotClassName="block size-3 rounded-full border border-main transition-colors"
         gap={12}
         inactiveDotClassName="bg-transparent"
-        keys={safeSlides.map((slide) => slide.id)}
+        keys={slides.map((slide) => slide.id)}
         navAriaLabel="PICKUP slide navigation"
       />
     </CarouselRoot>
@@ -89,7 +78,7 @@ const PickUpSlideContent = ({
 
   return (
     <CarouselSlide
-      className="relative aspect-video min-w-0 flex-[0_0_100%] px-0 md:flex-[0_0_60%]"
+      className="relative min-w-0 flex-[0_0_100%] px-0 md:flex-[0_0_60%]"
       index={index}
     >
       <div className="relative aspect-video w-full overflow-hidden">
@@ -97,7 +86,7 @@ const PickUpSlideContent = ({
           <Link aria-label={slide.imageAlt} className="group block h-full w-full" href={slide.href}>
             <div className="absolute inset-0 flex items-center overflow-hidden">
               <Image
-                alt={slide.imageAlt}
+                alt=""
                 className="h-full w-full object-cover object-center"
                 height={slide.imageHeight ?? 1080}
                 priority={index <= 1 || index === totalSlides - 1}
