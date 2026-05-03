@@ -43,22 +43,29 @@ const InfoMenuItems = [
 export default function InfoMenu() {
   return (
     <nav className="bg-base">
-      <ul className="flex w-full list-none flex-col gap-s">
+      <ul className="flex w-full list-none flex-col gap-m">
         {InfoMenuItems.map((item) => (
           <li key={item.name} className="px-3l">
             {item.disabled ? (
-              <span aria-disabled="true" className="flex items-center gap-[10px] text-[#8892b0]">
-                <div className="flex h-6 w-6 shrink-0 items-center justify-center">
-                  <item.icon className="text-disabled" size={24} />
+              <span
+                aria-disabled="true"
+                className="flex items-center gap-[10px] text-[#8892b0]"
+              >
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center">
+                  <item.icon className="text-disabled" size={28} />
                 </div>
-                <span className="text-disabled text-title-small">{item.name}</span>
+                <span className="text-[24px] leading-8.75 text-disabled">
+                  {item.name}
+                </span>
               </span>
             ) : (
               <Link href={item.href} className="flex items-center gap-[10px]">
-                <div className="flex h-6 w-6 shrink-0 items-center justify-center">
-                  <item.icon className="text-secondary" size={24} />
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center">
+                  <item.icon className="text-secondary" size={28} />
                 </div>
-                <span className="text-title-small text-font-main">{item.name}</span>
+                <span className="text-[24px] leading-8.75 text-font-main">
+                  {item.name}
+                </span>
               </Link>
             )}
           </li>
