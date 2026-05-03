@@ -100,7 +100,7 @@ export default function DevCommonComponentsPage() {
 
         <DevPanel title="PcImportantFrame">
           <PcImportantFrame title="重要なお知らせ">
-            PC用の本文のプレビューです。影と余白を確認してください。
+            {sampleImportantNewsBody}
           </PcImportantFrame>
         </DevPanel>
         <DevPanel title="InfoBlock">
