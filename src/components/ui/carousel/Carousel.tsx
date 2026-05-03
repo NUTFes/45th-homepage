@@ -68,6 +68,7 @@ type CarouselMotionButtonProps = {
 };
 
 type CarouselArrowButtonProps = {
+  children?: ReactNode;
   className?: string;
   label?: string;
 };
@@ -479,6 +480,7 @@ export const CarouselMotionButton = ({
 };
 
 export const CarouselPrevButton = ({
+  children,
   className,
   label = "Previous slide",
 }: CarouselArrowButtonProps) => {
@@ -492,12 +494,13 @@ export const CarouselPrevButton = ({
       onClick={prev}
       type="button"
     >
-      {label}
+      {children ?? label}
     </button>
   );
 };
 
 export const CarouselNextButton = ({
+  children,
   className,
   label = "Next slide",
 }: CarouselArrowButtonProps) => {
@@ -511,7 +514,7 @@ export const CarouselNextButton = ({
       onClick={next}
       type="button"
     >
-      {label}
+      {children ?? label}
     </button>
   );
 };
