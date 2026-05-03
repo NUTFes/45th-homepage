@@ -8,8 +8,8 @@ import useEmblaCarousel, {
 } from "embla-carousel-react";
 import {
   createContext,
+  use,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useReducer,
@@ -530,7 +530,7 @@ export const CarouselNextButton = ({
 };
 
 export const useCarousel = () => {
-  const context = useContext(CarouselContext);
+  const context = use(CarouselContext);
 
   if (!context) {
     throw new Error("useCarousel must be used within CarouselRoot.");
