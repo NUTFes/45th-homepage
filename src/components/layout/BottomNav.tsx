@@ -1,8 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { House, Clock, MapPin, CalendarDays, Menu, X } from "lucide-react";
+import { House, Clock, MapPin, CalendarDays, Menu, X, LucideIcon} from "lucide-react";
 import { Button, ModalOverlay, Modal, Dialog } from "react-aria-components";
+
+type NavItemType = {
+  name: string;
+  icon: LucideIcon;
+  href?: string;
+  active: boolean;
+};
+
+type NavItemProps = {
+  item: NavItemType;
+  isMenuOpen: boolean;
+  setIsMenuOpen: (value: boolean) => void;
+};
 
 const navItems = [
   { name: "ホーム", icon: House, href: "/", active: true },
@@ -12,7 +25,7 @@ const navItems = [
   { name: "メニュー", icon: Menu, active: true },
 ];
 
-function NavItem({ item, isMenuOpen, setIsMenuOpen }) {
+function NavItem({ item, isMenuOpen, setIsMenuOpen }: NavItemProps) {
   if (item.name === "ホーム")
     return (
       <Button
