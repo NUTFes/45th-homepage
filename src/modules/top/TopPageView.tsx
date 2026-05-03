@@ -1,7 +1,10 @@
 import { Suspense } from "react";
 import { connection } from "next/server";
 import { getImportantNewsBody, getLatestNews } from "@/modules/news/server/getNews";
+import { getPickUpSlides } from "@/modules/top/server/getPickUpSlides";
 import NewsTop from "./ui/NewsTop";
+import PickUpCarousel from "./ui/PickUpCarousel";
+import PickUpFrame from "./ui/PickUpFrame";
 
 import ImportantFrameSkeleton from "@/components/ui/ImportantFrameSkeleton";
 import SectionTitle from "@/components/ui/SectionTitle";
@@ -9,12 +12,24 @@ import NewsItemSkeleton from "@/components/ui/NewsItemSkeleton";
 
 async function TopPageContent() {
   await connection();
-  const [latestNews, importantNewsBody] = await Promise.all([
+  const [latestNews, importantNewsBody, pickUpSlides] = await Promise.all([
     getLatestNews(3),
     getImportantNewsBody(),
+    getPickUpSlides(),
   ]);
 
-  return <NewsTop items={latestNews} importantBody={importantNewsBody} />;
+  return (
+    <div className="flex w-full flex-col gap-l">
+      {pickUpSlides.length > 0 && (
+        <div className="w-full">
+          <PickUpFrame>
+            <PickUpCarousel slides={pickUpSlides} autoPlay={{ delay: 2500 }} />
+          </PickUpFrame>
+        </div>
+      )}
+      <NewsTop items={latestNews} importantBody={importantNewsBody} />
+    </div>
+  );
 }
 
 function TopPageSkeleton() {
