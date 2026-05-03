@@ -72,7 +72,7 @@ export default function Footer() {
                 </div>
                 <p className="text-[14px]">長岡技術科学大学　技大祭実行委員会</p>
               </div>
-              <div className="flex h-[48px] w-full min-w-[400px] items-center gap-ll pt-[4px] text-button">
+              <div className="flex h-[48px] w-full min-w-[400px] items-center gap-ll pt-[4px] text-Pbutton">
                 <div>アンケート</div>
                 <div>大学ホームページ</div>
                 <div>お問い合わせ</div>
@@ -86,7 +86,7 @@ export default function Footer() {
                 src="/icon/Instagram.png"
                 width={40}
               />
-              <div className="flex flex-col gap-1 gap-y-ss pl-xs text-[14px] leading-4.25">
+              <div className="flex flex-col gap-1 gap-y-ss pl-xs text-text leading-4.25">
                 <p className="flex items-center gap-1.5">
                   <MessageCircleMore
                     className="size-4"
