@@ -53,9 +53,7 @@ export default function SponsorSection() {
               className="forced-colors:none h-fit gap-x-s rounded-sm bg-white px-m py-s text-base-dark hover:bg-main md:gap-x-m md:rounded-md md:px-4l md:py-m md:text-Pbutton"
             >
               <Copy size={24} />
-              <div className="text-start text-title-small">
-                メールアドレスをコピー
-              </div>
+              <div className="text-start text-title-small">メールアドレスをコピー</div>
             </Button>
           </div>
         </div>

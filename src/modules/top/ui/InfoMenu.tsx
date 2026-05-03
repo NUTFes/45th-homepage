@@ -47,15 +47,9 @@ export default function InfoMenu() {
         {InfoMenuItems.map((item) => (
           <li key={item.name} className="px-3l">
             {item.disabled ? (
-              <span
-                aria-disabled="true"
-                className="flex items-center gap-[10px] text-[#8892b0]"
-              >
+              <span aria-disabled="true" className="flex items-center gap-[10px] text-[#8892b0]">
                 <div className="flex h-6 w-6 shrink-0 items-center justify-center md:h-7 md:w-7">
-                  <item.icon
-                    className="text-disabled md:h-7 md:w-7"
-                    size={24}
-                  />
+                  <item.icon className="text-disabled md:h-7 md:w-7" size={24} />
                 </div>
                 <span className="text-disabled text-title-small md:text-[24px] md:leading-8.75">
                   {item.name}
@@ -64,10 +58,7 @@ export default function InfoMenu() {
             ) : (
               <Link href={item.href} className="flex items-center gap-[10px]">
                 <div className="flex h-6 w-6 shrink-0 items-center justify-center md:h-7 md:w-7">
-                  <item.icon
-                    className="text-secondary md:h-7 md:w-7"
-                    size={24}
-                  />
+                  <item.icon className="text-secondary md:h-7 md:w-7" size={24} />
                 </div>
                 <span className="text-title-small text-font-main md:text-[24px] md:leading-8.75">
                   {item.name}
