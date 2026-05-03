@@ -2,8 +2,8 @@ import { Suspense } from "react";
 
 function NotFoundContent() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[50vh] text-center">
-      <div>Oh　No！</div>  
+    <div className="flex min-h-[50vh] flex-col items-center justify-center text-center">
+      <div>Oh　No！</div>
       <div>404</div>
       <div>Page　Not　Found</div>
       <div>お探しのページは見つかりませんでした</div>
@@ -13,10 +13,10 @@ function NotFoundContent() {
 
 function NotFoundSkeleton() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[50vh] text-center">
-      <div className="w-16 h-16 bg-gray-200 rounded-full mb-4 animate-pulse"></div>
-      <div className="w-48 h-6 bg-gray-200 rounded mb-4 animate-pulse"></div>
-      <div className="w-64 h-4 bg-gray-200 rounded animate-pulse"></div>
+    <div className="flex min-h-[50vh] flex-col items-center justify-center text-center">
+      <div className="mb-4 h-16 w-16 animate-pulse rounded-full bg-gray-200"></div>
+      <div className="mb-4 h-6 w-48 animate-pulse rounded bg-gray-200"></div>
+      <div className="h-4 w-64 animate-pulse rounded bg-gray-200"></div>
     </div>
   );
 }
