@@ -19,7 +19,7 @@ export default function PcSponsorSection() {
   return (
     <InfoFrame>
       <div className="flex flex-col items-center gap-y-3l text-center text-Ptext">
-        <div className="flex flex-col items-center gap-y-s">
+        <div className="flex flex-col items-center gap-y-m">
           <div className="flex flex-col items-center">
             <div className="border-b border-white">
               <div className="w-fit pb-1 font-kaisotai text-Ptitle text-shadow-[1px_2px_2px_rgba(8,18,94,1.0)]">
@@ -42,7 +42,7 @@ export default function PcSponsorSection() {
           </div>
         </div>
 
-        <div className="flex flex-col items-center gap-y-s">
+        <div className="flex flex-col items-center gap-y-m">
           <div>
             協賛のお問い合わせは、以下のメールアドレスからご連絡ください。
           </div>
