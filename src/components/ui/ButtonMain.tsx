@@ -16,13 +16,12 @@ export default function ButtonMain(props: ButtonMainProps) {
     px = "px-l",
     py = "py-s",
     textSize = "text-button",
-    textSizeMd = "md:text-Pbutton"
   } = props;
 
   return (
     <Link
       href={href}
-      className={`button-gradient rounded-full border-2 border-main ${px} ${py} ${textSize} text-white shadow-[0px_6px_8px_rgba(60,224,232,0.6)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0px_6px_8px_rgba(60,224,232,1.0)] ${textSizeMd}`}
+      className={`button-gradient rounded-full border-2 border-main ${px} ${py} ${textSize} text-white shadow-[0px_6px_8px_rgba(60,224,232,0.6)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0px_6px_8px_rgba(60,224,232,1.0)] `}
     >
       {title}
     </Link>
