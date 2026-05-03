@@ -18,45 +18,43 @@ export default function SponsorSection() {
 
   return (
     <InfoFrame>
-      <div className="flex flex-col items-center gap-y-3l">
-        <div className="flex flex-col items-center gap-y-s">
+      <div className="flex flex-col items-center gap-y-3l md:text-center md:text-Ptext">
+        <div className="flex flex-col items-center gap-y-s md:gap-y-m">
           <div className="flex flex-col items-center">
             <div className="border-b border-white">
-              <div className="w-fit pb-1 text-center font-kaisotai text-title text-shadow-[1px_2px_2px_rgba(8,18,94,1.0)]">
+              <div className="w-fit pb-1 text-center font-kaisotai text-title text-shadow-[1px_2px_2px_rgba(8,18,94,1.0)] md:text-Ptitle">
                 企業協賛大募集！
               </div>
             </div>
           </div>
 
-          <div className="px-ss">
+          <div className="px-ss md:px-0">
             技大祭実行委員会では、企業の皆さまからのご協賛を募集しております。
             <br />
             ご関心をお持ちの方は、以下の資料をご覧いただき、メールにてご連絡ください。
           </div>
 
           <div className="shadow-[1px_2px_2px_rgba(8,18,94,1.0)]">
-            <Button className="forced-colors:none h-fit gap-x-s rounded-sm bg-white px-m py-m text-base-dark hover:bg-main">
+            <Button className="forced-colors:none h-fit gap-x-s rounded-sm bg-white px-m py-m text-base-dark hover:bg-main md:gap-x-m md:rounded-md md:px-4l md:text-Pbutton">
               <LucideFile size={24} />
-              <div className="px-l text-title-small">資料を見る</div>
+              <div className="text-title-small">資料を見る</div>
             </Button>
           </div>
         </div>
 
-        <div className="flex flex-col items-center gap-y-s">
-          <div className="px-ss">
+        <div className="flex flex-col items-center gap-y-s md:gap-y-m">
+          <div className="px-ss md:px-0">
             協賛のお問い合わせは、以下のメールアドレスからご連絡ください。
           </div>
 
           <div className="shadow-[1px_2px_2px_rgba(8,18,94,1.0)]">
             <Button
               onPress={handleCopy}
-              className="forced-colors:none h-fit gap-x-s rounded-sm bg-white px-m py-s text-base-dark hover:bg-main"
+              className="forced-colors:none h-fit gap-x-s rounded-sm bg-white px-m py-s text-base-dark hover:bg-main md:gap-x-m md:rounded-md md:px-4l md:py-m md:text-Pbutton"
             >
               <Copy size={24} />
               <div className="text-start text-title-small">
-                メールアドレスを
-                <br />
-                コピー
+                メールアドレスをコピー
               </div>
             </Button>
           </div>
