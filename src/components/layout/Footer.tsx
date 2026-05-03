@@ -53,54 +53,61 @@ export default function Footer() {
       </div>
       {/* PCレイアウト */}
       <div className="w-full px-5l">
-      <div className="px-2l hidden items-center justify-between py-3l lg:flex">
-        <div className="flex items-top py-xs gap-x-4l justify-between w-full">
-          <div className="flex gap-x-ss">
-            <div className="flex flex-col gap-y-ss">
-              <div className="flex items-center gap-x-s min-w-[250px]">
-                <Link href="/">
-                  <Image src="/icon/45th-logo-top.svg" alt="45thNUTFES ロゴ" width={48} height={48} />
-                </Link>
-                <div className="font-kaisotai text-title text-base-dark text-[40px]">45th NUTFES</div>
+        <div className="px-2l hidden items-center justify-between py-3l lg:flex">
+          <div className="items-top flex w-full justify-between gap-x-4l py-xs">
+            <div className="flex gap-x-ss">
+              <div className="flex flex-col gap-y-ss">
+                <div className="flex min-w-[250px] items-center gap-x-s">
+                  <Link href="/">
+                    <Image
+                      src="/icon/45th-logo-top.svg"
+                      alt="45thNUTFES ロゴ"
+                      width={48}
+                      height={48}
+                    />
+                  </Link>
+                  <div className="font-kaisotai text-title text-[40px] text-base-dark">
+                    45th NUTFES
+                  </div>
+                </div>
+                <p className="text-[14px]">長岡技術科学大学　技大祭実行委員会</p>
               </div>
-              <p className="text-[14px]">長岡技術科学大学　技大祭実行委員会</p>
+              <div className="flex h-[48px] w-full min-w-[400px] items-center gap-ll pt-[4px] text-button">
+                <div>アンケート</div>
+                <div>大学ホームページ</div>
+                <div>お問い合わせ</div>
+              </div>
             </div>
-            <div className="flex gap-ll text-button min-w-[400px] w-full h-[48px] items-center pt-[4px]">
-              <div>アンケート</div>
-              <div>大学ホームページ</div>
-              <div>お問い合わせ</div>
-            </div>
-          </div>
-          <div className="items-top flex gap-x-l py-xs">
-            <Image
-              alt="Instagram"
-              className="size-10"
-              height={40}
-              src="/icon/Instagram.png"
-              width={40}
-            />
-            <div className="flex flex-col gap-1 gap-y-ss pl-xs text-[14px] leading-4.25">
-              <p className="flex items-center gap-1.5">
-                <MessageCircleMore
-                  className="size-4"
-                  fill="var(--color-base-dark)"
-                  stroke="#ffffff"
-                  strokeWidth={2.2}
-                />
-                <span>インスタDM</span>
-              </p>
-              <p className="flex items-center gap-1.5">
-                <Mail className="size-4 text-base-dark" strokeWidth={2.2} />
-                <span className="underline">nutfes.shikobu@gmail.com</span>
-              </p>
-              <address className="text-[14px] leading-4.25 not-italic">
-                <p>〒940-2188</p>
-                <p>新潟県長岡市上富岡町1603-1 長岡技術科学大学</p>
-              </address>
+            <div className="items-top flex gap-x-l py-xs">
+              <Image
+                alt="Instagram"
+                className="size-10"
+                height={40}
+                src="/icon/Instagram.png"
+                width={40}
+              />
+              <div className="flex flex-col gap-1 gap-y-ss pl-xs text-[14px] leading-4.25">
+                <p className="flex items-center gap-1.5">
+                  <MessageCircleMore
+                    className="size-4"
+                    fill="var(--color-base-dark)"
+                    stroke="#ffffff"
+                    strokeWidth={2.2}
+                  />
+                  <span>インスタDM</span>
+                </p>
+                <p className="flex items-center gap-1.5">
+                  <Mail className="size-4 text-base-dark" strokeWidth={2.2} />
+                  <span className="underline">nutfes.shikobu@gmail.com</span>
+                </p>
+                <address className="text-[14px] leading-4.25 not-italic">
+                  <p>〒940-2188</p>
+                  <p>新潟県長岡市上富岡町1603-1 長岡技術科学大学</p>
+                </address>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
     </footer>
   );

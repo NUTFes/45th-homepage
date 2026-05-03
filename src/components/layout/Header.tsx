@@ -10,7 +10,7 @@ export default function Page() {
         </Link>
         <div className="font-kaisotai text-title text-base-dark">45th NUTFES</div>
       </div>
-      <div className="hidden gap-4l text-button text-base-dark lg:flex flex items-center">
+      <div className="flex hidden items-center gap-4l text-button text-base-dark lg:flex">
         <div className="text-font-gray">企画情報</div>
         <div className="text-font-gray">スケジュール</div>
         <div className="text-font-gray">マップ</div>
