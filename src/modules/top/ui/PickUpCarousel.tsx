@@ -42,7 +42,12 @@ export const PickUpCarousel = ({ slides, autoPlay, autoScroll }: PickUpCarouselP
     >
       <CarouselViewport className="overflow-hidden" trackClassName="!h-auto">
         {safeSlides.map((slide, index) => (
-          <PickUpSlideContent index={index} key={slide.id} slide={slide} />
+          <PickUpSlideContent
+            index={index}
+            key={slide.id}
+            slide={slide}
+            totalSlides={safeSlides.length}
+          />
         ))}
       </CarouselViewport>
 
@@ -70,7 +75,15 @@ export const PickUpCarousel = ({ slides, autoPlay, autoScroll }: PickUpCarouselP
 
 export default PickUpCarousel;
 
-const PickUpSlideContent = ({ slide, index }: { slide: CarouselImageSlide; index: number }) => {
+const PickUpSlideContent = ({
+  slide,
+  index,
+  totalSlides,
+}: {
+  slide: CarouselImageSlide;
+  index: number;
+  totalSlides: number;
+}) => {
   const { selectedIndex } = useCarousel();
   const isActive = selectedIndex === index;
 
@@ -87,8 +100,8 @@ const PickUpSlideContent = ({ slide, index }: { slide: CarouselImageSlide; index
                 alt={slide.imageAlt}
                 className="h-full w-full object-cover object-center"
                 height={slide.imageHeight ?? 1080}
-                priority={index === 0}
-                sizes="100vw"
+                priority={index <= 1 || index === totalSlides - 1}
+                sizes="(min-width: 768px) 60vw, 100vw"
                 src={slide.imageUrl}
                 width={slide.imageWidth ?? 1920}
               />
@@ -101,8 +114,8 @@ const PickUpSlideContent = ({ slide, index }: { slide: CarouselImageSlide; index
               alt={slide.imageAlt}
               className="h-full w-full object-cover object-center"
               height={slide.imageHeight ?? 1080}
-              priority={index === 0}
-              sizes="100vw"
+              priority={index <= 1 || index === totalSlides - 1}
+              sizes="(min-width: 768px) 60vw, 100vw"
               src={slide.imageUrl}
               width={slide.imageWidth ?? 1920}
             />
