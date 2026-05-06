@@ -60,6 +60,7 @@ async function TopPageContent() {
                         dateTime={news.dateTime}
                         title={news.title}
                         content={news.body}
+                        important={news.important}
                       />
                     ))}
                   </ul>
