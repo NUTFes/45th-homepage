@@ -69,31 +69,36 @@ async function NewsPageContent({ searchParams }: NewsPageViewProps) {
 function NewsPageSkeleton() {
   return (
     <>
-      <div className="relative w-full">
+      <div className="w-full">
         <ImportantFrameSkeleton />
+      </div>
+
+      <div className="relative mx-auto flex w-full flex-col gap-4l pt-4l pb-pm md:pt-5l">
         <Image
           src="/image/PageBack1.svg"
           alt=""
           aria-hidden="true"
-          className="pointer-events-none absolute right-0 bottom-0 z-0 hidden md:block"
+          className="pointer-events-none absolute top-0 right-0 z-0 hidden md:block"
           width={200}
           height={200}
           priority={false}
         />
-      </div>
 
-      <div className="flex flex-col gap-s px-ll md:px-pl">
-        <SectionTitle title="お知らせ" />
-        <div className="w-full px-ll">
-          <ul className="flex flex-col gap-l">
-            {[...Array(NEWS_PER_PAGE)].map((_, i) => (
-              <NewsItemSkeleton key={`skeleton-${i}`} />
-            ))}
-          </ul>
+        <div className="relative z-20 flex flex-col gap-s px-ll md:gap-4l md:px-pl">
+          <SectionTitle title="お知らせ" />
+          <div className="mx-auto w-full max-w-190">
+            <ul className="flex flex-col gap-l">
+              {[...Array(NEWS_PER_PAGE)].map((_, i) => (
+                <NewsItemSkeleton key={`skeleton-${i}`} />
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div className="relative z-20">
+          <div className="flex min-h-11 justify-center" aria-hidden="true" />
         </div>
       </div>
-
-      <div className="flex min-h-11 justify-center" aria-hidden="true" />
     </>
   );
 }
