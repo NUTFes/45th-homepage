@@ -18,7 +18,7 @@ export default function SponsorSection() {
 
   return (
     <InfoFrame>
-      <div className="flex flex-col items-center gap-y-3l md:text-center md:text-Ptext">
+      <div className="flex flex-col items-center gap-y-3l md:text-center">
         <div className="flex flex-col items-center gap-y-s md:gap-y-m">
           <div className="flex flex-col items-center">
             <div className="border-b border-white">
@@ -28,32 +28,38 @@ export default function SponsorSection() {
             </div>
           </div>
 
-          <div className="px-ss md:px-0">
+          <div className="px-ss text-center text-text md:px-0 md:text-Ptext">
             技大祭実行委員会では、企業の皆さまからのご協賛を募集しております。
             <br />
             ご関心をお持ちの方は、以下の資料をご覧いただき、メールにてご連絡ください。
           </div>
 
           <div className="shadow-[1px_2px_2px_rgba(8,18,94,1.0)]">
-            <Button className="forced-colors:none h-fit gap-x-s rounded-sm bg-white px-m py-m text-base-dark hover:bg-main md:gap-x-m md:rounded-md md:px-4l md:text-Pbutton">
-              <LucideFile size={24} />
-              <div className="text-title-small">資料を見る</div>
+            <Button className="forced-colors:none flex h-fit w-[225px] justify-start gap-x-s rounded-sm bg-white px-m py-m text-base-dark hover:bg-main md:w-[300px] md:rounded-md md:px-m md:py-m">
+              <div className="shrink-0">
+                <LucideFile size={24} />
+              </div>
+              <div className="flex-1 text-center text-text-large md:text-Ptext-large">
+                資料を見る
+              </div>
             </Button>
           </div>
         </div>
 
         <div className="flex flex-col items-center gap-y-s md:gap-y-m">
-          <div className="px-ss md:px-0">
+          <div className="px-ss text-center text-text md:px-0 md:text-Ptext">
             協賛のお問い合わせは、以下のメールアドレスからご連絡ください。
           </div>
 
           <div className="shadow-[1px_2px_2px_rgba(8,18,94,1.0)]">
             <Button
               onPress={handleCopy}
-              className="forced-colors:none h-fit gap-x-s rounded-sm bg-white px-m py-s text-base-dark hover:bg-main md:gap-x-m md:rounded-md md:px-4l md:py-m md:text-Pbutton"
+              className="forced-colors:none flex h-fit w-[225px] justify-start gap-x-s rounded-sm bg-white px-m py-s text-base-dark hover:bg-main md:w-[300px] md:rounded-md md:px-m md:py-m"
             >
-              <Copy size={24} />
-              <div className="text-start text-title-small">
+              <div className="shrink-0">
+                <Copy size={24} />
+              </div>
+              <div className="flex-1 text-start text-text-large md:text-Ptext-large">
                 メールアドレスをコピー
               </div>
             </Button>
