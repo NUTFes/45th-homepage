@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 export default function Page() {
   return (
-    <header className="sticky top-0 flex w-full items-center justify-between bg-white px-m py-m lg:px-5l">
+    <header className="sticky top-0 flex w-full items-center justify-between bg-white px-m py-m lg:px-5l z-100">
       <div className="flex items-center gap-xs">
         <Link href="/">
           <Image src="/icon/45th-logo-top.svg" alt="45thNUTFES ロゴ" width={48} height={48} />
