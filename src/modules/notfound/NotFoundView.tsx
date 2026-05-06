@@ -21,7 +21,7 @@ function NotFoundContent() {
       </div>
       <ButtonMain
         href="/"
-        title="GO　BACK"
+        title="GO BACK"
         px="px-4l"
         textSize="text-text-large lg:text-Ptitle-small"
       />
