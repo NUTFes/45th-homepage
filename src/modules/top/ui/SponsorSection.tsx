@@ -22,13 +22,13 @@ export default function SponsorSection() {
         <div className="flex flex-col items-center gap-y-s md:gap-y-m">
           <div className="flex flex-col items-center">
             <div className="border-b border-white">
-              <div className="w-fit pb-1 text-center font-kaisotai text-title text-shadow-[1px_2px_2px_rgba(8,18,94,1.0)] md:text-Ptitle">
+              <div className="max-w-full break-words pb-1 text-center font-kaisotai text-title text-shadow-[1px_2px_2px_rgba(8,18,94,1.0)] md:text-Ptitle">
                 企業協賛大募集！
               </div>
             </div>
           </div>
 
-          <div className="px-ss text-center text-text md:px-0 md:text-Ptext">
+          <div className="break-words px-ss text-text md:px-0 md:text-center md:text-Ptext">
             技大祭実行委員会では、企業の皆さまからのご協賛を募集しております。
             <br />
             ご関心をお持ちの方は、以下の資料をご覧いただき、メールにてご連絡ください。
@@ -39,7 +39,7 @@ export default function SponsorSection() {
               <div className="shrink-0">
                 <LucideFile size={24} />
               </div>
-              <div className="flex-1 text-center text-text-large md:text-Ptext-large">
+              <div className="flex-1 text-start text-text-large md:text-center md:text-Ptext-large">
                 資料を見る
               </div>
             </Button>
@@ -47,7 +47,7 @@ export default function SponsorSection() {
         </div>
 
         <div className="flex flex-col items-center gap-y-s md:gap-y-m">
-          <div className="px-ss text-center text-text md:px-0 md:text-Ptext">
+          <div className="break-words px-ss text-text md:px-0 md:text-center md:text-Ptext">
             協賛のお問い合わせは、以下のメールアドレスからご連絡ください。
           </div>
 
@@ -59,7 +59,7 @@ export default function SponsorSection() {
               <div className="shrink-0">
                 <Copy size={24} />
               </div>
-              <div className="flex-1 text-start text-text-large md:text-Ptext-large">
+              <div className="flex-1 text-start text-text-large md:text-center md:text-Ptext-large md:whitespace-nowrap">
                 メールアドレスをコピー
               </div>
             </Button>
