@@ -8,11 +8,12 @@ import useEmblaCarousel, {
 } from "embla-carousel-react";
 import {
   createContext,
+  use,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useReducer,
+  useRef,
   useState,
   type CSSProperties,
   type ReactNode,
@@ -68,6 +69,7 @@ type CarouselMotionButtonProps = {
 };
 
 type CarouselArrowButtonProps = {
+  children?: ReactNode;
   className?: string;
   label?: string;
 };
@@ -277,29 +279,38 @@ export const CarouselRoot = ({
     onSelect?.(nextIndex);
   }, [emblaApi, onSelect, syncMotionState]);
 
+  const onEmblaSelectRef = useRef(onEmblaSelect);
+  onEmblaSelectRef.current = onEmblaSelect;
+
+  const syncMotionStateRef = useRef(syncMotionState);
+  syncMotionStateRef.current = syncMotionState;
+
   useEffect(() => {
     if (!emblaApi) {
       return;
     }
 
-    onEmblaSelect();
+    const handleSelect = () => onEmblaSelectRef.current();
+    const handleSync = () => syncMotionStateRef.current();
 
-    emblaApi.on("select", onEmblaSelect);
-    emblaApi.on("reInit", onEmblaSelect);
-    emblaApi.on("autoplay:play", syncMotionState);
-    emblaApi.on("autoplay:stop", syncMotionState);
-    emblaApi.on("autoScroll:play", syncMotionState);
-    emblaApi.on("autoScroll:stop", syncMotionState);
+    onEmblaSelectRef.current();
+
+    emblaApi.on("select", handleSelect);
+    emblaApi.on("reInit", handleSelect);
+    emblaApi.on("autoplay:play", handleSync);
+    emblaApi.on("autoplay:stop", handleSync);
+    emblaApi.on("autoScroll:play", handleSync);
+    emblaApi.on("autoScroll:stop", handleSync);
 
     return () => {
-      emblaApi.off("select", onEmblaSelect);
-      emblaApi.off("reInit", onEmblaSelect);
-      emblaApi.off("autoplay:play", syncMotionState);
-      emblaApi.off("autoplay:stop", syncMotionState);
-      emblaApi.off("autoScroll:play", syncMotionState);
-      emblaApi.off("autoScroll:stop", syncMotionState);
+      emblaApi.off("select", handleSelect);
+      emblaApi.off("reInit", handleSelect);
+      emblaApi.off("autoplay:play", handleSync);
+      emblaApi.off("autoplay:stop", handleSync);
+      emblaApi.off("autoScroll:play", handleSync);
+      emblaApi.off("autoScroll:stop", handleSync);
     };
-  }, [emblaApi, onEmblaSelect, syncMotionState]);
+  }, [emblaApi]);
 
   const scrollTo = useCallback(
     (index: number) => {
@@ -479,6 +490,7 @@ export const CarouselMotionButton = ({
 };
 
 export const CarouselPrevButton = ({
+  children,
   className,
   label = "Previous slide",
 }: CarouselArrowButtonProps) => {
@@ -492,12 +504,13 @@ export const CarouselPrevButton = ({
       onClick={prev}
       type="button"
     >
-      {label}
+      {children ?? label}
     </button>
   );
 };
 
 export const CarouselNextButton = ({
+  children,
   className,
   label = "Next slide",
 }: CarouselArrowButtonProps) => {
@@ -511,13 +524,13 @@ export const CarouselNextButton = ({
       onClick={next}
       type="button"
     >
-      {label}
+      {children ?? label}
     </button>
   );
 };
 
 export const useCarousel = () => {
-  const context = useContext(CarouselContext);
+  const context = use(CarouselContext);
 
   if (!context) {
     throw new Error("useCarousel must be used within CarouselRoot.");

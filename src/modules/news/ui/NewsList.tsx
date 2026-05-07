@@ -21,6 +21,7 @@ export default function NewsList({ items }: Props) {
           dateTime={news.dateTime}
           title={news.title}
           content={news.body}
+          important={news.important}
         />
       ))}
     </ul>
