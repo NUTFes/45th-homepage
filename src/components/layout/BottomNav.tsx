@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { House, Clock, MapPin, CalendarDays, Menu, X, LucideIcon } from "lucide-react";
 import { Button, DialogTrigger, ModalOverlay, Modal, Dialog } from "react-aria-components";
 import MenuContext from "@/components/layout/Menu";
@@ -9,38 +10,46 @@ type NavItemType = {
   name: string;
   icon: LucideIcon;
   href?: string;
-  active: boolean;
+  onPress?: () => void;
+  disabled?: boolean;
 };
 
 const regularItems: NavItemType[] = [
-  { name: "ホーム", icon: House, href: "/", active: true },
-  { name: "スケジュール", icon: Clock, href: "/", active: false },
-  { name: "マップ", icon: MapPin, href: "/", active: false },
-  { name: "企画", icon: CalendarDays, href: "/", active: false },
+  { name: "ホーム", icon: House, onPress: () => window.scrollTo({ top: 0, behavior: "smooth" }) },
+  { name: "スケジュール", icon: Clock, href: "/", disabled: true },
+  { name: "マップ", icon: MapPin, href: "/", disabled: true },
+  { name: "企画", icon: CalendarDays, href: "/", disabled: true },
 ];
 
 function NavItem({ item }: { item: NavItemType }) {
-  if (item.name === "ホーム") {
+  const isActive = !item.disabled && (item.href !== undefined || item.onPress !== undefined);
+  const color = isActive ? "text-secondary" : "text-font-gray";
+  const wrapperClass = "flex h-14.25 w-full flex-col items-center justify-center gap-1";
+
+  const inner = (
+    <>
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center">
+        <item.icon className={`shrink-0 ${color}`} size={30} />
+      </div>
+      <span className={`text-text-small whitespace-nowrap ${color}`}>{item.name}</span>
+    </>
+  );
+
+  if (!isActive) {
+    return <div className={`pointer-events-none ${wrapperClass}`}>{inner}</div>;
+  }
+  if (item.href)
     return (
-      <Button
-        onPress={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className="flex h-14.25 w-full flex-col items-center justify-center gap-1"
-      >
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center">
-          <item.icon className="shrink-0 text-secondary" size={30} />
-        </div>
-        <span className="text-text-small whitespace-nowrap text-secondary">{item.name}</span>
+      <Link href={item.href} className={wrapperClass}>
+        {inner}
+      </Link>
+    );
+  if (item.onPress)
+    return (
+      <Button onPress={item.onPress} className={wrapperClass}>
+        {inner}
       </Button>
     );
-  }
-  return (
-    <div className="pointer-events-none flex h-14.25 flex-col items-center justify-center gap-1">
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center">
-        <item.icon className="shrink-0 text-font-gray" size={30} />
-      </div>
-      <span className="text-text-small whitespace-nowrap text-font-gray">{item.name}</span>
-    </div>
-  );
 }
 
 export default function BottomNavigation() {
