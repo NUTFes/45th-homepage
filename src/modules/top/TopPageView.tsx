@@ -1,10 +1,17 @@
 import { Suspense } from "react";
 import { connection } from "next/server";
-import { getLatestNews } from "@/modules/news/server/getNews";
-import NewsTop from "./ui/NewsTop";
+import { getImportantNewsBody, getLatestNews } from "@/modules/news/server/getNews";
+import { getPickUpSlides } from "@/modules/top/server/getPickUpSlides";
+import ButtonMain from "@/components/ui/ButtonMain";
+import ImportantFrame from "@/components/ui/ImportantFrame";
+import NewsItem from "@/components/ui/NewsItem";
+import PickUpCarousel from "./ui/PickUpCarousel";
+import PickUpFrame from "./ui/PickUpFrame";
 
+import ImportantFrameSkeleton from "@/components/ui/ImportantFrameSkeleton";
 import SectionTitle from "@/components/ui/SectionTitle";
 import NewsItemSkeleton from "@/components/ui/NewsItemSkeleton";
+
 import Image from "next/image";
 import LogoInfo from "./ui/LogoInfo";
 import PickUpCarousel from "./ui/PickUpCarousel";
@@ -15,27 +22,110 @@ import { topModuleSlides } from "@/app/(frontend)/(dev)/dev/_data/topModuleSlide
 import InfoMenu from "./ui/InfoMenu";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
+const NO_IMPORTANT_NEWS_MESSAGE = "現在、重要なお知らせはありません。";
+
 async function TopPageContent() {
   await connection();
-  const latestNews = await getLatestNews(3);
+  const [latestNews, importantNewsBody, pickUpSlides] = await Promise.all([
+    getLatestNews(3),
+    getImportantNewsBody(),
+    getPickUpSlides(),
+  ]);
 
-  return <NewsTop items={latestNews} />;
+  return (
+    <div className="flex w-full flex-col gap-l">
+      {/* 重要なお知らせ */}
+      <div className="w-full max-w-105 md:max-w-none">
+        <ImportantFrame title="重要なお知らせ">
+          <p className="whitespace-pre-wrap">{importantNewsBody ?? NO_IMPORTANT_NEWS_MESSAGE}</p>
+        </ImportantFrame>
+      </div>
+
+      {/* PICKUP カルーセル */}
+      <div className="w-full">
+        <PickUpFrame>
+          {pickUpSlides.length > 0 ? (
+            <PickUpCarousel slides={pickUpSlides} autoPlay={{ delay: 5000 }} />
+          ) : (
+            <div className="aspect-video w-full bg-base-dark md:mx-auto md:w-[60%]" />
+          )}
+        </PickUpFrame>
+      </div>
+
+      {/* お知らせ一覧 */}
+      <div className="flex w-full flex-col items-center gap-m md:gap-ll">
+        <div className="w-full max-w-105 md:max-w-full md:self-start md:px-pl">
+          <SectionTitle title="お知らせ" />
+        </div>
+        <section className="w-full md:bg-base-dark md:px-pl md:py-3l">
+          <div className="mx-auto flex w-full max-w-105 flex-col items-center gap-m md:max-w-190 md:items-start">
+            <div className="flex w-full flex-col items-end gap-m md:w-full md:max-w-none md:items-start md:gap-l">
+              <div className="w-full bg-base-dark px-ll py-m md:bg-transparent md:px-ss md:py-0">
+                {latestNews.length > 0 ? (
+                  <ul className="flex flex-col gap-m md:gap-l">
+                    {latestNews.map((news) => (
+                      <NewsItem
+                        key={news.id}
+                        date={news.date}
+                        dateTime={news.dateTime}
+                        title={news.title}
+                        content={news.body}
+                        important={news.important}
+                      />
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="px-ll py-m text-center text-text text-font-main">
+                    お知らせはまだありません
+                  </p>
+                )}
+              </div>
+              <div className="flex w-full justify-center pb-ss md:justify-center">
+                <ButtonMain href="/news" title="お知らせ一覧を見る ＞" />
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  );
 }
 
 function TopPageSkeleton() {
   return (
-    <section className="flex w-full max-w-105 flex-col items-center gap-m">
-      <div className="flex w-full flex-col gap-s">
-        <SectionTitle title="お知らせ" />
-        <div className="w-full bg-base-dark px-ll py-m">
-          <ul className="flex flex-col gap-m">
-            {[...Array(3)].map((_, i) => (
-              <NewsItemSkeleton key={i} skeletonClassName="bg-base" />
-            ))}
-          </ul>
-        </div>
+    <div className="flex w-full flex-col items-center gap-l">
+      {/* 重要なお知らせスケルトン */}
+      <div className="w-full max-w-105 md:max-w-none">
+        <ImportantFrameSkeleton />
       </div>
-    </section>
+
+      {/* PICKUP カルーセルスケルトン */}
+      <div className="w-full">
+        <PickUpFrame>
+          <div className="aspect-video w-full animate-pulse bg-base-dark md:mx-auto md:w-[60%]" />
+        </PickUpFrame>
+      </div>
+
+      {/* お知らせ一覧スケルトン */}
+      <div className="flex w-full flex-col items-center gap-m md:gap-ll">
+        <div className="w-full max-w-105 md:max-w-full md:self-start md:px-pl">
+          <SectionTitle title="お知らせ" />
+        </div>
+        <section className="w-full md:bg-base-dark md:px-pl md:py-3l">
+          <div className="mx-auto flex w-full max-w-105 flex-col items-center gap-m md:max-w-190 md:items-start">
+            <div className="flex w-full flex-col items-end gap-m md:w-full md:max-w-none md:items-start md:gap-l">
+              <div className="w-full bg-base-dark px-ll py-m md:bg-transparent md:px-ss md:py-0">
+                <ul className="flex flex-col gap-m md:gap-l">
+                  <NewsItemSkeleton key="news-skeleton-0" skeletonClassName="bg-base" />
+                  <NewsItemSkeleton key="news-skeleton-1" skeletonClassName="bg-base" />
+                  <NewsItemSkeleton key="news-skeleton-2" skeletonClassName="bg-base" />
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
   );
 }
 

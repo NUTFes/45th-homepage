@@ -7,6 +7,7 @@ export const sampleNewsItems: NewsItem[] = [
     dateTime: "2026-04-12",
     title: "新発売こんにちは",
     body: "猫ふんじゃったネコふんじゃったネコふんじゃった猫猫猫猫",
+    important: false,
   },
   {
     id: 2,
@@ -14,6 +15,7 @@ export const sampleNewsItems: NewsItem[] = [
     dateTime: "2026-04-11",
     title: "重要なお知らせ",
     body: "本日のイベントは予定通り開催いたします。詳細については公式サイトをご確認ください。",
+    important: true,
   },
   {
     id: 3,
@@ -21,6 +23,7 @@ export const sampleNewsItems: NewsItem[] = [
     dateTime: "2026-04-10",
     title: "システムメンテナンスのお知らせ",
     body: "4月10日 午前2時から午前6時まで、システムメンテナンスを実施いたします。",
+    important: false,
   },
   {
     id: 4,
@@ -28,6 +31,7 @@ export const sampleNewsItems: NewsItem[] = [
     dateTime: "2026-04-09",
     title: "春の特別企画",
     body: "春の特別企画を開催します。皆様のご参加をお待ちしております。",
+    important: false,
   },
   {
     id: 5,
@@ -35,6 +39,7 @@ export const sampleNewsItems: NewsItem[] = [
     dateTime: "2026-04-08",
     title: "新メニュー追加",
     body: "新しいメニューが追加されました。ぜひお試しください。",
+    important: false,
   },
   {
     id: 6,
@@ -42,5 +47,11 @@ export const sampleNewsItems: NewsItem[] = [
     dateTime: "2026-04-07",
     title: "アンケート実施中",
     body: "ご意見をお聞かせください。アンケートにご協力お願いいたします。",
+    important: false,
   },
 ];
+
+export const sampleNewsItemsWithoutImportant: NewsItem[] = sampleNewsItems.map((item) => ({
+  ...item,
+  important: false,
+}));
