@@ -42,7 +42,6 @@ const InfoMenuItems = [
 
 export default function InfoMenu() {
   return (
-
     <nav className="bg-base">
       <ul className="flex w-full list-none flex-col gap-s md:gap-m">
         {InfoMenuItems.map((item) => (
