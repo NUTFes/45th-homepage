@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { House, Clock, MapPin, CalendarDays, Menu, X, LucideIcon } from "lucide-react";
 import { Button, DialogTrigger, ModalOverlay, Modal, Dialog } from "react-aria-components";
 import MenuContext from "@/components/layout/Menu";
@@ -13,13 +14,6 @@ type NavItemType = {
   onPress?: () => void;
   disabled?: boolean;
 };
-
-const regularItems: NavItemType[] = [
-  { name: "ホーム", icon: House, onPress: () => window.scrollTo({ top: 0, behavior: "smooth" }) },
-  { name: "スケジュール", icon: Clock, href: "/", disabled: true },
-  { name: "マップ", icon: MapPin, href: "/", disabled: true },
-  { name: "企画", icon: CalendarDays, href: "/", disabled: true },
-];
 
 function NavItem({ item }: { item: NavItemType }) {
   const isActive = !item.disabled && (item.href !== undefined || item.onPress !== undefined);
@@ -54,6 +48,16 @@ function NavItem({ item }: { item: NavItemType }) {
 
 export default function BottomNavigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  const regularItems: NavItemType[] = [
+    pathname === "/"
+      ? { name: "ホーム", icon: House, onPress: () => window.scrollTo({ top: 0, behavior: "smooth" }) }
+      : { name: "ホーム", icon: House, href: "/" },
+    { name: "スケジュール", icon: Clock, href: "/", disabled: true },
+    { name: "マップ", icon: MapPin, href: "/", disabled: true },
+    { name: "企画", icon: CalendarDays, href: "/", disabled: true },
+  ];
 
   return (
     <nav className="sticky right-0 bottom-0 left-0 flex bg-base-dark px-s py-ss md:hidden">
