@@ -75,7 +75,7 @@ export default function BottomNavigation() {
                   }`}
                 />
                 <X
-                  size={24}
+                  size={28}
                   className={`absolute shrink-0 text-secondary transition-opacity duration-300 ${
                     isMenuOpen ? "opacity-100" : "opacity-0"
                   }`}
@@ -86,9 +86,9 @@ export default function BottomNavigation() {
 
             <ModalOverlay
               isDismissable
-              className="fixed top-0 right-0 bottom-[73px] left-0 z-300 bg-base/40 transition-opacity duration-300 entering:opacity-0 exiting:opacity-0"
+              className="fixed top-0 right-0 bottom-[73px] left-0 z-300 bg-base/40 ease-out motion-safe:transition-opacity motion-safe:duration-300 entering:opacity-0 exiting:opacity-0 exiting:ease-in"
             >
-              <Modal className="fixed right-0 bottom-[73px] left-0 z-350 h-[71svh] origin-bottom scale-y-100 overflow-y-auto overscroll-contain bg-base-dark transition-transform duration-300 entering:scale-y-0 exiting:scale-y-0">
+              <Modal className="fixed right-0 bottom-[73px] left-0 z-350 h-[71svh] translate-y-0 overflow-y-auto overscroll-contain bg-base-dark transition-transform duration-300 entering:translate-y-full exiting:translate-y-full">
                 <Dialog className="outline-none">
                   <MenuContext />
                 </Dialog>
