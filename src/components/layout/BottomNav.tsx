@@ -52,7 +52,11 @@ export default function BottomNavigation() {
 
   const regularItems: NavItemType[] = [
     pathname === "/"
-      ? { name: "ホーム", icon: House, onPress: () => window.scrollTo({ top: 0, behavior: "smooth" }) }
+      ? {
+          name: "ホーム",
+          icon: House,
+          onPress: () => window.scrollTo({ top: 0, behavior: "smooth" }),
+        }
       : { name: "ホーム", icon: House, href: "/" },
     { name: "スケジュール", icon: Clock, href: "/", disabled: true },
     { name: "マップ", icon: MapPin, href: "/", disabled: true },
