@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="bg-secondary px-m py-m text-black">
+    <footer className="bg-secondary px-m pt-m pb-[calc(73px+env(safe-area-inset-bottom))] text-black lg:pb-m">
       {/* スマホレイアウト */}
       <div className="mx-auto flex w-full max-w-98.25 flex-col items-center gap-ll lg:hidden">
         <section aria-label="SNS" className="flex flex-col items-center gap-xs">
