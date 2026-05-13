@@ -1,4 +1,4 @@
-import { LucideHamburger, LucideIceCream, LucideMenu } from "lucide-react";
+import { LucideMenu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 export default function Page() {
