@@ -1,112 +1,270 @@
 import { Suspense } from "react";
 import { connection } from "next/server";
+import Image from "next/image";
 import { getImportantNewsBody, getLatestNews } from "@/modules/news/server/getNews";
 import { getPickUpSlides } from "@/modules/top/server/getPickUpSlides";
 import ButtonMain from "@/components/ui/ButtonMain";
 import ImportantFrame from "@/components/ui/ImportantFrame";
 import NewsItem from "@/components/ui/NewsItem";
-
 import ImportantFrameSkeleton from "@/components/ui/ImportantFrameSkeleton";
 import SectionTitle from "@/components/ui/SectionTitle";
 import NewsItemSkeleton from "@/components/ui/NewsItemSkeleton";
-
-import Image from "next/image";
 import LogoInfo from "./ui/LogoInfo";
 import PickUpCarousel from "./ui/PickUpCarousel";
-import { sampleNewsItems } from "@/app/(frontend)/(dev)/dev/_data/sampleNews";
 import SponsorSection from "./ui/SponsorSection";
 import PickUpFrame from "./ui/PickUpFrame";
-import { topModuleSlides } from "@/app/(frontend)/(dev)/dev/_data/topModuleSlides";
 import InfoMenu from "./ui/InfoMenu";
-import Footer from "@/components/layout/Footer";
-import Header from "@/components/layout/Header";
-const NO_IMPORTANT_NEWS_MESSAGE = "現在、重要なお知らせはありません。";
 
-async function TopPageContent() {
+const LATEST_NEWS_LIMIT = 3;
+const NO_IMPORTANT_NEWS_MESSAGE = "現在、重要なお知らせはありません。";
+const PICKUP_AUTOPLAY_DELAY_MS = 5000;
+const SECTION_TITLE_CLASS_NAME = "w-full max-w-105 md:max-w-full md:self-start md:px-pl";
+
+async function getTopPageData() {
   await connection();
+
   const [latestNews, importantNewsBody, pickUpSlides] = await Promise.all([
-    getLatestNews(3),
+    getLatestNews(LATEST_NEWS_LIMIT),
     getImportantNewsBody(),
     getPickUpSlides(),
   ]);
 
-  return (
-    <div className="flex w-full flex-col gap-l">
-      {/* 重要なお知らせ */}
-      <div className="w-full max-w-105 md:max-w-none">
-        <ImportantFrame title="重要なお知らせ">
-          <p className="whitespace-pre-wrap">{importantNewsBody ?? NO_IMPORTANT_NEWS_MESSAGE}</p>
-        </ImportantFrame>
-      </div>
+  return {
+    importantNewsBody,
+    latestNews,
+    pickUpSlides,
+  };
+}
 
-      {/* PICKUP カルーセル */}
+function TopHero() {
+  return (
+    <div className="flex w-full flex-col items-center">
+      <Image
+        src="/image/top/HeroAll.png"
+        alt=""
+        width={1575}
+        height={2760}
+        priority
+        sizes="100vw"
+        className="h-auto w-full md:hidden"
+      />
+      <Image
+        src="/image/top/Ps_HeroAll.png"
+        alt=""
+        width={4000}
+        height={2600}
+        priority
+        sizes="100vw"
+        className="hidden h-auto w-full md:block"
+      />
+      <LogoInfo />
+    </div>
+  );
+}
+
+function ImportantNewsSection({ body }: { body: string | null }) {
+  return (
+    <div className="w-full md:max-w-none">
+      <ImportantFrame title="重要なお知らせ">
+        <p className="whitespace-pre-wrap">{body ?? NO_IMPORTANT_NEWS_MESSAGE}</p>
+      </ImportantFrame>
+    </div>
+  );
+}
+
+function PickUpSection({ slides }: { slides: Awaited<ReturnType<typeof getPickUpSlides>> }) {
+  return (
+    <div className="flex w-full flex-col items-center gap-m md:gap-ll">
+      <div className={SECTION_TITLE_CLASS_NAME}>
+        <SectionTitle title="PICK UP" />
+      </div>
       <div className="w-full">
         <PickUpFrame>
-          {pickUpSlides.length > 0 ? (
-            <PickUpCarousel slides={pickUpSlides} autoPlay={{ delay: 5000 }} />
+          {slides.length > 0 ? (
+            <PickUpCarousel slides={slides} autoPlay={{ delay: PICKUP_AUTOPLAY_DELAY_MS }} />
           ) : (
             <div className="aspect-video w-full bg-base-dark md:mx-auto md:w-[60%]" />
           )}
         </PickUpFrame>
       </div>
+    </div>
+  );
+}
 
-      {/* お知らせ一覧 */}
-      <div className="flex w-full flex-col items-center gap-m md:gap-ll">
-        <div className="w-full max-w-105 md:max-w-full md:self-start md:px-pl">
-          <SectionTitle title="お知らせ" />
-        </div>
-        <section className="w-full md:bg-base-dark md:px-pl md:py-3l">
-          <div className="mx-auto flex w-full max-w-105 flex-col items-center gap-m md:max-w-190 md:items-start">
-            <div className="flex w-full flex-col items-end gap-m md:w-full md:max-w-none md:items-start md:gap-l">
-              <div className="w-full bg-base-dark px-ll py-m md:bg-transparent md:px-ss md:py-0">
-                {latestNews.length > 0 ? (
-                  <ul className="flex flex-col gap-m md:gap-l">
-                    {latestNews.map((news) => (
-                      <NewsItem
-                        key={news.id}
-                        date={news.date}
-                        dateTime={news.dateTime}
-                        title={news.title}
-                        content={news.body}
-                        important={news.important}
-                      />
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="px-ll py-m text-center text-text text-font-main">
-                    お知らせはまだありません
-                  </p>
-                )}
-              </div>
-              <div className="flex w-full justify-center pb-ss md:justify-center">
-                <ButtonMain href="/news" title="お知らせ一覧を見る ＞" />
-              </div>
+function NewsSection({ newsItems }: { newsItems: Awaited<ReturnType<typeof getLatestNews>> }) {
+  return (
+    <div className="flex w-full flex-col items-center gap-m md:gap-ll">
+      <div className={SECTION_TITLE_CLASS_NAME}>
+        <SectionTitle title="お知らせ" />
+      </div>
+      <section className="w-full md:bg-base-dark md:px-pl md:py-3l">
+        <div className="mx-auto flex w-full max-w-105 flex-col items-center gap-m md:max-w-190 md:items-start">
+          <div className="flex w-full flex-col items-end gap-m md:w-full md:max-w-none md:items-start md:gap-l">
+            <div className="w-full bg-base-dark px-ll py-m md:bg-transparent md:px-ss md:py-0">
+              {newsItems.length > 0 ? (
+                <ul className="flex flex-col gap-m md:gap-l">
+                  {newsItems.map((news) => (
+                    <NewsItem
+                      key={news.id}
+                      date={news.date}
+                      dateTime={news.dateTime}
+                      title={news.title}
+                      content={news.body}
+                      important={news.important}
+                    />
+                  ))}
+                </ul>
+              ) : (
+                <p className="px-ll py-m text-center text-text text-font-main">
+                  お知らせはまだありません
+                </p>
+              )}
+            </div>
+            <div className="flex w-full justify-center pb-ss">
+              <ButtonMain href="/news" title="お知らせ一覧を見る ＞" />
             </div>
           </div>
-        </section>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function InfoSection() {
+  return (
+    <div className="flex w-full flex-col gap-y-s pb-32.5 md:gap-y-ll">
+      <div className="w-full max-w-105 md:max-w-full md:px-pl">
+        <SectionTitle title="ご案内" />
       </div>
+      <div className="w-full px-pl">
+        <InfoMenu />
+      </div>
+    </div>
+  );
+}
+
+async function TopPageContent() {
+  const { importantNewsBody, latestNews, pickUpSlides } = await getTopPageData();
+
+  return (
+    <div className="flex w-full flex-col gap-4l">
+      <ImportantNewsSection body={importantNewsBody} />
+      <div className="relative w-full">
+        <div className="pointer-events-none absolute -top-20 right-0 -z-10 max-w-62.5">
+          <Image
+            src="/image/top/TopBack1-1.svg"
+            alt=""
+            width={220}
+            height={151}
+            className="h-auto w-full md:hidden"
+          />
+          <Image
+            src="/image/top/PTopBack1-1.svg"
+            alt=""
+            width={439}
+            height={343}
+            className="hidden h-auto w-full md:block"
+          />
+        </div>
+        <PickUpSection slides={pickUpSlides} />
+      </div>
+      <div className="relative flex w-full justify-center">
+        <div className="pointer-events-none absolute -top-23 left-0 -z-10">
+          <Image
+            src="/image/top/TopBack1-2.svg"
+            alt=""
+            width={105}
+            height={170}
+            className="h-auto w-full md:hidden"
+          />
+          <Image
+            src="/image/top/PTopBack1-2.svg"
+            alt=""
+            width={291}
+            height={275}
+            className="hidden h-auto w-full md:block"
+          />
+        </div>
+        <SponsorSection />
+        <div className="pointer-events-none absolute right-0 -bottom-41 -z-10">
+          <Image
+            src="/image/top/TopBack2.svg"
+            alt=""
+            width={198}
+            height={215}
+            className="h-auto w-full md:hidden"
+          />
+          <Image
+            src="/image/top/PTopBack2.svg"
+            alt=""
+            width={291}
+            height={275}
+            className="hidden h-auto w-full md:block"
+          />
+        </div>
+      </div>
+      <NewsSection newsItems={latestNews} />
+      <InfoSection />
     </div>
   );
 }
 
 function TopPageSkeleton() {
   return (
-    <div className="flex w-full flex-col items-center gap-l">
-      {/* 重要なお知らせスケルトン */}
+    <div className="flex w-full flex-col gap-4l">
       <div className="w-full max-w-105 md:max-w-none">
         <ImportantFrameSkeleton />
       </div>
 
-      {/* PICKUP カルーセルスケルトン */}
-      <div className="w-full">
-        <PickUpFrame>
-          <div className="aspect-video w-full animate-pulse bg-base-dark md:mx-auto md:w-[60%]" />
-        </PickUpFrame>
+      <div className="flex w-full flex-col items-center gap-m md:gap-ll">
+        <div className={SECTION_TITLE_CLASS_NAME}>
+          <SectionTitle title="PICK UP" />
+        </div>
+        <div className="w-full">
+          <PickUpFrame>
+            <div className="aspect-video w-full animate-pulse bg-base-dark md:mx-auto md:w-[60%]" />
+          </PickUpFrame>
+        </div>
       </div>
 
-      {/* お知らせ一覧スケルトン */}
+      <div className="relative flex w-full justify-center">
+        <div className="pointer-events-none absolute -top-16 left-0 -z-10 w-[105px]">
+          <Image
+            src="/image/top/TopBack1-2.svg"
+            alt=""
+            width={105}
+            height={170}
+            className="h-auto w-full md:hidden"
+          />
+          <Image
+            src="/image/top/PTopBack1-2.svg"
+            alt=""
+            width={105}
+            height={170}
+            className="hidden h-auto w-full md:block"
+          />
+        </div>
+        <SponsorSection />
+        <div className="pointer-events-none absolute right-0 -bottom-16 -z-10 w-[198px]">
+          <Image
+            src="/image/top/TopBack2.svg"
+            alt=""
+            width={198}
+            height={215}
+            className="h-auto w-full md:hidden"
+          />
+          <Image
+            src="/image/top/PTopBack2.svg"
+            alt=""
+            width={198}
+            height={215}
+            className="hidden h-auto w-full md:block"
+          />
+        </div>
+      </div>
+
       <div className="flex w-full flex-col items-center gap-m md:gap-ll">
-        <div className="w-full max-w-105 md:max-w-full md:self-start md:px-pl">
+        <div className={SECTION_TITLE_CLASS_NAME}>
           <SectionTitle title="お知らせ" />
         </div>
         <section className="w-full md:bg-base-dark md:px-pl md:py-3l">
@@ -119,84 +277,60 @@ function TopPageSkeleton() {
                   <NewsItemSkeleton key="news-skeleton-2" skeletonClassName="bg-base" />
                 </ul>
               </div>
+              <div className="flex w-full justify-center pb-ss">
+                <ButtonMain href="/news" title="お知らせ一覧を見る ＞" />
+              </div>
             </div>
           </div>
         </section>
       </div>
+
+      <InfoSection />
     </div>
   );
 }
 
 export default function TopPageView() {
   return (
-    <div className="flex min-h-screen flex-col items-center bg-base">
-      <Suspense fallback={<TopPageSkeleton />}>
-        <div className="flex w-full flex-col items-center gap-y-ll">
-          <div className="relative aspect-[393/638] w-full">
-            <Image
-              src="/image/top/HeroAll.png"
-              alt="45thNutfes_HeroHeader"
-              fill
-              className="object-cover"
-            />
-          </div>
-          <LogoInfo />
+    <div className="relative z-0 flex min-h-screen flex-col items-center overflow-x-hidden bg-base">
+      <TopHero />
+      <div className="relative flex w-full flex-col gap-4l">
+        <Suspense fallback={<TopPageSkeleton />}>
+          <TopPageContent />
+        </Suspense>
+        <div className="pointer-events-none absolute bottom-6 left-6 -z-10 md:bottom-0 md:left-0">
+          <Image
+            src="/image/top/TopBack3-2.svg"
+            alt=""
+            width={185}
+            height={70}
+            className="h-auto w-full md:hidden"
+          />
+          <Image
+            src="/image/top/PTopBack3-2.svg"
+            alt=""
+            width={185}
+            height={70}
+            className="hidden h-auto w-full md:block"
+          />
         </div>
-        <div className="relative flex w-full flex-col gap-4l">
-          <div className="relative flex flex-col gap-4l">
-            --重要なお知らせ--
-            <div className="relative">
-              <div className="absolute right-0 bottom-[-200px] z-0 aspect-[393/638]">
-                <Image
-                  src="/image/top/TopBack1.svg"
-                  alt="45th_Top1"
-                  width={393}
-                  height={638}
-                  className="pointer-events-none object-contain object-right-top"
-                />
-              </div>
-              <div className="z-10 flex flex-col gap-y-m">
-                <SectionTitle title="PICK UP" />
-                <PickUpFrame>
-                  <PickUpCarousel slides={[...topModuleSlides]} autoPlay={{ delay: 2500 }} />
-                </PickUpFrame>
-              </div>
-            </div>
-            <div className="z-10">
-              <SponsorSection />
-            </div>
-            <div className="relative">
-              <div className="absolute right-0 bottom-[-50px] z-0">
-                <Image
-                  src="/image/top/TopBack2.svg"
-                  alt="45th_Top2"
-                  width={210}
-                  height={198}
-                  className="pointer-events-none object-contain object-right-bottom"
-                />
-              </div>
-            </div>
-            <div className="z-10">
-              <TopPageContent />
-            </div>
-            <div className="flex w-full flex-col gap-y-s pb-3l">
-              <SectionTitle title="ご案内" />
-              <InfoMenu />
-            </div>
-          </div>
-          <div className="relative w-full">
-            <div className="absolute right-0 bottom-0 z-0">
-              <Image
-                src="/image/top/TopBack3.svg"
-                alt="45th_Top3"
-                width={393}
-                height={638}
-                className="pointer-events-none object-contain object-right-top"
-              />
-            </div>
-          </div>
+        <div className="pointer-events-none absolute right-0 bottom-0">
+          <Image
+            src="/image/top/TopBack3-1.svg"
+            alt=""
+            width={136}
+            height={405}
+            className="h-auto w-full md:hidden"
+          />
+          <Image
+            src="/image/top/PTopBack3-1.svg"
+            alt=""
+            width={183}
+            height={537}
+            className="hidden h-auto w-full md:block"
+          />
         </div>
-      </Suspense>
+      </div>
     </div>
   );
 }
