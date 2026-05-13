@@ -17,24 +17,25 @@ export default function Footer() {
           >
             <Image
               alt="Instagram"
-              className="size-10 flex-shrink-0 min-w-[40px] min-h-[40px] hover:opacity-80 hover:transition-all"
+              className="size-10 min-h-[40px] min-w-[40px] flex-shrink-0 hover:opacity-80 hover:transition-all"
               height={40}
               src="/icon/Instagram.png"
               width={40}
             />
           </Link>
-
         </section>
 
         <section className="flex w-full max-w-68 flex-col gap-xs text-text">
           <div className="flex flex-col gap-xs">
             <p className="text-font-gray">アンケート</p>
             <a
-            href="https://www.nagaokaut.ac.jp/index.html"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:underline"
-          >大学ホームページ</a>
+              href="https://www.nagaokaut.ac.jp/index.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline"
+            >
+              大学ホームページ
+            </a>
           </div>
 
           <div className="flex flex-col gap-ss">
@@ -57,7 +58,9 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:underline"
-                >インスタDM</a>
+                >
+                  インスタDM
+                </a>
               </p>
               <p className="flex items-center gap-1.5">
                 <Mail className="size-4 text-base-dark" strokeWidth={2.2} />
@@ -93,11 +96,13 @@ export default function Footer() {
               <div className="flex h-[54px] w-full min-w-[420px] items-center gap-ll pt-[4px] text-Pbutton">
                 <div className="text-font-gray">アンケート</div>
                 <a
-              href="https://www.nagaokaut.ac.jp/index.html"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:underline"
-            >大学ホームページ</a>
+                  href="https://www.nagaokaut.ac.jp/index.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
+                  大学ホームページ
+                </a>
                 <div className="text-font-gray">お問い合わせ</div>
               </div>
             </div>
@@ -110,7 +115,7 @@ export default function Footer() {
               >
                 <Image
                   alt="Instagram"
-                  className="size-10 flex-shrink-0 min-w-[40px] min-h-[40px] hover:opacity-80 hover:transition-all"
+                  className="size-10 min-h-[40px] min-w-[40px] flex-shrink-0 hover:opacity-80 hover:transition-all"
                   height={40}
                   src="/icon/Instagram.png"
                   width={40}
@@ -128,7 +133,9 @@ export default function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:underline"
-                  >インスタDM</a>
+                  >
+                    インスタDM
+                  </a>
                 </p>
                 <p className="flex items-center gap-1.5">
                   <Mail className="size-4 text-base-dark" strokeWidth={2.2} />
