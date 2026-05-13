@@ -132,7 +132,10 @@ function MenuItem({ item }: MenuItemProps) {
     <li className="border-b border-font-gray">
       {isLeaf ? (
         enabled ? (
-          <Link href={item.href ?? "/"} className="flex items-center gap-s px-l py-m text-font-main">
+          <Link
+            href={item.href ?? "/"}
+            className="flex items-center gap-s px-l py-m text-font-main"
+          >
             <item.icon className="shrink-0 text-secondary" size={32} />
             <span
               className={

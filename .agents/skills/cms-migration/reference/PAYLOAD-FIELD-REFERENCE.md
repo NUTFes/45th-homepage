@@ -17,44 +17,47 @@ Every field shares these **base properties**:
 
 ```typescript
 type BaseField = {
-  name: string                    // Required. Field identifier (camelCase)
-  label?: string                  // Admin UI label. Defaults to name
-  required?: boolean              // Validation. Default: false
-  unique?: boolean                // Database unique constraint
-  index?: boolean                 // Database index for faster queries
-  localized?: boolean             // Enable per-locale values
-  hidden?: boolean                // Hide from admin UI
-  saveToJWT?: boolean             // Include in auth JWT
-  defaultValue?: unknown          // Default when creating new docs
-  validate?: Function             // Custom validation function
-  access?: {                      // Field-level access control
-    create?: Function
-    read?: Function
-    update?: Function
-  }
-  hooks?: {                       // Field lifecycle hooks
-    beforeValidate?: Function[]
-    beforeChange?: Function[]
-    afterChange?: Function[]
-    afterRead?: Function[]
-  }
+  name: string; // Required. Field identifier (camelCase)
+  label?: string; // Admin UI label. Defaults to name
+  required?: boolean; // Validation. Default: false
+  unique?: boolean; // Database unique constraint
+  index?: boolean; // Database index for faster queries
+  localized?: boolean; // Enable per-locale values
+  hidden?: boolean; // Hide from admin UI
+  saveToJWT?: boolean; // Include in auth JWT
+  defaultValue?: unknown; // Default when creating new docs
+  validate?: Function; // Custom validation function
+  access?: {
+    // Field-level access control
+    create?: Function;
+    read?: Function;
+    update?: Function;
+  };
+  hooks?: {
+    // Field lifecycle hooks
+    beforeValidate?: Function[];
+    beforeChange?: Function[];
+    afterChange?: Function[];
+    afterRead?: Function[];
+  };
   admin?: {
-    condition?: Function          // Conditionally show/hide field
-    description?: string          // Help text below field
-    position?: 'sidebar'          // Move to sidebar in admin
-    width?: string                // CSS width (e.g., '50%')
-    style?: CSSProperties         // Inline styles
-    className?: string            // CSS class
-    readOnly?: boolean            // Disable editing
-    disabled?: boolean            // Disable field entirely
-    hidden?: boolean              // Hide in admin
-    components?: {                // Custom React components
-      Field?: Component
-      Cell?: Component
-      Filter?: Component
-    }
-  }
-}
+    condition?: Function; // Conditionally show/hide field
+    description?: string; // Help text below field
+    position?: "sidebar"; // Move to sidebar in admin
+    width?: string; // CSS width (e.g., '50%')
+    style?: CSSProperties; // Inline styles
+    className?: string; // CSS class
+    readOnly?: boolean; // Disable editing
+    disabled?: boolean; // Disable field entirely
+    hidden?: boolean; // Hide in admin
+    components?: {
+      // Custom React components
+      Field?: Component;
+      Cell?: Component;
+      Filter?: Component;
+    };
+  };
+};
 ```
 
 ---
@@ -66,28 +69,31 @@ type BaseField = {
 Single-line text input.
 
 **Full schema:**
+
 ```typescript
 type TextField = BaseField & {
-  type: 'text'
-  minLength?: number              // Minimum character count
-  maxLength?: number              // Maximum character count
-  hasMany?: boolean               // Allow multiple values (array of strings)
-  minRows?: number                // Min items when hasMany: true
-  maxRows?: number                // Max items when hasMany: true
-  admin?: BaseField['admin'] & {
-    placeholder?: string          // Placeholder text
-    autoComplete?: string         // HTML autocomplete attribute
-    rtl?: boolean                 // Right-to-left text
-  }
-}
+  type: "text";
+  minLength?: number; // Minimum character count
+  maxLength?: number; // Maximum character count
+  hasMany?: boolean; // Allow multiple values (array of strings)
+  minRows?: number; // Min items when hasMany: true
+  maxRows?: number; // Max items when hasMany: true
+  admin?: BaseField["admin"] & {
+    placeholder?: string; // Placeholder text
+    autoComplete?: string; // HTML autocomplete attribute
+    rtl?: boolean; // Right-to-left text
+  };
+};
 ```
 
 **Use when:**
+
 - Short strings (titles, names, slugs, URLs)
 - Data is typically < 200 characters
 - No line breaks expected
 
 **Source patterns:**
+
 ```json
 { "title": "Hello World" }
 { "slug": "hello-world" }
@@ -96,6 +102,7 @@ type TextField = BaseField & {
 ```
 
 **Payload config examples:**
+
 ```typescript
 { name: 'title', type: 'text', required: true }
 { name: 'slug', type: 'text', unique: true, index: true }
@@ -110,25 +117,28 @@ type TextField = BaseField & {
 Multi-line text without formatting.
 
 **Full schema:**
+
 ```typescript
 type TextareaField = BaseField & {
-  type: 'textarea'
-  minLength?: number              // Minimum character count
-  maxLength?: number              // Maximum character count
-  admin?: BaseField['admin'] & {
-    placeholder?: string          // Placeholder text
-    rows?: number                 // Visible rows (height)
-    rtl?: boolean                 // Right-to-left text
-  }
-}
+  type: "textarea";
+  minLength?: number; // Minimum character count
+  maxLength?: number; // Maximum character count
+  admin?: BaseField["admin"] & {
+    placeholder?: string; // Placeholder text
+    rows?: number; // Visible rows (height)
+    rtl?: boolean; // Right-to-left text
+  };
+};
 ```
 
 **Use when:**
+
 - Longer text content without HTML/rich formatting
 - Descriptions, excerpts, plain summaries
 - Data contains line breaks but no markup
 
 **Source patterns:**
+
 ```json
 { "description": "A longer description\nthat spans multiple lines" }
 { "excerpt": "Brief summary of the content..." }
@@ -136,6 +146,7 @@ type TextareaField = BaseField & {
 ```
 
 **Payload config examples:**
+
 ```typescript
 { name: 'description', type: 'textarea' }
 { name: 'excerpt', type: 'textarea', maxLength: 500 }
@@ -149,28 +160,31 @@ type TextareaField = BaseField & {
 Rich text editor (Lexical by default, or Slate).
 
 **Full schema:**
+
 ```typescript
 type RichTextField = BaseField & {
-  type: 'richText'
-  editor?: LexicalEditorConfig     // Lexical editor configuration
+  type: "richText";
+  editor?: LexicalEditorConfig; // Lexical editor configuration
   // Lexical-specific options (via editor config):
   // - features: Enable/disable toolbar features
   // - lexical: Raw Lexical configuration
-  admin?: BaseField['admin'] & {
-    hideGutter?: boolean           // Hide left gutter
-    elements?: string[]            // Deprecated (Slate). Use editor.features
-    leaves?: string[]              // Deprecated (Slate). Use editor.features
-  }
-}
+  admin?: BaseField["admin"] & {
+    hideGutter?: boolean; // Hide left gutter
+    elements?: string[]; // Deprecated (Slate). Use editor.features
+    leaves?: string[]; // Deprecated (Slate). Use editor.features
+  };
+};
 ```
 
 **Use when:**
+
 - HTML content from WYSIWYG editors
 - Markdown content (will need conversion)
 - Content with formatting (bold, italic, links, headings)
 - Content blocks from Contentful, Sanity, etc.
 
 **Source patterns:**
+
 ```json
 { "content": "<p>Hello <strong>world</strong></p>" }
 { "body": "# Heading\n\nParagraph with **bold**" }
@@ -178,12 +192,14 @@ type RichTextField = BaseField & {
 ```
 
 **Payload config examples:**
+
 ```typescript
 { name: 'content', type: 'richText' }
 { name: 'body', type: 'richText', required: true }
 ```
 
 **Migration notes:**
+
 - WordPress `content.rendered` can be imported as HTML
 - Contentful Rich Text requires conversion to Lexical format
 - Markdown should be converted to HTML first, or use Lexical markdown plugin
@@ -196,28 +212,31 @@ type RichTextField = BaseField & {
 Numeric values (integers or decimals).
 
 **Full schema:**
+
 ```typescript
 type NumberField = BaseField & {
-  type: 'number'
-  min?: number                    // Minimum value
-  max?: number                    // Maximum value
-  hasMany?: boolean               // Allow multiple values (array of numbers)
-  minRows?: number                // Min items when hasMany: true
-  maxRows?: number                // Max items when hasMany: true
-  admin?: BaseField['admin'] & {
-    placeholder?: string          // Placeholder text
-    autoComplete?: string         // HTML autocomplete attribute
-    step?: number                 // Increment step (e.g., 0.01 for currency)
-  }
-}
+  type: "number";
+  min?: number; // Minimum value
+  max?: number; // Maximum value
+  hasMany?: boolean; // Allow multiple values (array of numbers)
+  minRows?: number; // Min items when hasMany: true
+  maxRows?: number; // Max items when hasMany: true
+  admin?: BaseField["admin"] & {
+    placeholder?: string; // Placeholder text
+    autoComplete?: string; // HTML autocomplete attribute
+    step?: number; // Increment step (e.g., 0.01 for currency)
+  };
+};
 ```
 
 **Use when:**
+
 - Prices, quantities, counts
 - Ratings, scores
 - Any numeric data
 
 **Source patterns:**
+
 ```json
 { "price": 29.99 }
 { "quantity": 5 }
@@ -226,6 +245,7 @@ type NumberField = BaseField & {
 ```
 
 **Payload config examples:**
+
 ```typescript
 { name: 'price', type: 'number', min: 0, admin: { step: 0.01 } }
 { name: 'quantity', type: 'number', min: 0, max: 1000 }
@@ -240,29 +260,33 @@ type NumberField = BaseField & {
 Email address field with built-in validation.
 
 **Full schema:**
+
 ```typescript
 type EmailField = BaseField & {
-  type: 'email'
-  minLength?: number              // Minimum character count
-  maxLength?: number              // Maximum character count
-  admin?: BaseField['admin'] & {
-    placeholder?: string          // Placeholder text
-    autoComplete?: string         // HTML autocomplete attribute
-  }
-}
+  type: "email";
+  minLength?: number; // Minimum character count
+  maxLength?: number; // Maximum character count
+  admin?: BaseField["admin"] & {
+    placeholder?: string; // Placeholder text
+    autoComplete?: string; // HTML autocomplete attribute
+  };
+};
 ```
 
 **Use when:**
+
 - Field contains email addresses
 - Field name suggests email (email, contactEmail, etc.)
 
 **Source patterns:**
+
 ```json
 { "email": "user@example.com" }
 { "contactEmail": "support@company.com" }
 ```
 
 **Payload config examples:**
+
 ```typescript
 { name: 'email', type: 'email', required: true }
 { name: 'contactEmail', type: 'email', admin: { placeholder: 'you@example.com' } }
@@ -275,27 +299,30 @@ type EmailField = BaseField & {
 Date/datetime picker.
 
 **Full schema:**
+
 ```typescript
 type DateField = BaseField & {
-  type: 'date'
-  admin?: BaseField['admin'] & {
-    placeholder?: string          // Placeholder text
+  type: "date";
+  admin?: BaseField["admin"] & {
+    placeholder?: string; // Placeholder text
     date?: {
-      displayFormat?: string      // Display format (e.g., 'MMM d, yyyy')
-      pickerAppearance?: 'dayOnly' | 'dayAndTime' | 'monthOnly' | 'timeOnly'
-      minDate?: Date              // Earliest selectable date
-      maxDate?: Date              // Latest selectable date
-    }
-  }
-}
+      displayFormat?: string; // Display format (e.g., 'MMM d, yyyy')
+      pickerAppearance?: "dayOnly" | "dayAndTime" | "monthOnly" | "timeOnly";
+      minDate?: Date; // Earliest selectable date
+      maxDate?: Date; // Latest selectable date
+    };
+  };
+};
 ```
 
 **Use when:**
+
 - ISO date strings
 - Timestamps
 - Any date/time values
 
 **Source patterns:**
+
 ```json
 { "publishedAt": "2024-01-15T10:30:00Z" }
 { "createdAt": "2024-01-15" }
@@ -303,6 +330,7 @@ type DateField = BaseField & {
 ```
 
 **Payload config examples:**
+
 ```typescript
 { name: 'publishedAt', type: 'date' }
 { name: 'eventDate', type: 'date', admin: { date: { pickerAppearance: 'dayAndTime' } } }
@@ -310,6 +338,7 @@ type DateField = BaseField & {
 ```
 
 **Migration notes:**
+
 - Payload stores dates as ISO strings
 - Unix timestamps should be converted: `new Date(timestamp).toISOString()`
 
@@ -320,20 +349,23 @@ type DateField = BaseField & {
 Boolean true/false toggle.
 
 **Full schema:**
+
 ```typescript
 type CheckboxField = BaseField & {
-  type: 'checkbox'
-  defaultValue?: boolean          // Default checked state
-  admin?: BaseField['admin']      // No additional checkbox-specific admin options
-}
+  type: "checkbox";
+  defaultValue?: boolean; // Default checked state
+  admin?: BaseField["admin"]; // No additional checkbox-specific admin options
+};
 ```
 
 **Use when:**
+
 - Boolean values
 - Yes/no flags
 - Feature toggles
 
 **Source patterns:**
+
 ```json
 { "featured": true }
 { "isPublished": false }
@@ -341,6 +373,7 @@ type CheckboxField = BaseField & {
 ```
 
 **Payload config examples:**
+
 ```typescript
 { name: 'featured', type: 'checkbox', defaultValue: false }
 { name: 'isPublished', type: 'checkbox' }
@@ -354,29 +387,33 @@ type CheckboxField = BaseField & {
 Dropdown with predefined options.
 
 **Full schema:**
+
 ```typescript
 type SelectField = BaseField & {
-  type: 'select'
-  options: Array<                 // Required. List of options
-    | string                      // Simple: just the value (label = value)
-    | { label: string; value: string }  // Full: separate label and value
-  >
-  hasMany?: boolean               // Allow multiple selections
-  defaultValue?: string | string[] // Default selected value(s)
-  admin?: BaseField['admin'] & {
-    isClearable?: boolean         // Allow clearing selection
-    isSortable?: boolean          // Allow drag-to-reorder when hasMany
-  }
-}
+  type: "select";
+  options: Array<
+    // Required. List of options
+    | string // Simple: just the value (label = value)
+    | { label: string; value: string } // Full: separate label and value
+  >;
+  hasMany?: boolean; // Allow multiple selections
+  defaultValue?: string | string[]; // Default selected value(s)
+  admin?: BaseField["admin"] & {
+    isClearable?: boolean; // Allow clearing selection
+    isSortable?: boolean; // Allow drag-to-reorder when hasMany
+  };
+};
 ```
 
 **Use when:**
+
 - Enum values
 - Status fields
 - Category/type with fixed options
 - Field has limited set of valid values
 
 **Source patterns:**
+
 ```json
 { "status": "published" }
 { "priority": "high" }
@@ -385,6 +422,7 @@ type SelectField = BaseField & {
 ```
 
 **Payload config examples:**
+
 ```typescript
 // Simple options (value = label)
 { name: 'priority', type: 'select', options: ['low', 'medium', 'high'] }
@@ -416,6 +454,7 @@ type SelectField = BaseField & {
 
 **Detecting options from data:**
 If you see the same field with different values across records, collect unique values to build options:
+
 ```json
 // Record 1: { "status": "draft" }
 // Record 2: { "status": "published" }
@@ -430,25 +469,29 @@ If you see the same field with different values across records, collect unique v
 Radio button group (single selection, always visible).
 
 **Full schema:**
+
 ```typescript
 type RadioField = BaseField & {
-  type: 'radio'
-  options: Array<                 // Required. List of options
-    | string                      // Simple: just the value
-    | { label: string; value: string }  // Full: separate label and value
-  >
-  defaultValue?: string           // Default selected value
-  admin?: BaseField['admin'] & {
-    layout?: 'horizontal' | 'vertical'  // Button arrangement
-  }
-}
+  type: "radio";
+  options: Array<
+    // Required. List of options
+    | string // Simple: just the value
+    | { label: string; value: string } // Full: separate label and value
+  >;
+  defaultValue?: string; // Default selected value
+  admin?: BaseField["admin"] & {
+    layout?: "horizontal" | "vertical"; // Button arrangement
+  };
+};
 ```
 
 **Use when:**
+
 - Same as select, but fewer options (2-4)
 - User should see all options at once
 
 **Payload config examples:**
+
 ```typescript
 {
   name: 'size',
@@ -476,22 +519,23 @@ type RadioField = BaseField & {
 Reference to another document.
 
 **Full schema:**
+
 ```typescript
 type RelationshipField = BaseField & {
-  type: 'relationship'
-  relationTo: string | string[]   // Required. Target collection slug(s)
-  hasMany?: boolean               // Allow multiple selections
-  minRows?: number                // Min items when hasMany: true
-  maxRows?: number                // Max items when hasMany: true
-  filterOptions?:                 // Limit selectable documents
-    | Where                       // Static where query
-    | ((args: FilterOptionsProps) => Where | boolean)  // Dynamic filter
-  admin?: BaseField['admin'] & {
-    isSortable?: boolean          // Allow drag-to-reorder when hasMany
-    allowCreate?: boolean         // Allow creating new docs from field (default: true)
-    allowEdit?: boolean           // Allow editing related doc inline
-  }
-}
+  type: "relationship";
+  relationTo: string | string[]; // Required. Target collection slug(s)
+  hasMany?: boolean; // Allow multiple selections
+  minRows?: number; // Min items when hasMany: true
+  maxRows?: number; // Max items when hasMany: true
+  filterOptions?: // Limit selectable documents
+    | Where // Static where query
+    | ((args: FilterOptionsProps) => Where | boolean); // Dynamic filter
+  admin?: BaseField["admin"] & {
+    isSortable?: boolean; // Allow drag-to-reorder when hasMany
+    allowCreate?: boolean; // Allow creating new docs from field (default: true)
+    allowEdit?: boolean; // Allow editing related doc inline
+  };
+};
 
 // When relationTo is an array (polymorphic), stored value shape is:
 // { relationTo: 'collectionSlug', value: 'documentId' }
@@ -501,11 +545,13 @@ type RelationshipField = BaseField & {
 ```
 
 **Use when:**
+
 - Foreign key / ID reference to another collection
 - Nested object that should be a separate document
 - Author, category, tag references
 
 **Source patterns:**
+
 ```json
 // ID reference
 { "author": 123 }
@@ -523,6 +569,7 @@ type RelationshipField = BaseField & {
 ```
 
 **Payload config examples:**
+
 ```typescript
 // Single relationship
 { name: 'author', type: 'relationship', relationTo: 'users' }
@@ -556,30 +603,32 @@ type RelationshipField = BaseField & {
 File/media upload field. References a document in an upload-enabled collection.
 
 **Full schema:**
+
 ```typescript
 type UploadField = BaseField & {
-  type: 'upload'
-  relationTo: string              // Required. Upload collection slug (e.g., 'media')
-  hasMany?: boolean               // Allow multiple files
-  minRows?: number                // Min items when hasMany: true
-  maxRows?: number                // Max items when hasMany: true
-  filterOptions?:                 // Limit selectable files
-    | Where
-    | ((args: FilterOptionsProps) => Where | boolean)
-  admin?: BaseField['admin'] & {
-    isSortable?: boolean          // Allow drag-to-reorder when hasMany
-  }
-}
+  type: "upload";
+  relationTo: string; // Required. Upload collection slug (e.g., 'media')
+  hasMany?: boolean; // Allow multiple files
+  minRows?: number; // Min items when hasMany: true
+  maxRows?: number; // Max items when hasMany: true
+  filterOptions?: // Limit selectable files
+    Where | ((args: FilterOptionsProps) => Where | boolean);
+  admin?: BaseField["admin"] & {
+    isSortable?: boolean; // Allow drag-to-reorder when hasMany
+  };
+};
 
 // Stored value is the upload document ID (or array of IDs when hasMany)
 ```
 
 **Use when:**
+
 - Image URLs or references
 - File attachments
 - Media library references
 
 **Source patterns:**
+
 ```json
 // URL reference
 { "featuredImage": "https://example.com/image.jpg" }
@@ -598,6 +647,7 @@ type UploadField = BaseField & {
 ```
 
 **Payload config examples:**
+
 ```typescript
 { name: 'featuredImage', type: 'upload', relationTo: 'media' }
 { name: 'gallery', type: 'upload', relationTo: 'media', hasMany: true, maxRows: 10 }
@@ -605,6 +655,7 @@ type UploadField = BaseField & {
 ```
 
 **Migration notes:**
+
 - Download remote images and upload to Payload
 - Store the new Payload media ID in the field
 - Preserve alt text as a separate field on the media collection or via a group
@@ -616,36 +667,40 @@ type UploadField = BaseField & {
 Repeatable group of fields.
 
 **Full schema:**
+
 ```typescript
 type ArrayField = BaseField & {
-  type: 'array'
-  fields: Field[]                 // Required. Sub-fields for each row
-  minRows?: number                // Minimum number of rows
-  maxRows?: number                // Maximum number of rows
-  labels?: {                      // Custom row labels
-    singular?: string
-    plural?: string
-  }
-  admin?: BaseField['admin'] & {
-    initCollapsed?: boolean       // Start rows collapsed
-    isSortable?: boolean          // Allow drag-to-reorder (default: true)
+  type: "array";
+  fields: Field[]; // Required. Sub-fields for each row
+  minRows?: number; // Minimum number of rows
+  maxRows?: number; // Maximum number of rows
+  labels?: {
+    // Custom row labels
+    singular?: string;
+    plural?: string;
+  };
+  admin?: BaseField["admin"] & {
+    initCollapsed?: boolean; // Start rows collapsed
+    isSortable?: boolean; // Allow drag-to-reorder (default: true)
     components?: {
-      RowLabel?: Component        // Custom row label component
-    }
-  }
+      RowLabel?: Component; // Custom row label component
+    };
+  };
   // Each row automatically gets an 'id' field
-}
+};
 
 // Stored as array of objects:
 // [{ id: 'abc', field1: 'value', field2: 'value' }, ...]
 ```
 
 **Use when:**
+
 - Array of objects with consistent structure
 - Repeater fields (ACF, etc.)
 - List of items with multiple properties each
 
 **Source patterns:**
+
 ```json
 {
   "socialLinks": [
@@ -663,6 +718,7 @@ type ArrayField = BaseField & {
 ```
 
 **Payload config examples:**
+
 ```typescript
 {
   name: 'socialLinks',
@@ -699,25 +755,28 @@ type ArrayField = BaseField & {
 Nested object (non-repeating).
 
 **Full schema:**
+
 ```typescript
 type GroupField = BaseField & {
-  type: 'group'
-  fields: Field[]                 // Required. Sub-fields
-  admin?: BaseField['admin'] & {
-    hideGutter?: boolean          // Remove left border/gutter
-  }
-}
+  type: "group";
+  fields: Field[]; // Required. Sub-fields
+  admin?: BaseField["admin"] & {
+    hideGutter?: boolean; // Remove left border/gutter
+  };
+};
 
 // Stored as nested object:
 // { field1: 'value', field2: 'value' }
 ```
 
 **Use when:**
+
 - Nested object that's always singular
 - Organizational grouping of related fields
 - SEO metadata, address blocks, etc.
 
 **Source patterns:**
+
 ```json
 {
   "seo": {
@@ -737,6 +796,7 @@ type GroupField = BaseField & {
 ```
 
 **Payload config examples:**
+
 ```typescript
 {
   name: 'seo',
@@ -769,33 +829,35 @@ type GroupField = BaseField & {
 Flexible content / page builder blocks.
 
 **Full schema:**
+
 ```typescript
 type BlocksField = BaseField & {
-  type: 'blocks'
-  blocks: Block[]                 // Required. Available block types
-  minRows?: number                // Minimum number of blocks
-  maxRows?: number                // Maximum number of blocks
-  admin?: BaseField['admin'] & {
-    initCollapsed?: boolean       // Start blocks collapsed
-    isSortable?: boolean          // Allow drag-to-reorder (default: true)
-  }
-}
+  type: "blocks";
+  blocks: Block[]; // Required. Available block types
+  minRows?: number; // Minimum number of blocks
+  maxRows?: number; // Maximum number of blocks
+  admin?: BaseField["admin"] & {
+    initCollapsed?: boolean; // Start blocks collapsed
+    isSortable?: boolean; // Allow drag-to-reorder (default: true)
+  };
+};
 
 type Block = {
-  slug: string                    // Required. Unique block identifier
-  labels?: {                      // Custom labels
-    singular?: string
-    plural?: string
-  }
-  fields: Field[]                 // Required. Fields in this block
-  imageURL?: string               // Preview image URL
-  imageAltText?: string           // Alt text for preview
+  slug: string; // Required. Unique block identifier
+  labels?: {
+    // Custom labels
+    singular?: string;
+    plural?: string;
+  };
+  fields: Field[]; // Required. Fields in this block
+  imageURL?: string; // Preview image URL
+  imageAltText?: string; // Alt text for preview
   admin?: {
     components?: {
-      Label?: Component           // Custom block label
-    }
-  }
-}
+      Label?: Component; // Custom block label
+    };
+  };
+};
 
 // Stored as array with blockType identifier:
 // [
@@ -805,12 +867,14 @@ type Block = {
 ```
 
 **Use when:**
+
 - Dynamic content zones
 - Page builder layouts
 - ACF Flexible Content
 - Contentful/Sanity block content
 
 **Source patterns:**
+
 ```json
 {
   "layout": [
@@ -822,6 +886,7 @@ type Block = {
 ```
 
 **Payload config examples:**
+
 ```typescript
 {
   name: 'layout',
@@ -864,6 +929,7 @@ type Block = {
 ```
 
 **Migration notes:**
+
 - Map source block `type` field to Payload `blockType`
 - Each block type needs its own field definitions
 
@@ -874,25 +940,28 @@ type Block = {
 Arbitrary JSON data.
 
 **Full schema:**
+
 ```typescript
 type JSONField = BaseField & {
-  type: 'json'
-  jsonSchema?: JSONSchema         // Optional JSON Schema for validation
-  admin?: BaseField['admin'] & {
-    editorOptions?: object        // Monaco editor options
-  }
-}
+  type: "json";
+  jsonSchema?: JSONSchema; // Optional JSON Schema for validation
+  admin?: BaseField["admin"] & {
+    editorOptions?: object; // Monaco editor options
+  };
+};
 
 // Stored as-is (any valid JSON)
 ```
 
 **Use when:**
+
 - Unstructured or highly variable data
 - Third-party API responses to store
 - Data that doesn't fit other types
 - Temporary/flexible storage during migration
 
 **Source patterns:**
+
 ```json
 { "metadata": { "arbitrary": "data", "nested": { "values": true } } }
 { "apiResponse": { ... } }
@@ -900,6 +969,7 @@ type JSONField = BaseField & {
 ```
 
 **Payload config examples:**
+
 ```typescript
 { name: 'metadata', type: 'json' }
 
@@ -918,6 +988,7 @@ type JSONField = BaseField & {
 ```
 
 **Migration notes:**
+
 - Use as fallback when data structure is unknown or highly variable
 - Consider converting to proper fields later for better querying
 
@@ -928,11 +999,12 @@ type JSONField = BaseField & {
 Geographic coordinates (longitude, latitude).
 
 **Full schema:**
+
 ```typescript
 type PointField = BaseField & {
-  type: 'point'
-  admin?: BaseField['admin']      // No additional point-specific admin options
-}
+  type: "point";
+  admin?: BaseField["admin"]; // No additional point-specific admin options
+};
 
 // Stored as GeoJSON Point:
 // [longitude, latitude]  // Note: longitude first!
@@ -940,11 +1012,13 @@ type PointField = BaseField & {
 ```
 
 **Use when:**
+
 - Latitude/longitude pairs
 - Map locations
 - Geolocation data
 
 **Source patterns:**
+
 ```json
 { "location": { "lat": 40.7128, "lng": -74.0060 } }
 { "coordinates": [40.7128, -74.0060] }
@@ -952,12 +1026,14 @@ type PointField = BaseField & {
 ```
 
 **Payload config examples:**
+
 ```typescript
 { name: 'location', type: 'point' }
 { name: 'coordinates', type: 'point', required: true }
 ```
 
 **Migration notes:**
+
 - Payload uses GeoJSON format: `[longitude, latitude]`
 - Many sources use `[latitude, longitude]` - swap if needed!
 - Convert from `{ lat, lng }` objects to `[lng, lat]` array
@@ -969,18 +1045,20 @@ type PointField = BaseField & {
 Horizontal layout for placing fields side-by-side.
 
 **Full schema:**
+
 ```typescript
 type RowField = {
-  type: 'row'
-  fields: Field[]                 // Required. Fields to display in row
+  type: "row";
+  fields: Field[]; // Required. Fields to display in row
   admin?: {
-    condition?: Function          // Conditionally show/hide
-  }
-}
+    condition?: Function; // Conditionally show/hide
+  };
+};
 // No name required - purely layout
 ```
 
 **Payload config example:**
+
 ```typescript
 {
   type: 'row',
@@ -998,20 +1076,22 @@ type RowField = {
 Collapsible section for grouping fields.
 
 **Full schema:**
+
 ```typescript
 type CollapsibleField = {
-  type: 'collapsible'
-  label: string | Function        // Required. Section header
-  fields: Field[]                 // Required. Fields inside
+  type: "collapsible";
+  label: string | Function; // Required. Section header
+  fields: Field[]; // Required. Fields inside
   admin?: {
-    initCollapsed?: boolean       // Start collapsed (default: false)
-    condition?: Function
-  }
-}
+    initCollapsed?: boolean; // Start collapsed (default: false)
+    condition?: Function;
+  };
+};
 // No name required - purely layout
 ```
 
 **Payload config example:**
+
 ```typescript
 {
   type: 'collapsible',
@@ -1031,25 +1111,27 @@ type CollapsibleField = {
 Tabbed interface for organizing fields.
 
 **Full schema:**
+
 ```typescript
 type TabsField = {
-  type: 'tabs'
-  tabs: Tab[]                     // Required. Array of tabs
+  type: "tabs";
+  tabs: Tab[]; // Required. Array of tabs
   admin?: {
-    condition?: Function
-  }
-}
+    condition?: Function;
+  };
+};
 
 type Tab = {
-  label: string                   // Required. Tab label
-  name?: string                   // If set, fields are nested under this key
-  fields: Field[]                 // Required. Fields in this tab
-  description?: string            // Help text for tab
-}
+  label: string; // Required. Tab label
+  name?: string; // If set, fields are nested under this key
+  fields: Field[]; // Required. Fields in this tab
+  description?: string; // Help text for tab
+};
 // No name on parent - tabs are layout only (unless tab has name)
 ```
 
 **Payload config example:**
+
 ```typescript
 {
   type: 'tabs',
@@ -1080,18 +1162,19 @@ type Tab = {
 Render custom React component without storing data.
 
 **Full schema:**
+
 ```typescript
 type UIField = {
-  type: 'ui'
-  name: string                    // Required (for key, not storage)
+  type: "ui";
+  name: string; // Required (for key, not storage)
   admin: {
     components: {
-      Field: Component            // Required. React component to render
-      Cell?: Component            // List view component
-    }
-    condition?: Function
-  }
-}
+      Field: Component; // Required. React component to render
+      Cell?: Component; // List view component
+    };
+    condition?: Function;
+  };
+};
 // Does NOT store data - purely visual
 ```
 
@@ -1103,58 +1186,60 @@ type UIField = {
 
 ```typescript
 const posts: CollectionConfig = {
-  slug: 'posts',
+  slug: "posts",
   labels: {
-    singular: 'Post',
-    plural: 'Posts',
+    singular: "Post",
+    plural: "Posts",
   },
   fields: [
-    { name: 'title', type: 'text', required: true },
-    { name: 'slug', type: 'text', unique: true },
-    { name: 'content', type: 'richText' },
-    { name: 'author', type: 'relationship', relationTo: 'users' },
-    { name: 'publishedAt', type: 'date' },
+    { name: "title", type: "text", required: true },
+    { name: "slug", type: "text", unique: true },
+    { name: "content", type: "richText" },
+    { name: "author", type: "relationship", relationTo: "users" },
+    { name: "publishedAt", type: "date" },
   ],
-}
+};
 ```
 
 ### Upload Collection
 
 ```typescript
 const media: CollectionConfig = {
-  slug: 'media',
+  slug: "media",
   labels: {
-    singular: 'Media',
-    plural: 'Media',
+    singular: "Media",
+    plural: "Media",
   },
   upload: {
-    staticDir: 'media',           // Directory for files (relative to project)
-    staticURL: '/media',          // URL path prefix
-    mimeTypes: ['image/*', 'application/pdf'],  // Allowed types
-    filesRequiredOnCreate: true,  // Require file on create (default: true)
+    staticDir: "media", // Directory for files (relative to project)
+    staticURL: "/media", // URL path prefix
+    mimeTypes: ["image/*", "application/pdf"], // Allowed types
+    filesRequiredOnCreate: true, // Require file on create (default: true)
 
     // Image-specific options:
-    imageSizes: [                 // Auto-generate resized versions
-      { name: 'thumbnail', width: 300, height: 300, position: 'centre' },
-      { name: 'card', width: 768, height: 1024, position: 'centre' },
-      { name: 'tablet', width: 1024 },  // Height auto
+    imageSizes: [
+      // Auto-generate resized versions
+      { name: "thumbnail", width: 300, height: 300, position: "centre" },
+      { name: "card", width: 768, height: 1024, position: "centre" },
+      { name: "tablet", width: 1024 }, // Height auto
     ],
-    adminThumbnail: 'thumbnail',  // Size to show in admin
-    focalPoint: true,             // Enable focal point selection
-    crop: true,                   // Enable cropping
+    adminThumbnail: "thumbnail", // Size to show in admin
+    focalPoint: true, // Enable focal point selection
+    crop: true, // Enable cropping
 
     // Storage adapter (optional - defaults to local):
     // adapter: s3Adapter({ ... })
   },
   fields: [
-    { name: 'alt', type: 'text', required: true },
-    { name: 'caption', type: 'textarea' },
+    { name: "alt", type: "text", required: true },
+    { name: "caption", type: "textarea" },
   ],
-}
+};
 ```
 
 **Upload document auto-fields:**
 When you create an upload collection, Payload automatically adds these fields:
+
 - `filename` - Original filename
 - `mimeType` - File MIME type
 - `filesize` - Size in bytes
@@ -1168,13 +1253,13 @@ When you create an upload collection, Payload automatically adds these fields:
 
 ```typescript
 const users: CollectionConfig = {
-  slug: 'users',
+  slug: "users",
   auth: true,
   fields: [
-    { name: 'name', type: 'text' },
-    { name: 'role', type: 'select', options: ['admin', 'editor', 'user'] },
+    { name: "name", type: "text" },
+    { name: "role", type: "select", options: ["admin", "editor", "user"] },
   ],
-}
+};
 ```
 
 ---
@@ -1183,48 +1268,48 @@ const users: CollectionConfig = {
 
 ### WordPress to Payload
 
-| WordPress | Payload |
-|-----------|---------|
-| `post_title` | `text` (title) |
-| `post_content` | `richText` (HTML) |
-| `post_excerpt` | `textarea` |
-| `post_status` | `select` (draft/published) |
-| `post_author` | `relationship` to users |
-| `featured_media` | `upload` to media |
-| `post_date` | `date` |
-| ACF Repeater | `array` |
-| ACF Group | `group` |
-| ACF Flexible Content | `blocks` |
+| WordPress            | Payload                    |
+| -------------------- | -------------------------- |
+| `post_title`         | `text` (title)             |
+| `post_content`       | `richText` (HTML)          |
+| `post_excerpt`       | `textarea`                 |
+| `post_status`        | `select` (draft/published) |
+| `post_author`        | `relationship` to users    |
+| `featured_media`     | `upload` to media          |
+| `post_date`          | `date`                     |
+| ACF Repeater         | `array`                    |
+| ACF Group            | `group`                    |
+| ACF Flexible Content | `blocks`                   |
 
 ### Contentful to Payload
 
-| Contentful | Payload |
-|------------|---------|
-| Short Text | `text` |
-| Long Text | `textarea` |
-| Rich Text | `richText` (needs conversion) |
-| Number | `number` |
-| Date | `date` |
-| Boolean | `checkbox` |
-| Media | `upload` |
-| Reference | `relationship` |
-| Array of References | `relationship` (hasMany) |
+| Contentful          | Payload                       |
+| ------------------- | ----------------------------- |
+| Short Text          | `text`                        |
+| Long Text           | `textarea`                    |
+| Rich Text           | `richText` (needs conversion) |
+| Number              | `number`                      |
+| Date                | `date`                        |
+| Boolean             | `checkbox`                    |
+| Media               | `upload`                      |
+| Reference           | `relationship`                |
+| Array of References | `relationship` (hasMany)      |
 
 ### Strapi to Payload
 
-| Strapi | Payload |
-|--------|---------|
-| string | `text` |
-| text | `textarea` |
-| richtext/blocks | `richText` |
-| integer/float/decimal | `number` |
-| boolean | `checkbox` |
-| date/datetime | `date` |
-| enumeration | `select` |
-| media | `upload` |
-| relation | `relationship` |
-| component | `group` or `array` |
-| dynamiczone | `blocks` |
+| Strapi                | Payload            |
+| --------------------- | ------------------ |
+| string                | `text`             |
+| text                  | `textarea`         |
+| richtext/blocks       | `richText`         |
+| integer/float/decimal | `number`           |
+| boolean               | `checkbox`         |
+| date/datetime         | `date`             |
+| enumeration           | `select`           |
+| media                 | `upload`           |
+| relation              | `relationship`     |
+| component             | `group` or `array` |
+| dynamiczone           | `blocks`           |
 
 ---
 
@@ -1240,13 +1325,14 @@ When analyzing source data to generate Payload config:
 6. **Generate valid TypeScript** - Output should be copy-paste ready
 
 **Output format:**
+
 ```typescript
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig } from "payload";
 
 export const collectionName: CollectionConfig = {
-  slug: 'collection-name',
+  slug: "collection-name",
   fields: [
     // fields here
   ],
-}
+};
 ```

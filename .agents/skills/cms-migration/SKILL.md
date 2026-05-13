@@ -51,14 +51,14 @@ Present a Payload collection config based on analysis:
 ```typescript
 // Example output format
 export const Posts: CollectionConfig = {
-  slug: 'posts',
+  slug: "posts",
   fields: [
-    { name: 'title', type: 'text', required: true },
-    { name: 'content', type: 'richText' },
-    { name: 'author', type: 'relationship', relationTo: 'users' },
+    { name: "title", type: "text", required: true },
+    { name: "content", type: "richText" },
+    { name: "author", type: "relationship", relationTo: "users" },
     // ...
   ],
-}
+};
 ```
 
 Explain your reasoning for each field choice. When something could go multiple ways (group vs JSON, text vs textarea, select vs relationship), ask rather than assume.
@@ -76,6 +76,7 @@ After each confirmation, ask:
 If yes, loop back to Phase 1 with new data sample.
 
 Common related collections to prompt for:
+
 - Media/uploads
 - Users/authors
 - Categories/tags
@@ -118,16 +119,19 @@ When you see repeated string values (categories, tags, types, statuses):
 **Don't assume it's a select field.** Ask:
 
 > "I see `category` has values like 'Technology', 'News'. Should this be:
+>
 > - A **select field** with fixed options (values won't change)
 > - A **relationship** to a Categories collection (users can add/edit/remove categories later)"
 
 **Default to relationship** for anything that looks like:
+
 - Categories, tags, topics, labels
 - Authors, assignees, reviewers
 - Statuses beyond simple draft/published
 - Types that might expand over time
 
 **Use select only for:**
+
 - Truly fixed enums (yes/no, draft/published/archived)
 - Options defined by business logic, not content (payment status, priority levels)
 - Values that would break functionality if changed (role types with code dependencies)
@@ -140,10 +144,10 @@ If creating a relationship, remember to add the related collection (Categories, 
 
 ## Common Pitfalls
 
-| Issue | How to Handle |
-|-------|---------------|
-| User provides partial data | Ask for more samples, especially edge cases |
-| Unclear relationships | Ask user to describe how content types connect |
-| Rich text ambiguity | Clarify: Lexical editor, Slate, or store raw HTML |
-| Missing media collection | Always confirm upload collection exists before referencing |
+| Issue                      | How to Handle                                              |
+| -------------------------- | ---------------------------------------------------------- |
+| User provides partial data | Ask for more samples, especially edge cases                |
+| Unclear relationships      | Ask user to describe how content types connect             |
+| Rich text ambiguity        | Clarify: Lexical editor, Slate, or store raw HTML          |
+| Missing media collection   | Always confirm upload collection exists before referencing |
 | Overly complex nested data | Consider flattening or using blocks instead of deep groups |

@@ -31,11 +31,7 @@ export const PickUpCarousel = ({ slides, autoPlay, autoScroll }: PickUpCarouselP
     >
       <CarouselViewport className="overflow-hidden" trackClassName="!h-auto">
         {slides.map((slide, index) => (
-          <PickUpSlideContent
-            index={index}
-            key={slide.id}
-            slide={slide}
-          />
+          <PickUpSlideContent index={index} key={slide.id} slide={slide} />
         ))}
       </CarouselViewport>
 
@@ -63,13 +59,7 @@ export const PickUpCarousel = ({ slides, autoPlay, autoScroll }: PickUpCarouselP
 
 export default PickUpCarousel;
 
-const PickUpSlideContent = ({
-  slide,
-  index,
-}: {
-  slide: CarouselImageSlide;
-  index: number;
-}) => {
+const PickUpSlideContent = ({ slide, index }: { slide: CarouselImageSlide; index: number }) => {
   const { selectedIndex } = useCarousel();
   const isActive = selectedIndex === index;
 
