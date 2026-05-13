@@ -1,8 +1,7 @@
 packages:
-  - '.'
+  - "."
 
-# バージョンを正確に固定（セマンティックレンジによる予期しない更新を防止）
-savePrefix: ''
+savePrefix: ""
 
 allowBuilds:
   sharp: true
