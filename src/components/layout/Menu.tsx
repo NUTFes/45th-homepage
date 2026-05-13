@@ -143,7 +143,7 @@ function MenuItem({ item }: MenuItemProps) {
   const enabled = isLeaf ? item.enabled !== false : true;
 
   return (
-    <li className="border-b border-font-main">
+    <li className="border-b border-font-gray">
       {isLeaf ? (
         enabled ? (
           <Link href={item.href} className="flex items-center gap-s px-l py-m text-font-main">
@@ -170,11 +170,11 @@ function MenuItem({ item }: MenuItemProps) {
             <span className="relative ml-auto h-6 w-6" aria-hidden="true">
               <Plus
                 size={24}
-                className="absolute inset-0 text-secondary transition-opacity duration-300 group-data-expanded:opacity-0"
+                className="absolute inset-0 text-font-gray transition-opacity duration-300 group-data-expanded:opacity-0"
               />
               <Minus
                 size={24}
-                className="absolute inset-0 text-secondary opacity-0 transition-opacity duration-300 group-data-expanded:opacity-100"
+                className="absolute inset-0 text-font-gray opacity-0 transition-opacity duration-300 group-data-expanded:opacity-100"
               />
             </span>
           </Button>
