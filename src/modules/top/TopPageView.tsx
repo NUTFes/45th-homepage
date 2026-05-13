@@ -131,7 +131,7 @@ export default function TopPageView() {
   return (
     <div className="flex min-h-screen flex-col items-center bg-base">
       <Suspense fallback={<TopPageSkeleton />}>
-        <div className="flex flex-col items-center gap-y-ll">
+        <div className="flex w-full flex-col items-center gap-y-ll">
           <div className="relative aspect-[393/638] w-full">
             <Image
               src="/image/top/HeroAll.png"
