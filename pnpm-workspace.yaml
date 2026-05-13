@@ -1,0 +1,15 @@
+packages:
+  - '.'
+
+# バージョンを正確に固定（セマンティックレンジによる予期しない更新を防止）
+savePrefix: ''
+
+allowBuilds:
+  sharp: true
+  esbuild: true
+  unrs-resolver: true
+  lefthook: false
+
+minimumReleaseAge: 1440
+trustPolicy: no-downgrade
+blockExoticSubdeps: true
