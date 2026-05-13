@@ -198,7 +198,7 @@ export default function TopPageView() {
           </div>
         </div>
       </Suspense>
-        <BottomNav />
+      <BottomNav />
     </div>
   );
 }
