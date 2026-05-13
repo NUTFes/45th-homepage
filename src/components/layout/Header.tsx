@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { LucideMenu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,6 +8,12 @@ import Menu from "@/components/layout/Menu";
 
 export default function Page() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const drawerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (isMenuOpen && drawerRef.current) {
+      drawerRef.current.scrollTop = 0;
+    }
+  }, [isMenuOpen]);
 
   return (
     <header className="sticky top-0 z-100 flex w-full items-center justify-between bg-white px-m py-m lg:px-5l">
@@ -55,11 +61,13 @@ export default function Page() {
           }`}
         />
         <div
+          ref={drawerRef}
           id="header-drawer"
           role="dialog"
           aria-modal="false"
           aria-label="メインメニュー"
           aria-hidden={!isMenuOpen}
+          style={{ overscrollBehavior: "contain" }}
           className={`fixed top-[88px] right-0 z-350 hidden max-h-[calc(100dvh-88px)] overflow-y-auto bg-base-dark ease-out motion-safe:transition-transform motion-safe:duration-300 md:block ${
             isMenuOpen ? "translate-x-0" : "pointer-events-none translate-x-full ease-in"
           }`}
