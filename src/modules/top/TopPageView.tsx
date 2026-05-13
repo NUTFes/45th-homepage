@@ -5,6 +5,7 @@ import { getPickUpSlides } from "@/modules/top/server/getPickUpSlides";
 import ButtonMain from "@/components/ui/ButtonMain";
 import ImportantFrame from "@/components/ui/ImportantFrame";
 import NewsItem from "@/components/ui/NewsItem";
+import BottomNav from "@/components/layout/BottomNav";
 import PickUpCarousel from "./ui/PickUpCarousel";
 import PickUpFrame from "./ui/PickUpFrame";
 
@@ -121,10 +122,13 @@ function TopPageSkeleton() {
 
 export default function TopPageView() {
   return (
-    <div className="flex min-h-screen flex-col items-center bg-base py-4l">
+    <div className="flex min-h-screen flex-col items-center bg-base pt-4l pb-5l md:pb-4l">
       <Suspense fallback={<TopPageSkeleton />}>
         <TopPageContent />
       </Suspense>
+      <div className="fixed right-0 bottom-0 left-0 z-50 md:hidden">
+        <BottomNav />
+      </div>
     </div>
   );
 }
