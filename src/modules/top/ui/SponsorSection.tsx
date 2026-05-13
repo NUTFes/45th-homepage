@@ -35,18 +35,19 @@ export default function SponsorSection() {
           </div>
 
           <div className="shadow-[1px_2px_2px_rgba(8,18,94,1.0)]">
-            <Button className="h-fit w-[225px] justify-start gap-x-s rounded-sm bg-white px-m py-m text-base-dark hover:bg-main md:w-[300px] md:rounded-md md:px-m md:py-m">
+            <a
+              href="https://kyosan.nutfes.net/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative inline-flex h-fit w-[225px] cursor-default items-center justify-start gap-x-s rounded-sm border border-transparent bg-white px-m py-m text-center font-sans text-base-dark transition [-webkit-tap-highlight-color:transparent] hover:bg-main md:w-[300px] md:rounded-md md:px-m md:py-m"
+            >
               <div className="shrink-0">
                 <LucideFile size={24} />
               </div>
-              <a
-                href="https://kyosan.nutfes.net/"
-                target="_blank"
-                className="flex-1 text-start text-text-large md:text-center md:text-Ptext-large"
-              >
+              <span className="flex-1 text-start text-text-large md:text-center md:text-Ptext-large">
                 資料を見る
-              </a>
-            </Button>
+              </span>
+            </a>
           </div>
         </div>
 
