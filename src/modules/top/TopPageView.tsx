@@ -5,14 +5,21 @@ import { getPickUpSlides } from "@/modules/top/server/getPickUpSlides";
 import ButtonMain from "@/components/ui/ButtonMain";
 import ImportantFrame from "@/components/ui/ImportantFrame";
 import NewsItem from "@/components/ui/NewsItem";
-import BottomNav from "@/components/layout/BottomNav";
-import PickUpCarousel from "./ui/PickUpCarousel";
-import PickUpFrame from "./ui/PickUpFrame";
 
 import ImportantFrameSkeleton from "@/components/ui/ImportantFrameSkeleton";
 import SectionTitle from "@/components/ui/SectionTitle";
 import NewsItemSkeleton from "@/components/ui/NewsItemSkeleton";
 
+import Image from "next/image";
+import LogoInfo from "./ui/LogoInfo";
+import PickUpCarousel from "./ui/PickUpCarousel";
+import { sampleNewsItems } from "@/app/(frontend)/(dev)/dev/_data/sampleNews";
+import SponsorSection from "./ui/SponsorSection";
+import PickUpFrame from "./ui/PickUpFrame";
+import { topModuleSlides } from "@/app/(frontend)/(dev)/dev/_data/topModuleSlides";
+import InfoMenu from "./ui/InfoMenu";
+import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
 const NO_IMPORTANT_NEWS_MESSAGE = "現在、重要なお知らせはありません。";
 
 async function TopPageContent() {
@@ -122,9 +129,73 @@ function TopPageSkeleton() {
 
 export default function TopPageView() {
   return (
-    <div className="flex min-h-screen flex-col items-center bg-base pt-4l pb-5l md:pb-4l">
+    <div className="flex min-h-screen flex-col items-center bg-base">
       <Suspense fallback={<TopPageSkeleton />}>
-        <TopPageContent />
+        <div className="flex w-full flex-col items-center gap-y-ll">
+          <div className="relative aspect-[393/638] w-full">
+            <Image
+              src="/image/top/HeroAll.png"
+              alt="45thNutfes_HeroHeader"
+              fill
+              className="object-cover"
+            />
+          </div>
+          <LogoInfo />
+        </div>
+        <div className="relative flex w-full flex-col gap-4l">
+          <div className="relative flex flex-col gap-4l">
+            --重要なお知らせ--
+            <div className="relative">
+              <div className="absolute right-0 bottom-[-200px] z-0 aspect-[393/638]">
+                <Image
+                  src="/image/top/TopBack1.svg"
+                  alt="45th_Top1"
+                  width={393}
+                  height={638}
+                  className="pointer-events-none object-contain object-right-top"
+                />
+              </div>
+              <div className="z-10 flex flex-col gap-y-m">
+                <SectionTitle title="PICK UP" />
+                <PickUpFrame>
+                  <PickUpCarousel slides={[...topModuleSlides]} autoPlay={{ delay: 2500 }} />
+                </PickUpFrame>
+              </div>
+            </div>
+            <div className="z-10">
+              <SponsorSection />
+            </div>
+            <div className="relative">
+              <div className="absolute right-0 bottom-[-50px] z-0">
+                <Image
+                  src="/image/top/TopBack2.svg"
+                  alt="45th_Top2"
+                  width={210}
+                  height={198}
+                  className="pointer-events-none object-contain object-right-bottom"
+                />
+              </div>
+            </div>
+            <div className="z-10">
+              <TopPageContent />
+            </div>
+            <div className="flex w-full flex-col gap-y-s pb-3l">
+              <SectionTitle title="ご案内" />
+              <InfoMenu />
+            </div>
+          </div>
+          <div className="relative w-full">
+            <div className="absolute right-0 bottom-0 z-0">
+              <Image
+                src="/image/top/TopBack3.svg"
+                alt="45th_Top3"
+                width={393}
+                height={638}
+                className="pointer-events-none object-contain object-right-top"
+              />
+            </div>
+          </div>
+        </div>
       </Suspense>
       <div className="fixed right-0 bottom-0 left-0 z-50 md:hidden">
         <BottomNav />
