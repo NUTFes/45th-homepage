@@ -39,9 +39,9 @@ export default function SponsorSection() {
               <div className="shrink-0">
                 <LucideFile size={24} />
               </div>
-              <div className="flex-1 text-start text-text-large md:text-center md:text-Ptext-large">
+              <a href="https://kyosan.nutfes.net/" target="_blank" className="flex-1 text-start text-text-large md:text-center md:text-Ptext-large">
                 資料を見る
-              </div>
+              </a>
             </Button>
           </div>
         </div>
