@@ -5,6 +5,7 @@ import { getPickUpSlides } from "@/modules/top/server/getPickUpSlides";
 import ButtonMain from "@/components/ui/ButtonMain";
 import ImportantFrame from "@/components/ui/ImportantFrame";
 import NewsItem from "@/components/ui/NewsItem";
+import BottomNav from "@/components/layout/BottomNav";
 
 import ImportantFrameSkeleton from "@/components/ui/ImportantFrameSkeleton";
 import SectionTitle from "@/components/ui/SectionTitle";
@@ -197,9 +198,7 @@ export default function TopPageView() {
           </div>
         </div>
       </Suspense>
-      <div className="fixed right-0 bottom-0 left-0 z-50 md:hidden">
         <BottomNav />
-      </div>
     </div>
   );
 }

@@ -64,7 +64,7 @@ export default function BottomNavigation() {
   ];
 
   return (
-    <nav className="sticky right-0 bottom-0 left-0 flex bg-base-dark px-s py-ss md:hidden">
+    <nav className="fixed right-0 bottom-0 left-0 z-50 flex bg-base-dark px-s py-ss md:hidden">
       <ul className="flex w-full list-none justify-between">
         {regularItems.map((item) => (
           <li key={item.name} className="flex-1">
