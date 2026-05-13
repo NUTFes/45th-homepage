@@ -174,7 +174,7 @@ function MenuItem({ item }: MenuItemProps) {
               />
               <Minus
                 size={24}
-                className="absolute inset-0 text-font-gray transition-opacity duration-300 opacity-0 group-data-expanded:opacity-100"
+                className="absolute inset-0 text-font-gray opacity-0 transition-opacity duration-300 group-data-expanded:opacity-100"
               />
             </span>
           </Button>
