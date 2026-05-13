@@ -74,7 +74,7 @@ export default function Page() {
           aria-label="メインメニュー"
           aria-hidden={!isMenuOpen}
           style={{ overscrollBehavior: "contain" }}
-          className={`fixed top-[88px] right-0 z-350 hidden max-h-[calc(100dvh-88px)] overflow-y-auto bg-base-dark ease-out motion-safe:transition-transform motion-safe:duration-300 md:block ${
+          className={`fixed top-[88px] right-0 z-350 hidden h-[calc(100dvh-88px)] overflow-y-scroll bg-base-dark ease-out motion-safe:transition-transform motion-safe:duration-300 md:block ${
             isMenuOpen ? "translate-x-0" : "pointer-events-none translate-x-full ease-in"
           }`}
         >
