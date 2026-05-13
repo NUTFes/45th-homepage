@@ -96,11 +96,13 @@ export default function BottomNavigation() {
               isDismissable
               className="fixed top-0 right-0 bottom-[73px] left-0 z-300 bg-base/40 ease-out motion-safe:transition-opacity motion-safe:duration-300 entering:opacity-0 exiting:opacity-0 exiting:ease-in"
             >
-              <Modal className="fixed right-0 bottom-[73px] left-0 z-350 h-[71svh] translate-y-0 overflow-y-auto overscroll-contain bg-base-dark transition-transform duration-300 entering:translate-y-full exiting:translate-y-full">
-                <Dialog className="outline-none">
-                  <MenuContext />
-                </Dialog>
-              </Modal>
+              <div className="fixed right-0 bottom-[73px] left-0 z-350 h-[71svh] overflow-hidden">
+                <Modal className="absolute inset-0 translate-y-0 overflow-y-auto overscroll-contain bg-base-dark transition-transform duration-300 entering:translate-y-full exiting:translate-y-full">
+                  <Dialog className="outline-none">
+                    <MenuContext />
+                  </Dialog>
+                </Modal>
+              </div>
             </ModalOverlay>
           </DialogTrigger>
         </li>
