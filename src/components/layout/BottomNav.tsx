@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { House, Clock, MapPin, CalendarDays, Menu, X, LucideIcon } from "lucide-react";
 import { Button, DialogTrigger, ModalOverlay, Modal, Dialog } from "react-aria-components";
 import MenuContext from "@/components/layout/Menu";
@@ -48,16 +47,9 @@ function NavItem({ item }: { item: NavItemType }) {
 
 export default function BottomNavigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const pathname = usePathname();
 
   const regularItems: NavItemType[] = [
-    pathname === "/"
-      ? {
-          name: "ホーム",
-          icon: House,
-          onPress: () => window.scrollTo({ top: 0, behavior: "smooth" }),
-        }
-      : { name: "ホーム", icon: House, href: "/" },
+    { name: "ホーム", icon: House, href: "/" },
     { name: "スケジュール", icon: Clock, href: "/", disabled: true },
     { name: "マップ", icon: MapPin, href: "/", disabled: true },
     { name: "企画", icon: CalendarDays, href: "/", disabled: true },
