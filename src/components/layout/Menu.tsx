@@ -179,7 +179,7 @@ function MenuItem({ item }: MenuItemProps) {
             </span>
           </Button>
 
-          <DisclosurePanel className="h-(--disclosure-panel-height) overflow-clip duration-300 motion-safe:transition-[height] [hidden]:block">
+          <DisclosurePanel className="h-(--disclosure-panel-height) overflow-hidden duration-300 motion-safe:transition-[height] [hidden]:block">
             <ul className="flex flex-col gap-ss pb-m pl-5l">
               {item.children.map((child) => {
                 const enabled = child.enabled !== false;
