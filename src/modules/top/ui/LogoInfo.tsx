@@ -13,9 +13,10 @@ export default function LogoInfo() {
         height={260}
         className="h-[140px] w-[140px] md:h-[260px] md:w-[260px]"
       />
-      <p className="px-3l text-center text-text text-font-main md:flex-1 md:px-0 md:text-Ptext-large md:font-bold">
-        これは説明文です。これは説明文です。これは説明文です。 これは説明文です。これは説明文です。
-        これは説明文です。これは説明文です。これは説明文です。
+      <p className="px-3l text-center text-text text-font-main md:flex-1 md:px-0 md:text-Ptext-large md:font-bold md:text-left">
+        技大祭へようこそ！<br />
+        「Bluem Up Date」と一緒に、花開くような<br />
+        変化と新しいワクワクに出会おう。
       </p>
     </section>
   );
