@@ -87,6 +87,7 @@ export default function DevCommonComponentsPage() {
         <DevPanel title="ImportantFrame">
           <ImportantFrame title="重要なお知らせ">{sampleImportantNewsBody}</ImportantFrame>
         </DevPanel>
+
         <DevPanel title="InfoBlock">
           <InfoFrame>
             <div className="flex flex-col gap-y-8">

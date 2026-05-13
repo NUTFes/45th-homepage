@@ -27,7 +27,7 @@ jobs:
           persist-credentials: true
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@903f9c1a6ebcba6cf41d87230be49611ac97822e # v6.0.3
+        uses: pnpm/action-setup@91ab88e2619ed1f46221f0ba42d1492c02baf788 # v6.0.6
         with:
           version: ${{ env.PNPM_VERSION }}
 
@@ -72,7 +72,10 @@ jobs:
           fetch-depth: 0
 
       - name: Fetch main branch
-        run: git fetch origin main:main
+        run: |
+          if [ "$(git rev-parse --abbrev-ref HEAD)" != "main" ]; then
+            git fetch origin main:main
+          fi
 
       - name: Run React Doctor
         uses: millionco/react-doctor@1d3d514a562bbab42dcefa0badeed2e707ed7ea9
@@ -101,7 +104,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@903f9c1a6ebcba6cf41d87230be49611ac97822e # v6.0.3
+        uses: pnpm/action-setup@91ab88e2619ed1f46221f0ba42d1492c02baf788 # v6.0.6
         with:
           version: ${{ env.PNPM_VERSION }}
 
