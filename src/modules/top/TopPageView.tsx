@@ -136,7 +136,7 @@ function InfoSection() {
       <div className="w-full max-w-105 md:max-w-full md:px-pl">
         <SectionTitle title="ご案内" />
       </div>
-      <div className="w-full px-pl">
+      <div className="w-full md:px-pl">
         <InfoMenu />
       </div>
     </div>
