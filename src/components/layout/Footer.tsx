@@ -9,23 +9,37 @@ export default function Footer() {
       <div className="mx-auto flex w-full max-w-98.25 flex-col items-center gap-ll lg:hidden">
         <section aria-label="SNS" className="flex flex-col items-center gap-xs">
           <h2 className="font-kaisotai text-title leading-none">FOLLOW US</h2>
-          <Image
-            alt="Instagram"
-            className="size-10"
-            height={40}
-            src="/icon/Instagram.png"
-            width={40}
-          />
+          <Link
+            href="https://www.instagram.com/nutfes?igsh=eTJ4cGh0MDVvYmky"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-shrink-0"
+          >
+            <Image
+              alt="Instagram"
+              className="size-10 min-h-[40px] min-w-[40px] flex-shrink-0 hover:opacity-80 hover:transition-all"
+              height={40}
+              src="/icon/Instagram.png"
+              width={40}
+            />
+          </Link>
         </section>
 
         <section className="flex w-full max-w-68 flex-col gap-xs text-text">
           <div className="flex flex-col gap-xs">
             <p className="text-font-gray">アンケート</p>
-            <p>大学ホームページ</p>
+            <a
+              href="https://www.nagaokaut.ac.jp/index.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline"
+            >
+              大学ホームページ
+            </a>
           </div>
 
           <div className="flex flex-col gap-ss">
-            <h3 className="text-text">お問い合わせ</h3>
+            <h3 className="text-font-gray">お問い合わせ</h3>
             <address className="pl-xs text-[14px] leading-4.25 not-italic">
               <p>〒940-2188</p>
               <p>新潟県長岡市上富岡町1603-1</p>
@@ -39,7 +53,14 @@ export default function Footer() {
                   stroke="#ffffff"
                   strokeWidth={2.2}
                 />
-                <span>インスタDM</span>
+                <a
+                  href="https://www.instagram.com/nutfes?igsh=eTJ4cGh0MDVvYmky"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
+                  インスタDM
+                </a>
               </p>
               <p className="flex items-center gap-1.5">
                 <Mail className="size-4 text-base-dark" strokeWidth={2.2} />
@@ -74,18 +95,32 @@ export default function Footer() {
               </div>
               <div className="flex h-[54px] w-full min-w-[420px] items-center gap-ll pt-[4px] text-Pbutton">
                 <div className="text-font-gray">アンケート</div>
-                <div>大学ホームページ</div>
+                <a
+                  href="https://www.nagaokaut.ac.jp/index.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
+                  大学ホームページ
+                </a>
                 <div className="text-font-gray">お問い合わせ</div>
               </div>
             </div>
             <div className="items-top flex gap-x-l py-xs">
-              <Image
-                alt="Instagram"
-                className="size-10"
-                height={40}
-                src="/icon/Instagram.png"
-                width={40}
-              />
+              <Link
+                href="https://www.instagram.com/nutfes?igsh=eTJ4cGh0MDVvYmky"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-shrink-0"
+              >
+                <Image
+                  alt="Instagram"
+                  className="size-10 min-h-[40px] min-w-[40px] flex-shrink-0 hover:opacity-80 hover:transition-all"
+                  height={40}
+                  src="/icon/Instagram.png"
+                  width={40}
+                />
+              </Link>
               <div className="flex flex-col gap-1 gap-y-ss pl-xs text-text leading-4.25">
                 <p className="flex items-center gap-1.5">
                   <MessageCircleMoreIcon
@@ -93,7 +128,14 @@ export default function Footer() {
                     stroke="var(--color-base-dark)"
                     strokeWidth={2.2}
                   />
-                  <span>インスタDM</span>
+                  <a
+                    href="https://www.instagram.com/nutfes?igsh=eTJ4cGh0MDVvYmky"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:underline"
+                  >
+                    インスタDM
+                  </a>
                 </p>
                 <p className="flex items-center gap-1.5">
                   <Mail className="size-4 text-base-dark" strokeWidth={2.2} />
