@@ -18,14 +18,14 @@ import {
 
 type SubMenuItem = {
   label: string;
-  href: string;
+  href?: string;
   enabled?: boolean;
 };
 
 type MenuLeafItem = {
   label: string;
   icon: LucideIcon;
-  href: string;
+  href?: string;
   enabled?: boolean;
 };
 
@@ -51,37 +51,30 @@ const menuItems: MenuItem[] = [
     children: [
       {
         label: "ゲスト",
-        href: "/",
         enabled: false,
       },
       {
         label: "コラボ",
-        href: "/",
         enabled: false,
       },
       {
         label: "企画",
-        href: "/",
         enabled: false,
       },
       {
         label: "展示・体験",
-        href: "/",
         enabled: false,
       },
       {
         label: "食品販売",
-        href: "/",
         enabled: false,
       },
       {
         label: "物品販売",
-        href: "/",
         enabled: false,
       },
       {
         label: "企業ブース",
-        href: "/",
         enabled: false,
       },
     ],
@@ -89,13 +82,11 @@ const menuItems: MenuItem[] = [
   {
     label: "タイムスケジュール",
     icon: Clock,
-    href: "/",
     enabled: false,
   },
   {
     label: "マップ",
     icon: MapPin,
-    href: "/",
     enabled: false,
   },
   {
@@ -105,17 +96,14 @@ const menuItems: MenuItem[] = [
     children: [
       {
         label: "注意事項",
-        href: "/",
         enabled: false,
       },
       {
         label: "案内所・ヘルプ",
-        href: "/",
         enabled: false,
       },
       {
         label: "アクセス",
-        href: "/",
         enabled: false,
       },
     ],
@@ -123,13 +111,11 @@ const menuItems: MenuItem[] = [
   {
     label: "代表者挨拶",
     icon: UserStar,
-    href: "/",
     enabled: false,
   },
   {
     label: "協賛企業一覧",
     icon: Building2,
-    href: "/",
     enabled: false,
   },
 ];
@@ -146,7 +132,7 @@ function MenuItem({ item }: MenuItemProps) {
     <li className="border-b border-font-gray">
       {isLeaf ? (
         enabled ? (
-          <Link href={item.href} className="flex items-center gap-s px-l py-m text-font-main">
+          <Link href={item.href ?? "/"} className="flex items-center gap-s px-l py-m text-font-main">
             <item.icon className="shrink-0 text-secondary" size={32} />
             <span
               className={
@@ -187,7 +173,7 @@ function MenuItem({ item }: MenuItemProps) {
                 return (
                   <li key={child.label}>
                     {enabled ? (
-                      <Link href={child.href} className="text-text text-font-main">
+                      <Link href={child.href ?? "/"} className="text-text text-font-main">
                         {child.label}
                       </Link>
                     ) : (

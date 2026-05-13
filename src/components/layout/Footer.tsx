@@ -27,7 +27,7 @@ export default function Footer() {
 
         <section className="flex w-full max-w-68 flex-col gap-xs text-text">
           <div className="flex flex-col gap-xs">
-            <p className="text-font-gray">アンケート</p>
+            <p className="text-black">アンケート</p>
             <a
               href="https://www.nagaokaut.ac.jp/index.html"
               target="_blank"
@@ -39,7 +39,7 @@ export default function Footer() {
           </div>
 
           <div className="flex flex-col gap-ss">
-            <h3 className="text-font-gray">お問い合わせ</h3>
+            <h3 className="text-black">お問い合わせ</h3>
             <address className="pl-xs text-[14px] leading-4.25 not-italic">
               <p>〒940-2188</p>
               <p>新潟県長岡市上富岡町1603-1</p>
@@ -93,8 +93,8 @@ export default function Footer() {
                 </div>
                 <p className="text-[14px]">長岡技術科学大学　技大祭実行委員会</p>
               </div>
-              <div className="flex h-[54px] w-full min-w-[420px] items-center gap-ll pt-[4px] text-Pbutton">
-                <div className="text-font-gray">アンケート</div>
+              <div className="flex h-13.5 w-full min-w-105 items-center gap-ll pt-1 text-Pbutton">
+                <div className="text-black">アンケート</div>
                 <a
                   href="https://www.nagaokaut.ac.jp/index.html"
                   target="_blank"
@@ -103,7 +103,7 @@ export default function Footer() {
                 >
                   大学ホームページ
                 </a>
-                <div className="text-font-gray">お問い合わせ</div>
+                <div className="text-black">お問い合わせ</div>
               </div>
             </div>
             <div className="items-top flex gap-x-l py-xs">
@@ -111,11 +111,11 @@ export default function Footer() {
                 href="https://www.instagram.com/nutfes?igsh=eTJ4cGh0MDVvYmky"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-shrink-0"
+                className="shrink-0"
               >
                 <Image
                   alt="Instagram"
-                  className="size-10 min-h-[40px] min-w-[40px] flex-shrink-0 hover:opacity-80 hover:transition-all"
+                  className="size-10 min-h-[40px] min-w-[40px] shrink-0 hover:opacity-80 hover:transition-all"
                   height={40}
                   src="/icon/Instagram.png"
                   width={40}

@@ -416,7 +416,6 @@ export const CarouselSlide = ({
       aria-label={ariaLabel ?? `${index + 1} of ${safeSlideCount}`}
       aria-roledescription="slide"
       className={className}
-      role="group"
       style={style}
     >
       {children}

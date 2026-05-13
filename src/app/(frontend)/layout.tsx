@@ -1,8 +1,23 @@
 import React from "react";
 import type { Metadata } from "next";
+import { Goldman, Zen_Kaku_Gothic_New } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import BottomNavigation from "@/components/layout/BottomNav";
+
+const goldman = Goldman({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  variable: "--font-goldman-src",
+  display: "swap",
+});
+
+const zenKakuGothicNew = Zen_Kaku_Gothic_New({
+  weight: ["400", "500", "700"],
+  subsets: ["latin"],
+  variable: "--font-sans-src",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "45th NUTFES",
@@ -27,7 +42,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
 
   return (
     <html lang="ja">
-      <body>
+      <body className={`${goldman.variable} ${zenKakuGothicNew.variable}`}>
         <Header />
         <main>{children}</main>
         <Footer />

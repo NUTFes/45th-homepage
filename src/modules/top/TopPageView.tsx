@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { connection } from "next/server";
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import { getImportantNewsBody, getLatestNews } from "@/modules/news/server/getNews";
 import { getPickUpSlides } from "@/modules/top/server/getPickUpSlides";
 import ButtonMain from "@/components/ui/ButtonMain";
@@ -37,26 +37,35 @@ async function getTopPageData() {
 }
 
 function TopHero() {
+  const mobile = getImageProps({
+    src: "/image/top/HeroAll.webp",
+    alt: "",
+    width: 1575,
+    height: 2760,
+    priority: true,
+    sizes: "100vw",
+  });
+
+  const desktop = getImageProps({
+    src: "/image/top/Ps_HeroAll.webp",
+    alt: "",
+    width: 4000,
+    height: 2600,
+    priority: false,
+    sizes: "100vw",
+  });
+
   return (
     <div className="flex w-full flex-col items-center">
-      <Image
-        src="/image/top/HeroAll.png"
-        alt=""
-        width={1575}
-        height={2760}
-        priority
-        sizes="100vw"
-        className="h-auto w-full md:hidden"
-      />
-      <Image
-        src="/image/top/Ps_HeroAll.png"
-        alt=""
-        width={4000}
-        height={2600}
-        priority
-        sizes="100vw"
-        className="hidden h-auto w-full md:block"
-      />
+      <picture>
+        <source
+          media="(min-width: 768px)"
+          srcSet={desktop.props.srcSet}
+          width={desktop.props.width}
+          height={desktop.props.height}
+        />
+        <img {...mobile.props} className="h-auto w-full" alt="" />
+      </picture>
       <LogoInfo />
     </div>
   );

@@ -35,7 +35,6 @@ export const PickUpCarousel = ({ slides, autoPlay, autoScroll }: PickUpCarouselP
             index={index}
             key={slide.id}
             slide={slide}
-            totalSlides={slides.length}
           />
         ))}
       </CarouselViewport>
@@ -67,11 +66,9 @@ export default PickUpCarousel;
 const PickUpSlideContent = ({
   slide,
   index,
-  totalSlides,
 }: {
   slide: CarouselImageSlide;
   index: number;
-  totalSlides: number;
 }) => {
   const { selectedIndex } = useCarousel();
   const isActive = selectedIndex === index;
@@ -89,7 +86,7 @@ const PickUpSlideContent = ({
                 alt=""
                 className="h-full w-full object-cover object-center"
                 height={slide.imageHeight ?? 1080}
-                priority={index <= 1 || index === totalSlides - 1}
+                priority={index === 0}
                 sizes="(min-width: 768px) 60vw, 100vw"
                 src={slide.imageUrl}
                 width={slide.imageWidth ?? 1920}
@@ -103,7 +100,7 @@ const PickUpSlideContent = ({
               alt={slide.imageAlt}
               className="h-full w-full object-cover object-center"
               height={slide.imageHeight ?? 1080}
-              priority={index <= 1 || index === totalSlides - 1}
+              priority={index === 0}
               sizes="(min-width: 768px) 60vw, 100vw"
               src={slide.imageUrl}
               width={slide.imageWidth ?? 1920}

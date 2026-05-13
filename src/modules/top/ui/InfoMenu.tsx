@@ -4,38 +4,41 @@ import {
   TriangleAlert,
   MessageCircleQuestionMark,
   BusFront,
+  type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
 
-const InfoMenuItems = [
+type InfoMenuItem = {
+  name: string;
+  icon: LucideIcon;
+  href?: string;
+  disabled?: boolean;
+};
+
+const InfoMenuItems: InfoMenuItem[] = [
   {
     name: "代表者挨拶",
     icon: UserStar,
-    href: "/",
     disabled: true,
   },
   {
     name: "注意事項",
     icon: TriangleAlert,
-    href: "/",
     disabled: true,
   },
   {
     name: "案内所・ヘルプ",
     icon: MessageCircleQuestionMark,
-    href: "/",
     disabled: true,
   },
   {
     name: "アクセス",
     icon: BusFront,
-    href: "/",
     disabled: true,
   },
   {
     name: "協賛企業一覧",
     icon: Building2,
-    href: "/",
     disabled: true,
   },
 ];
@@ -56,7 +59,7 @@ export default function InfoMenu() {
                 </span>
               </span>
             ) : (
-              <Link href={item.href} className="flex items-center gap-2.5">
+              <Link href={item.href ?? "/"} className="flex items-center gap-2.5">
                 <div className="flex h-6 w-6 shrink-0 items-center justify-center md:h-7 md:w-7">
                   <item.icon className="text-secondary md:h-7 md:w-7" size={24} />
                 </div>
