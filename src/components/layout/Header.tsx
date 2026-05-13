@@ -8,6 +8,7 @@ import Menu from "@/components/layout/Menu";
 
 export default function Page() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [menuKey, setMenuKey] = useState(0);
   const drawerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (isMenuOpen && drawerRef.current) {
@@ -31,7 +32,12 @@ export default function Page() {
 
         <button
           type="button"
-          onClick={() => setIsMenuOpen((prev) => !prev)}
+          onClick={() =>
+            setIsMenuOpen((prev) => {
+              if (!prev) setMenuKey((k) => k + 1);
+              return !prev;
+            })
+          }
           aria-label={isMenuOpen ? "メニューを閉じる" : "メニューを開く"}
           aria-expanded={isMenuOpen}
           aria-controls="header-drawer"
@@ -72,7 +78,7 @@ export default function Page() {
             isMenuOpen ? "translate-x-0" : "pointer-events-none translate-x-full ease-in"
           }`}
         >
-          <Menu />
+          <Menu key={menuKey} />
         </div>
       </div>
     </header>
