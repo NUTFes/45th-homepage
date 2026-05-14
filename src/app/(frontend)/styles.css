@@ -1,10 +1,7 @@
 @import "tailwindcss";
-
-@font-face {
-  font-family: "Kaisotai Next";
-  src: url("/font/Kaisotai-Next-UP-B.woff2") format("woff2");
-  font-display: swap;
-}
+@source "../app/(frontend)";
+@source "../components";
+@source "../modules";
 
 @plugin "tailwindcss-react-aria-components";
 @plugin "tailwindcss-animate";

@@ -3,14 +3,10 @@ import Link from "next/link";
 type ButtonMainProps = {
   href: string;
   title: string;
-  px?: string;
-  py?: string;
-  textSize?: string;
-  textSizeMd?: string;
 };
 
 export default function ButtonMain(props: ButtonMainProps) {
-  const { href, title, px = "px-l", py = "py-s", textSize = "text-button" } = props;
+  const { href, title } = props;
 
   return (
     <Link

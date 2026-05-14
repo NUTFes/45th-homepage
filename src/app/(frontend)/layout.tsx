@@ -1,6 +1,8 @@
 import React from "react";
 import type { Metadata } from "next";
+import "./styles.css";
 import { Goldman, Zen_Kaku_Gothic_New } from "next/font/google";
+import localFont from "next/font/local";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import BottomNavigation from "@/components/layout/BottomNav";
@@ -16,6 +18,12 @@ const zenKakuGothicNew = Zen_Kaku_Gothic_New({
   weight: ["400", "500", "700"],
   subsets: ["latin"],
   variable: "--font-sans-src",
+  display: "swap",
+});
+
+const kaisotai = localFont({
+  src: "../../../public/font/Kaisotai-Next-UP-B.subset.woff2",
+  variable: "--font-kaisotai",
   display: "swap",
 });
 
@@ -42,7 +50,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
 
   return (
     <html lang="ja">
-      <body className={`${goldman.variable} ${zenKakuGothicNew.variable}`}>
+      <body className={`${goldman.variable} ${zenKakuGothicNew.variable} ${kaisotai.variable}`}>
         <Header />
         <main>{children}</main>
         <Footer />
