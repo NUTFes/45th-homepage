@@ -8,7 +8,41 @@ const dirname = path.dirname(__filename);
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
+  experimental: {
+    globalNotFound: true,
+  },
   output: "standalone",
+  async headers() {
+    return [
+      {
+        source: "/font/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/image/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/favicon/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+    ];
+  },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
       ...webpackConfig.resolve.extensionAlias,

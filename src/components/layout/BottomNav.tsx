@@ -16,7 +16,7 @@ type NavItemType = {
 
 function NavItem({ item }: { item: NavItemType }) {
   const isActive = !item.disabled && (item.href !== undefined || item.onPress !== undefined);
-  const color = isActive ? "text-secondary" : "text-font-gray";
+  const color = isActive ? "text-secondary" : "text-secondary/60";
   const wrapperClass = "flex h-14.25 w-full flex-col items-center justify-center gap-1";
 
   const inner = (
@@ -50,9 +50,9 @@ export default function BottomNavigation() {
 
   const regularItems: NavItemType[] = [
     { name: "ホーム", icon: House, href: "/" },
-    { name: "スケジュール", icon: Clock, href: "/", disabled: true },
-    { name: "マップ", icon: MapPin, href: "/", disabled: true },
-    { name: "企画", icon: CalendarDays, href: "/", disabled: true },
+    { name: "スケジュール", icon: Clock, disabled: true },
+    { name: "マップ", icon: MapPin, disabled: true },
+    { name: "企画", icon: CalendarDays, disabled: true },
   ];
 
   return (
@@ -86,9 +86,9 @@ export default function BottomNavigation() {
 
             <ModalOverlay
               isDismissable
-              className="fixed top-0 right-0 bottom-[73px] left-0 z-300 bg-base/40 ease-out motion-safe:transition-opacity motion-safe:duration-300 entering:opacity-0 exiting:opacity-0 exiting:ease-in"
+              className="fixed top-0 right-0 bottom-18.25 left-0 z-300 bg-base/40 ease-out motion-safe:transition-opacity motion-safe:duration-300 entering:opacity-0 exiting:opacity-0 exiting:ease-in"
             >
-              <div className="fixed right-0 bottom-[73px] left-0 z-350 h-[71svh] overflow-hidden">
+              <div className="fixed right-0 bottom-18.25 left-0 z-350 h-[71svh] overflow-hidden">
                 <Modal className="absolute inset-0 translate-y-0 overflow-y-auto overscroll-contain bg-base-dark transition-transform duration-300 entering:translate-y-full exiting:translate-y-full">
                   <Dialog className="outline-none">
                     <MenuContext />

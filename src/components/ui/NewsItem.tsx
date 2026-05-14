@@ -14,9 +14,7 @@ export default function NewsItem({ date, dateTime, title, content, important }: 
           {date}
         </time>
         {important && (
-          <span className="rounded-[14px] bg-accent px-s py-0.5 text-text text-font-main">
-            重要
-          </span>
+          <span className="rounded-[14px] bg-accent px-s py-0.5 text-text text-white">重要</span>
         )}
       </div>
       <div className="-ml-[0.5em] text-button font-bold text-font-main before:content-['［_'] after:content-['_］'] md:text-Pbutton">
