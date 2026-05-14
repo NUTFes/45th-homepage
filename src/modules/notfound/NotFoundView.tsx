@@ -19,12 +19,7 @@ function NotFoundContent() {
           お探しのページは見つかりませんでした
         </div>
       </div>
-      <ButtonMain
-        href="/"
-        title="GO BACK"
-        px="px-4l"
-        textSize="text-text-large lg:text-Ptitle-small"
-      />
+      <ButtonMain href="/" title="GO BACK" />
     </div>
   );
 }

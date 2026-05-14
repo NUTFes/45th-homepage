@@ -8,6 +8,9 @@ const dirname = path.dirname(__filename);
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
+  experimental: {
+    globalNotFound: true,
+  },
   output: "standalone",
   async headers() {
     return [
