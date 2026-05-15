@@ -13,6 +13,14 @@
   font-display: optional;
 }
 
+:root {
+  --bottom-nav-item-size: 57px;
+  --bottom-nav-padding-y: 8px;
+  --bottom-nav-offset: calc(
+    var(--bottom-nav-item-size) + (var(--bottom-nav-padding-y) * 2) + env(safe-area-inset-bottom)
+  );
+}
+
 @theme {
   --color-base: #1b339b;
   --color-base-dark: #192085;

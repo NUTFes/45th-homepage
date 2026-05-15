@@ -28,7 +28,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
 
   return (
     <html lang="ja">
-      <body>
+      <body className="pb-(--bottom-nav-offset) md:pb-0">
         <Header />
         <main>{children}</main>
         <Footer />
