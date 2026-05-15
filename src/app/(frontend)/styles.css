@@ -7,12 +7,6 @@
 @plugin "tailwindcss-react-aria-components";
 @plugin "tailwindcss-animate";
 
-@font-face {
-  font-family: "Kaisotai Next";
-  src: url("/font/Kaisotai-Next-UP-B.subset.woff2") format("woff2");
-  font-display: optional;
-}
-
 :root {
   --bottom-nav-item-size: 57px;
   --bottom-nav-padding-y: 8px;
@@ -33,7 +27,7 @@
   --color-font-gray: #8b8982;
   --color-accent: #ff5bef;
 
-  --font-kaisotai: "Kaisotai Next", sans-serif;
+  --font-kaisotai: var(--font-kaisotai-next), sans-serif;
   --font-sans:
     "Hiragino Sans", "Hiragino Kaku Gothic ProN", "BIZ UDPGothic", "Yu Gothic", "Meiryo", system-ui,
     sans-serif;

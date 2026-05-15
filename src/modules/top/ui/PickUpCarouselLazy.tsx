@@ -1,34 +1,18 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import type { CarouselImageSlide, CarouselMotionOptions } from "@/components/ui/carousel";
 
-const CarouselPlaceholder = () => (
-  <div className="aspect-video w-full bg-base-dark md:mx-auto md:w-[60%]" />
-);
+const PLACEHOLDER_CLASS_NAME = "aspect-video w-full bg-base-dark md:mx-auto md:w-[60%]";
 
 const PickUpCarousel = dynamic(() => import("./PickUpCarousel"), {
-  loading: CarouselPlaceholder,
+  loading: () => <div className={PLACEHOLDER_CLASS_NAME} />,
   ssr: false,
 });
 
-const IDLE_TIMEOUT_MS = 1200;
-
-const scheduleIdle = (callback: () => void) => {
-  if (typeof window === "undefined") {
-    return () => {};
-  }
-
-  if (typeof window.requestIdleCallback === "function") {
-    const id = window.requestIdleCallback(callback, { timeout: IDLE_TIMEOUT_MS });
-    return () => window.cancelIdleCallback(id);
-  }
-
-  const id = window.setTimeout(callback, IDLE_TIMEOUT_MS);
-  return () => window.clearTimeout(id);
-};
+const PRELOAD_ROOT_MARGIN = "200px 0px";
 
 type PickUpCarouselLazyProps = CarouselMotionOptions & {
   slides: CarouselImageSlide[];
@@ -40,14 +24,42 @@ export default function PickUpCarouselLazy({
   autoScroll,
 }: PickUpCarouselLazyProps) {
   const [shouldLoad, setShouldLoad] = useState(false);
+  const placeholderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const cancel = scheduleIdle(() => setShouldLoad(true));
-    return cancel;
-  }, []);
+    if (shouldLoad || typeof window === "undefined") {
+      return;
+    }
+
+    if (typeof window.IntersectionObserver !== "function") {
+      setShouldLoad(true);
+      return;
+    }
+
+    const placeholder = placeholderRef.current;
+    if (!placeholder) {
+      return;
+    }
+
+    const observer = new window.IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) {
+          return;
+        }
+
+        setShouldLoad(true);
+        observer.disconnect();
+      },
+      { rootMargin: PRELOAD_ROOT_MARGIN },
+    );
+
+    observer.observe(placeholder);
+
+    return () => observer.disconnect();
+  }, [shouldLoad]);
 
   if (!shouldLoad) {
-    return <CarouselPlaceholder />;
+    return <div ref={placeholderRef} className={PLACEHOLDER_CLASS_NAME} />;
   }
 
   return <PickUpCarousel slides={slides} autoPlay={autoPlay} autoScroll={autoScroll} />;

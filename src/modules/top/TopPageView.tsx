@@ -45,6 +45,7 @@ function TopHero() {
     priority: true,
     quality: 60,
     sizes: "100vw",
+    decoding: "sync",
   });
 
   const desktop = getImageProps({
@@ -55,6 +56,7 @@ function TopHero() {
     priority: false,
     quality: 60,
     sizes: "100vw",
+    decoding: "sync",
   });
 
   return (
