@@ -59,7 +59,7 @@ function TopHero() {
     <div className="flex w-full flex-col items-center">
       <picture className="block w-full">
         <source media="(min-width: 768px)" srcSet={desktop.props.srcSet} />
-        <img {...mobile.props} className="h-auto w-full" alt="" />
+        <img {...mobile.props} className="h-auto w-full" alt="" fetchPriority="high" />
       </picture>
       <LogoInfo />
     </div>

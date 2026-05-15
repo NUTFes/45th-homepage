@@ -1,10 +1,17 @@
 @import "tailwindcss";
 @source "../app/(frontend)";
-@source "../components";
+@source "../components/layout";
+@source "../components/ui";
 @source "../modules";
 
 @plugin "tailwindcss-react-aria-components";
 @plugin "tailwindcss-animate";
+
+@font-face {
+  font-family: "Kaisotai Next";
+  src: url("/font/Kaisotai-Next-UP-B.subset.woff2") format("woff2");
+  font-display: optional;
+}
 
 @theme {
   --color-base: #1b339b;
@@ -19,8 +26,9 @@
   --color-accent: #ff5bef;
 
   --font-kaisotai: "Kaisotai Next", sans-serif;
-  --font-goldman: var(--font-goldman-src), sans-serif;
-  --font-sans: var(--font-sans-src), sans-serif;
+  --font-sans:
+    "Hiragino Sans", "Hiragino Kaku Gothic ProN", "BIZ UDPGothic", "Yu Gothic", "Meiryo", system-ui,
+    sans-serif;
   --default-font-family: var(--font-sans);
 
   --text-title: 28px;

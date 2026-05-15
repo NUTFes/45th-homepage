@@ -1,7 +1,6 @@
 "use client";
 
 import InfoFrame from "@/components/ui/InfoFrame";
-import { Button } from "../../../components/aria/Button";
 import { Copy, LucideFile } from "lucide-react";
 
 const SPONSOR_EMAIL = "nutfes_kyosan@googlegroups.com";
@@ -44,7 +43,7 @@ export default function SponsorSection() {
               <div className="shrink-0">
                 <LucideFile size={24} />
               </div>
-              <span className="flex-1 text-start text-text-large md:text-center md:text-Ptext-large">
+              <span className="flex-1 text-center text-text-large md:text-Ptext-large">
                 資料を見る
               </span>
             </a>
@@ -57,19 +56,22 @@ export default function SponsorSection() {
           </div>
 
           <div className="shadow-[1px_2px_2px_rgba(8,18,94,1.0)]">
-            <Button
-              onPress={handleCopy}
-              className="h-fit w-[225px] justify-start gap-x-s rounded-sm bg-white px-m py-s text-base-dark hover:bg-main md:w-[300px] md:rounded-md md:px-m md:py-m"
+            <button
+              type="button"
+              onClick={() => {
+                void handleCopy();
+              }}
+              className="inline-flex h-fit w-[225px] items-center justify-start gap-x-s rounded-sm bg-white px-m py-s text-base-dark hover:bg-main md:w-[300px] md:rounded-md md:px-m md:py-m"
             >
               <div className="shrink-0">
                 <Copy size={24} />
               </div>
-              <div className="flex-1 text-start text-text-large md:text-Ptext-large md:whitespace-nowrap">
+              <div className="flex-1 text-center text-text-large md:text-Ptext-large md:whitespace-nowrap">
                 <span className="whitespace-nowrap">メールアドレスを</span>
                 <br className="md:hidden" />
                 <span>コピー</span>
               </div>
-            </Button>
+            </button>
           </div>
         </div>
       </div>
