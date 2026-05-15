@@ -1,0 +1,25 @@
+# syntax=docker/dockerfile:1
+
+ARG NODE_VERSION=24-bookworm-slim
+
+FROM node:${NODE_VERSION}
+
+ARG LIGHTHOUSE_VERSION=13.3.0
+
+ENV CHROME_PATH=/usr/bin/chromium
+ENV LIGHTHOUSE_CHROMIUM_PATH=/usr/bin/chromium
+ENV LIGHTHOUSE_DISABLE_ERROR_REPORTING=1
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    chromium \
+    fonts-ipafont-gothic \
+    fonts-ipafont-mincho \
+  && npm install -g "lighthouse@${LIGHTHOUSE_VERSION}" \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /workspace
+
+ENTRYPOINT ["lighthouse"]

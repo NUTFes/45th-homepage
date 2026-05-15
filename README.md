@@ -262,13 +262,46 @@ chore: vitest を追加
 
 ### 主要コマンド
 
-| コマンド               | 用途                                     |
-| ---------------------- | ---------------------------------------- |
-| `mise run prod:up`     | 初回デプロイ（コンテナが未稼働の場合）   |
-| `mise run prod:deploy` | ローリングアップデート（コンテナ稼働中） |
-| `mise run prod:down`   | 本番コンテナの停止・削除                 |
-| `mise run prod:ps`     | ステータス確認                           |
-| `mise run prod:logs`   | ログ監視                                 |
+| コマンド                  | 用途                                     |
+| ------------------------- | ---------------------------------------- |
+| `mise run prod:up`        | 初回デプロイ（コンテナが未稼働の場合）   |
+| `mise run prod:deploy`    | ローリングアップデート（コンテナ稼働中） |
+| `mise run prod:down`      | 本番コンテナの停止・削除                 |
+| `mise run prod:ps`        | ステータス確認                           |
+| `mise run prod:logs`      | ログ監視                                 |
+| `mise run prod:perf`      | 本番相当の Docker 環境で Lighthouse 実行 |
+| `mise run prod:perf:down` | 性能試験用コンテナの停止・削除           |
+
+---
+
+## 本番公開前のパフォーマンス試験
+
+`compose.perf.yml` は、本番用の Next.js standalone image、PostgreSQL、SeaweedFS S3 Gateway を起動し、別コンテナ内の headless Chromium で Lighthouse CLI を実行します。
+
+```bash
+mise run prod:perf
+```
+
+デフォルトでは `http://payload:3000/` を計測し、結果を `reports/lighthouse/` に HTML と JSON で保存します。
+
+複数ページを計測する場合は、空白区切りで `LIGHTHOUSE_URLS` を指定します。
+
+```bash
+LIGHTHOUSE_URLS="http://payload:3000/ http://payload:3000/news" mise run prod:perf
+```
+
+生成されるファイル例:
+
+- `reports/lighthouse/01-payload-3000.report.html`
+- `reports/lighthouse/01-payload-3000.report.json`
+
+Docker コンテナ上の計測値はホスト CPU や同時実行中のコンテナの影響で揺れます。公開前の絶対評価だけでなく、同じ環境での変更前後比較に使ってください。
+
+試験後にコンテナを削除する場合:
+
+```bash
+mise run prod:perf:down
+```
 
 ---
 
