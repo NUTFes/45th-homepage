@@ -1,20 +1,10 @@
-"use client";
-
 import InfoFrame from "@/components/ui/InfoFrame";
-import { Copy, LucideFile } from "lucide-react";
+import { LucideFile } from "lucide-react";
+import SponsorCopyButton from "./SponsorCopyButton";
 
 const SPONSOR_EMAIL = "nutfes_kyosan@googlegroups.com";
 
 export default function SponsorSection() {
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(SPONSOR_EMAIL);
-      alert("企業協賛募集メールアドレスをコピーしました");
-    } catch (err) {
-      console.error("メールアドレスのコピーに失敗しました", err);
-    }
-  };
-
   return (
     <InfoFrame>
       <div className="flex flex-col items-center gap-y-3l md:text-center">
@@ -56,22 +46,10 @@ export default function SponsorSection() {
           </div>
 
           <div className="shadow-[1px_2px_2px_rgba(8,18,94,1.0)]">
-            <button
-              type="button"
-              onClick={() => {
-                void handleCopy();
-              }}
+            <SponsorCopyButton
               className="inline-flex h-fit w-[225px] items-center justify-start gap-x-s rounded-sm bg-white px-m py-s text-base-dark hover:bg-main md:w-[300px] md:rounded-md md:px-m md:py-m"
-            >
-              <div className="shrink-0">
-                <Copy size={24} />
-              </div>
-              <div className="flex-1 text-center text-text-large md:text-Ptext-large md:whitespace-nowrap">
-                <span className="whitespace-nowrap">メールアドレスを</span>
-                <br className="md:hidden" />
-                <span>コピー</span>
-              </div>
-            </button>
+              email={SPONSOR_EMAIL}
+            />
           </div>
         </div>
       </div>

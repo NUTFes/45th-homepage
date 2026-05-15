@@ -167,6 +167,11 @@ services:
         mkdir -p /reports
         rm -f /reports/*.report.html /reports/*.report.json
 
+        skip_audits=""
+        if [ -n "$$LIGHTHOUSE_SKIP_AUDITS" ]; then
+          skip_audits="--skip-audits=$$LIGHTHOUSE_SKIP_AUDITS"
+        fi
+
         index=0
         for url in $$LIGHTHOUSE_URLS; do
           index=$$((index + 1))
@@ -174,12 +179,14 @@ services:
           output_path="/reports/$$(printf "%02d" "$$index")-$${slug}"
           lighthouse "$$url" \
             --chrome-flags="--headless=new --no-sandbox --disable-dev-shm-usage" \
+            $$skip_audits \
             --output=html \
             --output=json \
             --output-path="$$output_path"
         done
     environment:
       LIGHTHOUSE_URLS: ${LIGHTHOUSE_URLS:-http://payload:3000/}
+      LIGHTHOUSE_SKIP_AUDITS: ${LIGHTHOUSE_SKIP_AUDITS:-is-on-https,redirects-http}
       LIGHTHOUSE_DISABLE_ERROR_REPORTING: "1"
     volumes:
       - ./reports/lighthouse:/reports
