@@ -1,6 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
 import "./styles.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -40,6 +41,11 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
         <main>{children}</main>
         <Footer />
         <BottomNavigation />
+        <Script
+          src="/analytics/script.js"
+          data-site-id="156a8f7e9cfd"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

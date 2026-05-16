@@ -15,6 +15,18 @@ const nextConfig: NextConfig = {
     qualities: [50, 60, 75],
   },
   output: "standalone",
+  async rewrites() {
+    return [
+      {
+        source: "/analytics/script.js",
+        destination: "https://rybbit.nutfes.net/api/script.js",
+      },
+      {
+        source: "/analytics/track",
+        destination: "https://rybbit.nutfes.net/api/track",
+      },
+    ];
+  },
   async headers() {
     return [
       {
