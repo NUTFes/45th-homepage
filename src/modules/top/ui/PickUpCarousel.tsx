@@ -76,7 +76,6 @@ const PickUpSlideContent = ({ slide, index }: { slide: CarouselImageSlide; index
                 alt=""
                 className="h-full w-full object-cover object-center"
                 height={slide.imageHeight ?? 1080}
-                priority={index === 0}
                 sizes="(min-width: 768px) 60vw, 100vw"
                 src={slide.imageUrl}
                 width={slide.imageWidth ?? 1920}
@@ -90,7 +89,6 @@ const PickUpSlideContent = ({ slide, index }: { slide: CarouselImageSlide; index
               alt={slide.imageAlt}
               className="h-full w-full object-cover object-center"
               height={slide.imageHeight ?? 1080}
-              priority={index === 0}
               sizes="(min-width: 768px) 60vw, 100vw"
               src={slide.imageUrl}
               width={slide.imageWidth ?? 1920}

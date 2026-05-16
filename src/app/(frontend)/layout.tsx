@@ -1,30 +1,16 @@
 import React from "react";
 import type { Metadata } from "next";
-import "./styles.css";
-import { Goldman, Zen_Kaku_Gothic_New } from "next/font/google";
 import localFont from "next/font/local";
+import Script from "next/script";
+import "./styles.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import BottomNavigation from "@/components/layout/BottomNav";
 
-const goldman = Goldman({
-  weight: ["400", "700"],
-  subsets: ["latin"],
-  variable: "--font-goldman-src",
-  display: "swap",
-});
-
-const zenKakuGothicNew = Zen_Kaku_Gothic_New({
-  weight: ["400", "500", "700"],
-  subsets: ["latin"],
-  variable: "--font-sans-src",
-  display: "swap",
-});
-
 const kaisotai = localFont({
   src: "../../../public/font/Kaisotai-Next-UP-B.subset.woff2",
-  variable: "--font-kaisotai",
-  display: "swap",
+  variable: "--font-kaisotai-next",
+  display: "optional",
 });
 
 export const metadata: Metadata = {
@@ -49,12 +35,17 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props;
 
   return (
-    <html lang="ja">
-      <body className={`${goldman.variable} ${zenKakuGothicNew.variable} ${kaisotai.variable}`}>
+    <html lang="ja" className={kaisotai.variable}>
+      <body className="pb-(--bottom-nav-offset) md:pb-0">
         <Header />
         <main>{children}</main>
         <Footer />
         <BottomNavigation />
+        <Script
+          src="/analytics/script.js"
+          data-site-id="156a8f7e9cfd"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

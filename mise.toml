@@ -123,3 +123,13 @@ git pull origin "$(git branch --show-current)"
 docker compose --env-file .env.production -f compose.prod.yml build payload
 docker rollout --env-file .env.production -f compose.prod.yml --timeout 120 payload
 '''
+
+[tasks."95:prod:perf"]
+description = "本番相当のDocker環境でLighthouseを実行する (.env.productionを使用)"
+alias = "prod:perf"
+run = "docker compose --env-file .env.production -f compose.perf.yml up --build --abort-on-container-exit --exit-code-from lighthouse"
+
+[tasks."96:prod:perf:down"]
+description = "Lighthouse性能試験用コンテナを停止して削除する"
+alias = "prod:perf:down"
+run = "docker compose --env-file .env.production -f compose.perf.yml down"

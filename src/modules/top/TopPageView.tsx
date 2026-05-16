@@ -10,10 +10,10 @@ import ImportantFrameSkeleton from "@/components/ui/ImportantFrameSkeleton";
 import SectionTitle from "@/components/ui/SectionTitle";
 import NewsItemSkeleton from "@/components/ui/NewsItemSkeleton";
 import LogoInfo from "./ui/LogoInfo";
-import PickUpCarousel from "./ui/PickUpCarousel";
 import SponsorSection from "./ui/SponsorSection";
 import PickUpFrame from "./ui/PickUpFrame";
 import InfoMenu from "./ui/InfoMenu";
+import PickUpCarouselLazy from "./ui/PickUpCarouselLazy";
 
 const LATEST_NEWS_LIMIT = 3;
 const NO_IMPORTANT_NEWS_MESSAGE = "現在、重要なお知らせはありません。";
@@ -37,22 +37,27 @@ async function getTopPageData() {
 }
 
 function TopHero() {
-  const mobile = getImageProps({
-    src: "/image/top/HeroAll.webp",
+  const commonHeroImageProps = {
     alt: "",
+    decoding: "sync" as const,
+    fetchPriority: "high" as const,
+    loading: "eager" as const,
+    quality: 50,
+    sizes: "100vw",
+  };
+
+  const mobile = getImageProps({
+    ...commonHeroImageProps,
+    src: "/image/top/HeroAll.webp",
     width: 1575,
     height: 2760,
-    priority: true,
-    sizes: "100vw",
   });
 
   const desktop = getImageProps({
+    ...commonHeroImageProps,
     src: "/image/top/Ps_HeroAll.webp",
-    alt: "",
     width: 4000,
     height: 2600,
-    priority: false,
-    sizes: "100vw",
   });
 
   return (
@@ -85,7 +90,7 @@ function PickUpSection({ slides }: { slides: Awaited<ReturnType<typeof getPickUp
       <div className="w-full">
         <PickUpFrame>
           {slides.length > 0 ? (
-            <PickUpCarousel slides={slides} autoPlay={{ delay: PICKUP_AUTOPLAY_DELAY_MS }} />
+            <PickUpCarouselLazy slides={slides} autoPlay={{ delay: PICKUP_AUTOPLAY_DELAY_MS }} />
           ) : (
             <div className="aspect-video w-full bg-base-dark md:mx-auto md:w-[60%]" />
           )}

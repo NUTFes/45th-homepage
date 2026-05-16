@@ -1,10 +1,19 @@
 @import "tailwindcss";
 @source "../app/(frontend)";
-@source "../components";
+@source "../components/layout";
+@source "../components/ui";
 @source "../modules";
 
 @plugin "tailwindcss-react-aria-components";
 @plugin "tailwindcss-animate";
+
+:root {
+  --bottom-nav-item-size: 57px;
+  --bottom-nav-padding-y: 8px;
+  --bottom-nav-offset: calc(
+    var(--bottom-nav-item-size) + (var(--bottom-nav-padding-y) * 2) + env(safe-area-inset-bottom)
+  );
+}
 
 @theme {
   --color-base: #1b339b;
@@ -18,9 +27,10 @@
   --color-font-gray: #8b8982;
   --color-accent: #ff5bef;
 
-  --font-kaisotai: "Kaisotai Next", sans-serif;
-  --font-goldman: var(--font-goldman-src), sans-serif;
-  --font-sans: var(--font-sans-src), sans-serif;
+  --font-kaisotai: var(--font-kaisotai-next), sans-serif;
+  --font-sans:
+    "Hiragino Sans", "Hiragino Kaku Gothic ProN", "BIZ UDPGothic", "Yu Gothic", "Meiryo", system-ui,
+    sans-serif;
   --default-font-family: var(--font-sans);
 
   --text-title: 28px;

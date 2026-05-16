@@ -11,7 +11,22 @@ const nextConfig: NextConfig = {
   experimental: {
     globalNotFound: true,
   },
+  images: {
+    qualities: [50, 60, 75],
+  },
   output: "standalone",
+  async rewrites() {
+    return [
+      {
+        source: "/analytics/script.js",
+        destination: "https://rybbit.nutfes.net/api/script.js",
+      },
+      {
+        source: "/analytics/track",
+        destination: "https://rybbit.nutfes.net/api/track",
+      },
+    ];
+  },
   async headers() {
     return [
       {
@@ -34,6 +49,15 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/favicon/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/icon/:path*",
         headers: [
           {
             key: "Cache-Control",
