@@ -14,18 +14,8 @@ const FONT_USAGE_FILE_PATHS = [
   "../src/modules/notfound/NotFoundView.tsx",
 ].map((relativePath) => path.join(__dirname, relativePath));
 
-function expandRange(startCode, endCode) {
-  let result = "";
-  for (let code = startCode; code <= endCode; code++) {
-    result += String.fromCharCode(code);
-  }
-  return result;
-}
-
-// ひらがな、カタカナ、ASCII
+// 固定見出しで使うフォントなので、常用かな全体ではなく実使用文字とASCIIに絞る。
 const BASIC_CHARS =
-  expandRange(0x3041, 0x3096) +
-  expandRange(0x30a1, 0x30fa) +
   "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ ";
 
 function extractCharsFromFiles(filePaths) {

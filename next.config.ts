@@ -11,6 +11,9 @@ const nextConfig: NextConfig = {
   experimental: {
     globalNotFound: true,
   },
+  images: {
+    qualities: [50, 60, 75],
+  },
   output: "standalone",
   async headers() {
     return [
@@ -34,6 +37,15 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/favicon/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/icon/:path*",
         headers: [
           {
             key: "Cache-Control",

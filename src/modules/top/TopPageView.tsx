@@ -37,33 +37,34 @@ async function getTopPageData() {
 }
 
 function TopHero() {
-  const mobile = getImageProps({
-    src: "/image/top/HeroAll.webp",
+  const commonHeroImageProps = {
     alt: "",
+    decoding: "sync" as const,
+    fetchPriority: "high" as const,
+    loading: "eager" as const,
+    quality: 50,
+    sizes: "100vw",
+  };
+
+  const mobile = getImageProps({
+    ...commonHeroImageProps,
+    src: "/image/top/HeroAll.webp",
     width: 1575,
     height: 2760,
-    priority: true,
-    quality: 60,
-    sizes: "100vw",
-    decoding: "sync",
   });
 
   const desktop = getImageProps({
+    ...commonHeroImageProps,
     src: "/image/top/Ps_HeroAll.webp",
-    alt: "",
     width: 4000,
     height: 2600,
-    priority: false,
-    quality: 60,
-    sizes: "100vw",
-    decoding: "sync",
   });
 
   return (
     <div className="flex w-full flex-col items-center">
       <picture className="block w-full">
         <source media="(min-width: 768px)" srcSet={desktop.props.srcSet} />
-        <img {...mobile.props} className="h-auto w-full" alt="" fetchPriority="high" />
+        <img {...mobile.props} className="h-auto w-full" alt="" />
       </picture>
       <LogoInfo />
     </div>

@@ -2,7 +2,7 @@ import InfoFrame from "@/components/ui/InfoFrame";
 import { LucideFile } from "lucide-react";
 import SponsorCopyButton from "./SponsorCopyButton";
 
-const SPONSOR_EMAIL = "nutfes_kyosan@googlegroups.com";
+const SPONSOR_EMAIL_PARTS = ["nutfes_kyosan", "googlegroups.com"] as const;
 
 export default function SponsorSection() {
   return (
@@ -48,7 +48,7 @@ export default function SponsorSection() {
           <div className="shadow-[1px_2px_2px_rgba(8,18,94,1.0)]">
             <SponsorCopyButton
               className="inline-flex h-fit w-[225px] items-center justify-start gap-x-s rounded-sm bg-white px-m py-s text-base-dark hover:bg-main md:w-[300px] md:rounded-md md:px-m md:py-m"
-              email={SPONSOR_EMAIL}
+              emailParts={SPONSOR_EMAIL_PARTS}
             />
           </div>
         </div>

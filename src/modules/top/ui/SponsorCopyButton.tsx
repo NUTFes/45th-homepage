@@ -3,13 +3,14 @@
 import { Copy } from "lucide-react";
 
 type SponsorCopyButtonProps = {
-  email: string;
+  emailParts: readonly [string, string];
   className?: string;
 };
 
-export default function SponsorCopyButton({ email, className }: SponsorCopyButtonProps) {
+export default function SponsorCopyButton({ emailParts, className }: SponsorCopyButtonProps) {
   const handleCopy = async () => {
     try {
+      const email = `${emailParts[0]}@${emailParts[1]}`;
       await navigator.clipboard.writeText(email);
       alert("企業協賛募集メールアドレスをコピーしました");
     } catch (err) {

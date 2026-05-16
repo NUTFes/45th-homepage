@@ -2,6 +2,18 @@ import { Mail, MessageCircleMore, MessageCircleMoreIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+const CONTACT_EMAIL_PARTS = ["nutfes.shikobu", "gmail.com"] as const;
+
+function ContactEmailText() {
+  return (
+    <>
+      <span>{CONTACT_EMAIL_PARTS[0]}</span>
+      <span>@</span>
+      <span>{CONTACT_EMAIL_PARTS[1]}</span>
+    </>
+  );
+}
+
 export default function Footer() {
   return (
     <footer className="bg-secondary px-m py-m text-black">
@@ -64,7 +76,9 @@ export default function Footer() {
               </p>
               <p className="flex items-center gap-1.5">
                 <Mail className="size-4 text-base-dark" strokeWidth={2.2} />
-                <span className="underline">nutfes.shikobu@gmail.com</span>
+                <span className="underline">
+                  <ContactEmailText />
+                </span>
               </p>
             </div>
           </div>
@@ -139,7 +153,9 @@ export default function Footer() {
                 </p>
                 <p className="flex items-center gap-1.5">
                   <Mail className="size-4 text-base-dark" strokeWidth={2.2} />
-                  <span className="underline">nutfes.shikobu@gmail.com</span>
+                  <span className="underline">
+                    <ContactEmailText />
+                  </span>
                 </p>
                 <address className="text-[14px] leading-4.25 not-italic">
                   <p>〒940-2188</p>
