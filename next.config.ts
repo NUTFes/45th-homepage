@@ -9,9 +9,14 @@ const dirname = path.dirname(__filename);
 const nextConfig: NextConfig = {
   cacheComponents: true,
   experimental: {
+    cssChunking: "strict",
     globalNotFound: true,
+    inlineCss: true,
+    optimizePackageImports: ["react-aria-components", "react-aria"],
   },
   images: {
+    deviceSizes: [360, 384, 412, 430, 640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    formats: ["image/avif", "image/webp"],
     qualities: [50, 60, 75],
   },
   output: "standalone",
@@ -24,6 +29,10 @@ const nextConfig: NextConfig = {
       {
         source: "/analytics/track",
         destination: "https://rybbit.nutfes.net/api/track",
+      },
+      {
+        source: "/analytics/site/:path*",
+        destination: "https://rybbit.nutfes.net/api/site/:path*",
       },
     ];
   },

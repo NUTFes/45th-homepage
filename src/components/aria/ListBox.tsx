@@ -91,7 +91,7 @@ export function DropdownItem(props: ListBoxItemProps) {
     <AriaListBoxItem {...props} textValue={textValue} className={dropdownItemStyles}>
       {composeRenderProps(props.children, (children, { isSelected }) => (
         <>
-          <span className="flex flex-1 items-center gap-2 truncate font-normal group-selected:font-semibold">
+          <span className="group-selected:font-semibold flex flex-1 items-center gap-2 truncate font-normal">
             {children}
           </span>
           <span className="flex w-5 items-center">
@@ -110,8 +110,8 @@ export interface DropdownSectionProps<T> extends SectionProps<T> {
 
 export function DropdownSection<T extends object>(props: DropdownSectionProps<T>) {
   return (
-    <ListBoxSection className="after:block after:h-[5px] after:content-[''] first:-mt-[5px] last:after:hidden">
-      <Header className="sticky -top-[5px] z-10 -mx-1 -mt-px truncate border-y border-y-neutral-200 bg-neutral-100/60 px-4 py-1 text-sm font-semibold text-neutral-500 backdrop-blur-md supports-[-moz-appearance:none]:bg-neutral-100 dark:border-y-neutral-700 dark:bg-neutral-700/60 dark:text-neutral-300 [&+*]:mt-1">
+    <ListBoxSection className="after:block after:h-1.25 after:content-[''] first:-mt-1.25 last:after:hidden">
+      <Header className="sticky -top-1.25 z-10 -mx-1 -mt-px truncate border-y border-y-neutral-200 bg-neutral-100/60 px-4 py-1 text-sm font-semibold text-neutral-500 backdrop-blur-md supports-[-moz-appearance:none]:bg-neutral-100 dark:border-y-neutral-700 dark:bg-neutral-700/60 dark:text-neutral-300 [&+*]:mt-1">
         {props.title}
       </Header>
       <Collection items={props.items}>{props.children}</Collection>

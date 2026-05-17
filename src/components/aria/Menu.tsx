@@ -25,7 +25,7 @@ export function Menu<T extends object>(props: MenuProps<T>) {
   return (
     <AriaMenu
       {...props}
-      className="max-h-[inherit] overflow-auto p-1 font-sans outline outline-0 [clip-path:inset(0_0_0_0_round_.75rem)] empty:pb-2 empty:text-center"
+      className="max-h-[inherit] overflow-auto p-1 font-sans [clip-path:inset(0_0_0_0_round_.75rem)] empty:pb-2 empty:text-center"
     />
   );
 }
@@ -42,7 +42,7 @@ export function MenuItem(props: MenuItemProps) {
               {isSelected && <Check aria-hidden className="h-4 w-4" />}
             </span>
           )}
-          <span className="flex flex-1 items-center gap-2 truncate font-normal group-selected:font-semibold">
+          <span className="group-selected:font-semibold flex flex-1 items-center gap-2 truncate font-normal">
             {children}
           </span>
           {hasSubmenu && <ChevronRight aria-hidden className="absolute right-2 h-4 w-4" />}

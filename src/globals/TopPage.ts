@@ -1,5 +1,7 @@
 import type { GlobalConfig } from "payload";
 
+import { revalidateTopPageAfterChange } from "./hooks/revalidateTopPage";
+
 export const TopPage: GlobalConfig = {
   slug: "top-page",
   label: {
@@ -15,6 +17,9 @@ export const TopPage: GlobalConfig = {
       ja: "トップページに表示する各セクション（PICKUP/お知らせなど）を設定します。",
       en: "Configure top-page sections such as pickup and news.",
     },
+  },
+  hooks: {
+    afterChange: [revalidateTopPageAfterChange],
   },
   fields: [
     {

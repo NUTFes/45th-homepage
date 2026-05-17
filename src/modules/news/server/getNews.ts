@@ -1,6 +1,7 @@
-import { cache } from "react";
+import { cacheLife, cacheTag } from "next/cache";
 import { getPayload } from "payload";
 
+import { CACHE_TAGS } from "@/lib/cacheTags";
 import config from "@/payload.config";
 import type { News } from "@/payload-types";
 
@@ -53,7 +54,11 @@ const toNewsItem = (doc: Pick<News, "id" | "date" | "title" | "body" | "importan
   title: doc.title,
 });
 
-export const getNews = cache(async (page = 1, limit = DEFAULT_LIMIT): Promise<NewsPageData> => {
+export async function getNews(page = 1, limit = DEFAULT_LIMIT): Promise<NewsPageData> {
+  "use cache";
+  cacheTag(CACHE_TAGS.news);
+  cacheLife("minutes");
+
   const safePage = toSafePage(page);
   const safeLimit = toSafeLimit(limit);
 
@@ -87,9 +92,13 @@ export const getNews = cache(async (page = 1, limit = DEFAULT_LIMIT): Promise<Ne
     totalDocs: result.totalDocs,
     totalPages: result.totalPages,
   };
-});
+}
 
-export const getLatestNews = cache(async (limit = 3): Promise<NewsItem[]> => {
+export async function getLatestNews(limit = 3): Promise<NewsItem[]> {
+  "use cache";
+  cacheTag(CACHE_TAGS.news);
+  cacheLife("minutes");
+
   const safeLimit = toSafeLimit(limit);
 
   const payload = await getPayload({ config });
@@ -114,9 +123,13 @@ export const getLatestNews = cache(async (limit = 3): Promise<NewsItem[]> => {
   });
 
   return result.docs.map(toNewsItem);
-});
+}
 
-export const getImportantNewsBody = cache(async (): Promise<string | null> => {
+export async function getImportantNewsBody(): Promise<string | null> {
+  "use cache";
+  cacheTag(CACHE_TAGS.news);
+  cacheLife("minutes");
+
   const payload = await getPayload({ config });
   const result = await payload.find({
     collection: "news",
@@ -144,4 +157,4 @@ export const getImportantNewsBody = cache(async (): Promise<string | null> => {
   });
 
   return result.docs[0]?.body ?? null;
-});
+}

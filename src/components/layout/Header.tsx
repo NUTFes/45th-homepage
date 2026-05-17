@@ -18,14 +18,7 @@ export default function Page() {
           aria-label="45th NUTFES トップへ"
           className="shrink-0 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-main"
         >
-          <Image
-            src="/icon/45th-logo-top.svg"
-            alt=""
-            width={48}
-            height={48}
-            priority
-            className="size-12"
-          />
+          <Image src="/icon/45th-logo-top.svg" alt="" width={48} height={48} className="size-12" />
         </Link>
         <p className="truncate font-kaisotai text-title text-base-dark">45th NUTFES</p>
       </div>

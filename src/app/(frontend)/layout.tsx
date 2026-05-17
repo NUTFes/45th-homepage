@@ -2,7 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import { Zen_Kaku_Gothic_New } from "next/font/google";
 import localFont from "next/font/local";
-import Script from "next/script";
+
 import "./styles.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -12,13 +12,16 @@ const kaisotai = localFont({
   src: "../../../public/font/Kaisotai-Next-UP-B.subset.woff2",
   variable: "--font-kaisotai-next",
   display: "optional",
+  preload: false,
 });
 
 const zenKakuGothicNew = Zen_Kaku_Gothic_New({
-  weight: ["400", "500", "700"],
+  weight: ["400", "700"],
   subsets: ["latin"],
   variable: "--font-zen-kaku-gothic-new",
-  display: "swap",
+  display: "optional",
+  preload: false,
+  adjustFontFallback: false,
   fallback: [
     "Hiragino Sans",
     "Hiragino Kaku Gothic ProN",
@@ -30,10 +33,39 @@ const zenKakuGothicNew = Zen_Kaku_Gothic_New({
   ],
 });
 
+const siteName = "45th NUTFES";
+const siteDescription =
+  "2026年9月19日・20日に開催する、長岡技術科学大学の大学祭「技大祭」の公式サイトです。情報は随時更新予定なので、お楽しみに!";
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.nutfes.net/";
+
+if (process.env.NODE_ENV === "production" && !siteUrl) {
+  throw new Error("NEXT_PUBLIC_SITE_URL is required in production");
+}
+
 export const metadata: Metadata = {
-  title: "45th NUTFES",
-  description:
-    "2026年9月19・20日に開催する、長岡技術科学大学の大学祭「技大祭」の公式HPです!\n情報は随時更新予定なので、お楽しみに!",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: siteName,
+    template: `%s | ${siteName}`,
+  },
+  description: siteDescription,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: siteName,
+    description: siteDescription,
+    url: "/",
+    siteName,
+    locale: "ja_JP",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteName,
+    description: siteDescription,
+  },
   icons: [
     {
       rel: "icon",
@@ -48,7 +80,7 @@ export const metadata: Metadata = {
   ],
 };
 
-export default async function RootLayout(props: { children: React.ReactNode }) {
+export default function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props;
 
   return (
@@ -58,10 +90,10 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
         <main>{children}</main>
         <Footer />
         <BottomNavigation />
-        <Script
-          src="/analytics/script.js"
-          data-site-id="156a8f7e9cfd"
-          strategy="afterInteractive"
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `"use strict";(function(){var d=5e3;function l(){var s=document.createElement("script");s.src="/analytics/script.js";s.defer=true;s.dataset.siteId="156a8f7e9cfd";document.body.appendChild(s)}if(typeof requestIdleCallback==="function"){setTimeout(function(){requestIdleCallback(l)},d)}else{setTimeout(l,d)}})();`,
+          }}
         />
       </body>
     </html>

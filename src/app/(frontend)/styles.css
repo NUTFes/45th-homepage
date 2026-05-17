@@ -4,7 +4,6 @@
 @source "../components/ui";
 @source "../modules";
 
-@plugin "tailwindcss-react-aria-components";
 @plugin "tailwindcss-animate";
 
 :root {
@@ -38,18 +37,18 @@
   --text-title-large: 36px;
   --text-title-large--font-weight: 700;
   --text-title-small: 20px;
-  --text-title-small--font-weight: 500;
+  --text-title-small--font-weight: 400;
   --text-button: 16px;
   --text-button--font-weight: 700;
 
   --text-text: 16px;
   --text-text--line-height: 20px;
-  --text-text--font-weight: 500;
+  --text-text--font-weight: 400;
   --text-text-large: 18px;
   --text-text-large--line-height: 22px;
-  --text-text-large--font-weight: 500;
+  --text-text-large--font-weight: 400;
   --text-text-small: 12px;
-  --text-text-small--font-weight: 500;
+  --text-text-small--font-weight: 400;
 
   --text-Ptitle: 36px;
   --text-Ptitle--font-weight: 700;
@@ -60,10 +59,10 @@
 
   --text-Ptext: 18px;
   --text-Ptext--line-height: 28px;
-  --text-Ptext--font-weight: 500;
+  --text-Ptext--font-weight: 400;
   --text-Ptext-large: 20px;
   --text-Ptext-large--line-height: 32px;
-  --text-Ptext-large--font-weight: 500;
+  --text-Ptext-large--font-weight: 400;
 
   --spacing-ss: 8px;
   --spacing-xs: 12px;
