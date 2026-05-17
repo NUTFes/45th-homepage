@@ -178,7 +178,7 @@ export default function Footer() {
                     <ContactEmailText />
                   </span>
                 </p>
-                <address className="text-[14px] leading-4.25 not-italic pt-ss">
+                <address className="pt-ss text-[14px] leading-4.25 not-italic">
                   <p>〒940-2188</p>
                   <p>新潟県長岡市上富岡町1603-1 長岡技術科学大学</p>
                 </address>

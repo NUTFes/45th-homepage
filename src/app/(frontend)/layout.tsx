@@ -1,5 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
+import { Zen_Kaku_Gothic_New } from "next/font/google";
 import localFont from "next/font/local";
 import Script from "next/script";
 import "./styles.css";
@@ -11,6 +12,22 @@ const kaisotai = localFont({
   src: "../../../public/font/Kaisotai-Next-UP-B.subset.woff2",
   variable: "--font-kaisotai-next",
   display: "optional",
+});
+
+const zenKakuGothicNew = Zen_Kaku_Gothic_New({
+  weight: ["400", "500", "700"],
+  subsets: ["latin"],
+  variable: "--font-zen-kaku-gothic-new",
+  display: "swap",
+  fallback: [
+    "Hiragino Sans",
+    "Hiragino Kaku Gothic ProN",
+    "BIZ UDPGothic",
+    "Yu Gothic",
+    "Meiryo",
+    "system-ui",
+    "sans-serif",
+  ],
 });
 
 export const metadata: Metadata = {
@@ -35,7 +52,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props;
 
   return (
-    <html lang="ja" className={kaisotai.variable}>
+    <html lang="ja" className={`${zenKakuGothicNew.variable} ${kaisotai.variable}`}>
       <body className="pb-(--bottom-nav-offset) md:pb-0">
         <Header />
         <main>{children}</main>
