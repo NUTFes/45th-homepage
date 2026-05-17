@@ -1,6 +1,5 @@
 import React from "react";
 import type { Metadata } from "next";
-import { Zen_Kaku_Gothic_New } from "next/font/google";
 import localFont from "next/font/local";
 
 import "./styles.css";
@@ -11,17 +10,24 @@ import BottomNavigation from "@/components/layout/BottomNav";
 const kaisotai = localFont({
   src: "../../../public/font/Kaisotai-Next-UP-B.subset.woff2",
   variable: "--font-kaisotai-next",
-  display: "optional",
+  display: "swap",
   preload: false,
 });
 
-const zenKakuGothicNew = Zen_Kaku_Gothic_New({
-  weight: ["400", "700"],
-  subsets: ["latin"],
+const zenKakuGothicNew = localFont({
+  src: [
+    {
+      path: "../../../public/font/ZenKakuGothicNew-Regular.subset.woff2",
+      weight: "400",
+    },
+    {
+      path: "../../../public/font/ZenKakuGothicNew-Bold.subset.woff2",
+      weight: "700",
+    },
+  ],
   variable: "--font-zen-kaku-gothic-new",
-  display: "optional",
+  display: "swap",
   preload: false,
-  adjustFontFallback: false,
   fallback: [
     "Hiragino Sans",
     "Hiragino Kaku Gothic ProN",
