@@ -50,6 +50,8 @@ ENV NODE_ENV=production
 # ENV NEXT_TELEMETRY_DISABLED=1
 
 # Build Next.js application
+ARG NEXT_PUBLIC_SITE_URL=https://www.nutfes.net/
+ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 RUN corepack enable pnpm && pnpm build
 
 # ============================================

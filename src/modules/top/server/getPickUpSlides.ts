@@ -1,7 +1,8 @@
 import { getPayload } from "payload";
-import { cache } from "react";
+import { cacheLife, cacheTag } from "next/cache";
 
 import type { CarouselImageSlide } from "@/components/ui/carousel";
+import { CACHE_TAGS } from "@/lib/cacheTags";
 import type { Media, TopPage } from "@/payload-types";
 import config from "@/payload.config";
 
@@ -48,7 +49,11 @@ const toPickUpSlide = (pickup: Pickup, index: number): CarouselImageSlide | null
   };
 };
 
-export const getPickUpSlides = cache(async (): Promise<CarouselImageSlide[]> => {
+export async function getPickUpSlides(): Promise<CarouselImageSlide[]> {
+  "use cache";
+  cacheTag(CACHE_TAGS.topPage);
+  cacheLife("minutes");
+
   const payload = await getPayload({ config });
   const topPage = await payload.findGlobal({
     slug: "top-page",
@@ -62,4 +67,4 @@ export const getPickUpSlides = cache(async (): Promise<CarouselImageSlide[]> => 
   return topPage.pickups
     .map((pickup, index) => toPickUpSlide(pickup, index))
     .filter((slide): slide is CarouselImageSlide => slide !== null);
-});
+}

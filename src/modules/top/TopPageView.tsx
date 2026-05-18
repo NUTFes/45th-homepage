@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { connection } from "next/server";
-import Image, { getImageProps } from "next/image";
+import Image from "next/image";
 import { getImportantNewsBody, getLatestNews } from "@/modules/news/server/getNews";
 import { getPickUpSlides } from "@/modules/top/server/getPickUpSlides";
 import ButtonMain from "@/components/ui/ButtonMain";
@@ -37,34 +37,27 @@ async function getTopPageData() {
 }
 
 function TopHero() {
-  const commonHeroImageProps = {
-    alt: "",
-    decoding: "sync" as const,
-    fetchPriority: "high" as const,
-    loading: "eager" as const,
-    quality: 50,
-    sizes: "100vw",
-  };
-
-  const mobile = getImageProps({
-    ...commonHeroImageProps,
-    src: "/image/top/HeroAll.webp",
-    width: 1575,
-    height: 2760,
-  });
-
-  const desktop = getImageProps({
-    ...commonHeroImageProps,
-    src: "/image/top/Ps_HeroAll.webp",
-    width: 4000,
-    height: 2600,
-  });
-
   return (
     <div className="flex w-full flex-col items-center">
-      <picture className="block w-full">
-        <source media="(min-width: 768px)" srcSet={desktop.props.srcSet} />
-        <img {...mobile.props} className="h-auto w-full" alt="" />
+      <picture className="block aspect-1575/2760 w-full md:aspect-4000/2100">
+        <source
+          media="(min-width: 768px)"
+          sizes="100vw"
+          srcSet="/image/top/Ps_HeroAll-1024.avif 1024w, /image/top/Ps_HeroAll-1920.avif 1920w"
+          type="image/avif"
+        />
+        <img
+          alt=""
+          className="h-full w-full object-cover"
+          decoding="async"
+          fetchPriority="high"
+          loading="eager"
+          sizes="100vw"
+          src="/image/top/HeroAll-750.avif"
+          srcSet="/image/top/HeroAll-430.avif 430w, /image/top/HeroAll-750.avif 750w"
+          width={1575}
+          height={2760}
+        />
       </picture>
       <LogoInfo />
     </div>

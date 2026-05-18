@@ -1,8 +1,30 @@
-import { Mail, MessageCircleMore, MessageCircleMoreIcon } from "lucide-react";
+import { Mail, MessageCircleMore } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 const CONTACT_EMAIL_PARTS = ["nutfes.shikobu", "gmail.com"] as const;
+const SNS_LINKS = [
+  {
+    label: "X",
+    href: "https://x.com/nut_fes",
+    icon: "/icon/X.svg",
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/nutfes?igsh=eTJ4cGh0MDVvYmky",
+    icon: "/icon/Instagram.png",
+  },
+  {
+    label: "YouTube",
+    href: "https://youtube.com/channel/UCxpfPMcf4LCWSL1dR8ha5uQ?si=DGby9RdPrTj4b4c3",
+    icon: "/icon/YouTube.svg",
+  },
+  {
+    label: "TikTok",
+    href: "http://www.tiktok.com/@nutfes_sns",
+    icon: "/icon/TikTok.svg",
+  },
+] as const;
 
 function ContactEmailText() {
   return (
@@ -14,27 +36,40 @@ function ContactEmailText() {
   );
 }
 
-export default function Footer() {
+function SnsIconLinks({ className }: { className?: string }) {
   return (
-    <footer className="bg-secondary px-m py-m text-black">
-      {/* スマホレイアウト */}
-      <div className="mx-auto flex w-full max-w-98.25 flex-col items-center gap-ll lg:hidden">
-        <section aria-label="SNS" className="flex flex-col items-center gap-xs">
-          <h2 className="font-kaisotai text-title leading-none">FOLLOW US</h2>
+    <ul className={`flex items-center gap-l ${className ?? ""}`}>
+      {SNS_LINKS.map((sns) => (
+        <li key={sns.label} className="flex">
           <Link
-            href="https://www.instagram.com/nutfes?igsh=eTJ4cGh0MDVvYmky"
+            href={sns.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-shrink-0"
+            aria-label={`${sns.label}で技大祭実行委員会をフォローする`}
+            className="flex size-10 shrink-0 items-center justify-center transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-main"
           >
             <Image
-              alt="Instagram"
-              className="size-10 min-h-[40px] min-w-[40px] flex-shrink-0 hover:opacity-80 hover:transition-all"
+              alt=""
+              className="size-10 shrink-0 object-contain"
               height={40}
-              src="/icon/Instagram.png"
+              src={sns.icon}
               width={40}
             />
           </Link>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export default function Footer() {
+  return (
+    <footer className="bg-secondary px-m py-m text-black lg:px-5l lg:py-3l">
+      {/* スマホレイアウト */}
+      <div className="mx-auto flex w-full max-w-98.25 flex-col items-center gap-ll lg:hidden">
+        <section aria-label="SNS" className="flex flex-col items-center gap-s">
+          <h2 className="font-kaisotai text-title leading-none">FOLLOW US</h2>
+          <SnsIconLinks />
         </section>
 
         <section className="flex w-full max-w-68 flex-col gap-xs text-text">
@@ -87,12 +122,12 @@ export default function Footer() {
         <p className="text-center text-text">技大祭実行委員会</p>
       </div>
       {/* PCレイアウト */}
-      <div className="w-full px-5l">
-        <div className="px-2l hidden items-center justify-between py-3l lg:flex">
-          <div className="items-top flex w-full justify-between gap-x-4l py-xs">
+      <div className="w-full">
+        <div className="hidden items-center justify-between lg:flex">
+          <div className="items-top flex w-full justify-between gap-x-4l">
             <div className="flex gap-x-ss">
               <div className="flex flex-col gap-y-ss">
-                <div className="flex min-w-[250px] items-center gap-x-s">
+                <div className="flex min-w-62.5 items-center gap-x-s">
                   <Link href="/">
                     <Image
                       src="/icon/45th-logo-top.svg"
@@ -120,24 +155,10 @@ export default function Footer() {
                 <div className="text-black">お問い合わせ</div>
               </div>
             </div>
-            <div className="items-top flex gap-x-l py-xs">
-              <Link
-                href="https://www.instagram.com/nutfes?igsh=eTJ4cGh0MDVvYmky"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="shrink-0"
-              >
-                <Image
-                  alt="Instagram"
-                  className="size-10 min-h-[40px] min-w-[40px] shrink-0 hover:opacity-80 hover:transition-all"
-                  height={40}
-                  src="/icon/Instagram.png"
-                  width={40}
-                />
-              </Link>
-              <div className="flex flex-col gap-1 gap-y-ss pl-xs text-text leading-4.25">
+            <div className="items-top flex">
+              <div className="flex flex-col pl-xs text-text leading-4.25">
                 <p className="flex items-center gap-1.5">
-                  <MessageCircleMoreIcon
+                  <MessageCircleMore
                     className="size-4"
                     stroke="var(--color-base-dark)"
                     strokeWidth={2.2}
@@ -151,16 +172,17 @@ export default function Footer() {
                     インスタDM
                   </a>
                 </p>
-                <p className="flex items-center gap-1.5">
+                <p className="flex items-center gap-1.5 pt-1">
                   <Mail className="size-4 text-base-dark" strokeWidth={2.2} />
                   <span className="underline">
                     <ContactEmailText />
                   </span>
                 </p>
-                <address className="text-[14px] leading-4.25 not-italic">
+                <address className="pt-ss text-[14px] leading-4.25 not-italic">
                   <p>〒940-2188</p>
                   <p>新潟県長岡市上富岡町1603-1 長岡技術科学大学</p>
                 </address>
+                <SnsIconLinks className="mt-m" />
               </div>
             </div>
           </div>

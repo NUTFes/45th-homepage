@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { preload } from "react-dom";
 import TopPageView from "@/modules/top/TopPageView";
 
 export const metadata: Metadata = {
@@ -8,5 +9,13 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
+  preload("/image/top/HeroAll-750.avif", {
+    as: "image",
+    fetchPriority: "high",
+    imageSizes: "100vw",
+    imageSrcSet: "/image/top/HeroAll-430.avif 430w, /image/top/HeroAll-750.avif 750w",
+    type: "image/avif",
+  });
+
   return <TopPageView />;
 }

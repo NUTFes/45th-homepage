@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Disclosure, DisclosurePanel, Button } from "react-aria-components";
+import { Button, Disclosure, DisclosurePanel, Heading } from "react-aria-components";
 
 import {
   House,
@@ -124,6 +124,19 @@ type MenuItemProps = {
   item: MenuItem;
 };
 
+const ITEM_ICON_SIZE = 32;
+
+const enabledItemClassName =
+  "flex min-h-16 items-center gap-s px-l py-m text-font-main transition-colors duration-200 hover:bg-base focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-main";
+const disabledItemClassName =
+  "flex min-h-16 cursor-not-allowed items-center gap-s px-l py-m text-font-gray";
+const disclosureTriggerClassName =
+  "flex min-h-16 w-full items-center justify-start gap-s px-l py-m text-font-gray transition-colors duration-200 hover:bg-base/50 focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-main";
+const childLinkClassName =
+  "inline-flex min-h-9 items-center text-text text-font-main transition-colors duration-200 hover:text-main focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-main";
+const disabledChildClassName =
+  "inline-flex min-h-9 cursor-not-allowed items-center text-text text-font-gray";
+
 function MenuItem({ item }: MenuItemProps) {
   const isLeaf = !("children" in item);
   const enabled = isLeaf ? item.enabled !== false : true;
@@ -132,55 +145,60 @@ function MenuItem({ item }: MenuItemProps) {
     <li className="border-b border-font-gray">
       {isLeaf ? (
         enabled ? (
-          <Link
-            href={item.href ?? "/"}
-            className="flex items-center gap-s px-l py-m text-font-main"
-          >
-            <item.icon className="shrink-0 text-secondary" size={32} />
-            <span
-              className={
-                enabled ? "text-text-large text-font-main" : "text-text-large text-font-gray"
-              }
-            >
-              {item.label}
-            </span>
+          <Link href={item.href ?? "/"} className={enabledItemClassName}>
+            <item.icon
+              className="shrink-0 text-secondary"
+              size={ITEM_ICON_SIZE}
+              aria-hidden="true"
+            />
+            <span className="text-text-large text-font-main">{item.label}</span>
           </Link>
         ) : (
-          <div className="text-gray pointer-events-none flex cursor-not-allowed items-center gap-s px-l py-m">
-            <item.icon className="shrink-0 text-font-gray" size={32} />
+          <span aria-disabled="true" className={disabledItemClassName}>
+            <item.icon
+              className="shrink-0 text-font-gray"
+              size={ITEM_ICON_SIZE}
+              aria-hidden="true"
+            />
             <span className="text-text-large text-font-gray">{item.label}</span>
-          </div>
+          </span>
         )
       ) : (
         <Disclosure className="group">
-          <Button slot="trigger" className="flex w-full items-center justify-start gap-s px-l py-m">
-            <item.icon className="shrink-0 text-font-gray" size={32} />
-            <span className="text-text-large text-font-gray">{item.label}</span>
-            <span className="relative ml-auto h-6 w-6" aria-hidden="true">
-              <Plus
-                size={24}
-                className="absolute inset-0 text-font-gray transition-opacity duration-300 group-data-expanded:opacity-0"
+          <Heading className="m-0">
+            <Button slot="trigger" className={disclosureTriggerClassName}>
+              <item.icon
+                className="shrink-0 text-font-gray"
+                size={ITEM_ICON_SIZE}
+                aria-hidden="true"
               />
-              <Minus
-                size={24}
-                className="absolute inset-0 text-font-gray opacity-0 transition-opacity duration-300 group-data-expanded:opacity-100"
-              />
-            </span>
-          </Button>
+              <span className="text-text-large text-font-gray">{item.label}</span>
+              <span className="relative ml-auto size-6 shrink-0" aria-hidden="true">
+                <Plus
+                  size={24}
+                  className="absolute inset-0 text-font-gray transition-opacity duration-300 group-data-expanded:opacity-0"
+                />
+                <Minus
+                  size={24}
+                  className="absolute inset-0 text-font-gray opacity-0 transition-opacity duration-300 group-data-expanded:opacity-100"
+                />
+              </span>
+            </Button>
+          </Heading>
 
           <DisclosurePanel className="h-(--disclosure-panel-height) overflow-hidden duration-300 motion-safe:transition-[height] [hidden]:block">
-            <ul className="flex flex-col gap-ss pb-m pl-5l">
+            <ul className="flex flex-col gap-ss px-l pb-m pl-5l">
               {item.children.map((child) => {
                 const enabled = child.enabled !== false;
 
                 return (
                   <li key={child.label}>
                     {enabled ? (
-                      <Link href={child.href ?? "/"} className="text-text text-font-main">
+                      <Link href={child.href ?? "/"} className={childLinkClassName}>
                         {child.label}
                       </Link>
                     ) : (
-                      <span className="pointer-events-none cursor-not-allowed text-text text-font-gray">
+                      <span aria-disabled="true" className={disabledChildClassName}>
                         {child.label}
                       </span>
                     )}
@@ -196,8 +214,8 @@ function MenuItem({ item }: MenuItemProps) {
 }
 export default function Menu() {
   return (
-    <nav aria-label="メニュー" className="bg-base-dark px-l pt-3l pb-4l">
-      <ul>
+    <nav aria-label="メニュー" className="bg-base-dark px-l pt-xs pb-4l">
+      <ul className="list-none">
         {menuItems.map((item) => (
           <MenuItem key={item.label} item={item} />
         ))}

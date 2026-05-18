@@ -48,7 +48,6 @@ async function NewsPageContent({ searchParams }: NewsPageViewProps) {
           className="pointer-events-none absolute top-0 right-0 z-0 hidden md:block"
           width={200}
           height={200}
-          priority={false}
         />
 
         <div className="relative z-10 flex flex-col gap-s px-ll md:gap-4l md:px-pl">
@@ -81,7 +80,6 @@ function NewsPageSkeleton() {
           className="pointer-events-none absolute top-0 right-0 z-0 hidden md:block"
           width={200}
           height={200}
-          priority={false}
         />
 
         <div className="relative z-20 flex flex-col gap-s px-ll md:gap-4l md:px-pl">
@@ -113,7 +111,6 @@ export default function NewsPageView(props: NewsPageViewProps) {
         className="pointer-events-none absolute bottom-0 left-0 z-0 hidden md:block"
         width={200}
         height={200}
-        priority={false}
       />
       <div className="relative z-20 flex w-full flex-col">
         <Suspense fallback={<NewsPageSkeleton />}>

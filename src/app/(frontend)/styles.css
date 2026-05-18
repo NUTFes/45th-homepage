@@ -4,7 +4,6 @@
 @source "../components/ui";
 @source "../modules";
 
-@plugin "tailwindcss-react-aria-components";
 @plugin "tailwindcss-animate";
 
 :root {
@@ -29,8 +28,8 @@
 
   --font-kaisotai: var(--font-kaisotai-next), sans-serif;
   --font-sans:
-    "Hiragino Sans", "Hiragino Kaku Gothic ProN", "BIZ UDPGothic", "Yu Gothic", "Meiryo", system-ui,
-    sans-serif;
+    var(--font-zen-kaku-gothic-new), "Hiragino Sans", "Hiragino Kaku Gothic ProN", "BIZ UDPGothic",
+    "Yu Gothic", "Meiryo", system-ui, sans-serif;
   --default-font-family: var(--font-sans);
 
   --text-title: 28px;
