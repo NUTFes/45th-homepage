@@ -27,8 +27,20 @@ const nextConfig: NextConfig = {
         destination: "https://rybbit.nutfes.net/api/script.js",
       },
       {
+        source: "/analytics/replay.js",
+        destination: "https://rybbit.nutfes.net/api/replay.js",
+      },
+      {
         source: "/analytics/track",
         destination: "https://rybbit.nutfes.net/api/track",
+      },
+      {
+        source: "/analytics/session-replay/:path*",
+        destination: "https://rybbit.nutfes.net/api/session-replay/:path*",
+      },
+      {
+        source: "/analytics/identify",
+        destination: "https://rybbit.nutfes.net/api/identify",
       },
       {
         source: "/analytics/site/:path*",
