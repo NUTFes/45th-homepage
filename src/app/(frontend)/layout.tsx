@@ -21,6 +21,10 @@ const zenKakuGothicNew = localFont({
       weight: "400",
     },
     {
+      path: "../../../public/font/ZenKakuGothicNew-Medium.subset.woff2",
+      weight: "500",
+    },
+    {
       path: "../../../public/font/ZenKakuGothicNew-Bold.subset.woff2",
       weight: "700",
     },

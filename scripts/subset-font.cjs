@@ -14,6 +14,10 @@ const ZEN_KAKU_FONT_PATHS = [
     output: path.join(PUBLIC_FONT_DIR, "ZenKakuGothicNew-Regular.subset.woff2"),
   },
   {
+    input: path.join(SOURCE_FONT_DIR, "ZenKakuGothicNew-Medium.ttf"),
+    output: path.join(PUBLIC_FONT_DIR, "ZenKakuGothicNew-Medium.subset.woff2"),
+  },
+  {
     input: path.join(SOURCE_FONT_DIR, "ZenKakuGothicNew-Bold.ttf"),
     output: path.join(PUBLIC_FONT_DIR, "ZenKakuGothicNew-Bold.subset.woff2"),
   },
