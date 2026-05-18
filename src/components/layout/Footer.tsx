@@ -64,7 +64,7 @@ function SnsIconLinks({ className }: { className?: string }) {
 
 export default function Footer() {
   return (
-    <footer className="bg-secondary px-m py-m text-black">
+    <footer className="bg-secondary px-m py-m text-black lg:px-5l lg:py-3l">
       {/* スマホレイアウト */}
       <div className="mx-auto flex w-full max-w-98.25 flex-col items-center gap-ll lg:hidden">
         <section aria-label="SNS" className="flex flex-col items-center gap-s">
@@ -122,9 +122,9 @@ export default function Footer() {
         <p className="text-center text-text">技大祭実行委員会</p>
       </div>
       {/* PCレイアウト */}
-      <div className="w-full px-5l">
-        <div className="px-2l hidden items-center justify-between py-3l lg:flex">
-          <div className="items-top flex w-full justify-between gap-x-4l py-xs">
+      <div className="w-full">
+        <div className="hidden items-center justify-between lg:flex">
+          <div className="items-top flex w-full justify-between gap-x-4l">
             <div className="flex gap-x-ss">
               <div className="flex flex-col gap-y-ss">
                 <div className="flex min-w-62.5 items-center gap-x-s">
@@ -155,7 +155,7 @@ export default function Footer() {
                 <div className="text-black">お問い合わせ</div>
               </div>
             </div>
-            <div className="items-top flex py-xs">
+            <div className="items-top flex">
               <div className="flex flex-col pl-xs text-text leading-4.25">
                 <p className="flex items-center gap-1.5">
                   <MessageCircleMore
