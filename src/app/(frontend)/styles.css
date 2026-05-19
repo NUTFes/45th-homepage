@@ -42,8 +42,11 @@
   --text-button--font-weight: 700;
 
   --text-text: 16px;
-  --text-text--line-height: 20px;
-  --text-text--font-weight: 500;
+  --text-text--line-height: 22px;
+  --text-text--font-weight: 300;
+  --text-textb: 16px;
+  --text-textb--line-height: 22px;
+  --text-textb--font-weight: 500;
   --text-text-large: 18px;
   --text-text-large--line-height: 22px;
   --text-text-large--font-weight: 500;
