@@ -9,7 +9,6 @@ type EventFrameProps = {
   name: string;
   href: string;
   imageUrl: string;
-  imageAlt: string;
 };
 
 const MAX_LENGTH = 24;
@@ -17,7 +16,7 @@ const TEXTB_LENGTH = 14;
 const TOOLTIP_OFFSET = -120;
 
 export default function EventFrame(props: EventFrameProps) {
-  const { name, href, imageUrl, imageAlt } = props;
+  const { name, href, imageUrl } = props;
 
   const isTruncated = name.length > MAX_LENGTH;
 
@@ -28,10 +27,12 @@ export default function EventFrame(props: EventFrameProps) {
   const card = (
     <Link
       href={href}
+      aria-label={name}
+      prefetch={false}
       className="flex h-[200px] w-[148px] flex-col rounded-lg bg-secondary pb-s shadow-[0px_6px_8px_rgba(60,224,232,0.6)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0px_6px_8px_rgba(60,224,232,1.0)]"
     >
       <div className="relative h-[111px] w-full shrink-0 overflow-hidden rounded-tl-lg rounded-tr-lg">
-        <Image className="object-cover" src={imageUrl} alt={imageAlt} fill sizes="148px" />
+        <Image className="object-cover" src={imageUrl} alt="" fill sizes="148px" />
       </div>
 
       <div className="mt-auto flex h-4l items-center px-s">
