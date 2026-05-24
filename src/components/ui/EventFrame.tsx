@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { TooltipTrigger, Focusable } from "react-aria-components";
@@ -14,9 +15,16 @@ type EventFrameProps = {
 const DISPLAY_NAME_MAX_LENGTH = 24;
 const LARGE_TEXT_MAX_LENGTH = 14;
 const TOOLTIP_OFFSET = -120;
+const FALLBACK_LOGO = "/favicon/45th-LogoBlue.svg";
 
 export default function EventFrame(props: EventFrameProps) {
   const { name, href, imageUrl } = props;
+
+  const [hasImageError, setHasImageError] = useState(false);
+
+  const handleImageError = () => {
+    setHasImageError(true);
+  };
 
   const isTruncated = name.length > DISPLAY_NAME_MAX_LENGTH;
 
@@ -32,7 +40,18 @@ export default function EventFrame(props: EventFrameProps) {
       className="flex h-[200px] w-[148px] flex-col rounded-lg bg-secondary pb-s shadow-[0px_6px_8px_rgba(60,224,232,0.6)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0px_6px_8px_rgba(60,224,232,1.0)]"
     >
       <div className="relative h-[111px] w-full shrink-0 overflow-hidden rounded-tl-lg rounded-tr-lg">
-        <Image className="object-cover" src={imageUrl} alt="" fill sizes="148px" />
+        {hasImageError ? (
+          <Image className="object-contain" src={FALLBACK_LOGO} alt="" fill sizes="148px" />
+        ) : (
+          <Image
+            className="object-cover"
+            src={imageUrl}
+            alt=""
+            fill
+            sizes="148px"
+            onError={handleImageError}
+          />
+        )}
       </div>
 
       <div className="mt-auto flex h-4l items-center px-s">
