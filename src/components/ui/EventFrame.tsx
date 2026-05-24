@@ -11,18 +11,18 @@ type EventFrameProps = {
   imageUrl: string;
 };
 
-const MAX_LENGTH = 24;
-const TEXTB_LENGTH = 14;
+const DISPLAY_NAME_MAX_LENGTH = 24;
+const LARGE_TEXT_MAX_LENGTH = 14;
 const TOOLTIP_OFFSET = -120;
 
 export default function EventFrame(props: EventFrameProps) {
   const { name, href, imageUrl } = props;
 
-  const isTruncated = name.length > MAX_LENGTH;
+  const isTruncated = name.length > DISPLAY_NAME_MAX_LENGTH;
 
-  const displayName = isTruncated ? name.slice(0, MAX_LENGTH - 1) + "…" : name;
+  const displayName = isTruncated ? name.slice(0, DISPLAY_NAME_MAX_LENGTH - 1) + "…" : name;
 
-  const nameClassName = name.length <= TEXTB_LENGTH ? "text-textb" : "text-[14px] leading-[20px]";
+  const nameClassName = name.length <= LARGE_TEXT_MAX_LENGTH ? "text-textb" : "text-[14px] leading-[20px]";
 
   const card = (
     <Link
