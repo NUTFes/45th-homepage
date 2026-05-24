@@ -44,7 +44,7 @@ export default function EventFrame(props: EventFrameProps) {
         />
       </div>
 
-      <div className="flex flex-1 items-center px-s">
+      <div className="mt-auto flex h-4l items-center px-s">
         {isTruncated ? (
           <TooltipTrigger delay={300} closeDelay={300}>
             <Focusable>
