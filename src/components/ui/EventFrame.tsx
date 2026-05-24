@@ -14,55 +14,42 @@ type EventFrameProps = {
 
 const MAX_LENGTH = 24;
 const TEXTB_LENGTH = 14;
+const TOOLTIP_OFFSET = -120;
 
 export default function EventFrame(props: EventFrameProps) {
   const { name, href, imageUrl, imageAlt } = props;
 
   const isTruncated = name.length > MAX_LENGTH;
 
-  const displayName = isTruncated
-    ? name.slice(0, MAX_LENGTH-1) + "…"
-    : name;
+  const displayName = isTruncated ? name.slice(0, MAX_LENGTH - 1) + "…" : name;
 
-  const nameClassName =
-    name.length <= TEXTB_LENGTH
-      ? "text-textb"
-      : "text-[14px] leading-[20px]";
+  const nameClassName = name.length <= TEXTB_LENGTH ? "text-textb" : "text-[14px] leading-[20px]";
 
-  return (
+  const card = (
     <Link
       href={href}
-      className="flex flex-col pb-s rounded-lg bg-secondary transition-all duration-200 hover:-translate-y-1 h-[200px] w-[148px] shadow-[0px_6px_8px_rgba(60,224,232,0.6)] hover:shadow-[0px_6px_8px_rgba(60,224,232,1.0)]"
+      className="flex h-[200px] w-[148px] flex-col rounded-lg bg-secondary pb-s shadow-[0px_6px_8px_rgba(60,224,232,0.6)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0px_6px_8px_rgba(60,224,232,1.0)]"
     >
-      <div className="relative h-[111px] w-full shrink-0 rounded-tl-lg rounded-tr-lg overflow-hidden">
-        <Image
-          className="object-contain"
-          src={imageUrl}
-          alt={imageAlt}
-          fill
-          sizes="148px"
-        />
+      <div className="relative h-[111px] w-full shrink-0 overflow-hidden rounded-tl-lg rounded-tr-lg">
+        <Image className="object-cover" src={imageUrl} alt={imageAlt} fill sizes="148px" />
       </div>
 
       <div className="mt-auto flex h-4l items-center px-s">
-        {isTruncated ? (
-          <TooltipTrigger delay={300} closeDelay={300}>
-            <Focusable>
-              <div className={nameClassName}>
-                {displayName}
-              </div>
-            </Focusable>
-
-            <Tooltip className="max-w-[220px]">
-              {name}
-            </Tooltip>
-          </TooltipTrigger>
-        ) : (
-          <div className={nameClassName}>
-            {displayName}
-          </div>
-        )}
+        <div className={nameClassName}>{displayName}</div>
       </div>
     </Link>
+  );
+
+  if (!isTruncated) {
+    return card;
+  }
+
+  return (
+    <TooltipTrigger delay={300} closeDelay={300}>
+      <Focusable>{card}</Focusable>
+      <Tooltip className="max-w-55 wrap-break-word" offset={TOOLTIP_OFFSET}>
+        {name}
+      </Tooltip>
+    </TooltipTrigger>
   );
 }
