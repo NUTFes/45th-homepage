@@ -30,7 +30,8 @@ export default function EventFrame(props: EventFrameProps) {
 
   const displayName = isTruncated ? name.slice(0, DISPLAY_NAME_MAX_LENGTH - 1) + "…" : name;
 
-  const nameClassName = name.length <= LARGE_TEXT_MAX_LENGTH ? "text-textb" : "text-[14px] leading-[20px]";
+  const nameClassName =
+    name.length <= LARGE_TEXT_MAX_LENGTH ? "text-textb" : "text-[14px] leading-[20px]";
 
   const card = (
     <Link
