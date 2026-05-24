@@ -24,7 +24,8 @@ const InfoMenuItems: InfoMenuItem[] = [
   {
     name: "注意事項",
     icon: TriangleAlert,
-    disabled: true,
+    href: "/attention",
+    disabled: false,
   },
   {
     name: "案内所・ヘルプ",

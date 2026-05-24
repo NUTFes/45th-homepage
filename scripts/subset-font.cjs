@@ -30,6 +30,7 @@ const KAISOTAI_FONT_USAGE_FILE_PATHS = [
   "src/modules/top/TopPageView.tsx",
   "src/modules/top/ui/SponsorSection.tsx",
   "src/modules/news/NewsPageView.tsx",
+  "src/modules/attention/AttentionPageView.tsx",
   "src/modules/notfound/NotFoundView.tsx",
 ].map((relativePath) => path.join(__dirname, "..", relativePath));
 
