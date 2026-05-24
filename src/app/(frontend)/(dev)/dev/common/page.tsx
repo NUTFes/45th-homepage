@@ -154,19 +154,16 @@ export default function DevCommonComponentsPage() {
               name="あいうえおかきくけこさしすせ"
               href="/"
               imageUrl="/icon/Instagram.png"
-              imageAlt="サンプル画像"
             />
             <EventFrame
               name="あいうえおかきくけこさしすせそ"
               href="/"
-              imageUrl="/icon/Instagram.png"
-              imageAlt="サンプル画像"
+              imageUrl="dummy.png"
             />
             <EventFrame
               name="あいうえおかきくけこさしすせそたちつてとなにぬねの"
               href="/"
               imageUrl="/icon/Instagram.png"
-              imageAlt="サンプル画像"
             />
           </div>
         </DevPanel>
