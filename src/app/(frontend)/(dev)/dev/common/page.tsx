@@ -30,6 +30,7 @@ import { DevSection } from "../_components/DevSection";
 import ButtonMain from "@/components/ui/ButtonMain";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { sampleNewsItems } from "../_data/sampleNews";
+import MapFrame from "@/components/ui/MapFrame";
 
 const previewSlides = ["Slide 1", "Slide 2", "Slide 3"];
 const noImportantNewsMessage = "現在、重要なお知らせはありません。";
@@ -146,6 +147,11 @@ export default function DevCommonComponentsPage() {
           <div className="bg-base">
             <SectionTitle title="PICK UP" />
           </div>
+        </DevPanel>
+        <DevPanel title="MapFrame">
+                <MapFrame imageSrc="/image/top/HeroAll.png" alt="Map" title="タイトルサンプル（長さに応じて伸びます）" />
+                <MapFrame title="画像が無い場合" />
+          
         </DevPanel>
       </DevSection>
     </DevPageContainer>
