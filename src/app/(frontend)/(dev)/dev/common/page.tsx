@@ -30,6 +30,7 @@ import { DevSection } from "../_components/DevSection";
 import ButtonMain from "@/components/ui/ButtonMain";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { sampleNewsItems } from "../_data/sampleNews";
+import EventFrame from "@/components/ui/EventFrame";
 
 const previewSlides = ["Slide 1", "Slide 2", "Slide 3"];
 const noImportantNewsMessage = "現在、重要なお知らせはありません。";
@@ -145,6 +146,25 @@ export default function DevCommonComponentsPage() {
         <DevPanel title="SectionTitle">
           <div className="bg-base">
             <SectionTitle title="PICK UP" />
+          </div>
+        </DevPanel>
+        <DevPanel title="EventFrame">
+          <div className="flex flex-wrap gap-m p-m">
+            <EventFrame
+              name="あいうえおかきくけこさしすせ"
+              href="/"
+              imageUrl="/icon/Instagram.png"
+            />
+            <EventFrame
+              name="あいうえおかきくけこさしすせそ"
+              href="/"
+              imageUrl="/icon/Instagram.png"
+            />
+            <EventFrame
+              name="あいうえおかきくけこさしすせそたちつてとなにぬねの"
+              href="/"
+              imageUrl="/icon/Instagram.png"
+            />
           </div>
         </DevPanel>
       </DevSection>
