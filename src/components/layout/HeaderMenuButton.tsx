@@ -106,7 +106,7 @@ export default function HeaderMenuButton() {
         aria-modal="false"
         aria-label="メインメニュー"
         aria-hidden={!isMenuOpen}
-        className={`scrollbar-gutter-stable fixed top-(--header-height) right-0 z-350 hidden h-[calc(100dvh-var(--header-height))] w-full max-w-97.5 overflow-y-auto overscroll-contain bg-base-dark ease-out motion-safe:transition-transform motion-safe:duration-300 md:block ${
+        className={`fixed top-(--header-height) right-0 z-350 hidden h-[calc(100dvh-var(--header-height))] w-full max-w-97.5 scrollbar-gutter-stable overflow-y-auto overscroll-contain bg-base-dark ease-out motion-safe:transition-transform motion-safe:duration-300 md:block ${
           isMenuOpen ? "translate-x-0" : "pointer-events-none translate-x-full ease-in"
         }`}
       >
