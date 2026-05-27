@@ -102,7 +102,7 @@ function NewsSection({ newsItems }: { newsItems: Awaited<ReturnType<typeof getLa
       <section className="w-full md:bg-base-dark md:px-pl md:py-3l">
         <div className="mx-auto flex w-full max-w-105 flex-col items-center gap-m md:max-w-190 md:items-start">
           <div className="flex w-full flex-col items-end gap-m md:w-full md:max-w-none md:items-start md:gap-l">
-            <div className="w-full bg-base-dark px-ll py-m md:bg-transparent md:px-ss md:py-0">
+            <div className="w-full bg-base-dark px-ll py-l md:bg-transparent md:px-ss md:py-0">
               {newsItems.length > 0 ? (
                 <ul className="flex flex-col gap-m md:gap-l">
                   {newsItems.map((news) => (
@@ -158,7 +158,7 @@ async function TopPageContent() {
             alt=""
             width={220}
             height={151}
-            className="h-auto w-full md:hidden"
+            className="h-auto w-full opacity-80 md:hidden"
           />
           <Image
             src="/image/top/PTopBack1-1.svg"
@@ -177,7 +177,7 @@ async function TopPageContent() {
             alt=""
             width={105}
             height={170}
-            className="h-auto w-full md:hidden"
+            className="h-auto w-full opacity-80 md:hidden"
           />
           <Image
             src="/image/top/PTopBack1-2.svg"
@@ -194,7 +194,7 @@ async function TopPageContent() {
             alt=""
             width={198}
             height={215}
-            className="h-auto w-full md:hidden"
+            className="h-auto w-full opacity-80 md:hidden"
           />
           <Image
             src="/image/top/PTopBack2.svg"
@@ -236,7 +236,7 @@ function TopPageSkeleton() {
             alt=""
             width={105}
             height={170}
-            className="h-auto w-full md:hidden"
+            className="h-auto w-full opacity-80 md:hidden"
           />
           <Image
             src="/image/top/PTopBack1-2.svg"
@@ -253,7 +253,7 @@ function TopPageSkeleton() {
             alt=""
             width={198}
             height={215}
-            className="h-auto w-full md:hidden"
+            className="h-auto w-full opacity-80 md:hidden"
           />
           <Image
             src="/image/top/PTopBack2.svg"
@@ -272,7 +272,7 @@ function TopPageSkeleton() {
         <section className="w-full md:bg-base-dark md:px-pl md:py-3l">
           <div className="mx-auto flex w-full max-w-105 flex-col items-center gap-m md:max-w-190 md:items-start">
             <div className="flex w-full flex-col items-end gap-m md:w-full md:max-w-none md:items-start md:gap-l">
-              <div className="w-full bg-base-dark px-ll py-m md:bg-transparent md:px-ss md:py-0">
+              <div className="w-full bg-base-dark px-ll py-l md:bg-transparent md:px-ss md:py-0">
                 <ul className="flex flex-col gap-m md:gap-l">
                   <NewsItemSkeleton key="news-skeleton-0" skeletonClassName="bg-base" />
                   <NewsItemSkeleton key="news-skeleton-1" skeletonClassName="bg-base" />
@@ -306,7 +306,7 @@ export default function TopPageView() {
             alt=""
             width={185}
             height={70}
-            className="h-auto w-full md:hidden"
+            className="h-auto w-full opacity-80 md:hidden"
           />
           <Image
             src="/image/top/PTopBack3-2.svg"
@@ -322,7 +322,7 @@ export default function TopPageView() {
             alt=""
             width={136}
             height={405}
-            className="h-auto w-full md:hidden"
+            className="h-auto w-full opacity-80 md:hidden"
           />
           <Image
             src="/image/top/PTopBack3-1.svg"
