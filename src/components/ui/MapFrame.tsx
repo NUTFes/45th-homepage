@@ -21,7 +21,7 @@ export default function MapFrame({ imageSrc, alt, title }: MapFrameProps) {
           {imageSrc ? (
             <Image src={imageSrc} alt={alt || ""} fill style={{ objectFit: "cover" }} />
           ) : (
-            <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-center text-main bg-base">
+            <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-base text-center text-main">
               <p className="font-kaisotai text-[24px]">MAP</p>
               <p>NO IMAGE</p>
             </div>
