@@ -23,7 +23,7 @@ export default function MapFrame({ imageSrc, alt, title, type = "long" }: MapFra
           className="aspect-4/3 relative flex items-center justify-center overflow-hidden border-2 border-main text-text-large"
         >
           {imageSrc ? (
-            <Image src={imageSrc} alt={alt || ""} fill style={{ objectFit: "cover" }} />
+            <Image src={imageSrc} alt={alt || ""} fill className="object-cover" />
           ) : (
             <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-base text-center text-main">
               <p className="font-kaisotai text-[24px]">MAP</p>
