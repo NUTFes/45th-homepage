@@ -149,11 +149,8 @@ export default function DevCommonComponentsPage() {
           </div>
         </DevPanel>
         <DevPanel title="MapFrame">
-          <MapFrame
-            imageSrc="/image/top/HeroAll.png"
-            alt="Map"
-            title="タイトルサンプル（長さに応じて伸びます）"
-          />
+          <MapFrame imageSrc="/image/top/HeroAll.png" alt="Map" type="short" title="1F" />
+          <MapFrame imageSrc="/image/top/HeroAll.png" alt="Map" type="long" title="長いテキスト" />
           <MapFrame title="画像が無い場合" />
         </DevPanel>
       </DevSection>
