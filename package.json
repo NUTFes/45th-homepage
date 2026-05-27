@@ -15,7 +15,9 @@
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
+    "quality:check": "pnpm run fmt:check && pnpm run lint && pnpm run typecheck",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
+    "typecheck": "next typegen && tsc --noEmit",
     "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
