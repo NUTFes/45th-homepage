@@ -72,7 +72,7 @@ services:
   # SeaweedFS — Master
   # ----------------------------------------------------------
   seaweedfs-master:
-    image: chrislusf/seaweedfs:4.18
+    image: chrislusf/seaweedfs:4.29
     restart: unless-stopped
     command: master -ip=seaweedfs-master -volumeSizeLimitMB=1024 -ip.bind=0.0.0.0
     volumes:
@@ -99,7 +99,7 @@ services:
   # SeaweedFS — Volume Server
   # ----------------------------------------------------------
   seaweedfs-volume:
-    image: chrislusf/seaweedfs:4.18
+    image: chrislusf/seaweedfs:4.29
     restart: unless-stopped
     command: volume -mserver=seaweedfs-master:9333 -ip=seaweedfs-volume -port=8080 -max=0 -preStopSeconds=1 -ip.bind=0.0.0.0
     volumes:
@@ -128,7 +128,7 @@ services:
   # SeaweedFS — Filer
   # ----------------------------------------------------------
   seaweedfs-filer:
-    image: chrislusf/seaweedfs:4.18
+    image: chrislusf/seaweedfs:4.29
     restart: unless-stopped
     command: filer -master=seaweedfs-master:9333 -ip=seaweedfs-filer -ip.bind=0.0.0.0
     volumes:
@@ -159,7 +159,7 @@ services:
   # SeaweedFS — S3 Gateway
   # ----------------------------------------------------------
   seaweedfs-s3:
-    image: chrislusf/seaweedfs:4.18
+    image: chrislusf/seaweedfs:4.29
     restart: unless-stopped
     command: "s3 -filer=seaweedfs-filer:8888 -ip.bind=0.0.0.0"
     depends_on:
