@@ -8,11 +8,14 @@
 # This Dockerfile uses Node.js 24.13.0-slim, which was the latest LTS version at the time of writing.
 # To ensure security and compatibility, regularly update the NODE_VERSION ARG to the latest LTS version.
 ARG NODE_VERSION=24.13.0-slim
+ARG NPM_REGISTRY=https://registry.npmjs.org/
 
 FROM node:${NODE_VERSION} AS dependencies
 
 # Set working directory
 WORKDIR /app
+
+ARG NPM_REGISTRY
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
@@ -22,7 +25,7 @@ COPY package.json pnpm-lock.yaml .npmrc* ./
 
 # Install project dependencies with frozen lockfile for reproducible builds
 RUN --mount=type=cache,target=/pnpm/store \
-  corepack enable pnpm && pnpm install --frozen-lockfile
+  corepack enable pnpm && pnpm install --frozen-lockfile --registry $NPM_REGISTRY
 
 # ============================================
 # Stage 2: Build Next.js application in standalone mode
