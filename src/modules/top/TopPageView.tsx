@@ -187,7 +187,9 @@ async function TopPageContent() {
             className="hidden h-auto w-full md:block"
           />
         </div>
-        <SponsorSection />
+        <div className="w-full max-w-200 px-ll">
+          <SponsorSection />
+        </div>
         <div className="pointer-events-none absolute right-0 -bottom-41 -z-10">
           <Image
             src="/image/top/TopBack2.svg"
@@ -230,7 +232,7 @@ function TopPageSkeleton() {
       </div>
 
       <div className="relative flex w-full justify-center">
-        <div className="pointer-events-none absolute -top-16 left-0 -z-10 w-[105px]">
+        <div className="pointer-events-none absolute -top-16 left-0 -z-10 w-26.25">
           <Image
             src="/image/top/TopBack1-2.svg"
             alt=""
@@ -246,8 +248,10 @@ function TopPageSkeleton() {
             className="hidden h-auto w-full md:block"
           />
         </div>
-        <SponsorSection />
-        <div className="pointer-events-none absolute right-0 -bottom-16 -z-10 w-[198px]">
+        <div className="w-full max-w-200 px-ll">
+          <SponsorSection />
+        </div>
+        <div className="pointer-events-none absolute right-0 -bottom-16 -z-10 w-49.5">
           <Image
             src="/image/top/TopBack2.svg"
             alt=""

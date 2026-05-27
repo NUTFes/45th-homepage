@@ -19,21 +19,21 @@ import {
 type SubMenuItem = {
   label: string;
   href?: string;
-  enabled?: boolean;
+  disabled?: boolean;
 };
 
 type MenuLeafItem = {
   label: string;
   icon: LucideIcon;
   href?: string;
-  enabled?: boolean;
+  disabled?: boolean;
 };
 
 type MenuParentItem = {
   label: string;
   icon: LucideIcon;
   children: SubMenuItem[];
-  enabled?: boolean;
+  disabled?: boolean;
 };
 
 type MenuItem = MenuLeafItem | MenuParentItem;
@@ -47,76 +47,75 @@ const menuItems: MenuItem[] = [
   {
     label: "イベント・販売",
     icon: CalendarDays,
-    enabled: false,
+    disabled: true,
     children: [
       {
         label: "ゲスト",
-        enabled: false,
+        disabled: true,
       },
       {
         label: "コラボ",
-        enabled: false,
+        disabled: true,
       },
       {
         label: "企画",
-        enabled: false,
+        disabled: true,
       },
       {
         label: "展示・体験",
-        enabled: false,
+        disabled: true,
       },
       {
         label: "食品販売",
-        enabled: false,
+        disabled: true,
       },
       {
         label: "物品販売",
-        enabled: false,
+        disabled: true,
       },
       {
         label: "企業ブース",
-        enabled: false,
+        disabled: true,
       },
     ],
   },
   {
     label: "タイムスケジュール",
     icon: Clock,
-    enabled: false,
+    disabled: true,
   },
   {
     label: "マップ",
     icon: MapPin,
-    enabled: false,
+    disabled: true,
   },
   {
     label: "利用案内",
     icon: Info,
-    enabled: false,
     children: [
       {
         label: "注意事項",
-        enabled: false,
+        href: "/attention",
       },
       {
         label: "案内所・ヘルプ",
-        enabled: false,
+        disabled: true,
       },
       {
         label: "アクセス",
-        enabled: false,
+        disabled: true,
       },
     ],
   },
   {
     label: "代表者挨拶",
     icon: UserStar,
-    enabled: false,
+    disabled: true,
   },
   {
     label: "協賛企業一覧",
     icon: Building2,
-    enabled: false,
+    disabled: true,
   },
 ];
 
@@ -130,8 +129,10 @@ const enabledItemClassName =
   "flex min-h-16 items-center gap-s px-l py-m text-font-main transition-colors duration-200 hover:bg-base focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-main";
 const disabledItemClassName =
   "flex min-h-16 cursor-not-allowed items-center gap-s px-l py-m text-font-gray";
-const disclosureTriggerClassName =
-  "flex min-h-16 w-full items-center justify-start gap-s px-l py-m text-font-gray transition-colors duration-200 hover:bg-base/50 focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-main";
+const enabledDisclosureTriggerClassName =
+  "flex min-h-16 w-full items-center justify-start gap-s px-l py-m text-font-main transition-colors duration-200 hover:bg-base focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-main";
+const disabledDisclosureTriggerClassName =
+  "flex min-h-16 w-full cursor-not-allowed items-center justify-start gap-s px-l py-m text-font-gray";
 const childLinkClassName =
   "inline-flex min-h-9 items-center text-text text-font-main transition-colors duration-200 hover:text-main focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-main";
 const disabledChildClassName =
@@ -139,12 +140,12 @@ const disabledChildClassName =
 
 function MenuItem({ item }: MenuItemProps) {
   const isLeaf = !("children" in item);
-  const enabled = isLeaf ? item.enabled !== false : true;
+  const disabled = item.disabled === true;
 
   return (
     <li className="border-b border-font-gray">
       {isLeaf ? (
-        enabled ? (
+        !disabled ? (
           <Link href={item.href ?? "/"} className={enabledItemClassName}>
             <item.icon
               className="shrink-0 text-secondary"
@@ -166,21 +167,29 @@ function MenuItem({ item }: MenuItemProps) {
       ) : (
         <Disclosure className="group">
           <Heading className="m-0">
-            <Button slot="trigger" className={disclosureTriggerClassName}>
+            <Button
+              slot="trigger"
+              className={
+                disabled ? disabledDisclosureTriggerClassName : enabledDisclosureTriggerClassName
+              }
+              isDisabled={disabled}
+            >
               <item.icon
-                className="shrink-0 text-font-gray"
+                className={`shrink-0 ${disabled ? "text-font-gray" : "text-secondary"}`}
                 size={ITEM_ICON_SIZE}
                 aria-hidden="true"
               />
-              <span className="text-text-large text-font-gray">{item.label}</span>
+              <span className={`text-text-large ${disabled ? "text-font-gray" : "text-font-main"}`}>
+                {item.label}
+              </span>
               <span className="relative ml-auto size-6 shrink-0" aria-hidden="true">
                 <Plus
                   size={24}
-                  className="absolute inset-0 text-font-gray transition-opacity duration-300 group-data-expanded:opacity-0"
+                  className={`absolute inset-0 transition-opacity duration-300 group-data-expanded:opacity-0 ${disabled ? "text-font-gray" : "text-font-main"}`}
                 />
                 <Minus
                   size={24}
-                  className="absolute inset-0 text-font-gray opacity-0 transition-opacity duration-300 group-data-expanded:opacity-100"
+                  className={`absolute inset-0 opacity-0 transition-opacity duration-300 group-data-expanded:opacity-100 ${disabled ? "text-font-gray" : "text-font-main"}`}
                 />
               </span>
             </Button>
@@ -189,11 +198,11 @@ function MenuItem({ item }: MenuItemProps) {
           <DisclosurePanel className="h-(--disclosure-panel-height) overflow-hidden duration-300 motion-safe:transition-[height] [hidden]:block">
             <ul className="flex flex-col gap-ss px-l pb-m pl-5l">
               {item.children.map((child) => {
-                const enabled = child.enabled !== false;
+                const childDisabled = child.disabled === true;
 
                 return (
                   <li key={child.label}>
-                    {enabled ? (
+                    {!childDisabled ? (
                       <Link href={child.href ?? "/"} className={childLinkClassName}>
                         {child.label}
                       </Link>
