@@ -9,7 +9,7 @@ type MapFrameProps = {
 
 export default function MapFrame({ imageSrc, alt, title, type = "long" }: MapFrameProps) {
   return (
-    <div className="relative flex w-full flex-col items-center">
+    <div className="relative flex w-full flex-col">
       <div className="w-full px-10">
         <div className="flex w-full items-start items-stretch gap-0">
           <div
