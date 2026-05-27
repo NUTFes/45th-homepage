@@ -20,8 +20,7 @@ export default function MapFrame({ imageSrc, alt, title, type = "long" }: MapFra
           <div className="-ml-px w-[20px] self-stretch bg-main [clip-path:polygon(0%_0%,20%_0%,100%_100%,0%_100%)]"></div>
         </div>
         <div
-          className="relative flex items-center justify-center overflow-hidden border-2 border-main text-text-large"
-          style={{ aspectRatio: "4 / 3" }}
+          className="aspect-4/3 relative flex items-center justify-center overflow-hidden border-2 border-main text-text-large"
         >
           {imageSrc ? (
             <Image src={imageSrc} alt={alt || ""} fill style={{ objectFit: "cover" }} />
