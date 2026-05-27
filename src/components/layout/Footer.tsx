@@ -72,7 +72,7 @@ export default function Footer() {
           <SnsIconLinks />
         </section>
 
-        <section className="flex w-full max-w-68 flex-col gap-xs text-text">
+        <section className="flex w-full max-w-68 flex-col gap-xs text-textb">
           <div className="flex flex-col gap-xs">
             <p className="text-black">アンケート</p>
             <a
@@ -119,7 +119,7 @@ export default function Footer() {
           </div>
         </section>
 
-        <p className="text-center text-text">技大祭実行委員会</p>
+        <p className="text-center text-textb">技大祭実行委員会</p>
       </div>
       {/* PCレイアウト */}
       <div className="w-full">
@@ -156,7 +156,7 @@ export default function Footer() {
               </div>
             </div>
             <div className="items-top flex">
-              <div className="flex flex-col pl-xs text-text leading-4.25">
+              <div className="flex flex-col pl-xs text-textb leading-4.25">
                 <p className="flex items-center gap-1.5">
                   <MessageCircleMore
                     className="size-4"
