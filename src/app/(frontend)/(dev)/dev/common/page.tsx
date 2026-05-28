@@ -33,7 +33,6 @@ import { sampleNewsItems } from "../_data/sampleNews";
 import MapFrame from "@/components/ui/MapFrame";
 import EventFrame from "@/components/ui/EventFrame";
 
-
 const previewSlides = ["Slide 1", "Slide 2", "Slide 3"];
 const noImportantNewsMessage = "現在、重要なお知らせはありません。";
 const sampleImportantNewsBody =
