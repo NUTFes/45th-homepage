@@ -154,7 +154,7 @@ export default function DevCommonComponentsPage() {
           <MapFrame imageSrc="/image/top/HeroAll.png" alt="Map" type="short" title="1F" />
           <MapFrame imageSrc="/image/top/HeroAll.png" alt="Map" type="long" title="長いテキスト" />
           <MapFrame title="画像が無い場合" />
-
+        </DevPanel>
         <DevPanel title="EventFrame">
           <div className="flex flex-wrap gap-m p-m">
             <EventFrame
