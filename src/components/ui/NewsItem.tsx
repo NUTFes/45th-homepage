@@ -8,7 +8,7 @@ type NewsItemProps = {
 
 export default function NewsItem({ date, dateTime, title, content, important }: NewsItemProps) {
   return (
-    <li className="flex flex-col gap-ss border-b border-font-main px-ss pb-ss text-text text-font-main md:text-Ptext">
+    <li className="flex flex-col border-b border-font-main px-ss pb-ss text-text text-font-main md:text-Ptext">
       <div className="flex items-center gap-xs">
         <time dateTime={dateTime} className="whitespace-nowrap">
           {date}
@@ -19,10 +19,10 @@ export default function NewsItem({ date, dateTime, title, content, important }: 
           </span>
         )}
       </div>
-      <div className="-ml-[0.5em] text-button font-bold text-font-main before:content-['［_'] after:content-['_］'] md:text-Pbutton">
+      <div className="mt-1 -ml-[0.5em] text-button font-bold text-font-main before:content-['［_'] after:content-['_］'] md:text-Pbutton">
         {title}
       </div>
-      <p className="text-justify whitespace-pre-wrap">{content}</p>
+      <p className="mt-ss text-justify whitespace-pre-wrap">{content}</p>
     </li>
   );
 }
