@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useId, useRef, useState } from "react";
+import { useId, useState } from "react";
 
 export type HeaderDropdownItem = {
   label: string;
@@ -14,48 +14,21 @@ type HeaderDropdownProps = {
 };
 
 export default function HeaderDropdown({ label, items }: HeaderDropdownProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const dropdownId = useId();
-  const rootRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-
-    const onPointerDown = (event: PointerEvent) => {
-      if (
-        event.target instanceof Node &&
-        rootRef.current &&
-        !rootRef.current.contains(event.target)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setIsOpen(false);
-      }
-    };
-
-    window.addEventListener("pointerdown", onPointerDown);
-    window.addEventListener("keydown", onKeyDown);
-
-    return () => {
-      window.removeEventListener("pointerdown", onPointerDown);
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [isOpen]);
 
   return (
     <div
-      ref={rootRef}
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
       onFocus={() => setIsOpen(true)}
       onBlur={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) {
+          setIsOpen(false);
+        }
+      }}
+      onKeyDown={(event) => {
+        if (event.key === "Escape") {
           setIsOpen(false);
         }
       }}
@@ -69,7 +42,7 @@ export default function HeaderDropdown({ label, items }: HeaderDropdownProps) {
         className={`rounded-sm transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-main ${
           isOpen ? "text-base" : "text-base-dark hover:text-base"
         }`}
-        onClick={() => setIsOpen((current) => !current)}
+        onClick={() => setIsOpen(true)}
       >
         {label}
       </button>
@@ -77,7 +50,7 @@ export default function HeaderDropdown({ label, items }: HeaderDropdownProps) {
       <div
         id={dropdownId}
         aria-hidden={!isOpen}
-        className={`absolute top-full left-1/2 z-[250] w-[206px] -translate-x-1/2 overflow-hidden rounded-lg bg-white shadow-[0_0_12px_0] shadow-base-shadow transition-[max-height,opacity,transform,visibility] duration-300 ease-out motion-reduce:transition-none ${
+        className={`absolute top-full left-1/2 z-250 w-[206px] -translate-x-1/2 overflow-hidden rounded-lg bg-white shadow-[0_0_12px_0] shadow-base-shadow transition-[max-height,opacity,transform,visibility] duration-300 ease-out motion-reduce:transition-none ${
           isOpen
             ? "visible max-h-96 translate-y-0 opacity-100"
             : "invisible max-h-0 -translate-y-2 opacity-0"
