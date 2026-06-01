@@ -1,13 +1,43 @@
 import Image from "next/image";
 import Link from "next/link";
+import HeaderDropdown from "@/components/layout/HeaderDropdown";
+import type { HeaderDropdownItem } from "@/components/layout/HeaderDropdown";
 import HeaderMenuButton from "@/components/layout/HeaderMenuButton";
 
-const headerNavItems = [
-  { label: "企画情報" },
-  { label: "スケジュール" },
-  { label: "マップ" },
-  { label: "利用案内" },
-] as const;
+type HeaderNavItem =
+  | {
+      label: string;
+      href?: string;
+    }
+  | {
+      label: string;
+      items: HeaderDropdownItem[];
+    };
+
+const headerNavItems: HeaderNavItem[] = [
+  {
+    label: "企画情報",
+    items: [
+      { label: "ゲスト", href: "/event/guest" },
+      { label: "コラボ" },
+      { label: "企画", href: "/event/programs" },
+      { label: "展示・体験" },
+      { label: "食品販売" },
+      { label: "物品販売" },
+      { label: "企業ブース" },
+    ],
+  },
+  { label: "スケジュール", href: "/schedule" },
+  { label: "マップ", href: "/map" },
+  {
+    label: "利用案内",
+    items: [
+      { label: "注意事項", href: "/attention" },
+      { label: "案内所・ヘルプ" },
+      { label: "アクセス", href: "/access" },
+    ],
+  },
+];
 
 export default function Page() {
   return (
@@ -27,10 +57,19 @@ export default function Page() {
         <nav aria-label="ヘッダーナビゲーション" className="hidden lg:block">
           <ul className="flex items-center gap-4l text-Pbutton text-base-dark">
             {headerNavItems.map((item) => (
-              <li key={item.label}>
-                <span aria-disabled="true" className="cursor-not-allowed text-font-gray">
-                  {item.label}
-                </span>
+              <li key={item.label} className="flex h-(--header-height) items-center">
+                {"items" in item ? (
+                  <HeaderDropdown label={item.label} items={item.items} />
+                ) : item.href ? (
+                  <Link
+                    href={item.href}
+                    className="rounded-sm transition-colors duration-200 hover:text-base focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-main"
+                  >
+                    {item.label}
+                  </Link>
+                ) : (
+                  <span>{item.label}</span>
+                )}
               </li>
             ))}
           </ul>
