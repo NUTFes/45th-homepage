@@ -16,6 +16,13 @@ export default function EventSection({ title, viewAllHref, events }: EventSectio
           すべて表示
         </Link>
       </div>
+      <div className="pl-ll gap-s flex overflow-x-auto">
+        {events.map((event) => (
+          <div key={event.href} className="shrink-0">
+            <EventFrame {...event} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
