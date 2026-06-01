@@ -11,9 +11,9 @@ export default function MapFrame({ imageSrc, alt, title, type = "long" }: MapFra
   return (
     <div className="relative flex w-full flex-col">
       <div className="w-full px-10">
-        <div className="flex w-full items-start items-stretch gap-0">
+        <div className="flex w-full items-stretch gap-0">
           <div
-            className={`bg-main px-4 py-[4px] text-text-large text-base ${type === "short" ? "w-[50px]" : "w-[194px]"}`}
+              className={`bg-main px-4 py-1 text-text-large text-base ${type === "short" ? "w-12.5" : "w-48.5"}`}
           >
             <span className="leading-tight break-words whitespace-normal">{title}</span>
           </div>
