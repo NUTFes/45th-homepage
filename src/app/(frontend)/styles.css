@@ -25,6 +25,7 @@
   --color-font-main: #f6f8ff;
   --color-font-gray: #8b8982;
   --color-accent: #ff5bef;
+  --color-shadow: #111d53;
 
   --font-kaisotai: var(--font-kaisotai-next), sans-serif;
   --font-sans:
