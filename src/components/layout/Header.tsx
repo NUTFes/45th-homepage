@@ -7,24 +7,25 @@ import HeaderMenuButton from "@/components/layout/HeaderMenuButton";
 type HeaderNavItem =
   | {
       label: string;
-      href?: string;
+      href: string;
     }
   | {
       label: string;
       items: HeaderDropdownItem[];
     };
 
+// TODO: 各ページへのリンクを教えてもらう
 const headerNavItems: HeaderNavItem[] = [
   {
     label: "企画情報",
     items: [
       { label: "ゲスト", href: "/event/guest" },
-      { label: "コラボ" },
+      { label: "コラボ", href: "/#" },
       { label: "企画", href: "/event/programs" },
-      { label: "展示・体験" },
-      { label: "食品販売" },
-      { label: "物品販売" },
-      { label: "企業ブース" },
+      { label: "展示・体験", href: "/#" },
+      { label: "食品販売", href: "/#" },
+      { label: "物品販売", href: "/#" },
+      { label: "企業ブース", href: "/#" },
     ],
   },
   { label: "スケジュール", href: "/schedule" },
@@ -33,7 +34,7 @@ const headerNavItems: HeaderNavItem[] = [
     label: "利用案内",
     items: [
       { label: "注意事項", href: "/attention" },
-      { label: "案内所・ヘルプ" },
+      { label: "案内所・ヘルプ", href: "/#" },
       { label: "アクセス", href: "/access" },
     ],
   },

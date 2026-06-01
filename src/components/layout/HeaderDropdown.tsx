@@ -5,7 +5,7 @@ import { useId, useState } from "react";
 
 export type HeaderDropdownItem = {
   label: string;
-  href?: string;
+  href: string;
 };
 
 type HeaderDropdownProps = {
@@ -50,9 +50,9 @@ export default function HeaderDropdown({ label, items }: HeaderDropdownProps) {
       <div
         id={dropdownId}
         aria-hidden={!isOpen}
-        className={`absolute top-full left-1/2 z-250 w-[206px] -translate-x-1/2 overflow-hidden rounded-lg bg-white shadow-[0_0_12px_0] shadow-base-shadow transition-[max-height,opacity,transform,visibility] duration-300 ease-out motion-reduce:transition-none ${
+        className={`absolute top-full left-1/2 z-250 w-[206px] -translate-x-1/2 overflow-hidden rounded-lg bg-white shadow-[0_0_12px_0] shadow-base-shadow transition-[max-height,opacity,transform,visibility] duration-300 ease-in-out ${
           isOpen
-            ? "visible max-h-96 translate-y-0 opacity-100"
+            ? "visible max-h-100 translate-y-0 opacity-100"
             : "invisible max-h-0 -translate-y-2 opacity-0"
         }`}
       >
