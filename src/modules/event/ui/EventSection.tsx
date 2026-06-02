@@ -4,25 +4,26 @@ import Link from "next/link";
 type EventSectionProps = {
   title: string;
   viewAllHref: string;
+  id:string;
   events: EventFrameProps[];
 };
 
-export default function EventSection({ title, viewAllHref, events }: EventSectionProps) {
+export default function EventSection({ title, viewAllHref, id, events }: EventSectionProps) {
   return (
-    <div className="gap-ss flex flex-col">
+    <section aria-labelledby={`section-${id}`} className="gap-ss flex flex-col">
       <div className="flex items-center justify-between pr-m pl-l">
-        <div className="font-kaisotai text-title text-font-main">{title}</div>
-        <Link href={viewAllHref} className="text-text text-font-main">
+        <div id={`section-${id}`} className="font-kaisotai text-title text-font-main">{title}</div>
+        <Link aria-label={`${title}を全て表示`} href={viewAllHref} className="text-text text-font-main">
           すべて表示
         </Link>
       </div>
-      <div className="pl-ll gap-s flex overflow-x-auto">
+      <ul role="list" className="pl-ll gap-s flex overflow-x-auto">
         {events.map((event) => (
-          <div key={event.href} className="shrink-0">
+          <li key={event.href} className="shrink-0">
             <EventFrame {...event} />
-          </div>
+          </li>
         ))}
-      </div>
-    </div>
+      </ul>
+    </section>
   );
 }
