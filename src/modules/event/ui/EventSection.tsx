@@ -23,7 +23,7 @@ export default function EventSection({ title, viewAllHref, id, events }: EventSe
           すべて表示
         </Link>
       </div>
-      <ul role="list" className="flex gap-s overflow-x-auto px-ll [scrollbar-width:none]">
+      <ul role="list" className="flex [scrollbar-width:none] gap-s overflow-x-auto px-ll">
         {events.map((event) => (
           <li key={event.href} className="shrink-0">
             <EventFrame {...event} />
