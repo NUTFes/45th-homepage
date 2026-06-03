@@ -36,7 +36,7 @@ export function DateRangePicker<T extends DateValue>({
     >
       {label && <Label>{label}</Label>}
       <FieldGroup className="w-auto min-w-[208px] cursor-text disabled:cursor-default">
-        <div className="flex w-fit flex-1 items-center overflow-x-auto overflow-y-clip [scrollbar-width:none]">
+        <div className="flex w-fit flex-1 [scrollbar-width:none] items-center overflow-x-auto overflow-y-clip">
           <DateInput slot="start" className="ps-3 pe-2 text-sm" />
           <span
             aria-hidden="true"

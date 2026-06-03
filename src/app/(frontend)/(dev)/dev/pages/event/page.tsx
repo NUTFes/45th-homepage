@@ -24,7 +24,7 @@ export default function DevTopPageModulesPage() {
       <DevSection title="EventSection">
         <DevPanel title="EventSection (src/modules/event/ui)">
           <div className="bg-base">
-            <EventSection title="企画" viewAllHref="/" events={dummyEvents} />
+            <EventSection id="event-section" title="企画" viewAllHref="/" events={dummyEvents} />
           </div>
         </DevPanel>
       </DevSection>
