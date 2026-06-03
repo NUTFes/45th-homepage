@@ -7,7 +7,11 @@ import type { EventFrameProps } from "@/components/ui/EventFrame";
 const dummyEvents: EventFrameProps[] = [
   { name: "Sweet Photato Contest", href: "/news", imageUrl: "/icon/Instagram.png" },
   { name: "カラフルコーラスフェスティバル", href: "/dev", imageUrl: "/icon/Instagram.png" },
-  { name: "ドローン・ロボット操縦体験＋研究紹介ああああああああああああああ", href: "/dev/events", imageUrl: "/icon/Instagram.png" },
+  {
+    name: "ドローン・ロボット操縦体験＋研究紹介ああああああああああああああ",
+    href: "/dev/events",
+    imageUrl: "/icon/Instagram.png",
+  },
   { name: "無線機器、電子工作物展示会", href: "/common", imageUrl: "/icon/Instagram.png" },
 ];
 
