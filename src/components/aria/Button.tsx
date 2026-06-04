@@ -24,7 +24,7 @@ let button = tv({
       destructive: "bg-red-700 hover:bg-red-800 pressed:bg-red-900 text-white",
       quiet:
         "border-0 bg-transparent hover:bg-neutral-200 pressed:bg-neutral-300 text-neutral-800 dark:hover:bg-neutral-700 dark:pressed:bg-neutral-600 dark:text-neutral-100",
-      cta: "bg-main text-base-dark border-2 border-transparent rounded-[30px] h-14 px-4l py-s text-title-small hover:-translate-y-1 pressed:translate-y-0 active:translate-y-0 active:duration-75 transition-all duration-200",
+      cta: "bg-main text-base-dark border-none rounded-[30px] w-40 h-14 px-4l py-s text-title-small hover:-translate-y-1 pressed:translate-y-0 active:translate-y-0 active:duration-75 transition-all duration-200",
     },
     isDisabled: {
       true: "border-transparent dark:border-transparent bg-neutral-100 dark:bg-neutral-800 text-neutral-300 dark:text-neutral-600 forced-colors:text-[GrayText]",
@@ -46,7 +46,7 @@ let button = tv({
       variant: "cta",
       isDisabled: true,
       class:
-        "bg-transparent dark:bg-transparent text-secondary dark:text-secondary border-button-line dark:border-button-line hover:translate-y-0 pressed:translate-y-0 cursor-not-allowed",
+        "bg-transparent dark:bg-transparent text-secondary text-title-small dark:text-secondary ring-2 ring-button-line dark:ring-button-line hover:translate-y-0 pressed:translate-y-0 cursor-not-allowed",
     },
   ],
 });
