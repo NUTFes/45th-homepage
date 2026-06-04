@@ -22,7 +22,7 @@ export type MapAccordionProps = Omit<DisclosureGroupProps, "children"> & {
 	items: MapAccordionItem[];
 };
 
-const itemClassName = "group bg-base border-y border-secondary";
+const itemClassName = "group";
 const triggerClassName =
 	"flex w-full items-center justify-between gap-s px-3l py-m text-left";
 const titleClassName = "text-title-small text-font-main";
@@ -38,8 +38,9 @@ export default function MapAccordion({ items, className, ...props }: MapAccordio
 			{...props}
 			allowsMultipleExpanded
 			aria-label="マップアコーディオン"
-			className={twMerge("flex w-full flex-col", className)}
+			className={twMerge("flex w-full flex-col bg-base", className)}
 		>
+		<div className="px-l divide-y divide-secondary">
 			{items.map((item) => (
 				<Disclosure key={item.id} className={itemClassName}>
 					<Heading className="m-0">
@@ -53,6 +54,7 @@ export default function MapAccordion({ items, className, ...props }: MapAccordio
 					</DisclosurePanel>
 				</Disclosure>
 			))}
+		</div>
 		</DisclosureGroup>
 	);
 }
