@@ -22,12 +22,12 @@ export type MapAccordionProps = Omit<DisclosureGroupProps, "children"> & {
 	items: MapAccordionItem[];
 };
 
-const itemClassName = "bg-base border-y border-secondary";
+const itemClassName = "group bg-base border-y border-secondary";
 const triggerClassName =
-	"group flex w-full items-center justify-between gap-s px-3l py-m text-left";
+	"flex w-full items-center justify-between gap-s px-3l py-m text-left";
 const titleClassName = "text-title-small text-font-main";
 const chevronClassName =
-	"h-[10px] w-[20px] text-font-main transition-transform duration-300 group-data-expanded:rotate-180";
+	"pointer-events-none h-[40px] w-[40px] flex-shrink-0 text-font-main transition-transform duration-300 rotate-180 group-data-expanded:rotate-0";
 const panelClassName =
 	"h-(--disclosure-panel-height) overflow-hidden duration-300 motion-safe:transition-[height] [hidden]:block";
 const panelInnerClassName = "px-3l pb-m text-text text-font-main";
