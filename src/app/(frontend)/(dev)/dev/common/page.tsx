@@ -28,6 +28,7 @@ import { DevPageContainer } from "../_components/DevPageContainer";
 import { DevPanel } from "../_components/DevPanel";
 import { DevSection } from "../_components/DevSection";
 import ButtonMain from "@/components/ui/ButtonMain";
+import { Button } from "@/components/aria/Button";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { sampleNewsItems } from "../_data/sampleNews";
 import MapFrame from "@/components/ui/MapFrame";
@@ -141,6 +142,18 @@ export default function DevCommonComponentsPage() {
         <DevPanel title="ButtonMain">
           <div className="flex w-full justify-center pb-ss">
             <ButtonMain href={"/"} title={"タイトルを入力"} />
+          </div>
+        </DevPanel>
+
+        <DevPanel title="Button (CTA)">
+          <div className="flex flex-wrap items-center gap-m bg-base">
+            <Button variant="cta">送信</Button>
+            <Button variant="cta" isDisabled>
+              送信
+            </Button>
+            <Button variant="cta" isPending>
+              送信
+            </Button>
           </div>
         </DevPanel>
 

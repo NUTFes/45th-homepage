@@ -1,10 +1,7 @@
 @import "tailwindcss";
-@source "../app/(frontend)";
-@source "../components/layout";
-@source "../components/ui";
-@source "../modules";
 
 @plugin "tailwindcss-animate";
+@plugin "tailwindcss-react-aria-components";
 
 :root {
   --bottom-nav-item-size: 57px;
