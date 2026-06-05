@@ -26,6 +26,10 @@
   --color-font-gray: #8b8982;
   --color-accent: #ff5bef;
   --color-base-shadow: #111d53;
+  --color-required: #ff5b7f;
+  --color-required-badge: #fe346a;
+  --color-required-bg: #fff0f3;
+  --color-placeholder: #c7c5c5;
 
   --font-kaisotai: var(--font-kaisotai-next), sans-serif;
   --font-sans:
