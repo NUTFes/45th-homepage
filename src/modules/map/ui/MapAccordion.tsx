@@ -18,13 +18,13 @@ export type MapAccordionItem = {
 	content: ReactNode;
 };
 
-export type MapAccordionProps = Omit<DisclosureGroupProps, "children"> & {
+export type MapAccordionProps = Omit<DisclosureGroupProps, "children" | "allowsMultipleExpanded"> & {
 	items: MapAccordionItem[];
 };
 
 const itemClassName = "group";
 const triggerClassName =
-	"flex w-full items-center justify-between gap-s px-3l py-m text-left";
+	"flex w-full items-center justify-between gap-s px-3l py-m text-left focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-main";
 const titleClassName = "text-title-small text-font-main";
 const chevronClassName =
 	"pointer-events-none h-[40px] w-[40px] flex-shrink-0 text-font-main transition-transform duration-300 rotate-180 group-data-expanded:rotate-0";
