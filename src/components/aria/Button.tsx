@@ -13,43 +13,70 @@ export interface ButtonProps extends RACButtonProps {
   variant?: "primary" | "secondary" | "destructive" | "quiet" | "cta";
 }
 
-let button = tv({
-  extend: focusRing,
-  base: "relative inline-flex items-center justify-center gap-2 border border-transparent dark:border-white/10 h-9 box-border px-3.5 py-0 [&:has(>svg:only-child)]:px-0 [&:has(>svg:only-child)]:h-8 [&:has(>svg:only-child)]:w-8 font-sans text-sm text-center transition rounded-lg cursor-default [-webkit-tap-highlight-color:transparent]",
-  variants: {
-    variant: {
-      primary: "bg-blue-600 hover:bg-blue-700 pressed:bg-blue-800 text-white",
-      secondary:
-        "border-black/10 bg-neutral-50 hover:bg-neutral-100 pressed:bg-neutral-200 text-neutral-800 dark:bg-neutral-700 dark:hover:bg-neutral-600 dark:pressed:bg-neutral-500 dark:text-neutral-100",
-      destructive: "bg-red-700 hover:bg-red-800 pressed:bg-red-900 text-white",
-      quiet:
-        "border-0 bg-transparent hover:bg-neutral-200 pressed:bg-neutral-300 text-neutral-800 dark:hover:bg-neutral-700 dark:pressed:bg-neutral-600 dark:text-neutral-100",
-      cta: "bg-main text-base-dark border-none rounded-[30px] w-40 h-14 px-4l py-s text-title-small hover:-translate-y-1 pressed:translate-y-0 active:translate-y-0 active:duration-75 transition-all duration-200",
+let button = tv(
+  {
+    extend: focusRing,
+    base: "relative inline-flex items-center justify-center gap-2 border border-transparent dark:border-white/10 h-9 box-border px-3.5 py-0 [&:has(>svg:only-child)]:px-0 [&:has(>svg:only-child)]:h-8 [&:has(>svg:only-child)]:w-8 font-sans text-sm text-center transition rounded-lg cursor-default [-webkit-tap-highlight-color:transparent]",
+    variants: {
+      variant: {
+        primary: "bg-blue-600 hover:bg-blue-700 pressed:bg-blue-800 text-white",
+        secondary:
+          "border-black/10 bg-neutral-50 hover:bg-neutral-100 pressed:bg-neutral-200 text-neutral-800 dark:bg-neutral-700 dark:hover:bg-neutral-600 dark:pressed:bg-neutral-500 dark:text-neutral-100",
+        destructive: "bg-red-700 hover:bg-red-800 pressed:bg-red-900 text-white",
+        quiet:
+          "border-0 bg-transparent hover:bg-neutral-200 pressed:bg-neutral-300 text-neutral-800 dark:hover:bg-neutral-700 dark:pressed:bg-neutral-600 dark:text-neutral-100",
+        cta: "bg-main text-base-dark border-none rounded-[30px] w-40 h-14 px-4l py-s text-title-small hover:-translate-y-1 pressed:translate-y-0 active:translate-y-0 active:duration-75 transition-all duration-200",
+      },
+      isDisabled: {
+        true: "border-transparent dark:border-transparent bg-neutral-100 dark:bg-neutral-800 text-neutral-300 dark:text-neutral-600 forced-colors:text-[GrayText]",
+      },
+      isPending: {
+        true: "text-transparent",
+      },
     },
-    isDisabled: {
-      true: "border-transparent dark:border-transparent bg-neutral-100 dark:bg-neutral-800 text-neutral-300 dark:text-neutral-600 forced-colors:text-[GrayText]",
+    defaultVariants: {
+      variant: "primary",
     },
-    isPending: {
-      true: "text-transparent",
+    compoundVariants: [
+      {
+        variant: "quiet",
+        isDisabled: true,
+        class: "bg-transparent dark:bg-transparent",
+      },
+      {
+        variant: "cta",
+        isDisabled: true,
+        class:
+          "bg-transparent dark:bg-transparent text-secondary text-title-small dark:text-secondary ring-2 ring-button-line dark:ring-button-line hover:translate-y-0 pressed:translate-y-0 cursor-not-allowed",
+      },
+    ],
+  },
+  {
+    twMergeConfig: {
+      classGroups: {
+        "font-size": [
+          {
+            text: [
+              "title",
+              "title-large",
+              "title-small",
+              "button",
+              "text",
+              "textb",
+              "text-large",
+              "text-small",
+              "Ptitle",
+              "Ptitle-small",
+              "Pbutton",
+              "Ptext",
+              "Ptext-large",
+            ],
+          },
+        ],
+      },
     },
   },
-  defaultVariants: {
-    variant: "primary",
-  },
-  compoundVariants: [
-    {
-      variant: "quiet",
-      isDisabled: true,
-      class: "bg-transparent dark:bg-transparent",
-    },
-    {
-      variant: "cta",
-      isDisabled: true,
-      class:
-        "bg-transparent dark:bg-transparent text-secondary text-title-small dark:text-secondary ring-2 ring-button-line dark:ring-button-line hover:translate-y-0 pressed:translate-y-0 cursor-not-allowed",
-    },
-  ],
-});
+);
 
 export function Button(props: ButtonProps) {
   return (
