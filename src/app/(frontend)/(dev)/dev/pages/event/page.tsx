@@ -4,6 +4,11 @@ import { DevSection } from "../../_components/DevSection";
 import EventSection from "@/modules/event/ui/EventSection";
 import type { EventFrameProps } from "@/components/ui/EventFrame";
 
+export const metadata = {
+  title: "Event Page Modules - Dev",
+  description: "src/modules/event のコンポーネントをページ文脈で確認",
+};
+
 const dummyEvents: EventFrameProps[] = [
   { name: "Sweet Photato Contest", href: "/news", imageUrl: "/icon/Instagram.png" },
   { name: "カラフルコーラスフェスティバル", href: "/dev", imageUrl: "/icon/Instagram.png" },
