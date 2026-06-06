@@ -71,10 +71,10 @@ export function Slider<T extends number | number[]>({
       )}
     >
       <Label>{label}</Label>
-      <SliderOutput className="orientation-vertical:hidden text-sm text-neutral-500 dark:text-neutral-400">
+      <SliderOutput className="text-sm text-neutral-500 dark:text-neutral-400 orientation-vertical:hidden">
         {({ state }) => state.values.map((_, i) => state.getThumbValueLabel(i)).join(" – ")}
       </SliderOutput>
-      <SliderTrack className="group orientation-horizontal:h-5 orientation-vertical:h-38 orientation-vertical:w-5 col-span-2 flex items-center">
+      <SliderTrack className="group col-span-2 flex items-center orientation-horizontal:h-5 orientation-vertical:h-38 orientation-vertical:w-5">
         {({ state, ...renderProps }) => (
           <>
             <div className={trackStyles(renderProps)} />
