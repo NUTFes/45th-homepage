@@ -1,4 +1,5 @@
-import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from "payload";
+import { sql, type PostgresAdapter } from "@payloadcms/db-postgres";
+import type { CollectionAfterChangeHook, CollectionAfterDeleteHook, PayloadRequest } from "payload";
 
 import {
   PROGRAM_CATEGORY_ITEM_FIELDS,
@@ -16,6 +17,8 @@ const categoryItemFields = Object.values(
   PROGRAM_CATEGORY_ITEM_FIELDS,
 ) as ProgramCategoryItemField[];
 
+const EVENTS_PAGE_SYNC_LOCK_ID = 45_000_001;
+
 type EventsPageItems = Partial<Record<ProgramCategoryItemField, unknown>>;
 
 type ProgramForEventsPageSync = {
@@ -28,6 +31,18 @@ type ProgramForEventsPageSync = {
 
 type ProgramOrderRow = ProgramOrderRowInput & {
   program: RelationshipId;
+};
+
+const lockEventsPageSync = async (req: PayloadRequest) => {
+  const transactionID = await req.transactionID;
+  const adapter = req.payload.db as unknown as PostgresAdapter;
+  const transaction = transactionID ? adapter.sessions[transactionID]?.db : undefined;
+
+  if (!transaction) {
+    throw new Error("Events page sync requires an active PostgreSQL transaction.");
+  }
+
+  await transaction.execute(sql`SELECT pg_advisory_xact_lock(${EVENTS_PAGE_SYNC_LOCK_ID})`);
 };
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
@@ -203,9 +218,11 @@ export const syncProgramWithEventsPageAfterChange: CollectionAfterChangeHook = a
   doc,
   req,
 }) => {
-  if (req.context.skipProgramEventsPageSync || doc._status !== "published") {
+  if (req.context.skipProgramEventsPageSync) {
     return doc;
   }
+
+  await lockEventsPageSync(req);
 
   const eventsPage = await req.payload.findGlobal({
     slug: "events-page",
@@ -214,7 +231,10 @@ export const syncProgramWithEventsPageAfterChange: CollectionAfterChangeHook = a
     req,
   });
 
-  const next = syncPublishedProgram(eventsPage, doc);
+  const next =
+    doc._status === "published"
+      ? syncPublishedProgram(eventsPage, doc)
+      : removeProgramFromAllFields(eventsPage, doc.id);
 
   if (!hasEventsPageChanged(eventsPage, next)) {
     return doc;
@@ -232,6 +252,8 @@ export const syncProgramWithEventsPageAfterDelete: CollectionAfterDeleteHook = a
   if (req.context.skipProgramEventsPageSync) {
     return doc;
   }
+
+  await lockEventsPageSync(req);
 
   const eventsPage = await req.payload.findGlobal({
     slug: "events-page",
