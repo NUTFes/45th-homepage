@@ -52,3 +52,8 @@ export type EventsPageDTO = {
   visibleTags: EventProgramTagDTO[];
   weather: Weather;
 };
+
+export type SchedulePageDTO = {
+  programs: EventProgramDTO[];
+  weather: Weather;
+};

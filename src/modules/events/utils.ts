@@ -111,3 +111,22 @@ export const toEventProgramDTO = (program: Program): EventProgramDTO | null => {
     scheduleItems,
   };
 };
+
+export const filterProgramsForWeather = (
+  programs: EventProgramDTO[],
+  weather: Weather,
+): EventProgramDTO[] =>
+  programs.flatMap((program) => {
+    const scheduleItems = program.scheduleItems.filter(
+      (item) => item.weather === "both" || item.weather === weather,
+    );
+
+    return scheduleItems.length
+      ? [
+          {
+            ...program,
+            scheduleItems,
+          },
+        ]
+      : [];
+  });
