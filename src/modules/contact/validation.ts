@@ -1,14 +1,12 @@
 import type { ContactFormErrors, ContactFormValidator, ContactFormValues } from "./types";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const PHONE_PATTERN = /^[0-9+\-()\s]{10,20}$/;
+const AGE_PATTERN = /^[0-9]+$/;
+const PHONE_PATTERN = /^[0-9]+$/;
 
 const REQUIRED_FIELD_MESSAGES = {
   name: "お名前を入力してください",
   kana: "ふりがなを入力してください",
-  gender: "性別を選択してください",
-  age: "年齢を入力してください",
-  region: "お住まいの地域を入力してください",
   email: "メールアドレスを入力してください",
   inquiryType: "お問い合わせ項目を選択してください",
   inquiry: "お問い合わせ内容を入力してください",
@@ -30,8 +28,12 @@ export const validateContactForm: ContactFormValidator = (values: ContactFormVal
     errors.email = "メールアドレスの形式が正しくありません";
   }
 
+  if (!isBlank(values.age) && !AGE_PATTERN.test(values.age.trim())) {
+    errors.age = "年齢は半角数字で入力してください";
+  }
+
   if (!isBlank(values.phone) && !PHONE_PATTERN.test(values.phone.trim())) {
-    errors.phone = "電話番号の形式が正しくありません";
+    errors.phone = "電話番号はハイフンなしの半角数字で入力してください";
   }
 
   return errors;

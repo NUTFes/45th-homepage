@@ -10,7 +10,7 @@ import { useFieldIds } from "./useFieldIds";
 const FIELD_ID_PREFIX = "contact-section";
 
 const baseFieldStyles = tv({
-  base: "w-full rounded-lg border bg-secondary px-l text-Ptext-large text-base-dark outline-hidden transition placeholder:text-placeholder disabled:cursor-not-allowed disabled:opacity-60",
+  base: "w-full rounded-lg border bg-secondary px-l text-Ptext-large text-base-dark outline-hidden transition placeholder:text-placeholder disabled:cursor-not-allowed disabled:opacity-60 md:text-Ptext-large",
   variants: {
     variant: {
       text: "min-h-14 border-base-dark py-xs focus-visible:border-main focus-visible:ring-2 focus-visible:ring-main/40",
@@ -123,9 +123,20 @@ export default function ContactSection(props: ContactSectionProps) {
   const readOnly = "value" in props && !onChange;
 
   return (
-    <div className={twMerge("flex w-full flex-col items-start gap-ss", className)}>
+    <div
+      className={twMerge(
+        "flex w-full flex-col items-start gap-ss md:flex-row md:gap-ll",
+        className,
+      )}
+    >
       <FieldLabel label={label} htmlFor={ids.id} required={required} />
-      <div className={twMerge("w-full px-ll", hasError && errorWrapperStyles())}>
+      <div
+        className={twMerge(
+          "w-full px-ll md:min-w-0 md:flex-1 md:px-0",
+          hasError && errorWrapperStyles(),
+          hasError && "md:px-l",
+        )}
+      >
         {isTextarea ? (
           <textarea
             {...inputSharedProps}

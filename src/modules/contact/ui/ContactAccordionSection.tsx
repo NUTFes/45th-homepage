@@ -18,7 +18,7 @@ import { useFieldIds } from "./useFieldIds";
 const FIELD_ID_PREFIX = "contact-accordion";
 
 const triggerStyles = tv({
-  base: "group/trigger flex min-h-14 w-full items-center justify-between rounded-lg border-[0.8px] border-base-dark bg-secondary px-l py-xs text-left text-text-large text-base-dark outline-hidden transition focus-visible:border-main focus-visible:ring-2 focus-visible:ring-main/40 disabled:cursor-not-allowed disabled:opacity-60",
+  base: "group/trigger flex min-h-14 w-full items-center justify-between rounded-lg border-[0.8px] border-base-dark bg-secondary px-l py-xs text-left text-text-large text-base-dark outline-hidden transition focus-visible:border-main focus-visible:ring-2 focus-visible:ring-main/40 disabled:cursor-not-allowed disabled:opacity-60 md:text-Ptext-large",
   variants: {
     invalid: {
       true: "border-2 border-required focus-visible:border-required focus-visible:ring-required/40",
@@ -97,9 +97,20 @@ export default function ContactAccordionSection({
         };
 
   return (
-    <div className={twMerge("flex w-full flex-col items-start gap-ss", className)}>
+    <div
+      className={twMerge(
+        "flex w-full flex-col items-start gap-ss md:flex-row md:gap-ll",
+        className,
+      )}
+    >
       <FieldLabel id={ids.labelId} label={label} htmlFor={ids.id} required={required} />
-      <div className={twMerge("w-full px-ll", hasError && errorWrapperStyles())}>
+      <div
+        className={twMerge(
+          "w-full px-ll md:min-w-0 md:flex-1 md:px-0",
+          hasError && errorWrapperStyles(),
+          hasError && "md:px-l",
+        )}
+      >
         <AriaSelect
           className="group/select block w-full"
           isDisabled={disabled}
@@ -124,15 +135,19 @@ export default function ContactAccordionSection({
             <SelectValue className="flex-1 truncate">
               {({ selectedText, isPlaceholder }) =>
                 isPlaceholder ? (
-                  <span className="text-text-large text-placeholder">{placeholder}</span>
+                  <span className="text-text-large text-placeholder md:text-Ptext-large">
+                    {placeholder}
+                  </span>
                 ) : (
-                  <span className="text-text-large text-base-dark">{selectedText}</span>
+                  <span className="text-text-large text-base-dark md:text-Ptext-large">
+                    {selectedText}
+                  </span>
                 )
               }
             </SelectValue>
             <ChevronDown
               aria-hidden
-              className="h-8 shrink-0 text-base-dark transition-transform duration-200 group-data-open/select:rotate-180"
+              className="h-2.5 w-5 shrink-0 text-base-dark transition-transform duration-200 group-data-open/select:rotate-180"
             />
           </AriaButton>
           <AriaPopover placement="bottom start" offset={4} className={popoverStyles()}>
