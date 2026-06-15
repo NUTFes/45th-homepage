@@ -34,7 +34,7 @@ const chevronClassName =
   "pointer-events-none h-[40px] w-[40px] flex-shrink-0 text-font-main transition-transform duration-300 rotate-180 group-data-[expanded]:rotate-0";
 const panelClassName =
   "h-(--disclosure-panel-height) overflow-hidden duration-300 motion-safe:transition-[height] [hidden]:block";
-const panelInnerClassName = "px-4l pb-m text-text text-font-main bg-base";
+const panelInnerClassName = "border-t border-secondary px-4l py-m text-text text-font-main bg-base";
 
 export default function MapAccordion({ items, className, ...props }: MapAccordionProps) {
   return (
