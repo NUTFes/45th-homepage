@@ -33,6 +33,7 @@ import SectionTitle from "@/components/ui/SectionTitle";
 import { sampleNewsItems } from "../_data/sampleNews";
 import MapFrame from "@/components/ui/MapFrame";
 import EventFrame from "@/components/ui/EventFrame";
+import EventInfoCard from "@/components/ui/EventInfoCard";
 
 const previewSlides = ["Slide 1", "Slide 2", "Slide 3"];
 const noImportantNewsMessage = "現在、重要なお知らせはありません。";
@@ -184,6 +185,11 @@ export default function DevCommonComponentsPage() {
               href="/"
               imageUrl="/icon/Instagram.png"
             />
+          </div>
+        </DevPanel>
+        <DevPanel title="EventInfoCard">
+          <div className="flex flex-wrap items-center gap-m bg-base">
+            <EventInfoCard location="講義棟1階201教室" title="キッチンカーエリア" imageSrc="" />
           </div>
         </DevPanel>
       </DevSection>
