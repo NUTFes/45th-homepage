@@ -3,6 +3,7 @@ import { DevPanel } from "../../_components/DevPanel";
 import { DevSection } from "../../_components/DevSection";
 import EventSection from "@/modules/event/ui/EventSection";
 import type { EventFrameProps } from "@/components/ui/EventFrame";
+import EventPageView from "@/modules/event/ui/EventPageView";
 
 export const metadata = {
   title: "Event Page Modules - Dev",
@@ -30,6 +31,13 @@ export default function DevTopPageModulesPage() {
         <DevPanel title="EventSection (src/modules/event/ui)">
           <div className="bg-base">
             <EventSection id="event-section" title="企画" viewAllHref="/" events={dummyEvents} />
+          </div>
+        </DevPanel>
+      </DevSection>
+      <DevSection title="EventPageView">
+        <DevPanel title="EventPageView (src/modules/event/ui)">
+          <div className="bg-base">
+            <EventPageView />
           </div>
         </DevPanel>
       </DevSection>
