@@ -147,7 +147,7 @@ export default function ContactAccordionSection({
             </SelectValue>
             <ChevronDown
               aria-hidden
-              className="h-2.5 w-5 shrink-0 text-base-dark transition-transform duration-200 group-data-open/select:rotate-180"
+              className="size-10 shrink-0 text-base-dark transition-transform duration-200 group-data-open/select:rotate-180"
             />
           </AriaButton>
           <AriaPopover placement="bottom start" offset={4} className={popoverStyles()}>
