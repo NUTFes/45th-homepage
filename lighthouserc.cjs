@@ -6,6 +6,7 @@ module.exports = {
         "http://localhost:3000/",
         "http://localhost:3000/news",
         "http://localhost:3000/attention",
+        "http://localhost:3000/contact",
       ],
       numberOfRuns: 3,
     },

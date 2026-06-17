@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-type MapFrameProps = {
+export type MapFrameProps = {
   imageSrc?: string;
   alt?: string;
   title?: string;
