@@ -18,9 +18,9 @@ The implementation will use the existing Next.js App Router, Payload CMS 3, Tail
 - [x] (2026-06-17 20:26 +0800) Inspected existing route, layout, CMS globals, collections, revalidation hooks, cache tags, image DTO conversion, and theme tokens.
 - [x] (2026-06-17 20:32 +0800) Attempted subagent self-review; subagent failed because the account hit a usage limit. Continued with a local plan review at the user's request.
 - [x] (2026-06-17 20:31 +0800) Implemented Payload global, admin row label, revalidation hook, cache tag, generated types, import map, and migration.
-- [ ] Implement sponsors server data loader, DTO utilities, page view, sponsor card component, metadata, route, and menu link.
-- [ ] Run formatting, linting, type checking, and applicable runtime verification.
-- [ ] Commit changes in appropriate increments and update this ExecPlan after each major step.
+- [x] (2026-06-17 20:41 +0800) Implemented sponsors server data loader, DTO utilities, page view, sponsor card component, metadata, route, and menu links.
+- [x] (2026-06-17 20:46 +0800) Ran formatting, linting, type checking, and HTTP runtime verification for `/sponsors`.
+- [ ] Commit frontend changes and run final quality check.
 
 ## Surprises & Discoveries
 
@@ -44,6 +44,9 @@ The implementation will use the existing Next.js App Router, Payload CMS 3, Tail
 
 - Observation: Payload migration generation for the sponsors page produced only the expected `sponsors_page` and `sponsors_page_sponsors` tables.
   Evidence: `src/migrations/20260617_133059_add_sponsors_page.ts` creates those two tables plus image and parent foreign keys and indexes.
+
+- Observation: Running `mise run migrate` while the dev server was active triggered Payload's dev-mode warning and stopped rather than applying the migration interactively.
+  Evidence: Payload printed `It looks like you've run Payload in dev mode... data loss will occur. Would you like to proceed?`. The command was stopped without forcing `y`. A normal request to `/sponsors` then returned HTTP 200 and the dev database contained the new sponsor tables.
 
 ## Decision Log
 
@@ -73,7 +76,7 @@ The implementation will use the existing Next.js App Router, Payload CMS 3, Tail
 
 ## Outcomes & Retrospective
 
-No implementation outcome yet. This section must be updated after each major completed step and at the end of the feature.
+- Milestone outcome: The CMS slice is implemented and committed. Payload types, import map, and migration files were generated inside the Docker payload container. The frontend slice renders `/sponsors` with the shared header/footer, CMS-backed message, empty state, responsive 4:3 sponsor image grid, name-only sponsor grid, and enabled menu links. Validation so far: `docker compose exec payload pnpm run fmt:check`, `docker compose exec payload pnpm run lint`, `docker compose exec payload pnpm run typecheck`, and `curl -I http://localhost:3000/sponsors` all succeeded.
 
 ## Context and Orientation
 
