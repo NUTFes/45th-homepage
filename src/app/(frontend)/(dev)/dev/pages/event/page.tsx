@@ -4,7 +4,6 @@ import { DevSection } from "../../_components/DevSection";
 import EventSection from "@/modules/event/ui/EventSection";
 import type { EventFrameProps } from "@/components/ui/EventFrame";
 import EventPageView from "@/modules/event/ui/EventPageView";
-import ContactSection from "@/modules/contact/ui/ContactSection";
 
 export const metadata = {
   title: "Event Page Modules - Dev",
