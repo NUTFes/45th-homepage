@@ -42,11 +42,6 @@ export default function DevTopPageModulesPage() {
           </div>
         </DevPanel>
       </DevSection>
-      <DevSection title="ContactSection">
-        <DevPanel title="ContactSection (src/modules/event/ui)">
-          <ContactSection />
-        </DevPanel>
-      </DevSection>
     </DevPageContainer>
   );
 }
