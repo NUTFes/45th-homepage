@@ -9,6 +9,7 @@ import NewsItemSkeleton from "@/components/ui/NewsItemSkeleton";
 import ImportantFrame from "@/components/ui/ImportantFrame";
 import ImportantFrameSkeleton from "@/components/ui/ImportantFrameSkeleton";
 import { toSafePage } from "./utils";
+import ButtonMain from "@/components/ui/ButtonMain";
 
 type NewsPageViewProps = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -60,6 +61,9 @@ async function NewsPageContent({ searchParams }: NewsPageViewProps) {
         <div className="relative z-10">
           <NewsPagination currentPage={newsData.page} totalPages={newsData.totalPages} />
         </div>
+      </div>
+      <div className="relative flex items-center justify-center">
+        <ButtonMain href="/" title="トップへ戻る ＞"/>
       </div>
     </>
   );
