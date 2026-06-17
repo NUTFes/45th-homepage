@@ -6,7 +6,7 @@ import Image from "next/image";
 import { TooltipTrigger, Focusable } from "react-aria-components";
 import { Tooltip } from "@/components/aria/Tooltip";
 
-type EventFrameProps = {
+export type EventFrameProps = {
   name: string;
   href: string;
   imageUrl: string;

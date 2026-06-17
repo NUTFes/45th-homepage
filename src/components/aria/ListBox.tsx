@@ -91,7 +91,7 @@ export function DropdownItem(props: ListBoxItemProps) {
     <AriaListBoxItem {...props} textValue={textValue} className={dropdownItemStyles}>
       {composeRenderProps(props.children, (children, { isSelected }) => (
         <>
-          <span className="group-selected:font-semibold flex flex-1 items-center gap-2 truncate font-normal">
+          <span className="flex flex-1 items-center gap-2 truncate font-normal group-selected:font-semibold">
             {children}
           </span>
           <span className="flex w-5 items-center">

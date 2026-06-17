@@ -1,0 +1,300 @@
+import type {
+  CollectionAfterReadHook,
+  CollectionBeforeValidateHook,
+  CollectionConfig,
+} from "payload";
+
+import {
+  FESTIVAL_DAY_SELECT_OPTIONS,
+  PROGRAM_AREAS,
+  PROGRAM_CATEGORIES,
+  PROGRAM_SCHEDULE_WEATHERS,
+  toPayloadSelectOptions,
+} from "@/lib/events/constants";
+import {
+  PROGRAM_TIME_OPTIONS,
+  buildProgramAdminLabel,
+  validateProgramTimeValue,
+  validateScheduleItems,
+} from "@/lib/events/validation";
+
+import {
+  revalidateProgramsAfterChange,
+  revalidateProgramsAfterDelete,
+} from "./hooks/revalidatePrograms";
+import {
+  syncProgramWithEventsPageAfterChange,
+  syncProgramWithEventsPageAfterDelete,
+} from "./hooks/syncProgramWithEventsPage";
+
+const updateProgramAdminLabelBeforeValidate: CollectionBeforeValidateHook = ({
+  data,
+  originalDoc,
+}) => {
+  const nextProgram = {
+    ...originalDoc,
+    ...data,
+  };
+
+  return {
+    ...data,
+    adminLabel: buildProgramAdminLabel(nextProgram),
+  };
+};
+
+const addProgramAdminLabelAfterRead: CollectionAfterReadHook = ({ doc }) => ({
+  ...doc,
+  adminLabel: doc.adminLabel || buildProgramAdminLabel(doc),
+});
+
+export const Programs: CollectionConfig = {
+  slug: "programs",
+  labels: {
+    singular: {
+      ja: "企画",
+      en: "Program",
+    },
+    plural: {
+      ja: "企画",
+      en: "Programs",
+    },
+  },
+  access: {
+    read: ({ req: { user } }) => {
+      if (user) return true;
+
+      return {
+        _status: {
+          equals: "published",
+        },
+      };
+    },
+  },
+  admin: {
+    useAsTitle: "adminLabel",
+    defaultColumns: ["_status", "title", "category", "area", "locationName", "updatedAt"],
+    group: {
+      ja: "コンテンツ",
+      en: "Content",
+    },
+    description: {
+      ja: "企画一覧・企画詳細・タイムスケジュールで使用する企画情報を管理します。",
+      en: "Manage program information used on event pages and timetables.",
+    },
+  },
+  versions: {
+    drafts: true,
+  },
+  hooks: {
+    beforeValidate: [updateProgramAdminLabelBeforeValidate],
+    afterRead: [addProgramAdminLabelAfterRead],
+    afterChange: [syncProgramWithEventsPageAfterChange, revalidateProgramsAfterChange],
+    afterDelete: [syncProgramWithEventsPageAfterDelete, revalidateProgramsAfterDelete],
+  },
+  fields: [
+    {
+      name: "adminLabel",
+      type: "text",
+      admin: {
+        hidden: true,
+        readOnly: true,
+      },
+    },
+    {
+      name: "title",
+      label: {
+        ja: "企画名",
+        en: "Title",
+      },
+      type: "text",
+      required: true,
+      maxLength: 120,
+    },
+    {
+      name: "category",
+      label: {
+        ja: "カテゴリ",
+        en: "Category",
+      },
+      type: "select",
+      required: true,
+      options: toPayloadSelectOptions(PROGRAM_CATEGORIES),
+      admin: {
+        position: "sidebar",
+      },
+    },
+    {
+      name: "area",
+      label: {
+        ja: "開催エリア",
+        en: "Area",
+      },
+      type: "select",
+      required: true,
+      options: toPayloadSelectOptions(PROGRAM_AREAS),
+      admin: {
+        position: "sidebar",
+      },
+    },
+    {
+      name: "locationName",
+      label: {
+        ja: "詳細な場所",
+        en: "Location",
+      },
+      type: "text",
+      required: true,
+      maxLength: 120,
+      admin: {
+        placeholder: {
+          ja: "例: 講義棟 1F 101講義室",
+          en: "e.g. Lecture Building 1F Room 101",
+        },
+      },
+    },
+    {
+      name: "image",
+      label: {
+        ja: "企画画像",
+        en: "Image",
+      },
+      type: "upload",
+      relationTo: "media",
+      required: false,
+    },
+    {
+      name: "mapImage",
+      label: {
+        ja: "地図画像",
+        en: "Map Image",
+      },
+      type: "upload",
+      relationTo: "media",
+      required: false,
+    },
+    {
+      name: "tags",
+      label: {
+        ja: "タグ",
+        en: "Tags",
+      },
+      type: "relationship",
+      relationTo: "program-tags",
+      hasMany: true,
+      required: false,
+      admin: {
+        sortOptions: "name",
+      },
+    },
+    {
+      name: "catchphrase",
+      label: {
+        ja: "キャッチコピー",
+        en: "Catchphrase",
+      },
+      type: "text",
+      required: false,
+      maxLength: 160,
+    },
+    {
+      name: "description",
+      label: {
+        ja: "説明文",
+        en: "Description",
+      },
+      type: "textarea",
+      required: true,
+      admin: {
+        description: {
+          ja: "企画説明、注意事項、参加条件、整理券、雨天時対応など、来場者に伝える必要がある情報をまとめて入力してください。",
+          en: "Enter visitor-facing information such as description, notes, requirements, ticketing, and rainy-day handling.",
+        },
+      },
+    },
+    {
+      name: "scheduleItems",
+      label: {
+        ja: "開催日時",
+        en: "Schedule Items",
+      },
+      type: "array",
+      required: true,
+      minRows: 1,
+      validate: validateScheduleItems,
+      admin: {
+        initCollapsed: false,
+        description: {
+          ja: "開催日時を登録します。晴れ・雨で時間が異なる場合は、天候別に行を追加してください。",
+          en: "Register schedule rows. Add separate rows when sunny and rainy schedules differ.",
+        },
+      },
+      labels: {
+        singular: {
+          ja: "開催日時",
+          en: "Schedule Item",
+        },
+        plural: {
+          ja: "開催日時",
+          en: "Schedule Items",
+        },
+      },
+      fields: [
+        {
+          name: "weather",
+          label: {
+            ja: "天候",
+            en: "Weather",
+          },
+          type: "select",
+          required: true,
+          options: toPayloadSelectOptions(PROGRAM_SCHEDULE_WEATHERS),
+          admin: {
+            description: {
+              ja: "「晴れ・雨 共通」は晴天時にも雨天時にも表示されます。晴れの日だけ、雨の日だけ開催時間が違う場合は「晴れのみ」「雨のみ」を分けて登録してください。",
+              en: "Use Common for schedules shown in both sunny and rainy modes.",
+            },
+          },
+        },
+        {
+          name: "day",
+          label: {
+            ja: "開催日",
+            en: "Day",
+          },
+          type: "select",
+          required: true,
+          options: FESTIVAL_DAY_SELECT_OPTIONS,
+        },
+        {
+          name: "startTime",
+          label: {
+            ja: "開始時刻",
+            en: "Start Time",
+          },
+          type: "select",
+          required: true,
+          options: PROGRAM_TIME_OPTIONS,
+          validate: validateProgramTimeValue,
+        },
+        {
+          name: "endTime",
+          label: {
+            ja: "終了時刻",
+            en: "End Time",
+          },
+          type: "select",
+          required: true,
+          options: PROGRAM_TIME_OPTIONS,
+          validate: validateProgramTimeValue,
+          admin: {
+            description: {
+              ja: "終了時刻は企画が終了する時刻を選択してください。開始時刻より後の時刻を選ぶ必要があります。",
+              en: "Select when the program ends. It must be later than the start time.",
+            },
+          },
+        },
+      ],
+    },
+  ],
+  timestamps: true,
+};

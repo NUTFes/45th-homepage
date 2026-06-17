@@ -28,8 +28,10 @@ import { DevPageContainer } from "../_components/DevPageContainer";
 import { DevPanel } from "../_components/DevPanel";
 import { DevSection } from "../_components/DevSection";
 import ButtonMain from "@/components/ui/ButtonMain";
+import { Button } from "@/components/aria/Button";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { sampleNewsItems } from "../_data/sampleNews";
+import MapFrame from "@/components/ui/MapFrame";
 import EventFrame from "@/components/ui/EventFrame";
 
 const previewSlides = ["Slide 1", "Slide 2", "Slide 3"];
@@ -143,10 +145,27 @@ export default function DevCommonComponentsPage() {
           </div>
         </DevPanel>
 
+        <DevPanel title="Button (CTA)">
+          <div className="flex flex-wrap items-center gap-m bg-base">
+            <Button variant="cta">送信</Button>
+            <Button variant="cta" isDisabled>
+              送信
+            </Button>
+            <Button variant="cta" isPending>
+              送信
+            </Button>
+          </div>
+        </DevPanel>
+
         <DevPanel title="SectionTitle">
           <div className="bg-base">
             <SectionTitle title="PICK UP" />
           </div>
+        </DevPanel>
+        <DevPanel title="MapFrame">
+          <MapFrame imageSrc="/image/top/HeroAll.png" alt="Map" type="short" title="1F" />
+          <MapFrame imageSrc="/image/top/HeroAll.png" alt="Map" type="long" title="長いテキスト" />
+          <MapFrame title="画像が無い場合" />
         </DevPanel>
         <DevPanel title="EventFrame">
           <div className="flex flex-wrap gap-m p-m">

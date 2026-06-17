@@ -1,10 +1,7 @@
 @import "tailwindcss";
-@source "../app/(frontend)";
-@source "../components/layout";
-@source "../components/ui";
-@source "../modules";
 
 @plugin "tailwindcss-animate";
+@plugin "tailwindcss-react-aria-components";
 
 :root {
   --bottom-nav-item-size: 57px;
@@ -25,6 +22,11 @@
   --color-font-main: #f6f8ff;
   --color-font-gray: #8b8982;
   --color-accent: #ff5bef;
+  --color-base-shadow: #111d53;
+  --color-required: #ff5b7f;
+  --color-required-badge: #fe346a;
+  --color-required-bg: #fff0f3;
+  --color-placeholder: #c7c5c5;
 
   --font-kaisotai: var(--font-kaisotai-next), sans-serif;
   --font-sans:

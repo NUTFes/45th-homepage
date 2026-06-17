@@ -70,6 +70,8 @@ export interface Config {
     users: User;
     media: Media;
     news: News;
+    programs: Program;
+    'program-tags': ProgramTag;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -80,6 +82,8 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     news: NewsSelect<false> | NewsSelect<true>;
+    programs: ProgramsSelect<false> | ProgramsSelect<true>;
+    'program-tags': ProgramTagsSelect<false> | ProgramTagsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -91,9 +95,13 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     'top-page': TopPage;
+    'events-page': EventsPage;
+    'weather-settings': WeatherSetting;
   };
   globalsSelect: {
     'top-page': TopPageSelect<false> | TopPageSelect<true>;
+    'events-page': EventsPageSelect<false> | EventsPageSelect<true>;
+    'weather-settings': WeatherSettingsSelect<false> | WeatherSettingsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -204,6 +212,145 @@ export interface News {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Manage program information used on event pages and timetables.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "programs".
+ */
+export interface Program {
+  id: number;
+  adminLabel?: string | null;
+  title: string;
+  category: 'program' | 'exhibition' | 'food' | 'goods' | 'corporate';
+  area: 'lecture' | 'gym' | 'outdoor' | 'kitchen_car' | 'other';
+  locationName: string;
+  image?: (number | null) | Media;
+  mapImage?: (number | null) | Media;
+  tags?: (number | ProgramTag)[] | null;
+  catchphrase?: string | null;
+  /**
+   * Enter visitor-facing information such as description, notes, requirements, ticketing, and rainy-day handling.
+   */
+  description: string;
+  /**
+   * Register schedule rows. Add separate rows when sunny and rainy schedules differ.
+   */
+  scheduleItems: {
+    /**
+     * Use Common for schedules shown in both sunny and rainy modes.
+     */
+    weather: 'both' | 'sunny' | 'rainy';
+    day: 'day1' | 'day2';
+    startTime:
+      | '10:00'
+      | '10:15'
+      | '10:30'
+      | '10:45'
+      | '11:00'
+      | '11:15'
+      | '11:30'
+      | '11:45'
+      | '12:00'
+      | '12:15'
+      | '12:30'
+      | '12:45'
+      | '13:00'
+      | '13:15'
+      | '13:30'
+      | '13:45'
+      | '14:00'
+      | '14:15'
+      | '14:30'
+      | '14:45'
+      | '15:00'
+      | '15:15'
+      | '15:30'
+      | '15:45'
+      | '16:00'
+      | '16:15'
+      | '16:30'
+      | '16:45'
+      | '17:00'
+      | '17:15'
+      | '17:30'
+      | '17:45'
+      | '18:00'
+      | '18:15'
+      | '18:30'
+      | '18:45'
+      | '19:00'
+      | '19:15'
+      | '19:30'
+      | '19:45'
+      | '20:00'
+      | '20:15'
+      | '20:30';
+    /**
+     * Select when the program ends. It must be later than the start time.
+     */
+    endTime:
+      | '10:00'
+      | '10:15'
+      | '10:30'
+      | '10:45'
+      | '11:00'
+      | '11:15'
+      | '11:30'
+      | '11:45'
+      | '12:00'
+      | '12:15'
+      | '12:30'
+      | '12:45'
+      | '13:00'
+      | '13:15'
+      | '13:30'
+      | '13:45'
+      | '14:00'
+      | '14:15'
+      | '14:30'
+      | '14:45'
+      | '15:00'
+      | '15:15'
+      | '15:30'
+      | '15:45'
+      | '16:00'
+      | '16:15'
+      | '16:30'
+      | '16:45'
+      | '17:00'
+      | '17:15'
+      | '17:30'
+      | '17:45'
+      | '18:00'
+      | '18:15'
+      | '18:30'
+      | '18:45'
+      | '19:00'
+      | '19:15'
+      | '19:30'
+      | '19:45'
+      | '20:00'
+      | '20:15'
+      | '20:30';
+    id?: string | null;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Manage tags used for filtering programs.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "program-tags".
+ */
+export interface ProgramTag {
+  id: number;
+  name: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -238,6 +385,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'news';
         value: number | News;
+      } | null)
+    | ({
+        relationTo: 'programs';
+        value: number | Program;
+      } | null)
+    | ({
+        relationTo: 'program-tags';
+        value: number | ProgramTag;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -350,6 +505,43 @@ export interface NewsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "programs_select".
+ */
+export interface ProgramsSelect<T extends boolean = true> {
+  adminLabel?: T;
+  title?: T;
+  category?: T;
+  area?: T;
+  locationName?: T;
+  image?: T;
+  mapImage?: T;
+  tags?: T;
+  catchphrase?: T;
+  description?: T;
+  scheduleItems?:
+    | T
+    | {
+        weather?: T;
+        day?: T;
+        startTime?: T;
+        endTime?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "program-tags_select".
+ */
+export interface ProgramTagsSelect<T extends boolean = true> {
+  name?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -413,6 +605,101 @@ export interface TopPage {
   createdAt?: string | null;
 }
 /**
+ * Configure program display order and visible tag order. Manage program publication from the Programs menu.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events-page".
+ */
+export interface EventsPage {
+  id: number;
+  /**
+   * Drag rows to configure display order for program programs. Missing published programs are restored on save.
+   */
+  programItems?:
+    | {
+        /**
+         * Select the program displayed by this row.
+         */
+        program?: (number | null) | Program;
+        programLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Drag rows to configure display order for exhibition programs. Missing published programs are restored on save.
+   */
+  exhibitionItems?:
+    | {
+        /**
+         * Select the program displayed by this row.
+         */
+        program?: (number | null) | Program;
+        programLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Drag rows to configure display order for food programs. Missing published programs are restored on save.
+   */
+  foodItems?:
+    | {
+        /**
+         * Select the program displayed by this row.
+         */
+        program?: (number | null) | Program;
+        programLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Drag rows to configure display order for goods programs. Missing published programs are restored on save.
+   */
+  goodsItems?:
+    | {
+        /**
+         * Select the program displayed by this row.
+         */
+        program?: (number | null) | Program;
+        programLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Drag rows to configure display order for corporate programs. Missing published programs are restored on save.
+   */
+  corporateItems?:
+    | {
+        /**
+         * Select the program displayed by this row.
+         */
+        program?: (number | null) | Program;
+        programLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Configure visible tags and display order.
+   */
+  visibleTags?: (number | ProgramTag)[] | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Select the weather applied to event pages.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "weather-settings".
+ */
+export interface WeatherSetting {
+  id: number;
+  /**
+   * Event pages display schedule times for the selected weather.
+   */
+  weather: 'sunny' | 'rainy';
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "top-page_select".
  */
@@ -424,6 +711,61 @@ export interface TopPageSelect<T extends boolean = true> {
         href?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events-page_select".
+ */
+export interface EventsPageSelect<T extends boolean = true> {
+  programItems?:
+    | T
+    | {
+        program?: T;
+        programLabel?: T;
+        id?: T;
+      };
+  exhibitionItems?:
+    | T
+    | {
+        program?: T;
+        programLabel?: T;
+        id?: T;
+      };
+  foodItems?:
+    | T
+    | {
+        program?: T;
+        programLabel?: T;
+        id?: T;
+      };
+  goodsItems?:
+    | T
+    | {
+        program?: T;
+        programLabel?: T;
+        id?: T;
+      };
+  corporateItems?:
+    | T
+    | {
+        program?: T;
+        programLabel?: T;
+        id?: T;
+      };
+  visibleTags?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "weather-settings_select".
+ */
+export interface WeatherSettingsSelect<T extends boolean = true> {
+  weather?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

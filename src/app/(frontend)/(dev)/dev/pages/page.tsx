@@ -40,6 +40,24 @@ export default function DevPageModulesIndexPage() {
             <p className="text-text text-base-dark/80">src/modules/map/ui のコンポーネント確認</p>
             <p className="text-text-small text-base-dark underline">Open →</p>
           </Link>
+          <Link
+            href="/dev/pages/event"
+            className="space-y-xs rounded-lg border border-base/10 p-m transition-colors hover:bg-secondary"
+          >
+            <h3 className="text-title-small text-base-dark">Event Page</h3>
+            <p className="text-text text-base-dark/80">src/modules/event/ui のコンポーネント確認</p>
+            <p className="text-text-small text-base-dark underline">Open →</p>
+          </Link>
+          <Link
+            href="/dev/pages/contact"
+            className="space-y-xs rounded-lg border border-base/10 p-m transition-colors hover:bg-secondary"
+          >
+            <h3 className="text-title-small text-base-dark">Contact Page</h3>
+            <p className="text-text text-base-dark/80">
+              src/modules/contact/ui のコンポーネント確認
+            </p>
+            <p className="text-text-small text-base-dark underline">Open →</p>
+          </Link>
         </div>
       </DevSection>
     </DevPageContainer>
