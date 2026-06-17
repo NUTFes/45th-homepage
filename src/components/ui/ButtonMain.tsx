@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 
@@ -9,6 +11,18 @@ type ButtonMainProps = {
 
 export default function ButtonMain(props: ButtonMainProps) {
   const { href, title, arrow = true } = props;
+
+  if (href === "go-back") {
+    return (
+      <button
+        type="button"
+        onClick={() => window.history.back()}
+        className="button-gradient rounded-full border-2 border-main px-l py-s text-button text-white shadow-[0px_6px_8px_rgba(60,224,232,0.6)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0px_6px_8px_rgba(60,224,232,1.0)] md:text-Pbutton"
+      >
+        {title}
+      </button>
+    );
+  }
 
   return (
     <Link

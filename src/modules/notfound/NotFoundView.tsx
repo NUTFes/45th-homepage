@@ -19,7 +19,7 @@ function NotFoundContent() {
           お探しのページは見つかりませんでした
         </div>
       </div>
-      <ButtonMain href="/" title="GO BACK" />
+      <ButtonMain href="go-back" title="GO BACK" />
     </div>
   );
 }
