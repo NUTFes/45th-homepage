@@ -4,6 +4,7 @@ import { DevSection } from "../../_components/DevSection";
 import EventSection from "@/modules/event/ui/EventSection";
 import type { EventFrameProps } from "@/components/ui/EventFrame";
 import EventPageView from "@/modules/event/ui/EventPageView";
+import ContactSection from "@/modules/contact/ui/ContactSection";
 
 export const metadata = {
   title: "Event Page Modules - Dev",
@@ -39,6 +40,11 @@ export default function DevTopPageModulesPage() {
           <div className="bg-base">
             <EventPageView />
           </div>
+        </DevPanel>
+      </DevSection>
+      <DevSection title="ContactSection">
+        <DevPanel title="ContactSection (src/modules/event/ui)">
+          <ContactSection />
         </DevPanel>
       </DevSection>
     </DevPageContainer>
