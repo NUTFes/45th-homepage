@@ -96,11 +96,13 @@ export interface Config {
   globals: {
     'top-page': TopPage;
     'events-page': EventsPage;
+    'sponsors-page': SponsorsPage;
     'weather-settings': WeatherSetting;
   };
   globalsSelect: {
     'top-page': TopPageSelect<false> | TopPageSelect<true>;
     'events-page': EventsPageSelect<false> | EventsPageSelect<true>;
+    'sponsors-page': SponsorsPageSelect<false> | SponsorsPageSelect<true>;
     'weather-settings': WeatherSettingsSelect<false> | WeatherSettingsSelect<true>;
   };
   locale: null;
@@ -685,6 +687,37 @@ export interface EventsPage {
   createdAt?: string | null;
 }
 /**
+ * Manage the thank-you message and sponsor list shown on the sponsors page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sponsors-page".
+ */
+export interface SponsorsPage {
+  id: number;
+  /**
+   * Shown under the sponsors page title. Line breaks are preserved.
+   */
+  thanksMessage: string;
+  /**
+   * Rows are displayed in order. Rows with images become ad cards; rows without images become name-only entries.
+   */
+  sponsors?:
+    | {
+        /**
+         * Enter the official company name displayed on the page.
+         */
+        companyName: string;
+        /**
+         * If set, this sponsor is shown as an ad card. If empty, it is shown in the name-only list. Prefer a 4:3 image.
+         */
+        image?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * Select the weather applied to event pages.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -756,6 +789,23 @@ export interface EventsPageSelect<T extends boolean = true> {
         id?: T;
       };
   visibleTags?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sponsors-page_select".
+ */
+export interface SponsorsPageSelect<T extends boolean = true> {
+  thanksMessage?: T;
+  sponsors?:
+    | T
+    | {
+        companyName?: T;
+        image?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
