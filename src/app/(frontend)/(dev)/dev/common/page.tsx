@@ -195,7 +195,7 @@ export default function DevCommonComponentsPage() {
       </DevSection>
       <DevSection title="ContactSection">
         <DevPanel title="ContactSection (src/modules/event/ui)">
-          <ContactSection />
+          <ContactSection title="トムブラウンがやってくる！" body="説明鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま" />
         </DevPanel>
       </DevSection>
     </DevPageContainer>
