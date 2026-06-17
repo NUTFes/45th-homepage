@@ -127,18 +127,19 @@ export default function Footer() {
           <div className="items-top flex w-full justify-between gap-x-4l">
             <div className="flex gap-x-ss">
               <div className="flex flex-col gap-y-ss">
-                <div className="flex min-w-62.5 items-center gap-x-s">
-                  <Link href="/">
+                <div>
+                  <Link href="/" className="flex min-w-62.5 items-center gap-x-s">
                     <Image
                       src="/icon/45th-logo-top.svg"
                       alt="45thNUTFES ロゴ"
                       width={48}
                       height={48}
                     />
-                  </Link>
+                  
                   <div className="font-kaisotai text-title text-[40px] text-base-dark">
-                    45th NUTFES
+                    45th  <span className="-tracking-[0.2rem]">技大祭</span>
                   </div>
+                  </Link>
                 </div>
                 <p className="text-[14px]">長岡技術科学大学　技大祭実行委員会</p>
               </div>
