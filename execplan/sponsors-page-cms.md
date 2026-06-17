@@ -20,7 +20,7 @@ The implementation will use the existing Next.js App Router, Payload CMS 3, Tail
 - [x] (2026-06-17 20:31 +0800) Implemented Payload global, admin row label, revalidation hook, cache tag, generated types, import map, and migration.
 - [x] (2026-06-17 20:41 +0800) Implemented sponsors server data loader, DTO utilities, page view, sponsor card component, metadata, route, and menu links.
 - [x] (2026-06-17 20:46 +0800) Ran formatting, linting, type checking, and HTTP runtime verification for `/sponsors`.
-- [ ] Commit frontend changes and run final quality check.
+- [x] (2026-06-17 20:49 +0800) Committed frontend changes and ran final `quality:check` successfully.
 
 ## Surprises & Discoveries
 
@@ -76,7 +76,7 @@ The implementation will use the existing Next.js App Router, Payload CMS 3, Tail
 
 ## Outcomes & Retrospective
 
-- Milestone outcome: The CMS slice is implemented and committed. Payload types, import map, and migration files were generated inside the Docker payload container. The frontend slice renders `/sponsors` with the shared header/footer, CMS-backed message, empty state, responsive 4:3 sponsor image grid, name-only sponsor grid, and enabled menu links. Validation so far: `docker compose exec payload pnpm run fmt:check`, `docker compose exec payload pnpm run lint`, `docker compose exec payload pnpm run typecheck`, and `curl -I http://localhost:3000/sponsors` all succeeded.
+- Final outcome: The CMS slice is implemented and committed. Payload types, import map, and migration files were generated inside the Docker payload container. The frontend slice renders `/sponsors` with the shared header/footer, CMS-backed message, empty state, responsive 4:3 sponsor image grid, name-only sponsor grid, and enabled menu links. Validation: `docker compose exec payload pnpm run quality:check` and `curl -I http://localhost:3000/sponsors` both succeeded. The requested subagent review could not run because the subagent system reported a usage limit, so the fallback local review and this ExecPlan record document the implementation decisions.
 
 ## Context and Orientation
 
