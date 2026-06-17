@@ -10,7 +10,7 @@ import { useFieldIds } from "./useFieldIds";
 const FIELD_ID_PREFIX = "contact-section";
 
 const baseFieldStyles = tv({
-  base: "w-full rounded-lg border bg-secondary px-l text-Ptext-large text-base-dark outline-hidden transition placeholder:text-placeholder disabled:cursor-not-allowed disabled:opacity-60 md:text-Ptext-large",
+  base: "w-full rounded-lg border bg-secondary px-l text-Ptext-large text-base-dark outline-hidden transition placeholder:text-placeholder autofill:shadow-[inset_0_0_0_1000px_var(--color-secondary)] autofill:[-webkit-text-fill-color:var(--color-base-dark)] autofill:caret-base-dark autofill:[-webkit-background-clip:text] disabled:cursor-not-allowed disabled:opacity-60 md:text-Ptext-large",
   variants: {
     variant: {
       text: "min-h-14 border-base-dark py-xs focus-visible:border-main focus-visible:ring-2 focus-visible:ring-main/40",
