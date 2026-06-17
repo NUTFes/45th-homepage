@@ -1,81 +1,55 @@
 "use client";
 
-import Link from "next/link";
-import { useId, useState } from "react";
+import { useState } from "react";
+import { Button, Menu, MenuItem, MenuTrigger, Popover } from "react-aria-components";
 
 export type HeaderDropdownItem = {
   label: string;
   href: string;
+  disabled?: boolean;
 };
 
 type HeaderDropdownProps = {
+  disabled?: boolean;
   label: string;
   items: HeaderDropdownItem[];
 };
 
-export default function HeaderDropdown({ label, items }: HeaderDropdownProps) {
+export default function HeaderDropdown({ disabled = false, label, items }: HeaderDropdownProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const dropdownId = useId();
 
   return (
-    <div
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
-      onFocus={() => setIsOpen(true)}
-      onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget)) {
-          setIsOpen(false);
-        }
-      }}
-      onKeyDown={(event) => {
-        if (event.key === "Escape") {
-          setIsOpen(false);
-        }
-      }}
-      className="relative flex h-(--header-height) items-center"
-    >
-      <button
-        type="button"
-        aria-haspopup="true"
-        aria-expanded={isOpen}
-        aria-controls={dropdownId}
-        className={`rounded-sm transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-main ${
-          isOpen ? "text-base" : "text-base-dark hover:text-base"
+    <MenuTrigger isOpen={isOpen} onOpenChange={setIsOpen} trigger="press">
+      <Button
+        className={`inline-flex rounded-sm py-s transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-main disabled:cursor-not-allowed disabled:text-font-gray ${
+          isOpen
+            ? "text-base underline underline-offset-4"
+            : "text-base-dark hover:text-base hover:underline hover:underline-offset-4"
         }`}
-        onClick={() => setIsOpen(true)}
+        isDisabled={disabled}
       >
         {label}
-      </button>
+      </Button>
 
-      <div
-        id={dropdownId}
-        aria-hidden={!isOpen}
-        className={`absolute top-full left-1/2 z-250 w-[206px] -translate-x-1/2 overflow-hidden rounded-lg bg-white shadow-[0_0_12px_0] shadow-base-shadow/50 transition-[max-height,opacity,transform,visibility] duration-300 ease-in-out ${
-          isOpen
-            ? "visible max-h-100 translate-y-0 opacity-100"
-            : "invisible max-h-0 -translate-y-2 opacity-0"
-        }`}
+      <Popover
+        className="entering:duration-300 entering:ease-in-out entering:animate-in entering:fade-in entering:slide-in-from-top-2 exiting:duration-200 exiting:ease-in-out exiting:animate-out exiting:fade-out exiting:slide-out-to-top-2 z-250 w-[206px] overflow-hidden rounded-lg bg-white shadow-[0_0_12px_0] shadow-base-shadow/50 outline-none"
+        offset={0}
+        placement="bottom"
       >
-        <ul className="py-0">
+        <Menu aria-label={label} className="py-0 outline-none">
           {items.map((item) => (
-            <li key={item.label}>
-              {item.href ? (
-                <Link
-                  href={item.href}
-                  className="block px-[40px] py-xs text-left text-text-large text-base-dark transition-colors duration-200 hover:bg-base-dark hover:text-font-main focus-visible:bg-base-dark focus-visible:text-font-main focus-visible:outline-none"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ) : (
-                <span className="block px-[40px] py-xs text-left text-text-large text-base-dark transition-colors duration-200 hover:bg-base-dark hover:text-font-main">
-                  {item.label}
-                </span>
-              )}
-            </li>
+            <MenuItem
+              key={item.label}
+              href={item.href}
+              isDisabled={item.disabled}
+              textValue={item.label}
+              className="block cursor-pointer px-[40px] py-s text-left text-text-large text-base-dark transition-colors duration-200 outline-none hover:bg-base-dark hover:text-font-main focus-visible:bg-base-dark focus-visible:text-font-main disabled:cursor-not-allowed disabled:text-font-gray disabled:hover:bg-transparent disabled:hover:text-font-gray"
+            >
+              {item.label}
+            </MenuItem>
           ))}
-        </ul>
-      </div>
-    </div>
+        </Menu>
+      </Popover>
+    </MenuTrigger>
   );
 }

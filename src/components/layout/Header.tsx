@@ -8,10 +8,12 @@ type HeaderNavItem =
   | {
       label: string;
       href: string;
+      disabled?: boolean;
     }
   | {
       label: string;
       items: HeaderDropdownItem[];
+      disabled?: boolean;
     };
 
 // TODO: 各ページへのリンクを教えてもらう
@@ -20,12 +22,12 @@ const headerNavItems: HeaderNavItem[] = [
     label: "企画情報",
     items: [
       { label: "ゲスト", href: "/event/guest" },
-      { label: "コラボ", href: "/#" },
+      { label: "コラボ", href: "/#", disabled: true },
       { label: "企画", href: "/event/programs" },
-      { label: "展示・体験", href: "/#" },
-      { label: "食品販売", href: "/#" },
-      { label: "物品販売", href: "/#" },
-      { label: "企業ブース", href: "/#" },
+      { label: "展示・体験", href: "/#", disabled: true },
+      { label: "食品販売", href: "/#", disabled: true },
+      { label: "物品販売", href: "/#", disabled: true },
+      { label: "企業ブース", href: "/#", disabled: true },
     ],
   },
   { label: "スケジュール", href: "/schedule" },
@@ -34,7 +36,7 @@ const headerNavItems: HeaderNavItem[] = [
     label: "利用案内",
     items: [
       { label: "注意事項", href: "/attention" },
-      { label: "案内所・ヘルプ", href: "/#" },
+      { label: "案内所・ヘルプ", href: "/#", disabled: true },
       { label: "アクセス", href: "/access" },
     ],
   },
@@ -60,16 +62,21 @@ export default function Page() {
             {headerNavItems.map((item) => (
               <li key={item.label} className="flex h-(--header-height) items-center">
                 {"items" in item ? (
-                  <HeaderDropdown label={item.label} items={item.items} />
-                ) : item.href ? (
+                  <HeaderDropdown disabled={item.disabled} label={item.label} items={item.items} />
+                ) : item.disabled ? (
+                  <span
+                    aria-disabled="true"
+                    className="inline-flex cursor-not-allowed py-s text-font-gray"
+                  >
+                    {item.label}
+                  </span>
+                ) : (
                   <Link
                     href={item.href}
-                    className="rounded-sm transition-colors duration-200 hover:text-base focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-main"
+                    className="inline-flex rounded-sm py-s transition-colors duration-200 hover:text-base hover:underline hover:underline-offset-4 focus-visible:underline focus-visible:underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-main"
                   >
                     {item.label}
                   </Link>
-                ) : (
-                  <span>{item.label}</span>
                 )}
               </li>
             ))}
