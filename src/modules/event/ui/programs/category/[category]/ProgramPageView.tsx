@@ -21,18 +21,18 @@ const DUMMY_PROGRAMS: EventFrameProps[] = [
 export default function ProgramPageView({ category }: ProgramPageViewProps) {
   return (
     <div className="bg-base">
-         <section aria-label={`${category}の企画一覧`} className="flex flex-col gap-s">
-      <SectionTitle title={category} />
-      <div className="flex justify-center">
-        <ul className="grid grid-cols-[repeat(2,max-content)] gap-x-m gap-y-3l">
-        {DUMMY_PROGRAMS.map((program) => (
-          <li key={program.href}>
-            <EventFrame {...program} />
-          </li>
-        ))}
-      </ul>
-      </div>
-    </section>
+      <section aria-label={`${category}の企画一覧`} className="flex flex-col gap-s">
+        <SectionTitle title={category} />
+        <div className="flex justify-center">
+          <ul className="grid grid-cols-[repeat(2,max-content)] gap-x-m gap-y-3l">
+            {DUMMY_PROGRAMS.map((program) => (
+              <li key={program.href}>
+                <EventFrame {...program} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
     </div>
   );
 }
