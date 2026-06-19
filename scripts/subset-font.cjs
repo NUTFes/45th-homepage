@@ -27,6 +27,7 @@ const KAISOTAI_FONT_USAGE_FILE_PATHS = [
   "src/components/layout/Header.tsx",
   "src/components/layout/Footer.tsx",
   "src/components/ui/SectionTitle.tsx",
+  "src/components/ui/ContactSection.tsx",
   "src/modules/top/TopPageView.tsx",
   "src/modules/top/ui/SponsorSection.tsx",
   "src/modules/news/NewsPageView.tsx",
