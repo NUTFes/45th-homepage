@@ -4,6 +4,7 @@ import { DevSection } from "../../_components/DevSection";
 import EventSection from "@/modules/event/ui/EventSection";
 import type { EventFrameProps } from "@/components/ui/EventFrame";
 import EventPageView from "@/modules/event/ui/EventPageView";
+import ProgramPageView from "@/modules/event/ui/programs/category/[category]/ProgramPageView";
 
 export const metadata = {
   title: "Event Page Modules - Dev",
@@ -40,6 +41,15 @@ export default function DevTopPageModulesPage() {
             <EventPageView />
           </div>
         </DevPanel>
+      </DevSection>
+      <DevSection title="ProgramPageView">
+        {["展示・体験", "食品販売", "物品販売", "企業ブース"].map((category) => (
+          <DevPanel key={category} title={`ProgramPageView - ${category}`}>
+            <div className="bg-base">
+              <ProgramPageView category={category} />
+            </div>
+          </DevPanel>
+        ))}
       </DevSection>
     </DevPageContainer>
   );
