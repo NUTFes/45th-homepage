@@ -44,7 +44,7 @@ export default function EventInfoCard({ location, title, imageSrc, alt }: EventI
         <MapFrame title={title} imageSrc={imageSrc} alt={alt ?? title} />
       </div>
       <div className="flex items-center justify-center bg-base pt-m">
-        <ButtonMain href="/map" title="マップページはこちら　＞" />
+        <ButtonMain href="/map" title="マップページはこちら" />
       </div>
     </div>
   );
