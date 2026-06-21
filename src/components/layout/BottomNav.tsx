@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { House, Clock, MapPin, CalendarDays, type LucideIcon } from "lucide-react";
 import BottomNavMenuDrawer from "@/components/layout/BottomNavMenuDrawer";
@@ -68,7 +69,9 @@ export default function BottomNavigation() {
         ))}
 
         <li className="flex-1">
-          <BottomNavMenuDrawer />
+          <Suspense fallback={null}>
+            <BottomNavMenuDrawer />
+          </Suspense>
         </li>
       </ul>
     </nav>
