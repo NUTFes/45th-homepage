@@ -16,7 +16,7 @@ async function ProgramCategoryPageContent({ params }: Props) {
 
 export default function Page(props: Props) {
   return (
-    <Suspense>
+    <Suspense fallback={null}>
       <ProgramCategoryPageContent {...props} />
     </Suspense>
   );
