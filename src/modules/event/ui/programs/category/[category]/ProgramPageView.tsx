@@ -20,7 +20,7 @@ const DUMMY_PROGRAMS: EventFrameProps[] = [
 
 export default function ProgramPageView({ category }: ProgramPageViewProps) {
   return (
-    <div className="bg-base flex flex-col gap-4l pb-4l">
+    <div className="flex flex-col gap-4l bg-base pb-4l">
       <section aria-label={`${category}の企画一覧`} className="flex flex-col gap-l">
         <SectionTitle title={category} />
         <div className="flex justify-center">
