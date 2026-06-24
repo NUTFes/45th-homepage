@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { connection } from "next/server";
 
 import SectionTitle from "@/components/ui/SectionTitle";
 
@@ -77,6 +78,8 @@ function EmptySponsors() {
 }
 
 export default async function SponsorPageView() {
+  await connection();
+
   const { sponsors, thanksMessage } = await getSponsorsPageData();
   const { imageSponsors, nameOnlySponsors } = splitSponsorsByImage(sponsors);
   const hasSponsors = sponsors.length > 0;
