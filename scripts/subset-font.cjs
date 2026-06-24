@@ -24,6 +24,7 @@ const ZEN_KAKU_FONT_PATHS = [
 ];
 
 const KAISOTAI_FONT_USAGE_FILE_PATHS = [
+  "scripts/test-subset-font.ts",
   "src/components/layout/Header.tsx",
   "src/components/layout/Footer.tsx",
   "src/components/ui/SectionTitle.tsx",
