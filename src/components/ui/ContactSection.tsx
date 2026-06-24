@@ -5,10 +5,10 @@ export type ContactSectionProps = {
 
 export default function ContactSection({ title, body }: ContactSectionProps) {
     const corners = [ // ４つ角の配置のためのリスト
-        "top-0 left-0 border-t-5 border-l-5",    // 左上
-        "top-0 right-0 border-t-5 border-r-5",   // 右上
-        "bottom-0 left-0 border-b-5 border-l-5", // 左下
-        "bottom-0 right-0 border-b-5 border-r-5" // 右下
+        "top-0 left-0 border-t-[3.6] border-l-[3.6] md:top-0 md:left-0 md:border-t-[4.8] md:border-l-[4.8]",    // 左上
+        "top-0 right-0 border-t-[3.6] border-r-[3.6] md:top-0 md:right-0 md:border-t-[4.8] md:border-r-[4.8]",   // 右上
+        "bottom-0 left-0 border-b-[3.6] border-l-[3.6] md:bottom-0 md:left-0 md:border-b-[4.8] md:border-l-[4.8]", // 左下
+        "bottom-0 right-0 border-b-[3.6] border-r-[3.6] md:bottom-0 md:right-0 md:border-b-[4.8] md:border-r-[4.8]" // 右下
     ];
     return (
             <div className="relative flex flex-col gap-s w-full bg-base px-m md:px-ll py-s md:py-m border-1 border-main shadow-[0px_2px_6px_0px] shadow-base-shadow overflow-hidden text-secondary"> {/*企画のタイトル・本文統合要素*/}
