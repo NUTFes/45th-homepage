@@ -11,7 +11,7 @@ export default function ContactSection({ title, body }: ContactSectionProps) {
         "bottom-0 right-0 border-b-5 border-r-5" // 右下
     ];
     return (
-            <div className="relative flex flex-col gap-s w-full bg-base px-m md:px-ll py-s md:py-m border-1 border-main overflow-hidden text-secondary"> {/*企画のタイトル・本文統合要素*/}
+            <div className="relative flex flex-col gap-s w-full bg-base px-m md:px-ll py-s md:py-m border-1 border-main shadow-[0px_2px_6px_0px] shadow-base-shadow overflow-hidden text-secondary"> {/*企画のタイトル・本文統合要素*/}
                 {corners.map((pos, index) => ( /* ４つ角を、mapを用いて配置 */
                     <div
                         key={index}
