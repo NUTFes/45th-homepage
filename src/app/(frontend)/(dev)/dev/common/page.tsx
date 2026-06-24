@@ -11,7 +11,7 @@ import InfoFrame from "@/components/ui/InfoFrame";
 import InfoBlock from "@/components/ui/InfoBlock";
 import ImportantFrame from "@/components/ui/ImportantFrame";
 import NewsItem from "@/components/ui/NewsItem";
-import ContactSection from "@/components/ui/ContactSection";
+import EventIntroFrame from "@/components/ui/EventIntroFrame";
 import {
   Beer,
   BusFront,
@@ -194,9 +194,11 @@ export default function DevCommonComponentsPage() {
           </div>
         </DevPanel>
       </DevSection>
-      <DevSection title="ContactSection">
-        <DevPanel title="ContactSection (src/components/ui)">
-          <ContactSection title="トムブラウンがやってくる！" body="説明鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま" />
+      <DevSection title="EventIntroFrame">
+        <DevPanel title="EventIntroFrame (src/components/ui)">
+          <div className="flex flex-col gap-m">
+            <EventIntroFrame title="トムブラウンがやってくる！" body="説明鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま" />
+          </div>
         </DevPanel>
       </DevSection>
     </DevPageContainer>
