@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 
 import SponsorPageView from "@/modules/sponsors/SponsorPageView";
@@ -8,5 +9,9 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <SponsorPageView />;
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-base" />}>
+      <SponsorPageView />
+    </Suspense>
+  );
 }

@@ -12,19 +12,6 @@ const splitSponsorsByImage = (
   nameOnlySponsors: sponsors.filter((sponsor) => !sponsor.image),
 });
 
-function SponsorPageTitle() {
-  return (
-    <SectionTitle
-      title={
-        <>
-          <span>ご協賛いただいた企業様</span>
-          <span className="text-title-small md:text-Ptitle-small">（順不同）</span>
-        </>
-      }
-    />
-  );
-}
-
 function ThanksMessage({ message }: { message: string }) {
   return (
     <p className="mx-auto w-full max-w-200 px-ll text-text whitespace-pre-wrap text-font-main md:px-0 md:text-Ptext">
@@ -43,8 +30,8 @@ function SponsorImageGrid({
   }
 
   return (
-    <section aria-label="広告画像つき協賛企業" className="w-full">
-      <div className="mx-auto grid w-full max-w-75 grid-cols-1 justify-center gap-3l md:max-w-[87.5rem] md:grid-cols-[repeat(auto-fit,minmax(15.5rem,15.5rem))] md:gap-x-3l md:gap-y-4l">
+    <section aria-label="広告画像つき協賛企業" className="w-full md:px-pl">
+      <div className="mx-auto grid w-full max-w-75 grid-cols-1 justify-center gap-3l md:max-w-350 md:grid-cols-[repeat(auto-fit,minmax(15.5rem,15.5rem))] md:gap-x-3l md:gap-y-4l">
         {sponsors.map((sponsor) => (
           <SponsorCard key={sponsor.id} sponsor={sponsor} />
         ))}
@@ -63,12 +50,15 @@ function SponsorNameList({
   }
 
   return (
-    <section aria-label="協賛企業名一覧" className="w-full">
-      <ul className="mx-auto grid w-full max-w-240 grid-cols-1 gap-x-3l gap-y-m px-ll sm:grid-cols-[repeat(auto-fit,minmax(17rem,1fr))] md:px-0">
+    <section aria-label="協賛企業名一覧" className="w-full px-4l md:px-0">
+      <ul className="mx-auto grid w-full max-w-240 grid-cols-1 gap-x-3l gap-y-m sm:grid-cols-[repeat(auto-fit,minmax(17rem,1fr))]">
         {sponsors.map((sponsor) => (
-          <li key={sponsor.id} className="flex min-w-0 items-center gap-2.5 text-font-main">
+          <li
+            key={sponsor.id}
+            className="flex min-w-0 items-center justify-start gap-2.5 text-font-main md:justify-center"
+          >
             <span className="size-4 shrink-0 rounded-full bg-secondary" aria-hidden="true" />
-            <span className="min-w-0 text-textb break-words md:text-Ptext-large">
+            <span className="min-w-0 text-text-large wrap-break-word md:text-Ptext-large">
               {sponsor.companyName}
             </span>
           </li>
@@ -113,7 +103,7 @@ export default async function SponsorPageView() {
       <div className="relative z-10 flex w-full flex-col gap-4l">
         <div className="flex w-full flex-col gap-s md:gap-ll md:px-pl">
           <div className="max-w-full px-m md:px-0">
-            <SponsorPageTitle />
+            <SectionTitle title="ご協賛いただいた企業様（順不同）" />
           </div>
           <ThanksMessage message={thanksMessage} />
         </div>
