@@ -9,7 +9,7 @@ type SponsorCardProps = {
 export default function SponsorCard({ sponsor }: SponsorCardProps) {
   return (
     <article className="flex w-full flex-col items-center gap-ss md:w-62 md:gap-xs">
-      <h2 className="max-w-full text-center text-textb wrap-break-word text-font-main md:text-Ptext-large">
+      <h2 className="max-w-full text-center text-Ptext-large wrap-break-word text-font-main">
         {sponsor.companyName}
       </h2>
       <div className="relative aspect-4/3 w-full overflow-hidden border-2 border-main bg-base-dark">
