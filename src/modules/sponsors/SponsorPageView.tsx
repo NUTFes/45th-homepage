@@ -106,7 +106,16 @@ export default async function SponsorPageView() {
       <div className="relative z-10 flex w-full flex-col gap-4l">
         <div className="flex w-full flex-col gap-s md:gap-ll md:px-pl">
           <div className="max-w-full px-m md:px-0">
-            <SectionTitle title="ご協賛いただいた企業様（順不同）" />
+            <SectionTitle
+              title={
+                <>
+                  ご協賛いただいた企業様
+                  <span className="text-title-small whitespace-nowrap md:text-Ptitle-small">
+                    （順不同）
+                  </span>
+                </>
+              }
+            />
           </div>
           <ThanksMessage message={thanksMessage} />
         </div>
