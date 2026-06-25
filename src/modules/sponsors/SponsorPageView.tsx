@@ -108,12 +108,10 @@ export default async function SponsorPageView() {
           <div className="max-w-full pr-m md:px-0">
             <SectionTitle
               title={
-                <>
+                <span className="whitespace-nowrap">
                   ご協賛いただいた企業様
-                  <span className="text-title-small whitespace-nowrap md:text-Ptitle-small">
-                    （順不同）
-                  </span>
-                </>
+                  <span className="text-title-small md:text-Ptitle-small">（順不同）</span>
+                </span>
               }
             />
           </div>
