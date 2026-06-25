@@ -123,7 +123,7 @@ function NewsSection({ newsItems }: { newsItems: Awaited<ReturnType<typeof getLa
               )}
             </div>
             <div className="flex w-full justify-center pb-ss">
-              <ButtonMain href="/news" title="お知らせ一覧を見る ＞" />
+              <ButtonMain href="/news" title="お知らせ一覧を見る" />
             </div>
           </div>
         </div>
@@ -284,7 +284,7 @@ function TopPageSkeleton() {
                 </ul>
               </div>
               <div className="flex w-full justify-center pb-ss">
-                <ButtonMain href="/news" title="お知らせ一覧を見る ＞" />
+                <ButtonMain href="/news" title="お知らせ一覧を見る" />
               </div>
             </div>
           </div>
