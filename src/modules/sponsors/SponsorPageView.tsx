@@ -105,7 +105,7 @@ export default async function SponsorPageView() {
 
       <div className="relative z-10 flex w-full flex-col gap-4l">
         <div className="flex w-full flex-col gap-s md:gap-ll md:px-pl">
-          <div className="max-w-full px-m md:px-0">
+          <div className="max-w-full pr-m md:px-0">
             <SectionTitle
               title={
                 <>
