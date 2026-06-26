@@ -197,7 +197,10 @@ export default function DevCommonComponentsPage() {
       <DevSection title="EventIntroFrame">
         <DevPanel title="EventIntroFrame (src/components/ui)">
           <div className="flex flex-col gap-m">
-            <EventIntroFrame title="トムブラウンがやってくる！" body="説明鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま" />
+            <EventIntroFrame
+              title="トムブラウンがやってくる！"
+              body="説明鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま"
+            />
           </div>
         </DevPanel>
       </DevSection>
