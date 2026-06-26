@@ -12,7 +12,7 @@ const CORNER_CLASS_NAMES = [
 
 export default function EventIntroFrame({ title, body }: EventIntroFrameProps) {
   return (
-    <div className="relative flex w-full flex-col gap-s overflow-hidden border-1 border-main bg-base px-m py-s text-secondary shadow-[0px_2px_6px_0px] shadow-base-shadow md:px-ll md:py-m">
+    <div className="relative flex w-full flex-col gap-s overflow-hidden border border-main bg-base px-m py-s text-secondary shadow-[0px_2px_6px_0px] shadow-base-shadow md:px-ll md:py-m">
       {CORNER_CLASS_NAMES.map((pos, index) => (
         <div
           key={index}
@@ -21,7 +21,7 @@ export default function EventIntroFrame({ title, body }: EventIntroFrameProps) {
         />
       ))}
       <div className="px-xs font-kaisotai md:px-3l">
-        <div className="border-b-1 border-secondary px-s md:px-3l">
+        <div className="border-b border-secondary px-s md:px-3l">
           <p className="text-center text-title-small md:text-title">{title}</p>
         </div>
       </div>
