@@ -1,9 +1,6 @@
 import SectionTitle from "@/components/ui/SectionTitle";
 import EventFrame, { type EventFrameProps } from "@/components/ui/EventFrame";
-
-type ProgramPageViewProps = {
-  category: string;
-};
+import { type ProgramCategory } from "@/lib/events/constants";
 
 const DUMMY_PROGRAMS: EventFrameProps[] = [
   { name: "企画名サンプル1", href: "#1", imageUrl: "/favicon/45th-LogoBlue.svg" },
@@ -18,14 +15,22 @@ const DUMMY_PROGRAMS: EventFrameProps[] = [
   { name: "企画名サンプル10", href: "#10", imageUrl: "/favicon/45th-LogoBlue.svg" },
 ];
 
-export default function ProgramPageView({ category }: ProgramPageViewProps) {
+type ProgramPageViewProps = {
+  category: ProgramCategory;
+  programs?: EventFrameProps[];
+};
+
+export default function ProgramPageView({
+  category,
+  programs = DUMMY_PROGRAMS,
+}: ProgramPageViewProps) {
   return (
     <div className="flex flex-col gap-4l bg-base pb-4l">
       <section aria-label={`${category}の企画一覧`} className="flex flex-col gap-l">
         <SectionTitle title={category} />
         <div className="flex justify-center">
           <ul className="grid grid-cols-[repeat(2,max-content)] gap-x-m gap-y-3l">
-            {DUMMY_PROGRAMS.map((program) => (
+            {programs.map((program) => (
               <li key={program.href}>
                 <EventFrame {...program} />
               </li>
