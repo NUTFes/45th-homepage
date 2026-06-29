@@ -8,11 +8,11 @@ type EventInfoCardProps = Pick<MapFrameProps, "title" | "imageSrc" | "alt"> & {
 
 export default function EventInfoCard({ location, title, imageSrc, alt }: EventInfoCardProps) {
   return (
-    <div className="flex w-full flex-col bg-base-dark pt-l md:gap-ll md:pt-5l md:pb-pm">
+    <div className="flex h-full w-full flex-col bg-base-dark pt-l md:sticky md:gap-ll md:pt-5l md:pb-pm">
       <div className="flex flex-col gap-m md:gap-ll">
         <section aria-label="日時" className="flex flex-col gap-xs px-ll md:gap-ss md:pl-4l md:pr-pm">
           <div className="w-fit border-b px-1 text-secondary">
-            <div className="text-title-small text-font-mainvmd:text-Ptitle-small">日時</div>
+            <div className="text-title-small text-font-main md:text-Ptitle-small">日時</div>
           </div>
           <div className="flex flex-col gap-1">
             <div className="flex gap-m pl-ss">
@@ -40,7 +40,7 @@ export default function EventInfoCard({ location, title, imageSrc, alt }: EventI
           <p className="pl-ss text-text text-font-main md:text-Ptext-large">{location}</p>
         </section>
       </div>
-      <div className="mb-l md:mb-0 md:pl-m md:pr-5l">
+      <div className="mb-l md:mb-0 md:pl-4l md:pr-pm">
         <MapFrame title={title} imageSrc={imageSrc} alt={alt ?? title} />
       </div>
       <div className="flex items-center justify-center bg-base pt-m md:bg-transparent md:pt-0 md:pl-4l md:pr-pm">
