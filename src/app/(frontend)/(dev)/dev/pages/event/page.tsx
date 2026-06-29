@@ -5,7 +5,7 @@ import EventSection from "@/modules/event/ui/EventSection";
 import type { EventFrameProps } from "@/components/ui/EventFrame";
 import EventPageView from "@/modules/event/ui/EventPageView";
 import ProgramPageView from "@/modules/event/ui/programs/category/[category]/ProgramPageView";
-import {PROGRAM_CATEGORIES} from "@/lib/events/constants";
+import { PROGRAM_CATEGORIES } from "@/lib/events/constants";
 
 export const metadata = {
   title: "Event Page Modules - Dev",
@@ -44,7 +44,7 @@ export default function DevTopPageModulesPage() {
         </DevPanel>
       </DevSection>
       <DevSection title="ProgramPageView">
-        {PROGRAM_CATEGORIES.map(({value, label}) => (
+        {PROGRAM_CATEGORIES.map(({ value, label }) => (
           <DevPanel key={value} title={`ProgramPageView - ${label}`}>
             <div className="bg-base">
               <ProgramPageView category={value} />
