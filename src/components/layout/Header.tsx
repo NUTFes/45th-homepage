@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import HeaderMenuButton from "@/components/layout/HeaderMenuButton";
@@ -36,9 +35,7 @@ export default function Page() {
             ))}
           </ul>
         </nav>
-        <Suspense fallback={null}>
-          <HeaderMenuButton />
-        </Suspense>
+        <HeaderMenuButton />
       </div>
     </header>
   );
