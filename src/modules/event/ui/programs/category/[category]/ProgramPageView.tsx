@@ -24,7 +24,8 @@ export default function ProgramPageView({
   category,
   programs = DUMMY_PROGRAMS,
 }: ProgramPageViewProps) {
-  const categoryLabel = PROGRAM_CATEGORIES.find(({ value }) => value === category)?.label ?? category;
+  const categoryLabel =
+    PROGRAM_CATEGORIES.find(({ value }) => value === category)?.label ?? category;
 
   return (
     <div className="flex flex-col gap-4l bg-base pb-4l">
