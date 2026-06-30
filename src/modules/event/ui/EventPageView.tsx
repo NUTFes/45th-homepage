@@ -29,7 +29,7 @@ export default function EventPageView() {
       <section aria-label="ゲスト" className="flex flex-col gap-s">
         <SectionTitle title="ゲスト" />
         <div className="flex justify-center">
-          <ButtonMain href="/guest" title="もっと見る　＞" />
+          <ButtonMain href="/guest" title="もっと見る" />
         </div>
       </section>
       <section aria-label="イベント・販売" className="flex flex-col gap-3l">
@@ -40,7 +40,7 @@ export default function EventPageView() {
       </section>
       <section aria-label="協賛企業">
         <div className="flex justify-center">
-          <ButtonMain href="/sponsors" title="ご協賛いただいた企業様　＞" />
+          <ButtonMain href="/sponsors" title="ご協賛いただいた企業様" />
         </div>
       </section>
     </div>

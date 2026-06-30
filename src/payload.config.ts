@@ -14,6 +14,7 @@ import { News } from "./collections/News";
 import { Programs } from "./collections/Programs";
 import { ProgramTags } from "./collections/ProgramTags";
 import { EventsPage } from "./globals/EventsPage";
+import { SponsorsPage } from "./globals/SponsorsPage";
 import { TopPage } from "./globals/TopPage";
 import { WeatherSettings } from "./globals/WeatherSettings";
 import { migrations } from "./migrations";
@@ -80,7 +81,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, News, Programs, ProgramTags],
-  globals: [TopPage, EventsPage, WeatherSettings],
+  globals: [TopPage, EventsPage, SponsorsPage, WeatherSettings],
   editor: lexicalEditor(),
   secret: env.PAYLOAD_SECRET,
   typescript: {
