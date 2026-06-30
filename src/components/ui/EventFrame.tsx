@@ -38,18 +38,18 @@ export default function EventFrame(props: EventFrameProps) {
       href={href}
       aria-label={name}
       prefetch={false}
-      className="flex h-[200px] w-[148px] flex-col rounded-lg bg-secondary pb-s shadow-[0px_6px_8px_rgba(60,224,232,0.6)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0px_6px_8px_rgba(60,224,232,1.0)]"
+      className="flex h-54 w-37 flex-col rounded-lg bg-secondary pb-s shadow-[0px_6px_8px_rgba(60,224,232,0.6)] transition-all duration-200 hover:-translate-y-1 hover:shadow-[0px_6px_8px_rgba(60,224,232,1.0)]"
     >
-      <div className="relative h-[111px] w-full shrink-0 overflow-hidden rounded-tl-lg rounded-tr-lg">
+      <div className="w-full shrink-0 overflow-hidden rounded-tl-lg rounded-tr-lg bg-linear-to-b from-[#3ce0e8] to-secondary to-70% px-4.5 py-3">
         {hasImageError ? (
-          <Image className="object-contain" src={FALLBACK_LOGO} alt="" fill sizes="148px" />
+          <Image className="object-contain" src={FALLBACK_LOGO} alt="" width={111} height={111} />
         ) : (
           <Image
             className="object-cover"
             src={imageUrl}
             alt=""
-            fill
-            sizes="148px"
+            width={111}
+            height={111}
             onError={handleImageError}
           />
         )}
