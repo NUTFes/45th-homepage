@@ -11,6 +11,7 @@ import InfoFrame from "@/components/ui/InfoFrame";
 import InfoBlock from "@/components/ui/InfoBlock";
 import ImportantFrame from "@/components/ui/ImportantFrame";
 import NewsItem from "@/components/ui/NewsItem";
+import EventIntroFrame from "@/components/ui/EventIntroFrame";
 import {
   Beer,
   BusFront,
@@ -190,6 +191,16 @@ export default function DevCommonComponentsPage() {
         <DevPanel title="EventInfoCard">
           <div className="flex flex-wrap items-center gap-m bg-base">
             <EventInfoCard location="講義棟1階201教室" title="キッチンカーエリア" imageSrc="" />
+          </div>
+        </DevPanel>
+      </DevSection>
+      <DevSection title="EventIntroFrame">
+        <DevPanel title="EventIntroFrame (src/components/ui)">
+          <div className="flex flex-col gap-m">
+            <EventIntroFrame
+              title="トムブラウンがやってくる！"
+              body="説明鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま"
+            />
           </div>
         </DevPanel>
       </DevSection>

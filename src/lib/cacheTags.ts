@@ -3,5 +3,6 @@ export const CACHE_TAGS = {
   eventsPage: "events-page",
   weatherSettings: "weather-settings",
   news: "news",
+  sponsorsPage: "sponsors-page",
   topPage: "top-page",
 } as const;

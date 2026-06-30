@@ -24,14 +24,17 @@ const ZEN_KAKU_FONT_PATHS = [
 ];
 
 const KAISOTAI_FONT_USAGE_FILE_PATHS = [
+  "scripts/test-subset-font.ts",
   "src/components/layout/Header.tsx",
   "src/components/layout/Footer.tsx",
   "src/components/ui/SectionTitle.tsx",
+  "src/components/ui/EventIntroFrame.tsx",
   "src/modules/top/TopPageView.tsx",
   "src/modules/top/ui/SponsorSection.tsx",
   "src/modules/news/NewsPageView.tsx",
   "src/modules/attention/AttentionPageView.tsx",
   "src/modules/notfound/NotFoundView.tsx",
+  "src/modules/sponsors/SponsorPageView.tsx",
 ].map((relativePath) => path.join(__dirname, "..", relativePath));
 
 const ZEN_KAKU_FONT_USAGE_ROOTS = ["src/app/(frontend)", "src/components", "src/modules"].map(

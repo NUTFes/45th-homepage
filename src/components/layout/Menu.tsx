@@ -115,7 +115,7 @@ const menuItems: MenuItem[] = [
   {
     label: "協賛企業一覧",
     icon: Building2,
-    disabled: true,
+    href: "/sponsors",
   },
 ];
 
