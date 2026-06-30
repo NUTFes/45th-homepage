@@ -18,7 +18,7 @@ export default function StickyTestPage() {
         </div>
       </div>
       <section className="flex flex-col items-center gap-6 bg-base px-8 py-16">
-        <p className="text-xl font-bold text-font-main">企業広告エリア</p>
+        <h2 className="text-xl font-bold text-font-main">企業広告エリア</h2>
         {Array.from({ length: 2 }).map((_, i) => (
           <div key={i} className="flex h-32 w-full max-w-2xl items-center justify-center rounded-lg bg-base-dark text-secondary">
             AD

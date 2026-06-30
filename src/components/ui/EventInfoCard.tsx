@@ -8,8 +8,8 @@ type EventInfoCardProps = Pick<MapFrameProps, "title" | "imageSrc" | "alt"> & {
 
 export default function EventInfoCard({ location, title, imageSrc, alt }: EventInfoCardProps) {
   return (
-    <div className="flex h-full w-full flex-col bg-base-dark pt-l md:sticky md:gap-ll md:pt-5l md:pb-pm">
-      <div className="flex flex-col gap-m md:gap-ll">
+    <div className="flex h-full w-full flex-col bg-base-dark pt-l md:sticky md:top-18 md:gap-ll md:pt-5l md:pb-pm">
+      <div className="flex flex-col gap-m">
         <section aria-label="日時" className="flex flex-col gap-xs px-ll md:gap-ss md:pl-4l md:pr-pm">
           <div className="w-fit border-b px-1 text-secondary">
             <div className="text-title-small text-font-main md:text-Ptitle-small">日時</div>
@@ -19,17 +19,17 @@ export default function EventInfoCard({ location, title, imageSrc, alt }: EventI
               <time dateTime="2026-09-19" className="text-text-large text-font-main md:text-Ptext-large">
                 9月19日（土）
               </time>
-              <time dateTime="10:00/17:00" className="text-text-large text-font-main md:text-Ptext-large">
-                10：00 ～ 17：00
-              </time>
+              <span className="text-text-large text-font-main md:text-Ptext-large">
+                <time dateTime="10:00">10：00</time> ～ <time dateTime="17:00">17：00</time>
+              </span>
             </div>
             <div className="flex gap-m pl-ss">
               <time dateTime="2026-09-20" className="text-text-large text-font-main md:text-Ptext-large">
                 9月20日（日）
               </time>
-              <time dateTime="10:00/17:00" className="text-text-large text-font-main md:text-Ptext-large">
-                10：00 ～ 17：00
-              </time>
+              <span className="text-text-large text-font-main md:text-Ptext-large">
+                <time dateTime="10:00">10：00</time> ～ <time dateTime="17:00">17：00</time>
+              </span>
             </div>
           </div>
         </section>
