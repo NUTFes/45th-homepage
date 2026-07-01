@@ -19,15 +19,15 @@ export default function GuestProfileCard({ profile }: GuestProfileCardProps) {
   ];
 
   return (
-    <article className="flex w-full flex-col bg-base px-s pt-ss pr-3l pb-s text-font-main">
-      <h2 className="border-b border-font-main pb-ss text-title-large wrap-break-word">
+    <article className="flex w-full min-w-0 flex-col gap-xs text-font-main">
+      <h3 className="w-fit max-w-full min-w-26 border-b border-main pb-1 text-title-small wrap-break-word md:text-Ptitle-small">
         {profile.name}
-      </h2>
-      <dl className="mt-3l flex flex-col gap-s text-title">
+      </h3>
+      <dl className="flex min-w-0 flex-col text-text md:text-Ptext">
         {details.map(({ label, value }) => (
-          <div key={label} className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)]">
-            <dt className="whitespace-nowrap">{label}：</dt>
-            <dd className="min-w-0 wrap-break-word">{value}</dd>
+          <div key={label} className="min-w-0 wrap-break-word">
+            <dt className="inline font-bold text-accent">{label}：</dt>
+            <dd className="inline">{value}</dd>
           </div>
         ))}
       </dl>

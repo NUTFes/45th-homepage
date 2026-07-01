@@ -24,18 +24,18 @@ const dummyEvents: EventFrameProps[] = [
 
 const guestProfiles: GuestProfile[] = [
   {
-    name: "○○　○○さん",
-    birthDate: "2000年1月1日",
-    birthplace: "新潟県",
-    hobby: "映画鑑賞",
-    specialSkill: "ダンス",
+    name: "誠さん(左)",
+    birthDate: "1999年03月25日",
+    birthplace: "東京都 世田谷区",
+    hobby: "テニス／絵を描く事／物作り／音楽鑑賞",
+    specialSkill: "ハーモニカ／散髪／髭剃り（理容師免許取得）",
   },
   {
-    name: "長い名前の出演者サンプルさん",
-    birthDate: "2000年12月31日",
-    birthplace: "とても長い地名が入った場合の表示確認",
-    hobby: "映画鑑賞、音楽鑑賞、スポーツ観戦",
-    specialSkill: "長いプロフィール情報を折り返して表示すること",
+    name: "愛さん(右)",
+    birthDate: "1996年09月19日",
+    birthplace: "神奈川県 横浜市",
+    hobby: "動物鑑賞／音楽鑑賞／SMAP",
+    specialSkill: "犬の基本的なしつけ／ブルースハープ（ハーモニカ）／肩もみ",
   },
 ];
 
@@ -54,7 +54,7 @@ export default function DevTopPageModulesPage() {
       </DevSection>
       <DevSection title="GuestProfileCard">
         <DevPanel title="GuestProfileCard (src/modules/event/guest/ui)">
-          <div className="flex max-w-[430px] flex-col gap-m">
+          <div className="flex max-w-[430px] flex-col gap-l bg-base p-s">
             {guestProfiles.map((profile) => (
               <GuestProfileCard key={profile.name} profile={profile} />
             ))}
