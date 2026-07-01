@@ -14,7 +14,7 @@ type SponsorAdCarouselProps = {
 const DESKTOP_SPONSOR_AD_VISIBLE_COUNT = 4;
 const MOBILE_SPONSOR_AD_VISIBLE_COUNT = 1;
 const SPONSOR_AD_AUTOPLAY_DELAY_MS = 3000;
-const SPONSOR_AD_DESKTOP_MEDIA_QUERY = "(min-width: 768px)";
+const SPONSOR_AD_DESKTOP_MEDIA_QUERY = "(min-width: 1024px)";
 
 const useIsDesktopSponsorAdViewport = () => {
   const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
@@ -63,19 +63,19 @@ export default function SponsorAdCarousel({ sponsors }: SponsorAdCarouselProps) 
       options={{ align: "start", containScroll: "trimSnaps", slidesToScroll: 1 }}
     >
       <CarouselViewport
-        className="w-full overflow-hidden bg-base-dark py-s md:px-5l"
+        className="w-full overflow-hidden bg-base-dark py-s lg:px-5l"
         trackClassName="items-center"
       >
         {sponsors.map((sponsor, index) => (
           <CarouselSlide
             ariaLabel={`${sponsor.companyName} の広告`}
-            className="min-w-0 flex-[0_0_100%] px-ll md:flex-[0_0_25%] md:px-0"
+            className="min-w-0 flex-[0_0_100%] px-ll lg:flex-[0_0_25%] lg:px-0"
             index={index}
             key={sponsor.id}
           >
             <SponsorCard
-              className="mx-auto w-full max-w-75 gap-xs md:w-full md:max-w-62"
-              imageSizes="(min-width: 768px) min(248px, calc((100vw - 160px) / 4)), 300px"
+              className="mx-auto w-full max-w-75 gap-xs md:w-full lg:max-w-62 [&_h2]:w-full [&_h2]:truncate"
+              imageSizes="(min-width: 1024px) min(248px, calc((100vw - 160px) / 4)), 300px"
               sponsor={sponsor}
             />
           </CarouselSlide>
