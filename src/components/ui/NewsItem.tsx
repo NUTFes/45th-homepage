@@ -14,7 +14,7 @@ export default function NewsItem({ date, dateTime, title, content, important }: 
           {date}
         </time>
         {important && (
-          <span className="rounded-[14px] bg-accent px-s py-0.5 text-text text-base-dark">
+          <span className="rounded-[14px] bg-accent px-s py-0.5 text-text text-base-dark font-medium">
             重要
           </span>
         )}
