@@ -4,7 +4,7 @@ import BottomNav from "@/components/layout/BottomNav";
 import Menu from "@/components/layout/Menu";
 import ButtonMain from "@/components/ui/ButtonMain";
 import SponsorAdCarousel from "@/modules/sponsors/ui/SponsorAdCarousel";
-import { SponsorAdsSectionSkeleton } from "@/modules/sponsors/ui/SponsorAdsSection";
+import SponsorAdsSectionSkeleton from "@/modules/sponsors/ui/SponsorAdsSectionSkeleton";
 import type { SponsorWithImageDTO } from "@/modules/sponsors/types";
 
 import { DevPageContainer } from "../_components/DevPageContainer";

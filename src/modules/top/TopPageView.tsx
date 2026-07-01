@@ -9,7 +9,7 @@ import NewsItem from "@/components/ui/NewsItem";
 import ImportantFrameSkeleton from "@/components/ui/ImportantFrameSkeleton";
 import SectionTitle from "@/components/ui/SectionTitle";
 import NewsItemSkeleton from "@/components/ui/NewsItemSkeleton";
-import { SponsorAdsBoundary } from "@/modules/sponsors/ui/SponsorAdsSection";
+import SponsorAdsBoundary from "@/modules/sponsors/ui/SponsorAdsBoundary";
 import LogoInfo from "./ui/LogoInfo";
 import SponsorSection from "./ui/SponsorSection";
 import PickUpFrame from "./ui/PickUpFrame";

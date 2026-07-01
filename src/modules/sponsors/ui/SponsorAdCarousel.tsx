@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 import { CarouselRoot, CarouselSlide, CarouselViewport } from "@/components/ui/carousel";
 
@@ -16,25 +16,27 @@ const MOBILE_SPONSOR_AD_VISIBLE_COUNT = 1;
 const SPONSOR_AD_AUTOPLAY_DELAY_MS = 3000;
 const SPONSOR_AD_DESKTOP_MEDIA_QUERY = "(min-width: 1024px)";
 
-const useIsDesktopSponsorAdViewport = () => {
-  const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
+const subscribeToSponsorAdDesktopViewport = (onStoreChange: () => void) => {
+  const mediaQuery = window.matchMedia(SPONSOR_AD_DESKTOP_MEDIA_QUERY);
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia(SPONSOR_AD_DESKTOP_MEDIA_QUERY);
-    const updateIsDesktop = () => {
-      setIsDesktop(mediaQuery.matches);
-    };
+  mediaQuery.addEventListener("change", onStoreChange);
 
-    updateIsDesktop();
-    mediaQuery.addEventListener("change", updateIsDesktop);
-
-    return () => {
-      mediaQuery.removeEventListener("change", updateIsDesktop);
-    };
-  }, []);
-
-  return isDesktop;
+  return () => {
+    mediaQuery.removeEventListener("change", onStoreChange);
+  };
 };
+
+const getSponsorAdDesktopViewportSnapshot = () =>
+  window.matchMedia(SPONSOR_AD_DESKTOP_MEDIA_QUERY).matches;
+
+const getSponsorAdDesktopViewportServerSnapshot = () => true;
+
+const useIsDesktopSponsorAdViewport = () =>
+  useSyncExternalStore(
+    subscribeToSponsorAdDesktopViewport,
+    getSponsorAdDesktopViewportSnapshot,
+    getSponsorAdDesktopViewportServerSnapshot,
+  );
 
 export default function SponsorAdCarousel({ sponsors }: SponsorAdCarouselProps) {
   const isDesktop = useIsDesktopSponsorAdViewport();
