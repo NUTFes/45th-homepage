@@ -25,10 +25,10 @@ export function SponsorAdsSectionSkeleton({ className }: SponsorAdsSectionProps)
       aria-hidden="true"
       className={twMerge("flex w-full flex-col items-center gap-m", className)}
     >
-      <div className="w-full overflow-hidden bg-base-dark py-s">
+      <div className="w-full overflow-hidden bg-base-dark py-s md:px-5l">
         <div className="flex items-center">
           {SPONSOR_AD_SKELETON_IDS.map((id) => (
-            <div className="min-w-0 flex-[0_0_100%] px-ll md:flex-[0_0_25%] md:px-xs" key={id}>
+            <div className="min-w-0 flex-[0_0_100%] px-ll md:flex-[0_0_25%] md:px-0" key={id}>
               <div className="mx-auto flex w-full max-w-75 flex-col items-center gap-xs md:w-full md:max-w-62">
                 <Skeleton className="h-6 w-3/4 bg-base" />
                 <Skeleton className="aspect-4/3 w-full rounded-none border-2 border-main bg-base" />

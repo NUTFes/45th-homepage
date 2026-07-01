@@ -63,19 +63,19 @@ export default function SponsorAdCarousel({ sponsors }: SponsorAdCarouselProps) 
       options={{ align: "start", containScroll: "trimSnaps", slidesToScroll: 1 }}
     >
       <CarouselViewport
-        className="w-full overflow-hidden bg-base-dark py-s"
+        className="w-full overflow-hidden bg-base-dark py-s md:px-5l"
         trackClassName="items-center"
       >
         {sponsors.map((sponsor, index) => (
           <CarouselSlide
             ariaLabel={`${sponsor.companyName} の広告`}
-            className="min-w-0 flex-[0_0_100%] px-ll md:flex-[0_0_25%] md:px-xs"
+            className="min-w-0 flex-[0_0_100%] px-ll md:flex-[0_0_25%] md:px-0"
             index={index}
             key={sponsor.id}
           >
             <SponsorCard
               className="mx-auto w-full max-w-75 gap-xs md:w-full md:max-w-62"
-              imageSizes="(min-width: 1200px) 248px, (min-width: 768px) 25vw, 300px"
+              imageSizes="(min-width: 768px) min(248px, calc((100vw - 160px) / 4)), 300px"
               sponsor={sponsor}
             />
           </CarouselSlide>
