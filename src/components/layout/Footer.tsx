@@ -143,7 +143,7 @@ export default function Footer() {
                 </div>
                 <p className="text-[14px]">長岡技術科学大学　技大祭実行委員会</p>
               </div>
-              <div className="flex h-13.5 w-full min-w-105 items-center gap-ll pt-1 text-Pbutton">
+              <div className="flex h-13.5 w-full min-w-105 items-center gap-ll pt-1 text-textb">
                 <div className="text-black">アンケート</div>
                 <a
                   href="https://www.nagaokaut.ac.jp/index.html"
