@@ -4,6 +4,7 @@ import { DevSection } from "../../_components/DevSection";
 import EventSection from "@/modules/event/ui/EventSection";
 import type { EventFrameProps } from "@/components/ui/EventFrame";
 import EventPageView from "@/modules/event/ui/EventPageView";
+import GuestProfileCard, { type GuestProfile } from "@/modules/event/guest/ui/GuestProfileCard";
 
 export const metadata = {
   title: "Event Page Modules - Dev",
@@ -21,6 +22,23 @@ const dummyEvents: EventFrameProps[] = [
   { name: "無線機器、電子工作物展示会", href: "/common", imageUrl: "/icon/Instagram.png" },
 ];
 
+const guestProfiles: GuestProfile[] = [
+  {
+    name: "○○　○○さん",
+    birthDate: "2000年1月1日",
+    birthplace: "新潟県",
+    hobby: "映画鑑賞",
+    specialSkill: "ダンス",
+  },
+  {
+    name: "長い名前の出演者サンプルさん",
+    birthDate: "2000年12月31日",
+    birthplace: "とても長い地名が入った場合の表示確認",
+    hobby: "映画鑑賞、音楽鑑賞、スポーツ観戦",
+    specialSkill: "長いプロフィール情報を折り返して表示すること",
+  },
+];
+
 export default function DevTopPageModulesPage() {
   return (
     <DevPageContainer
@@ -31,6 +49,15 @@ export default function DevTopPageModulesPage() {
         <DevPanel title="EventSection (src/modules/event/ui)">
           <div className="bg-base">
             <EventSection id="event-section" title="企画" viewAllHref="/" events={dummyEvents} />
+          </div>
+        </DevPanel>
+      </DevSection>
+      <DevSection title="GuestProfileCard">
+        <DevPanel title="GuestProfileCard (src/modules/event/guest/ui)">
+          <div className="flex max-w-[430px] flex-col gap-m">
+            {guestProfiles.map((profile) => (
+              <GuestProfileCard key={profile.name} profile={profile} />
+            ))}
           </div>
         </DevPanel>
       </DevSection>
