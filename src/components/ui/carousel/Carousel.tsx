@@ -412,14 +412,15 @@ export const CarouselSlide = ({
   const safeSlideCount = Math.max(slideCount, index + 1);
 
   return (
-    <article
+    <div
       aria-label={ariaLabel ?? `${index + 1} of ${safeSlideCount}`}
       aria-roledescription="slide"
       className={className}
+      role="group"
       style={style}
     >
       {children}
-    </article>
+    </div>
   );
 };
 
