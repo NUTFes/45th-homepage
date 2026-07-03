@@ -21,7 +21,7 @@ export default function HeaderDropdown({ disabled = false, label, items }: Heade
   return (
     <MenuTrigger isOpen={isOpen} onOpenChange={setIsOpen} trigger="press">
       <Button
-        className={`inline-flex rounded-sm py-s transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-main disabled:cursor-not-allowed disabled:text-font-gray ${
+        className={`inline-flex cursor-pointer rounded-sm py-s transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-main disabled:cursor-not-allowed disabled:text-font-gray ${
           isOpen
             ? "text-base underline underline-offset-4"
             : "text-base-dark hover:text-base hover:underline hover:underline-offset-4"
