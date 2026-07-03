@@ -1,0 +1,174 @@
+"use client";
+
+import Image from "next/image";
+import { Button } from "@/components/aria/Button";
+import SectionTitle from "@/components/ui/SectionTitle";
+import ContactAccordionSection from "./ui/ContactAccordionSection";
+import ContactSection from "./ui/ContactSection";
+import { useContactForm } from "./useContactForm";
+import { validateContactForm } from "./validation";
+
+const DEFAULT_VALUES = {
+  name: "",
+  kana: "",
+  gender: "",
+  age: "",
+  region: "",
+  email: "",
+  phone: "",
+  inquiryType: "",
+  inquiry: "",
+} as const;
+
+const GENDER_OPTIONS = ["男性", "女性", "その他"] as const;
+const INQUIRY_TYPE_OPTIONS = [
+  "ご質問",
+  "ご協賛について",
+  "出店について",
+  "落とし物",
+  "その他",
+] as const;
+
+const validateOnlySubmit = () => undefined;
+
+export default function ContactPageView() {
+  const { errors, handleSubmit, isSubmitting, register } = useContactForm({
+    defaultValues: DEFAULT_VALUES,
+    validate: validateContactForm,
+    onSubmit: validateOnlySubmit,
+  });
+
+  return (
+    <div className="relative min-h-screen overflow-hidden bg-base">
+      <Image
+        src="/image/PageBack1.svg"
+        alt=""
+        aria-hidden="true"
+        width={287}
+        height={333}
+        className="pointer-events-none absolute top-0 right-0 z-0 hidden md:block"
+      />
+      <Image
+        src="/image/PageBack2.svg"
+        alt=""
+        aria-hidden="true"
+        width={243}
+        height={644}
+        className="pointer-events-none absolute bottom-20 left-0 z-0 hidden md:block"
+      />
+
+      <div className="relative z-20 mx-auto flex w-full flex-col gap-4l py-4l md:gap-3l md:pt-5l md:pb-pm">
+        <section className="flex flex-col gap-s md:gap-ll">
+          <div className="md:px-pl">
+            <SectionTitle title="お問い合わせ" />
+          </div>
+          <div className="px-ll md:mx-auto md:w-full md:max-w-200 md:px-0">
+            <p className="text-text whitespace-pre-line text-font-main md:text-Ptext">
+              下記フォーマットにご記入いただき、「送信」ボタンより送信ください。1週間以内に担当者よりご連絡させていただきます。
+              {"\n\n"}
+              また、お問い合わせの内容（広告・勧誘・ご紹介など）によってはお返事を差し上げられない場合がございます。あらかじめご了承ください。
+            </p>
+          </div>
+        </section>
+
+        <form
+          noValidate
+          onSubmit={handleSubmit}
+          className="flex w-full flex-col gap-l md:mx-auto md:max-w-200 md:gap-3l"
+        >
+          <ContactSection
+            label="お名前"
+            name="name"
+            required
+            placeholder="技大　太郎"
+            autoComplete="name"
+            error={errors.name}
+            {...register("name")}
+          />
+          <ContactSection
+            label="ふりがな"
+            name="kana"
+            required
+            placeholder="ぎだい　たろう"
+            autoComplete="off"
+            error={errors.kana}
+            {...register("kana")}
+          />
+          <ContactAccordionSection
+            label="性別"
+            name="gender"
+            options={GENDER_OPTIONS}
+            placeholder="未選択"
+            error={errors.gender}
+            {...register("gender")}
+          />
+          <ContactSection
+            label="年齢"
+            name="age"
+            placeholder="半角数字"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            autoComplete="off"
+            error={errors.age}
+            {...register("age")}
+          />
+          <ContactSection
+            label="お住まいの地域"
+            name="region"
+            placeholder="新潟県長岡市"
+            autoComplete="address-level2"
+            error={errors.region}
+            {...register("region")}
+          />
+          <ContactSection
+            label="メールアドレス"
+            name="email"
+            required
+            type="email"
+            placeholder="nutfes@gmail.com"
+            inputMode="email"
+            autoComplete="email"
+            error={errors.email}
+            {...register("email")}
+          />
+          <ContactSection
+            label="電話番号"
+            name="phone"
+            type="tel"
+            placeholder="ハイフンなし数字のみ"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            autoComplete="tel"
+            error={errors.phone}
+            {...register("phone")}
+          />
+          <ContactAccordionSection
+            label="お問い合わせ項目"
+            name="inquiryType"
+            required
+            options={INQUIRY_TYPE_OPTIONS}
+            placeholder="未選択"
+            error={errors.inquiryType}
+            {...register("inquiryType")}
+          />
+          <ContactSection
+            label="お問い合わせ内容"
+            name="inquiry"
+            required
+            type="textarea"
+            rows={5}
+            className="[&_textarea]:h-pl"
+            error={errors.inquiry}
+            {...register("inquiry")}
+          />
+
+          <div className="flex justify-center pt-ss md:pt-0">
+            <Button type="submit" variant="cta" isPending={isSubmitting}>
+              送信
+            </Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}

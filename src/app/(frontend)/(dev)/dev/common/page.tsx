@@ -11,6 +11,7 @@ import InfoFrame from "@/components/ui/InfoFrame";
 import InfoBlock from "@/components/ui/InfoBlock";
 import ImportantFrame from "@/components/ui/ImportantFrame";
 import NewsItem from "@/components/ui/NewsItem";
+import EventIntroFrame from "@/components/ui/EventIntroFrame";
 import {
   Beer,
   BusFront,
@@ -28,9 +29,12 @@ import { DevPageContainer } from "../_components/DevPageContainer";
 import { DevPanel } from "../_components/DevPanel";
 import { DevSection } from "../_components/DevSection";
 import ButtonMain from "@/components/ui/ButtonMain";
+import { Button } from "@/components/aria/Button";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { sampleNewsItems } from "../_data/sampleNews";
+import MapFrame from "@/components/ui/MapFrame";
 import EventFrame from "@/components/ui/EventFrame";
+import EventInfoCard from "@/components/ui/EventInfoCard";
 
 const previewSlides = ["Slide 1", "Slide 2", "Slide 3"];
 const noImportantNewsMessage = "現在、重要なお知らせはありません。";
@@ -143,10 +147,27 @@ export default function DevCommonComponentsPage() {
           </div>
         </DevPanel>
 
+        <DevPanel title="Button (CTA)">
+          <div className="flex flex-wrap items-center gap-m bg-base">
+            <Button variant="cta">送信</Button>
+            <Button variant="cta" isDisabled>
+              送信
+            </Button>
+            <Button variant="cta" isPending>
+              送信
+            </Button>
+          </div>
+        </DevPanel>
+
         <DevPanel title="SectionTitle">
           <div className="bg-base">
             <SectionTitle title="PICK UP" />
           </div>
+        </DevPanel>
+        <DevPanel title="MapFrame">
+          <MapFrame imageSrc="/image/top/HeroAll.png" alt="Map" type="short" title="1F" />
+          <MapFrame imageSrc="/image/top/HeroAll.png" alt="Map" type="long" title="長いテキスト" />
+          <MapFrame title="画像が無い場合" />
         </DevPanel>
         <DevPanel title="EventFrame">
           <div className="flex flex-wrap gap-m p-m">
@@ -164,6 +185,21 @@ export default function DevCommonComponentsPage() {
               name="あいうえおかきくけこさしすせそたちつてとなにぬねの"
               href="/"
               imageUrl="/icon/Instagram.png"
+            />
+          </div>
+        </DevPanel>
+        <DevPanel title="EventInfoCard">
+          <div className="flex flex-wrap items-center gap-m bg-base">
+            <EventInfoCard location="講義棟1階201教室" title="キッチンカーエリア" imageSrc="" />
+          </div>
+        </DevPanel>
+      </DevSection>
+      <DevSection title="EventIntroFrame">
+        <DevPanel title="EventIntroFrame (src/components/ui)">
+          <div className="flex flex-col gap-m">
+            <EventIntroFrame
+              title="トムブラウンがやってくる！"
+              body="説明鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま鮪かま"
             />
           </div>
         </DevPanel>

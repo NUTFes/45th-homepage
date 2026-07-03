@@ -1,10 +1,7 @@
 @import "tailwindcss";
-@source "../app/(frontend)";
-@source "../components/layout";
-@source "../components/ui";
-@source "../modules";
 
 @plugin "tailwindcss-animate";
+@plugin "tailwindcss-react-aria-components";
 
 :root {
   --bottom-nav-item-size: 57px;
@@ -26,6 +23,10 @@
   --color-font-gray: #8b8982;
   --color-accent: #ff5bef;
   --color-base-shadow: #111d53;
+  --color-required: #ff5b7f;
+  --color-required-badge: #fe346a;
+  --color-required-bg: #fff0f3;
+  --color-placeholder: #c7c5c5;
 
   --font-kaisotai: var(--font-kaisotai-next), sans-serif;
   --font-sans:
@@ -88,4 +89,19 @@
     var(--color-button-start) 20%,
     var(--color-button-end) 100%
   );
+}
+
+/* NOTE: ユーザの環境設定に応じて余計な動きを抑制する */
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

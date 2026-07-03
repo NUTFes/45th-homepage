@@ -11,7 +11,12 @@ import sharp from "sharp";
 import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
 import { News } from "./collections/News";
+import { Programs } from "./collections/Programs";
+import { ProgramTags } from "./collections/ProgramTags";
+import { EventsPage } from "./globals/EventsPage";
+import { SponsorsPage } from "./globals/SponsorsPage";
 import { TopPage } from "./globals/TopPage";
+import { WeatherSettings } from "./globals/WeatherSettings";
 import { migrations } from "./migrations";
 
 const filename = fileURLToPath(import.meta.url);
@@ -75,8 +80,8 @@ export default buildConfig({
       },
     },
   },
-  collections: [Users, Media, News],
-  globals: [TopPage],
+  collections: [Users, Media, News, Programs, ProgramTags],
+  globals: [TopPage, EventsPage, SponsorsPage, WeatherSettings],
   editor: lexicalEditor(),
   secret: env.PAYLOAD_SECRET,
   typescript: {
