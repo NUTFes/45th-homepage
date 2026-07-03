@@ -32,7 +32,7 @@ export default function HeaderDropdown({ disabled = false, label, items }: Heade
       </Button>
 
       <Popover
-        className="entering:duration-300 entering:ease-in-out entering:animate-in entering:fade-in entering:slide-in-from-top-2 exiting:duration-200 exiting:ease-in-out exiting:animate-out exiting:fade-out exiting:slide-out-to-top-2 z-250 w-[206px] overflow-hidden rounded-lg bg-white shadow-[0_0_12px_0] shadow-base-shadow/50 outline-none"
+        className="z-250 w-[206px] overflow-hidden rounded-lg bg-white shadow-[0_0_12px_0] shadow-base-shadow/50 outline-none entering:duration-300 entering:ease-in-out entering:animate-in entering:fade-in entering:slide-in-from-top-2 exiting:duration-200 exiting:ease-in-out exiting:animate-out exiting:fade-out exiting:slide-out-to-top-2"
         offset={0}
         placement="bottom"
       >
