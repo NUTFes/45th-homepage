@@ -1,4 +1,5 @@
 import MapAccordion from "@/modules/map/ui/MapAccordion";
+import MapMenu from "@/modules/map/ui/MapMenu";
 
 import { DevPageContainer } from "../../_components/DevPageContainer";
 import { DevPanel } from "../../_components/DevPanel";
@@ -20,6 +21,14 @@ export default function DevMapPageModules() {
       <DevSection title="MapAccordion">
         <DevPanel title="Default">
           <MapAccordion items={items} />
+        </DevPanel>
+      </DevSection>
+
+      <DevSection title="MapMenu">
+        <DevPanel title="PC Default">
+          <div className="flex min-h-224 justify-end overflow-hidden bg-secondary">
+            <MapMenu className="static" />
+          </div>
         </DevPanel>
       </DevSection>
     </DevPageContainer>
