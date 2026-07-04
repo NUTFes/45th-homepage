@@ -311,7 +311,7 @@ function MapMenuGroupSection({
 
           <span
             aria-hidden="true"
-            className="relative flex size-10 shrink-0 items-center justify-center"
+            className="relative flex size-8 shrink-0 items-center justify-center"
           >
             <Plus className="absolute size-5 opacity-100 group-data-expanded:opacity-0" />
             <Minus className="absolute size-5 opacity-0 group-data-expanded:opacity-100" />
