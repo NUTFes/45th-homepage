@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { Minus, Plus } from "lucide-react";
+import { Button, Disclosure, DisclosurePanel } from "react-aria-components";
 import { twMerge } from "tailwind-merge";
 
 export type MapMenuEntry = {
@@ -62,17 +64,23 @@ const menuShellClassName =
   "sticky top-0 hidden min-h-svh w-[472px] shrink-0 items-start bg-base-dark py-4l pl-4l pr-pm md:flex";
 const menuListClassName = "flex w-[292px] flex-col";
 const menuItemClassName = "border-b border-secondary";
-const rowClassName =
-  "flex min-h-[72px] w-full items-center px-l py-m text-left transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-main";
-const leafRowClassName = twMerge(rowClassName, "justify-start");
-const parentRowClassName = twMerge(rowClassName, "justify-between");
+const rowClassName = "flex min-h-[72px] w-full items-center px-l py-m text-Ptext-large";
+const leafButtonClassName = twMerge(
+  rowClassName,
+  "focus-visible:outline-inset text-left focus-visible:outline-2 focus-visible:outline-main",
+);
+const parentRowClassName = twMerge(rowClassName, "justify-between gap-s");
+const parentButtonClassName =
+  "min-w-0 flex-1 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-main";
+const disclosureButtonClassName =
+  "group/trigger relative flex size-10 shrink-0 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-main disabled:cursor-not-allowed";
 const childListClassName = "flex w-full flex-col gap-xs px-ll pb-m pl-5l";
 const childButtonClassName =
-  "flex min-h-7 items-center text-left text-Ptext transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-main";
+  "flex min-h-7 items-center text-left text-Ptext focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-main";
 
-const selectableClassName = "cursor-pointer text-font-gray hover:text-font-main";
+const selectableClassName = "cursor-pointer text-font-main";
 const selectedClassName = "text-font-main";
-const disabledClassName = "cursor-not-allowed text-font-gray opacity-40";
+const disabledClassName = "cursor-not-allowed text-font-gray";
 
 function getEntryClassName(entry: MapMenuEntry, selectedId: string) {
   if (entry.disabled) {
@@ -111,40 +119,74 @@ export default function MapMenu({
 
           return (
             <li key={section.id} className={menuItemClassName}>
-              <button
-                type="button"
-                className={twMerge(
-                  hasChildren ? parentRowClassName : leafRowClassName,
-                  "text-Ptext-large",
-                  getEntryClassName(section, currentSelectedId),
-                )}
-                aria-current={section.id === currentSelectedId ? "true" : undefined}
-                disabled={section.disabled}
-                onClick={() => selectEntry(section)}
-              >
-                <span>{section.label}</span>
-                {hasChildren && <span aria-hidden="true">ー</span>}
-              </button>
-
-              {hasChildren && (
-                <ul className={childListClassName}>
-                  {section.items?.map((item) => (
-                    <li key={item.id}>
-                      <button
-                        type="button"
-                        className={twMerge(
-                          childButtonClassName,
-                          getEntryClassName(item, currentSelectedId),
-                        )}
-                        aria-current={item.id === currentSelectedId ? "true" : undefined}
-                        disabled={item.disabled}
-                        onClick={() => selectEntry(item)}
-                      >
-                        {item.label}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+              {hasChildren ? (
+                <Disclosure defaultExpanded className="group">
+                  <div className={parentRowClassName}>
+                    <button
+                      type="button"
+                      className={twMerge(
+                        parentButtonClassName,
+                        getEntryClassName(section, currentSelectedId),
+                      )}
+                      aria-current={section.id === currentSelectedId ? "true" : undefined}
+                      disabled={section.disabled}
+                      onClick={() => selectEntry(section)}
+                    >
+                      {section.label}
+                    </button>
+                    <Button
+                      slot="trigger"
+                      className={twMerge(
+                        disclosureButtonClassName,
+                        section.disabled ? disabledClassName : selectedClassName,
+                      )}
+                      isDisabled={section.disabled}
+                      aria-label={`${section.label}を開閉`}
+                    >
+                      <Plus
+                        aria-hidden="true"
+                        className="absolute size-5 opacity-100 group-data-expanded:opacity-0"
+                      />
+                      <Minus
+                        aria-hidden="true"
+                        className="absolute size-5 opacity-0 group-data-expanded:opacity-100"
+                      />
+                    </Button>
+                  </div>
+                  <DisclosurePanel className="h-(--disclosure-panel-height) overflow-hidden duration-300 motion-safe:transition-[height] [hidden]:block">
+                    <ul className={childListClassName}>
+                      {section.items?.map((item) => (
+                        <li key={item.id}>
+                          <button
+                            type="button"
+                            className={twMerge(
+                              childButtonClassName,
+                              getEntryClassName(item, currentSelectedId),
+                            )}
+                            aria-current={item.id === currentSelectedId ? "true" : undefined}
+                            disabled={item.disabled}
+                            onClick={() => selectEntry(item)}
+                          >
+                            {item.label}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </DisclosurePanel>
+                </Disclosure>
+              ) : (
+                <button
+                  type="button"
+                  className={twMerge(
+                    leafButtonClassName,
+                    getEntryClassName(section, currentSelectedId),
+                  )}
+                  aria-current={section.id === currentSelectedId ? "true" : undefined}
+                  disabled={section.disabled}
+                  onClick={() => selectEntry(section)}
+                >
+                  <span>{section.label}</span>
+                </button>
               )}
             </li>
           );
