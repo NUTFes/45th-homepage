@@ -14,6 +14,8 @@ export type EventFrameProps = {
 
 const DISPLAY_NAME_MAX_LENGTH = 24;
 const LARGE_TEXT_MAX_LENGTH = 14;
+const PC_DISPLAY_NAME_MAX_LENGTH = 22;
+const PC_LARGE_TEXT_MAX_LENGTH = 14;
 const TOOLTIP_OFFSET = -120;
 const FALLBACK_LOGO = "/favicon/45th-LogoBlue.svg";
 
@@ -40,16 +42,24 @@ export default function EventFrame(props: EventFrameProps) {
       prefetch={false}
       className="flex h-54 md:h-84 w-37 md:w-65 flex-col rounded-lg md:rounded-xl bg-secondary pb-s md:pb-l shadow-[0px_6px_8px_rgba(60,224,232,0.6)] md:shadow-[0px_6px_8px_4px_rgba(60,224,232,0.8)] transition-all duration-200 hover:-translate-y-1 "
     >
-      <div className="w-full shrink-0 overflow-hidden rounded-tl-lg rounded-tr-lg md:rounded-tl-xl md:rounded-tr-xl bg-linear-to-b from-[#3ce0e8] to-secondary to-70% px-4.5 py-3">
+      <div className="flex items-center justify-center h-33.5 md:h-62  shrink-0 overflow-hidden rounded-tl-lg rounded-tr-lg md:rounded-tl-xl md:rounded-tr-xl bg-linear-to-b from-[#3ce0e8] to-secondary to-70% ">
         {hasImageError ? (
-          <Image className="object-contain" src={FALLBACK_LOGO} alt="" width={111} height={111} />
+          <Image
+            className="object-contain w-27.75 h-27.75 md:w-51.25 md:h-51.25"
+            src={FALLBACK_LOGO}
+            alt=""
+            width={205}
+            height={205}
+            sizes="(min-width: 768px) 205px, 111px"
+          />
         ) : (
           <Image
-            className="object-cover"
+            className="object-cover w-27.75 h-27.75 md:w-51.25 md:h-51.25"
             src={imageUrl}
             alt=""
-            width={111}
-            height={111}
+            width={205}
+            height={205}
+            sizes="(min-width: 768px) 205px, 111px"
             onError={handleImageError}
           />
         )}
