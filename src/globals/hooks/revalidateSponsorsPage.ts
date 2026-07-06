@@ -9,8 +9,9 @@ export const revalidateSponsorsPageAfterChange: GlobalAfterChangeHook = ({
   req: { payload },
 }) => {
   if (!context.disableRevalidate) {
-    payload.logger.info("Revalidating sponsors page");
+    payload.logger.info("Revalidating sponsors page and top sponsor ads");
     revalidateTag(CACHE_TAGS.sponsorsPage, "max");
+    revalidatePath("/");
     revalidatePath("/sponsors");
   }
 
