@@ -58,7 +58,7 @@ export default function BottomNavigation() {
   return (
     <nav
       aria-label="モバイルナビゲーション"
-      className="shadow-[0_-4px_4px_rgba(17,29,83,1.0)] fixed right-0 bottom-0 left-0 z-300 flex bg-base-dark px-s pt-ss pb-[calc(var(--bottom-nav-padding-y)+env(safe-area-inset-bottom))] md:hidden bottom-nav-shadow"
+      className="bottom-nav-shadow fixed right-0 bottom-0 left-0 z-300 flex bg-base-dark px-s pt-ss pb-[calc(var(--bottom-nav-padding-y)+env(safe-area-inset-bottom))] shadow-[0_-4px_4px_rgba(17,29,83,1.0)] md:hidden"
     >
       <ul className="flex w-full list-none justify-between">
         {NAV_ITEMS.map((item) => (

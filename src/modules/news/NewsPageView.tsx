@@ -63,7 +63,7 @@ async function NewsPageContent({ searchParams }: NewsPageViewProps) {
         </div>
       </div>
       <div className="relative flex items-center justify-center">
-        <ButtonMain href="/" title="トップへ戻る ＞"/>
+        <ButtonMain href="/" title="トップへ戻る ＞" />
       </div>
     </>
   );

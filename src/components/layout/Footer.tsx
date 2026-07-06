@@ -135,10 +135,10 @@ export default function Footer() {
                       width={48}
                       height={48}
                     />
-                  
-                  <div className="font-kaisotai text-title text-[40px] text-base-dark">
-                    45th  <span className="-tracking-[0.2rem]">技大祭</span>
-                  </div>
+
+                    <div className="font-kaisotai text-title text-[40px] text-base-dark">
+                      45th <span className="-tracking-[0.2rem]">技大祭</span>
+                    </div>
                   </Link>
                 </div>
                 <p className="text-[14px]">長岡技術科学大学　技大祭実行委員会</p>

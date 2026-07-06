@@ -4,7 +4,7 @@ import Image from "next/image";
 
 function NotFoundContent() {
   return (
-    <div className="z-10 flex h-screen w-full flex-col items-center justify-center gap-y-4l text-center text-text text-white h-screen">
+    <div className="z-10 flex h-screen w-full flex-col items-center justify-center gap-y-4l text-center text-text text-white">
       <div className="flex flex-col items-center justify-center">
         <div className="flex h-[66px] flex-col items-center justify-center font-kaisotai text-[44px] lg:h-[120px] lg:text-[80px]">
           Oh No!
@@ -36,7 +36,7 @@ function NotFoundSkeleton() {
 
 export default function NotFoundView() {
   return (
-    <div className="h-screen overflow-hidden w-full">
+    <div className="h-screen w-full overflow-hidden">
       {/* スマホ版 */}
       <div className="relative flex h-full flex-col items-center overflow-hidden bg-base py-4l">
         <Image

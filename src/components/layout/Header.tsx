@@ -49,12 +49,14 @@ export default function Page() {
         <Link
           href="/"
           aria-label="45th 技大祭 トップへ"
-          className="flex min-w-0 items-center gap-xs shrink-0 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-main"
+          className="flex min-w-0 shrink-0 items-center gap-xs rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-main"
         >
           <Image src="/icon/45th-logo-top.svg" alt="" width={48} height={48} className="size-12" />
-        
-        <p className="truncate font-kaisotai text-title text-base-dark">45th <span className="-tracking-[0.2rem]">技大祭</span></p>
-      </Link>
+
+          <p className="truncate font-kaisotai text-title text-base-dark">
+            45th <span className="-tracking-[0.2rem]">技大祭</span>
+          </p>
+        </Link>
       </div>
 
       <div className="hidden items-center gap-4l md:flex">
