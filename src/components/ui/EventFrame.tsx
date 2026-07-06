@@ -15,7 +15,7 @@ export type EventFrameProps = {
 const DISPLAY_NAME_MAX_LENGTH = 24;
 const LARGE_TEXT_MAX_LENGTH = 14;
 const PC_DISPLAY_NAME_MAX_LENGTH = 22;
-const PC_LARGE_TEXT_MAX_LENGTH = 14;
+const PC_LARGE_TEXT_MAX_LENGTH = 10;
 const TOOLTIP_OFFSET = -120;
 const FALLBACK_LOGO = "/favicon/45th-LogoBlue.svg";
 
@@ -34,6 +34,13 @@ export default function EventFrame(props: EventFrameProps) {
 
   const nameClassName =
     name.length <= LARGE_TEXT_MAX_LENGTH ? "text-textb" : "text-[14px] leading-[20px]";
+
+  const isPcTruncated = name.length > PC_DISPLAY_NAME_MAX_LENGTH;
+
+  const PcdisplayName = isPcTruncated ? name.slice(0, PC_DISPLAY_NAME_MAX_LENGTH - 1) + "…" : name;
+
+  const PcNameClassName =
+    name.length < PC_LARGE_TEXT_MAX_LENGTH ? "text-Ptext-large leading-[28px]" : "text-Ptitle-small font-medium";
 
   const card = (
     <Link
@@ -66,12 +73,13 @@ export default function EventFrame(props: EventFrameProps) {
       </div>
 
       <div className="mt-auto flex h-4l items-center px-s">
-        <div className={nameClassName}>{displayName}</div>
+        <div className={`md:hidden ${nameClassName}`}>{displayName}</div>
+        <div className={`hidden md:block ${PcNameClassName}`}>{PcdisplayName}</div>
       </div>
     </Link>
   );
 
-  if (!isTruncated) {
+  if (!isTruncated && !isPcTruncated) {
     return card;
   }
 
