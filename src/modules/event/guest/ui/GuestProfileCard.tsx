@@ -23,7 +23,7 @@ export default function GuestProfileCard({ profile }: GuestProfileCardProps) {
       <h3 className="w-fit max-w-full min-w-26 border-b border-main pb-1 text-title-small wrap-break-word md:text-Ptitle-small">
         {profile.name}
       </h3>
-      <dl className="flex min-w-0 flex-col text-text md:text-Ptext">
+      <dl className="flex min-w-0 flex-col gap-1 text-text md:text-Ptext">
         {details.map(({ label, value }) => (
           <div key={label} className="min-w-0 wrap-break-word">
             <dt className="inline font-bold text-accent">{label}：</dt>
