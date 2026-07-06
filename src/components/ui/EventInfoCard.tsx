@@ -52,7 +52,7 @@ export default function EventInfoCard({ location, title, imageSrc, alt }: EventI
           <p className="pl-ss text-text text-font-main md:text-Ptext-large">{location}</p>
         </section>
       </div>
-      <div className="mb-l md:mb-0">
+      <div className="mb-l md:mb-0 md:pl-4l md:pr-pm">
         <MapFrame title={title} imageSrc={imageSrc} alt={alt ?? title} />
       </div>
       <div className="flex items-center justify-center bg-base pt-m md:bg-transparent md:pt-0 md:pr-pm md:pl-4l">
