@@ -1,6 +1,6 @@
 import type { Media, SponsorsPage } from "@/payload-types";
 
-import type { SponsorDTO, SponsorMediaDTO } from "./types";
+import type { SponsorDTO, SponsorMediaDTO, SponsorWithImageDTO } from "./types";
 
 type SponsorRow = NonNullable<SponsorsPage["sponsors"]>[number];
 
@@ -36,3 +36,6 @@ export const toSponsorDTO = (row: SponsorRow, index: number): SponsorDTO | null 
     ...(image ? { image } : {}),
   };
 };
+
+export const hasSponsorImage = (sponsor: SponsorDTO): sponsor is SponsorWithImageDTO =>
+  sponsor.image !== undefined;
