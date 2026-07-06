@@ -40,7 +40,7 @@ export default function EventFrame(props: EventFrameProps) {
   const PcdisplayName = isPcTruncated ? name.slice(0, PC_DISPLAY_NAME_MAX_LENGTH - 1) + "…" : name;
 
   const PcNameClassName =
-    name.length < PC_LARGE_TEXT_MAX_LENGTH ? "text-Ptext-large leading-[28px]" : "text-Ptitle-small font-medium";
+    name.length <= PC_LARGE_TEXT_MAX_LENGTH ? "text-Ptitle-small font-medium" : "text-Ptext-large leading-[28px]";
 
   const card = (
     <Link
