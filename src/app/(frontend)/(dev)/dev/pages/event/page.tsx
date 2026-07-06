@@ -77,24 +77,21 @@ export default function DevTopPageModulesPage() {
           <div className="flex flex-col gap-4l bg-base">
             <GuestProfileSection
               id="guest-preview"
-              title="ゲスト"
+              variant="guest"
               performerName="ヨネダ２０００"
               profiles={guestProfiles}
               image={{
                 src: "/image/event/guest.jpg",
                 alt: "ヨネダ２０００",
-                aspectRatio: "landscape",
               }}
             />
             <GuestProfileSection
               id="mc-preview"
-              title="MC"
+              variant="mc"
               profiles={mcProfiles}
-              imagePosition="right"
               image={{
                 src: "/image/event/mc.jpg",
                 alt: "MCの清野幹さん",
-                aspectRatio: "portrait",
               }}
             />
           </div>
