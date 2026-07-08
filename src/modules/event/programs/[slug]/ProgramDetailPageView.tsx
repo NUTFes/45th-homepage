@@ -5,6 +5,9 @@ import EventIntroFrame from "@/components/ui/EventIntroFrame";
 import SectionTitle from "@/components/ui/SectionTitle";
 
 export default function ProgramDetailPageView() {
-    return (
-    );
+    return(
+        <div>
+            
+        </div>
+    )   
 }
