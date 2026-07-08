@@ -14,6 +14,10 @@ export type SponsorDTO = {
   image?: SponsorMediaDTO;
 };
 
+export type SponsorWithImageDTO = SponsorDTO & {
+  image: SponsorMediaDTO;
+};
+
 export type SponsorsPageData = {
   thanksMessage: SponsorsPage["thanksMessage"];
   sponsors: SponsorDTO[];
