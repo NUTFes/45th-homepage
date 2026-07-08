@@ -300,7 +300,7 @@ function TopPageSkeleton() {
 
 export default function TopPageView() {
   return (
-    <div className="relative z-0 flex min-h-screen flex-col items-center overflow-x-hidden bg-base">
+    <div className="relative z-0 flex min-h-screen flex-col items-center overflow-x-hidden bg-base" id="top">
       <TopHero />
       <div className="relative flex w-full flex-col gap-4l">
         <Suspense fallback={<TopPageSkeleton />}>

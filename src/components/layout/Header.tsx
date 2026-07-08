@@ -47,14 +47,14 @@ export default function Page() {
     <header className="sticky top-0 z-100 flex h-(--header-height) w-full items-center justify-between bg-white px-m py-xs [--header-height:72px] md:px-5l">
       <div>
         <Link
-          href="/"
+          href="/#top"
           aria-label="45th 技大祭 トップへ"
           className="flex min-w-0 shrink-0 items-center gap-xs rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-main"
         >
           <Image src="/icon/45th-logo-top.svg" alt="" width={48} height={48} className="size-12" />
 
           <p className="truncate font-kaisotai text-title text-base-dark">
-            45th <span className="-tracking-[0.2rem]">技大祭</span>
+            45th <span className="tracking-[-0.2rem]">技大祭</span>
           </p>
         </Link>
       </div>
