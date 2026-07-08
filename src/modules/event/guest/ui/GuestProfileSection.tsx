@@ -26,8 +26,8 @@ type McSectionProps = GuestProfileSectionBaseProps & {
 export type GuestProfileSectionProps = GuestSectionProps | McSectionProps;
 
 const IMAGE_SIZES = {
-  guest: "(min-width: 1120px) 384px, (min-width: 768px) calc(40vw - 64px), calc(60vw - 12px)",
-  mc: "(min-width: 1120px) 313px, (min-width: 768px) calc(33.33vw - 60px), calc(40vw - 8px)",
+  guest: "(min-width: 1120px) 384px, (min-width: 768px) 52vw, calc(100vw - 132px)",
+  mc: "(min-width: 1120px) 313px, (min-width: 768px) 38vw, calc(40vw - 8px)",
 } as const;
 
 export default function GuestProfileSection(props: GuestProfileSectionProps) {
@@ -36,7 +36,7 @@ export default function GuestProfileSection(props: GuestProfileSectionProps) {
   const headingId = `guest-profile-section-${id}`;
   const imageView = (
     <div
-      className={`relative w-full overflow-hidden border-2 border-main ${isGuest ? "aspect-4/3" : "aspect-2/3"}`}
+      className={`relative min-w-0 overflow-hidden border-2 border-main ${isGuest ? "aspect-3/2 flex-[1_1_0] md:max-w-96" : "aspect-2/3 max-w-40 flex-[1_1_8rem] md:max-w-78.25"}`}
     >
       <Image
         alt={image.alt}
@@ -63,19 +63,17 @@ export default function GuestProfileSection(props: GuestProfileSectionProps) {
         </h2>
         {isGuest ? (
           <div className="flex min-w-0 flex-col gap-l md:gap-3l">
-            <div className="grid min-w-0 grid-cols-[minmax(0,3fr)_minmax(0,2fr)] items-center gap-m md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] md:gap-3l">
+            <div className="flex min-w-0 items-center gap-m pr-l md:gap-3l">
               {imageView}
-              <p className="text-center text-button wrap-break-word md:text-title">
+              <p className="max-w-36 flex-none text-center text-button wrap-break-word md:max-w-60 md:text-title">
                 {props.performerName}
               </p>
             </div>
-            <div className="grid min-w-0 grid-cols-[minmax(0,3fr)_minmax(0,2fr)] gap-m md:block">
-              <div className="min-w-0 pl-l md:max-w-180 md:pl-0">{profileList}</div>
-            </div>
+            <div className="min-w-0 pl-l md:max-w-180 md:pl-0">{profileList}</div>
           </div>
         ) : (
-          <div className="grid min-w-0 grid-cols-[minmax(0,3fr)_minmax(0,2fr)] items-end gap-m md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:gap-4l">
-            <div className="min-w-0 pl-l md:pl-0">{profileList}</div>
+          <div className="flex min-w-0 items-end gap-m md:gap-4l">
+            <div className="min-w-0 flex-[1_1_auto] pl-l md:pl-0">{profileList}</div>
             {imageView}
           </div>
         )}
