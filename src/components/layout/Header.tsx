@@ -1,13 +1,46 @@
 import Image from "next/image";
 import Link from "next/link";
+import HeaderDropdown from "@/components/layout/HeaderDropdown";
+import type { HeaderDropdownItem } from "@/components/layout/HeaderDropdown";
 import HeaderMenuButton from "@/components/layout/HeaderMenuButton";
 
-const headerNavItems = [
-  { label: "企画情報" },
-  { label: "スケジュール" },
-  { label: "マップ" },
-  { label: "利用案内" },
-] as const;
+type HeaderNavItem =
+  | {
+      label: string;
+      href: string;
+      disabled?: boolean;
+    }
+  | {
+      label: string;
+      items: HeaderDropdownItem[];
+      disabled?: boolean;
+    };
+
+// TODO: 各ページへのリンクを教えてもらう
+const headerNavItems: HeaderNavItem[] = [
+  {
+    label: "企画情報",
+    items: [
+      { label: "ゲスト", href: "/event/guest" },
+      { label: "コラボ", href: "/#", disabled: true },
+      { label: "企画", href: "/event/programs", disabled: true },
+      { label: "展示・体験", href: "/#", disabled: true },
+      { label: "食品販売", href: "/#", disabled: true },
+      { label: "物品販売", href: "/#", disabled: true },
+      { label: "企業ブース", href: "/#", disabled: true },
+    ],
+  },
+  { label: "スケジュール", href: "/schedule" },
+  { label: "マップ", href: "/map" },
+  {
+    label: "利用案内",
+    items: [
+      { label: "注意事項", href: "/attention" },
+      { label: "案内所・ヘルプ", href: "/#", disabled: true },
+      { label: "アクセス", href: "/access" },
+    ],
+  },
+];
 
 export default function Page() {
   return (
@@ -27,10 +60,24 @@ export default function Page() {
         <nav aria-label="ヘッダーナビゲーション" className="hidden lg:block">
           <ul className="flex items-center gap-4l text-Pbutton text-base-dark">
             {headerNavItems.map((item) => (
-              <li key={item.label}>
-                <span aria-disabled="true" className="cursor-not-allowed text-font-gray">
-                  {item.label}
-                </span>
+              <li key={item.label} className="flex h-(--header-height) items-center">
+                {"items" in item ? (
+                  <HeaderDropdown disabled={item.disabled} label={item.label} items={item.items} />
+                ) : item.disabled ? (
+                  <span
+                    aria-disabled="true"
+                    className="inline-flex cursor-not-allowed py-s text-font-gray"
+                  >
+                    {item.label}
+                  </span>
+                ) : (
+                  <Link
+                    href={item.href}
+                    className="inline-flex rounded-sm py-s transition-colors duration-200 hover:text-base hover:underline hover:underline-offset-4 focus-visible:underline focus-visible:underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-main"
+                  >
+                    {item.label}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>
