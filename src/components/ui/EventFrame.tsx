@@ -65,19 +65,21 @@ export default function EventFrame({ name, href, imageUrl }: EventFrameProps) {
   const pcDisplayName = truncate(name, PC_DISPLAY_NAME_MAX_LENGTH);
 
   const pcNameClassName =
-    name.length <= PC_LARGE_TEXT_MAX_LENGTH ? "text-Ptitle-small font-medium" : "text-Ptext-large leading-[28px]";
+    name.length <= PC_LARGE_TEXT_MAX_LENGTH
+      ? "text-Ptitle-small font-medium"
+      : "text-Ptext-large leading-[28px]";
 
   const card = (
     <Link
       href={href}
       aria-label={name}
       prefetch={false}
-      className="flex h-54 md:h-84 w-37 md:w-65 flex-col rounded-lg md:rounded-xl bg-secondary pb-s md:pb-l shadow-[0px_6px_8px_rgba(60,224,232,0.6)] md:shadow-[0px_6px_8px_4px_rgba(60,224,232,0.8)] transition-all duration-200 hover:-translate-y-1 "
+      className="flex h-54 w-37 flex-col rounded-lg bg-secondary pb-s shadow-[0px_6px_8px_rgba(60,224,232,0.6)] transition-all duration-200 hover:-translate-y-1 md:h-84 md:w-65 md:rounded-xl md:pb-l md:shadow-[0px_6px_8px_4px_rgba(60,224,232,0.8)]"
     >
-      <div className="flex items-center justify-center h-33.5 md:h-62  shrink-0 overflow-hidden rounded-tl-lg rounded-tr-lg md:rounded-tl-xl md:rounded-tr-xl bg-linear-to-b from-[#3ce0e8] to-secondary to-70% ">
+      <div className="flex h-33.5 shrink-0 items-center justify-center overflow-hidden rounded-tl-lg rounded-tr-lg bg-linear-to-b from-[#3ce0e8] to-secondary to-70% md:h-62 md:rounded-tl-xl md:rounded-tr-xl">
         {hasImageError ? (
           <Image
-            className="object-contain w-27.75 h-27.75 md:w-51.25 md:h-51.25"
+            className="h-27.75 w-27.75 object-contain md:h-51.25 md:w-51.25"
             src={FALLBACK_LOGO}
             alt=""
             width={205}
@@ -86,7 +88,7 @@ export default function EventFrame({ name, href, imageUrl }: EventFrameProps) {
           />
         ) : (
           <Image
-            className="object-cover w-27.75 h-27.75 md:w-51.25 md:h-51.25"
+            className="h-27.75 w-27.75 object-cover md:h-51.25 md:w-51.25"
             src={imageUrl}
             alt=""
             width={205}
