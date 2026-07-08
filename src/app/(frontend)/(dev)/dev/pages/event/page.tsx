@@ -4,6 +4,8 @@ import { DevSection } from "../../_components/DevSection";
 import EventSection from "@/modules/event/ui/EventSection";
 import type { EventFrameProps } from "@/components/ui/EventFrame";
 import EventPageView from "@/modules/event/ui/EventPageView";
+import ProgramPageView from "@/modules/event/ui/programs/category/[category]/ProgramPageView";
+import { PROGRAM_CATEGORIES } from "@/lib/events/constants";
 import GuestProfileCard, { type GuestProfile } from "@/modules/event/guest/ui/GuestProfileCard";
 
 export const metadata = {
@@ -67,6 +69,15 @@ export default function DevTopPageModulesPage() {
             <EventPageView />
           </div>
         </DevPanel>
+      </DevSection>
+      <DevSection title="ProgramPageView">
+        {PROGRAM_CATEGORIES.map(({ value, label }) => (
+          <DevPanel key={value} title={`ProgramPageView - ${label}`}>
+            <div className="bg-base">
+              <ProgramPageView category={value} />
+            </div>
+          </DevPanel>
+        ))}
       </DevSection>
     </DevPageContainer>
   );

@@ -2,6 +2,7 @@ import EventSection from "@/modules/event/ui/EventSection";
 import ButtonMain from "@/components/ui/ButtonMain";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { type EventFrameProps } from "@/components/ui/EventFrame";
+import { PROGRAM_CATEGORIES } from "@/lib/events/constants";
 
 const DUMMY_EVENTS: EventFrameProps[] = [
   {
@@ -15,13 +16,12 @@ const DUMMY_EVENTS: EventFrameProps[] = [
   { name: "イベント名サンプル5", href: "#5", imageUrl: "/favicon/45th-LogoBlue.svg" },
 ];
 
-const EVENT_SECTIONS = [
-  { id: "section1", title: "企画", viewAllHref: "#", events: DUMMY_EVENTS },
-  { id: "section2", title: "展示体験", viewAllHref: "#", events: DUMMY_EVENTS },
-  { id: "section3", title: "食品販売", viewAllHref: "#", events: DUMMY_EVENTS },
-  { id: "section4", title: "物品販売", viewAllHref: "#", events: DUMMY_EVENTS },
-  { id: "section5", title: "企業ブース", viewAllHref: "#", events: DUMMY_EVENTS },
-];
+const EVENT_SECTIONS = PROGRAM_CATEGORIES.map(({ value, label }) => ({
+  id: value,
+  title: label,
+  viewAllHref: `/event/programs/category/${value}`,
+  events: DUMMY_EVENTS,
+}));
 
 export default function EventPageView() {
   return (
