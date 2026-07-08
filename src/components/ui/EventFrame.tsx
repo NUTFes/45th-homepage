@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { TooltipTrigger, Focusable } from "react-aria-components";
@@ -16,13 +16,38 @@ const DISPLAY_NAME_MAX_LENGTH = 24;
 const LARGE_TEXT_MAX_LENGTH = 14;
 const PC_DISPLAY_NAME_MAX_LENGTH = 22;
 const PC_LARGE_TEXT_MAX_LENGTH = 10;
-const TOOLTIP_OFFSET = -120;
+const SP_TOOLTIP_OFFSET = -120;
+const PC_TOOLTIP_OFFSET = -250;
 const FALLBACK_LOGO = "/favicon/45th-LogoBlue.svg";
 
-export default function EventFrame(props: EventFrameProps) {
-  const { name, href, imageUrl } = props;
+const truncate = (text: string, max: number) =>
+  text.length > max ? text.slice(0, max - 1) + "…" : text;
 
+export default function EventFrame({ name, href, imageUrl }: EventFrameProps) {
   const [hasImageError, setHasImageError] = useState(false);
+
+  const [isPc, setIsPc] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+      return;
+    }
+
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
+    setIsPc(mediaQuery.matches);
+
+    const onChange = (event: MediaQueryListEvent) => {
+      setIsPc(event.matches);
+    };
+
+    mediaQuery.addEventListener("change", onChange);
+
+    return () => {
+      mediaQuery.removeEventListener("change", onChange);
+    };
+  }, []);
+
+  const tooltipOffset = isPc ? PC_TOOLTIP_OFFSET : SP_TOOLTIP_OFFSET;
 
   const handleImageError = () => {
     setHasImageError(true);
@@ -30,16 +55,16 @@ export default function EventFrame(props: EventFrameProps) {
 
   const isTruncated = name.length > DISPLAY_NAME_MAX_LENGTH;
 
-  const displayName = isTruncated ? name.slice(0, DISPLAY_NAME_MAX_LENGTH - 1) + "…" : name;
+  const displayName = truncate(name, DISPLAY_NAME_MAX_LENGTH);
 
   const nameClassName =
     name.length <= LARGE_TEXT_MAX_LENGTH ? "text-textb" : "text-[14px] leading-[20px]";
 
   const isPcTruncated = name.length > PC_DISPLAY_NAME_MAX_LENGTH;
 
-  const PcdisplayName = isPcTruncated ? name.slice(0, PC_DISPLAY_NAME_MAX_LENGTH - 1) + "…" : name;
+  const pcDisplayName = truncate(name, PC_DISPLAY_NAME_MAX_LENGTH);
 
-  const PcNameClassName =
+  const pcNameClassName =
     name.length <= PC_LARGE_TEXT_MAX_LENGTH ? "text-Ptitle-small font-medium" : "text-Ptext-large leading-[28px]";
 
   const card = (
@@ -74,7 +99,7 @@ export default function EventFrame(props: EventFrameProps) {
 
       <div className="mt-auto flex h-4l items-center px-s">
         <div className={`md:hidden ${nameClassName}`}>{displayName}</div>
-        <div className={`hidden md:block ${PcNameClassName}`}>{PcdisplayName}</div>
+        <div className={`hidden md:block ${pcNameClassName}`}>{pcDisplayName}</div>
       </div>
     </Link>
   );
@@ -86,7 +111,7 @@ export default function EventFrame(props: EventFrameProps) {
   return (
     <TooltipTrigger delay={300} closeDelay={300}>
       <Focusable>{card}</Focusable>
-      <Tooltip className="max-w-55 wrap-break-word" offset={TOOLTIP_OFFSET}>
+      <Tooltip className="max-w-55 wrap-break-word" offset={tooltipOffset}>
         {name}
       </Tooltip>
     </TooltipTrigger>
