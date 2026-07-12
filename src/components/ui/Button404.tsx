@@ -40,8 +40,7 @@ export default function Button404(props: Button404Props) {
           (referrerUrl.pathname === "/" ||
             knownRoutePrefixes.some(
               (route) =>
-                referrerUrl.pathname === route ||
-                referrerUrl.pathname.startsWith(`${route}/`),
+                referrerUrl.pathname === route || referrerUrl.pathname.startsWith(`${route}/`),
             ));
 
         shouldGoToTop = !isSameOrigin || !isKnownRoute;

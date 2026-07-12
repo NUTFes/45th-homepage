@@ -5,7 +5,7 @@ import Image from "next/image";
 
 function NotFoundContent() {
   return (
-    <div className="z-10 flex h-screen w-full flex-col items-center justify-center gap-y-4l text-center text-text text-white pb-4l">
+    <div className="z-10 flex h-screen w-full flex-col items-center justify-center gap-y-4l pb-4l text-center text-text text-white">
       <div className="flex flex-col items-center justify-center">
         <div className="flex h-[66px] flex-col items-center justify-center font-kaisotai text-[44px] lg:h-[120px] lg:text-[80px]">
           Oh No!
