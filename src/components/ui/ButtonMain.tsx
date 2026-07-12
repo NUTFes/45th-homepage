@@ -23,7 +23,7 @@ export default function ButtonMain(props: ButtonMainProps) {
         return;
       }
 
-      window.location.assign("/#top");
+      window.location.replace("/#top");
     };
 
     return (
