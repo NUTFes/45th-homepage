@@ -1,10 +1,11 @@
-import ButtonMain from "@/components/ui/ButtonMain";
+"use client";
+import Button404 from "@/components/ui/Button404";
 import { Suspense } from "react";
 import Image from "next/image";
 
 function NotFoundContent() {
   return (
-    <div className="z-10 flex h-screen w-full flex-col items-center justify-center gap-y-4l text-center text-text text-white">
+    <div className="z-10 flex h-screen w-full flex-col items-center justify-center gap-y-4l text-center text-text text-white pb-4l">
       <div className="flex flex-col items-center justify-center">
         <div className="flex h-[66px] flex-col items-center justify-center font-kaisotai text-[44px] lg:h-[120px] lg:text-[80px]">
           Oh No!
@@ -19,7 +20,7 @@ function NotFoundContent() {
           お探しのページは見つかりませんでした
         </div>
       </div>
-      <ButtonMain href="go-back" title="GO BACK" />
+      <Button404 title="GO BACK" />
     </div>
   );
 }
