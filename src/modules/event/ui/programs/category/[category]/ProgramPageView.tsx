@@ -29,9 +29,11 @@ export default function ProgramPageView({
   return (
     <div className="flex flex-col gap-4l bg-base pb-4l">
       <section aria-label={`${categoryLabel}の企画一覧`} className="flex flex-col gap-l">
-        <SectionTitle title={categoryLabel} />
-        <div className="flex justify-center">
-          <ul className="grid grid-cols-[repeat(2,max-content)] gap-x-m gap-y-3l">
+        <div className="md:pl-pl">
+          <SectionTitle title={categoryLabel} />
+        </div>
+        <div className="md:px-pm">
+          <ul className="grid grid-cols-[repeat(2,max-content)] justify-center gap-x-m gap-y-3l md:mx-auto md:max-w-385 md:grid-cols-[repeat(auto-fit,16.25rem)] md:content-start md:gap-x-4l md:gap-y-pm">
             {programs.map((program) => (
               <li key={program.href}>
                 <EventFrame {...program} />
