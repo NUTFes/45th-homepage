@@ -72,7 +72,7 @@ export default function GuestProfileSection(props: GuestProfileSectionProps) {
             <div className="min-w-0 pl-l md:max-w-180 md:pl-0">{profileList}</div>
           </div>
         ) : (
-          <div className="flex min-w-0 items-end gap-m md:gap-4l">
+          <div className="flex min-w-0 items-center gap-m md:gap-4l">
             <div className="min-w-0 flex-[1_1_auto] pl-l md:pl-0">{profileList}</div>
             {imageView}
           </div>
