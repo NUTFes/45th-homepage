@@ -30,6 +30,7 @@ export default function EventSection({ title, viewAllHref, id, events }: EventSe
           },
           containScroll: "trimSnaps",
         }}
+        slideCount={events.length}
       >
         <div className="flex items-center justify-between pr-m pl-l md:px-pm">
           <div

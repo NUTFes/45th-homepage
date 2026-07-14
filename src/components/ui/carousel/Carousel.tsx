@@ -35,6 +35,7 @@ type CarouselRootProps = {
   navigationStep?: "single" | "half-visible";
   options?: Omit<CarouselOptions, "loop">;
   onSelect?: (index: number) => void;
+  slideCount?: number;
 };
 
 type CarouselViewportProps = {
@@ -216,6 +217,7 @@ export const CarouselRoot = ({
   navigationStep = "single",
   options,
   onSelect,
+  slideCount: providedSlideCount,
 }: CarouselRootProps) => {
   const prefersReducedMotion = usePrefersReducedMotion();
   const hasConfiguredMotion = autoPlay || autoScroll;
@@ -273,13 +275,13 @@ export const CarouselRoot = ({
         canScrollNext: emblaApi.canScrollNext(),
         canScrollPrev: emblaApi.canScrollPrev(),
         selectedIndex: nextIndex,
-        slideCount: emblaApi.scrollSnapList().length,
+        slideCount: providedSlideCount ?? emblaApi.scrollSnapList().length,
       },
       type: "patch",
     });
     syncMotionState(emblaApi);
     onSelect?.(nextIndex);
-  }, [emblaApi, onSelect, syncMotionState]);
+  }, [emblaApi, onSelect, providedSlideCount, syncMotionState]);
 
   const onEmblaSelectRef = useRef(onEmblaSelect);
   onEmblaSelectRef.current = onEmblaSelect;
@@ -371,6 +373,7 @@ export const CarouselRoot = ({
   }, [emblaApi]);
 
   const hasMotionControl = hasConfiguredMotion && !prefersReducedMotion;
+  const announcedSlideCount = providedSlideCount ?? runtimeState.slideCount;
 
   const contextValue = useMemo<CarouselContextValue>(
     () => ({
@@ -382,7 +385,7 @@ export const CarouselRoot = ({
       prev,
       scrollTo,
       selectedIndex: runtimeState.selectedIndex,
-      slideCount: runtimeState.slideCount,
+      slideCount: announcedSlideCount,
       toggleMotion,
       viewportRef,
     }),
@@ -395,7 +398,7 @@ export const CarouselRoot = ({
       prev,
       scrollTo,
       runtimeState.selectedIndex,
-      runtimeState.slideCount,
+      announcedSlideCount,
       toggleMotion,
       viewportRef,
     ],
@@ -405,7 +408,7 @@ export const CarouselRoot = ({
     <CarouselContext.Provider value={contextValue}>
       <section aria-label={ariaLabel} aria-roledescription="carousel" className={className}>
         <span aria-live={runtimeState.isMotionPlaying ? "off" : "polite"} className="sr-only">
-          Slide {runtimeState.selectedIndex + 1} of {Math.max(runtimeState.slideCount, 1)}
+          Slide {runtimeState.selectedIndex + 1} of {Math.max(announcedSlideCount, 1)}
         </span>
         {children}
       </section>
