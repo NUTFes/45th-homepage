@@ -32,6 +32,7 @@ type CarouselRootProps = {
   children: ReactNode;
   className?: string;
   loop?: boolean;
+  navigationStep?: "single" | "half-visible";
   options?: Omit<CarouselOptions, "loop">;
   onSelect?: (index: number) => void;
 };
@@ -212,6 +213,7 @@ export const CarouselRoot = ({
   children,
   className,
   loop = true,
+  navigationStep = "single",
   options,
   onSelect,
 }: CarouselRootProps) => {
@@ -319,13 +321,37 @@ export const CarouselRoot = ({
     [emblaApi],
   );
 
+  const scrollByNavigationStep = useCallback(
+    (direction: -1 | 1) => {
+      if (!emblaApi) {
+        return;
+      }
+
+      if (navigationStep === "single") {
+        if (direction === -1) {
+          emblaApi.scrollPrev();
+        } else {
+          emblaApi.scrollNext();
+        }
+        return;
+      }
+
+      const visibleSlideCount = emblaApi.slidesInView().length;
+      const step = Math.max(1, Math.ceil(visibleSlideCount / 2));
+      const target = emblaApi.selectedScrollSnap() + direction * step;
+
+      emblaApi.scrollTo(target);
+    },
+    [emblaApi, navigationStep],
+  );
+
   const prev = useCallback(() => {
-    emblaApi?.scrollPrev();
-  }, [emblaApi]);
+    scrollByNavigationStep(-1);
+  }, [scrollByNavigationStep]);
 
   const next = useCallback(() => {
-    emblaApi?.scrollNext();
-  }, [emblaApi]);
+    scrollByNavigationStep(1);
+  }, [scrollByNavigationStep]);
 
   const toggleMotion = useCallback(() => {
     const motionPlugins = getMotionPlugins(emblaApi);

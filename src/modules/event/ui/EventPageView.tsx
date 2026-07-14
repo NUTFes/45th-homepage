@@ -14,6 +14,11 @@ const DUMMY_EVENTS: EventFrameProps[] = [
   { name: "イベント名サンプル3", href: "#3", imageUrl: "/favicon/45th-LogoBlue.svg" },
   { name: "イベント名サンプル4", href: "#4", imageUrl: "/favicon/45th-LogoBlue.svg" },
   { name: "イベント名サンプル5", href: "#5", imageUrl: "/favicon/45th-LogoBlue.svg" },
+  { name: "イベント名サンプル6", href: "#6", imageUrl: "/favicon/45th-LogoBlue.svg" },
+  { name: "イベント名サンプル7", href: "#7", imageUrl: "/favicon/45th-LogoBlue.svg" },
+  { name: "イベント名サンプル8", href: "#8", imageUrl: "/favicon/45th-LogoBlue.svg" },
+  { name: "イベント名サンプル9", href: "#9", imageUrl: "/favicon/45th-LogoBlue.svg" },
+  { name: "イベント名サンプル10", href: "#10", imageUrl: "/favicon/45th-LogoBlue.svg" },
 ];
 
 const EVENT_SECTIONS = PROGRAM_CATEGORIES.map(({ value, label }) => ({
