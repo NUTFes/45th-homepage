@@ -150,6 +150,10 @@ const getMotionPlugins = (emblaApi: EmblaApi | undefined): MotionPlugin[] => {
   }
 
   const plugins = emblaApi.plugins();
+  if (!plugins) {
+    return [];
+  }
+
   const motionPlugins: MotionPlugin[] = [];
 
   if (plugins.autoplay) {

@@ -48,7 +48,7 @@ export default function DevTopPageModulesPage() {
       description="src/modules/event/ui のコンポーネントをページ文脈で確認"
     >
       <DevSection title="EventSection">
-        <DevPanel title="EventSection (src/modules/event/ui)">
+        <DevPanel title="EventSection (src/modules/event/ui)" fullWidth>
           <div className="bg-base">
             <EventSection id="event-section" title="企画" viewAllHref="/" events={dummyEvents} />
           </div>
@@ -64,7 +64,7 @@ export default function DevTopPageModulesPage() {
         </DevPanel>
       </DevSection>
       <DevSection title="EventPageView">
-        <DevPanel title="EventPageView (src/modules/event/ui)">
+        <DevPanel title="EventPageView (src/modules/event/ui)" fullWidth>
           <div className="bg-base">
             <EventPageView />
           </div>
@@ -72,7 +72,7 @@ export default function DevTopPageModulesPage() {
       </DevSection>
       <DevSection title="ProgramPageView">
         {PROGRAM_CATEGORIES.map(({ value, label }) => (
-          <DevPanel key={value} title={`ProgramPageView - ${label}`}>
+          <DevPanel key={value} title={`ProgramPageView - ${label}`} fullWidth>
             <div className="bg-base">
               <ProgramPageView category={value} />
             </div>

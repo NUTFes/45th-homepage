@@ -20,7 +20,7 @@ export default function DevNewsPageModulesPage() {
       description="src/modules/news のコンポーネントをページ文脈で確認"
     >
       <DevSection title="News Page View">
-        <DevPanel title="NewsPageView (Mocked Data)">
+        <DevPanel title="NewsPageView (Mocked Data)" fullWidth>
           <div className="flex w-full flex-col items-center bg-base py-4l">
             <div className="flex w-full max-w-105 flex-col gap-4l">
               <div className="flex flex-col gap-s">

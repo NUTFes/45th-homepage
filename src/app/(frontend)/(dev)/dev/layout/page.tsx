@@ -82,7 +82,7 @@ export default function DevLayoutComponentsPage() {
       description="レイアウト系コンポーネントの見た目・配置確認"
     >
       <DevSection title="Layout">
-        <DevPanel title="Header">
+        <DevPanel title="Header" fullWidth>
           <Header />
         </DevPanel>
 
@@ -92,21 +92,21 @@ export default function DevLayoutComponentsPage() {
           </div>
         </DevPanel>
 
-        <DevPanel title="Footer">
+        <DevPanel title="Footer" fullWidth>
           <Footer />
         </DevPanel>
 
-        <DevPanel title="BottomNav">
+        <DevPanel title="BottomNav" fullWidth>
           <BottomNav />
         </DevPanel>
 
-        <DevPanel title="Menu">
+        <DevPanel title="Menu" fullWidth>
           <Menu />
         </DevPanel>
       </DevSection>
 
       <DevSection title="Sponsor Ads Slot">
-        <DevPanel title="Page-level placement example">
+        <DevPanel title="Page-level placement example" fullWidth>
           <div className="bg-base py-4l md:py-5l">
             <section className="flex w-full flex-col items-center gap-m" aria-label="協賛企業広告">
               <SponsorAdCarousel sponsors={sponsorSamples} />
@@ -115,7 +115,7 @@ export default function DevLayoutComponentsPage() {
           </div>
         </DevPanel>
 
-        <DevPanel title="SponsorAdsSection skeleton fallback">
+        <DevPanel title="SponsorAdsSection skeleton fallback" fullWidth>
           <SponsorAdsSectionSkeleton className="bg-base py-4l md:py-5l" />
         </DevPanel>
       </DevSection>
