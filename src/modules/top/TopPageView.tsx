@@ -100,8 +100,8 @@ function NewsSection({ newsItems }: { newsItems: Awaited<ReturnType<typeof getLa
       <div className={SECTION_TITLE_CLASS_NAME}>
         <SectionTitle title="お知らせ" />
       </div>
-      <section className="w-full md:bg-base-dark md:px-pl md:py-3l">
-        <div className="mx-auto flex w-full max-w-105 flex-col items-center gap-m md:max-w-190 md:items-start">
+      <section className="flex w-full justify-center md:bg-base-dark md:px-pl md:py-3l">
+        <div className="flex w-full flex-col items-center gap-m md:max-w-190 md:items-start">
           <div className="flex w-full flex-col items-end gap-m md:w-full md:max-w-none md:items-start md:gap-l">
             <div className="w-full bg-base-dark px-ll py-l md:bg-transparent md:px-ss md:py-0">
               {newsItems.length > 0 ? (
@@ -276,7 +276,7 @@ function TopPageSkeleton() {
           <SectionTitle title="お知らせ" />
         </div>
         <section className="w-full md:bg-base-dark md:px-pl md:py-3l">
-          <div className="mx-auto flex w-full max-w-105 flex-col items-center gap-m md:max-w-190 md:items-start">
+          <div className="flex w-full flex-col items-center gap-m md:max-w-190 md:items-start">
             <div className="flex w-full flex-col items-end gap-m md:w-full md:max-w-none md:items-start md:gap-l">
               <div className="w-full bg-base-dark px-ll py-l md:bg-transparent md:px-ss md:py-0">
                 <ul className="flex flex-col gap-m md:gap-l">
@@ -300,7 +300,10 @@ function TopPageSkeleton() {
 
 export default function TopPageView() {
   return (
-    <div className="relative z-0 flex min-h-screen flex-col items-center overflow-x-hidden bg-base">
+    <div
+      className="relative z-0 flex min-h-screen flex-col items-center overflow-x-hidden bg-base"
+      id="top"
+    >
       <TopHero />
       <div className="relative flex w-full flex-col gap-4l">
         <Suspense fallback={<TopPageSkeleton />}>
