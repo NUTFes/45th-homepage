@@ -1,8 +1,7 @@
 import { DevPageContainer } from "../../_components/DevPageContainer";
 import { DevPanel } from "../../_components/DevPanel";
 import { DevSection } from "../../_components/DevSection";
-import EventSection from "@/modules/event/ui/EventSection";
-import type { EventFrameProps } from "@/components/ui/EventFrame";
+import EventSection, { type EventSectionEvent } from "@/modules/event/ui/EventSection";
 import EventPageView from "@/modules/event/ui/EventPageView";
 import ProgramPageView from "@/modules/event/ui/programs/category/[category]/ProgramPageView";
 import { PROGRAM_CATEGORIES } from "@/lib/events/constants";
@@ -13,39 +12,79 @@ export const metadata = {
   description: "src/modules/event のコンポーネントをページ文脈で確認",
 };
 
-const dummyEvents: EventFrameProps[] = [
-  { name: "Sweet Photato Contest", href: "/news", imageUrl: "/icon/Instagram.png" },
-  { name: "カラフルコーラスフェスティバル", href: "/dev", imageUrl: "/icon/Instagram.png" },
+const dummyEvents: EventSectionEvent[] = [
   {
+    id: "sweet-photato-contest",
+    name: "Sweet Photato Contest",
+    href: "/news",
+    imageUrl: "/icon/Instagram.png",
+  },
+  {
+    id: "colorful-chorus-festival",
+    name: "カラフルコーラスフェスティバル",
+    href: "/dev",
+    imageUrl: "/icon/Instagram.png",
+  },
+  {
+    id: "drone-robot-long-name",
     name: "ドローン・ロボット操縦体験＋研究紹介ああああああああああああああ",
     href: "/dev/events",
     imageUrl: "/icon/Instagram.png",
   },
-  { name: "無線機器、電子工作物展示会", href: "/common", imageUrl: "/icon/Instagram.png" },
   {
+    id: "radio-electronics-1",
+    name: "無線機器、電子工作物展示会",
+    href: "/common",
+    imageUrl: "/icon/Instagram.png",
+  },
+  {
+    id: "drone-robot-1",
     name: "ドローン・ロボット操縦体験＋研究紹介",
     href: "/dev/events",
     imageUrl: "/icon/Instagram.png",
   },
-  { name: "無線機器、電子工作物展示会", href: "/common", imageUrl: "/icon/Instagram.png" },
   {
+    id: "radio-electronics-2",
+    name: "無線機器、電子工作物展示会",
+    href: "/common",
+    imageUrl: "/icon/Instagram.png",
+  },
+  {
+    id: "drone-robot-2",
     name: "ドローン・ロボット操縦体験＋研究紹介",
     href: "/dev/events",
     imageUrl: "/icon/Instagram.png",
   },
-  { name: "無線機器、電子工作物展示会", href: "/common", imageUrl: "/icon/Instagram.png" },
   {
+    id: "radio-electronics-3",
+    name: "無線機器、電子工作物展示会",
+    href: "/common",
+    imageUrl: "/icon/Instagram.png",
+  },
+  {
+    id: "drone-robot-3",
     name: "ドローン・ロボット操縦体験＋研究紹介",
     href: "/dev/events",
     imageUrl: "/icon/Instagram.png",
   },
-  { name: "無線機器、電子工作物展示会", href: "/common", imageUrl: "/icon/Instagram.png" },
   {
+    id: "radio-electronics-4",
+    name: "無線機器、電子工作物展示会",
+    href: "/common",
+    imageUrl: "/icon/Instagram.png",
+  },
+  {
+    id: "drone-robot-4",
     name: "ドローン・ロボット操縦体験＋研究紹介",
     href: "/dev/events",
     imageUrl: "/icon/Instagram.png",
   },
-  { name: "無線機器、電子工作物展示会", href: "/common", imageUrl: "/icon/Instagram.png" },
+  {
+    id: "radio-electronics-5",
+    name: "無線機器、電子工作物展示会",
+    href: "/common",
+    imageUrl: "/icon/Instagram.png",
+  },
 ];
 
 const guestProfiles: GuestProfile[] = [

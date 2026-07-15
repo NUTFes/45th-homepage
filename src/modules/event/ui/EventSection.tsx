@@ -12,7 +12,11 @@ type EventSectionProps = {
   title: string;
   viewAllHref: string;
   id: string;
-  events: EventFrameProps[];
+  events: EventSectionEvent[];
+};
+
+export type EventSectionEvent = EventFrameProps & {
+  id: string;
 };
 
 export default function EventSection({ title, viewAllHref, id, events }: EventSectionProps) {
@@ -63,7 +67,7 @@ export default function EventSection({ title, viewAllHref, id, events }: EventSe
                 ariaLabel={event.name}
                 className="min-w-0 flex-[0_0_148px] shrink-0 md:flex-[0_0_260px]"
                 index={index}
-                key={`${event.href}-${index}`}
+                key={event.id}
               >
                 <EventFrame {...event} />
               </CarouselSlide>
