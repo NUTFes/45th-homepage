@@ -17,10 +17,10 @@ type EventSectionProps = {
 
 export default function EventSection({ title, viewAllHref, id, events }: EventSectionProps) {
   return (
-    <section aria-labelledby={`section-${id}`} className="flex flex-col gap-ss">
+    <section aria-labelledby={`section-${id}`}>
       <CarouselRoot
         ariaLabel={`${title}カルーセル`}
-        className="@container flex flex-col gap-ss"
+        className="@container flex flex-col gap-ss md:gap-s"
         loop={false}
         navigationStep="half-visible"
         options={{
@@ -55,7 +55,7 @@ export default function EventSection({ title, viewAllHref, id, events }: EventSe
             <EventSectionArrow direction="left" />
           </CarouselPrevButton>
           <CarouselViewport
-            className="w-full [scrollbar-width:none] overflow-x-auto md:w-fit md:max-w-65 md:overflow-hidden @min-[904px]:max-w-140 @min-[1204px]:max-w-215 @min-[1504px]:max-w-290 @min-[1804px]:max-w-365 @min-[2104px]:max-w-440"
+            className="w-full scrollbar-none overflow-x-auto md:w-fit md:max-w-65 md:overflow-hidden @min-[904px]:max-w-140 @min-[1204px]:max-w-215 @min-[1504px]:max-w-290 @min-[1804px]:max-w-365 @min-[2104px]:max-w-440"
             trackClassName="touch-auto gap-s px-ll md:touch-pan-y md:gap-3l md:px-0"
           >
             {events.map((event, index) => (
@@ -63,7 +63,7 @@ export default function EventSection({ title, viewAllHref, id, events }: EventSe
                 ariaLabel={event.name}
                 className="min-w-0 flex-[0_0_148px] shrink-0 md:flex-[0_0_260px]"
                 index={index}
-                key={event.href}
+                key={`${event.href}-${index}`}
               >
                 <EventFrame {...event} />
               </CarouselSlide>

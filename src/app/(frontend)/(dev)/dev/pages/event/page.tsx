@@ -22,6 +22,14 @@ const dummyEvents: EventFrameProps[] = [
     imageUrl: "/icon/Instagram.png",
   },
   { name: "無線機器、電子工作物展示会", href: "/common", imageUrl: "/icon/Instagram.png" },
+  { name: "ドローン・ロボット操縦体験＋研究紹介", href: "/dev/events", imageUrl: "/icon/Instagram.png" },
+  { name: "無線機器、電子工作物展示会", href: "/common", imageUrl: "/icon/Instagram.png" },
+  { name: "ドローン・ロボット操縦体験＋研究紹介", href: "/dev/events", imageUrl: "/icon/Instagram.png" },
+  { name: "無線機器、電子工作物展示会", href: "/common", imageUrl: "/icon/Instagram.png" },
+  { name: "ドローン・ロボット操縦体験＋研究紹介", href: "/dev/events", imageUrl: "/icon/Instagram.png" },
+  { name: "無線機器、電子工作物展示会", href: "/common", imageUrl: "/icon/Instagram.png" },
+  { name: "ドローン・ロボット操縦体験＋研究紹介", href: "/dev/events", imageUrl: "/icon/Instagram.png" },
+  { name: "無線機器、電子工作物展示会", href: "/common", imageUrl: "/icon/Instagram.png" },
 ];
 
 const guestProfiles: GuestProfile[] = [
@@ -56,7 +64,7 @@ export default function DevTopPageModulesPage() {
       </DevSection>
       <DevSection title="GuestProfileCard">
         <DevPanel title="GuestProfileCard (src/modules/event/guest/ui)">
-          <div className="flex max-w-[430px] flex-col gap-l bg-base p-s">
+          <div className="flex max-w-107.5 flex-col gap-l bg-base p-s">
             {guestProfiles.map((profile) => (
               <GuestProfileCard key={profile.name} profile={profile} />
             ))}
