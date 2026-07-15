@@ -22,13 +22,29 @@ const dummyEvents: EventFrameProps[] = [
     imageUrl: "/icon/Instagram.png",
   },
   { name: "無線機器、電子工作物展示会", href: "/common", imageUrl: "/icon/Instagram.png" },
-  { name: "ドローン・ロボット操縦体験＋研究紹介", href: "/dev/events", imageUrl: "/icon/Instagram.png" },
+  {
+    name: "ドローン・ロボット操縦体験＋研究紹介",
+    href: "/dev/events",
+    imageUrl: "/icon/Instagram.png",
+  },
   { name: "無線機器、電子工作物展示会", href: "/common", imageUrl: "/icon/Instagram.png" },
-  { name: "ドローン・ロボット操縦体験＋研究紹介", href: "/dev/events", imageUrl: "/icon/Instagram.png" },
+  {
+    name: "ドローン・ロボット操縦体験＋研究紹介",
+    href: "/dev/events",
+    imageUrl: "/icon/Instagram.png",
+  },
   { name: "無線機器、電子工作物展示会", href: "/common", imageUrl: "/icon/Instagram.png" },
-  { name: "ドローン・ロボット操縦体験＋研究紹介", href: "/dev/events", imageUrl: "/icon/Instagram.png" },
+  {
+    name: "ドローン・ロボット操縦体験＋研究紹介",
+    href: "/dev/events",
+    imageUrl: "/icon/Instagram.png",
+  },
   { name: "無線機器、電子工作物展示会", href: "/common", imageUrl: "/icon/Instagram.png" },
-  { name: "ドローン・ロボット操縦体験＋研究紹介", href: "/dev/events", imageUrl: "/icon/Instagram.png" },
+  {
+    name: "ドローン・ロボット操縦体験＋研究紹介",
+    href: "/dev/events",
+    imageUrl: "/icon/Instagram.png",
+  },
   { name: "無線機器、電子工作物展示会", href: "/common", imageUrl: "/icon/Instagram.png" },
 ];
 
