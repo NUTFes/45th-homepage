@@ -5,12 +5,17 @@ import EventIntroFrame from "@/components/ui/EventIntroFrame";
 import SectionTitle from "@/components/ui/SectionTitle";
 
 
-function EventCard() {
+type EventCardProps = {
+    eventName: string;
+    eventImageSrc: string;
+}
+
+function EventCard({ eventName, eventImageSrc }: EventCardProps) {
     return(
         <div>
-            <h1></h1>
+            <h1>{eventName}</h1>
             <div>
-                <Image />
+                <Image src={eventImageSrc} alt={eventName} />
             </div>
         </div>
     )
