@@ -19,7 +19,7 @@ export default function GuestProfileCard({ profile }: GuestProfileCardProps) {
   ];
 
   return (
-    <article className="flex w-full min-w-0 flex-col gap-xs text-font-main">
+    <article className="flex w-full min-w-0 flex-col gap-xs pr-4l text-font-main">
       <h3 className="w-fit max-w-full min-w-26 border-b border-font-main pr-l pb-1 text-title-small wrap-break-word md:text-Ptitle-small">
         {profile.name}
       </h3>
