@@ -8,14 +8,27 @@ import SectionTitle from "@/components/ui/SectionTitle";
 type EventCardProps = {
     eventName: string;
     eventImageSrc: string;
+    eventImageAlt: string;
 }
 
-function EventCard({ eventName, eventImageSrc }: EventCardProps) {
+type ProgramDetailPageViewProps = {
+    eventName: string;
+    eventImageSrc: string;
+    eventImageAlt: string;
+    eventLocation: string;
+    eventTitle: string;
+    eventBody: string;
+    locationTitle: string;
+    locationImageSrc: string;
+    locationImageAlt: string;
+}
+
+function EventCard({ eventName, eventImageSrc, eventImageAlt}: EventCardProps) {
     return(
         <div>
             <h1>{eventName}</h1>
             <div>
-                <Image src={eventImageSrc} alt={eventName} />
+                <Image src={eventImageSrc} alt={eventImageAlt} />
             </div>
         </div>
     )
@@ -26,10 +39,10 @@ export default function ProgramDetailPageView() {
         <div >
             <div>
                 <SectionTitle title="企画" />
-                <EventCard />
+                <EventCard eventName={eventName} eventImageSrc={eventImageSrc} />
             </div>
-            <EventIntroFrame />
-            <EventInfoCard />
+            <EventIntroFrame title={eventTitle} body={eventBody} />
+            <EventInfoCard location={eventLocation} title={locationTitle} imageSrc={locationImageSrc} alt={locationImageAlt} />
         </div>
     )   
 }
