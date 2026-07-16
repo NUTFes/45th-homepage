@@ -4,6 +4,8 @@ import EventInfoCard from "@/components/ui/EventInfoCard";
 import EventIntroFrame from "@/components/ui/EventIntroFrame";
 import SectionTitle from "@/components/ui/SectionTitle";
 
+import type { EventInfoCardProps } from "@/components/ui/EventInfoCard";  
+import type { EventIntroFrameProps } from "@/components/ui/EventIntroFrame";
 
 type EventCardProps = {
     eventName: string;
@@ -12,15 +14,9 @@ type EventCardProps = {
 }
 
 type ProgramDetailPageViewProps = {
-    eventName: string;
-    eventImageSrc: string;
-    eventImageAlt: string;
-    eventLocation: string;
-    eventTitle: string;
-    eventBody: string;
-    locationTitle: string;
-    locationImageSrc: string;
-    locationImageAlt: string;
+    hero: EventCardProps;
+    intro: EventIntroFrameProps;
+    info: EventInfoCardProps;
 }
 
 function EventCard({ eventName, eventImageSrc, eventImageAlt}: EventCardProps) {
@@ -34,15 +30,15 @@ function EventCard({ eventName, eventImageSrc, eventImageAlt}: EventCardProps) {
     )
 }
 
-export default function ProgramDetailPageView() {
+export default function ProgramDetailPageView({ hero, intro, info }: ProgramDetailPageViewProps) {
     return(
         <div >
             <div>
                 <SectionTitle title="企画" />
-                <EventCard eventName={eventName} eventImageSrc={eventImageSrc} />
+                <EventCard {...hero} />
             </div>
-            <EventIntroFrame title={eventTitle} body={eventBody} />
-            <EventInfoCard location={eventLocation} title={locationTitle} imageSrc={locationImageSrc} alt={locationImageAlt} />
+            <EventIntroFrame {...intro} />
+            <EventInfoCard {...info} />
         </div>
     )   
 }
