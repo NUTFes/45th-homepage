@@ -13,7 +13,7 @@ type EventCardProps = {
     eventImageAlt: string;
 }
 
-type ProgramDetailPageViewProps = {
+export type ProgramDetailPageViewProps = {
     hero: EventCardProps;
     intro: EventIntroFrameProps;
     info: EventInfoCardProps;
