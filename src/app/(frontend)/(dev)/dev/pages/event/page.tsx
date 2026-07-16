@@ -7,6 +7,7 @@ import EventPageView from "@/modules/event/ui/EventPageView";
 import ProgramPageView from "@/modules/event/ui/programs/category/[category]/ProgramPageView";
 import { PROGRAM_CATEGORIES } from "@/lib/events/constants";
 import GuestProfileCard, { type GuestProfile } from "@/modules/event/guest/ui/GuestProfileCard";
+import GuestProfileSection from "@/modules/event/guest/ui/GuestProfileSection";
 
 export const metadata = {
   title: "Event Page Modules - Dev",
@@ -41,6 +42,16 @@ const guestProfiles: GuestProfile[] = [
   },
 ];
 
+const mcProfiles: GuestProfile[] = [
+  {
+    name: "清野幹さん",
+    birthDate: "1979年02月22日",
+    birthplace: "阿賀野市",
+    hobby: "一人イントロクイズ",
+    specialSkill: "二段階右折",
+  },
+];
+
 export default function DevTopPageModulesPage() {
   return (
     <DevPageContainer
@@ -60,6 +71,31 @@ export default function DevTopPageModulesPage() {
             {guestProfiles.map((profile) => (
               <GuestProfileCard key={profile.name} profile={profile} />
             ))}
+          </div>
+        </DevPanel>
+      </DevSection>
+      <DevSection title="GuestProfileSection">
+        <DevPanel title="GuestProfileSection (src/modules/event/guest/ui)">
+          <div className="flex flex-col gap-4l bg-base">
+            <GuestProfileSection
+              id="guest-preview"
+              variant="guest"
+              performerName="ヨネダ２０００"
+              profiles={guestProfiles}
+              image={{
+                src: "/image/event/guest.jpg",
+                alt: "ヨネダ２０００",
+              }}
+            />
+            <GuestProfileSection
+              id="mc-preview"
+              variant="mc"
+              profiles={mcProfiles}
+              image={{
+                src: "/image/event/mc.jpg",
+                alt: "MCの清野幹さん",
+              }}
+            />
           </div>
         </DevPanel>
       </DevSection>
