@@ -5,6 +5,8 @@ import EventSection from "@/modules/event/ui/EventSection";
 import type { EventFrameProps } from "@/components/ui/EventFrame";
 import EventPageView from "@/modules/event/ui/EventPageView";
 import ProgramPageView from "@/modules/event/ui/programs/category/[category]/ProgramPageView";
+import ProgramDetailPageView from "@/modules/event/programs/[slug]/ProgramDetailPageView";
+import type { ProgramDetailPageViewProps } from "@/modules/event/programs/[slug]/ProgramDetailPageView";
 import { PROGRAM_CATEGORIES } from "@/lib/events/constants";
 import GuestProfileCard, { type GuestProfile } from "@/modules/event/guest/ui/GuestProfileCard";
 import GuestProfileSection from "@/modules/event/guest/ui/GuestProfileSection";
@@ -41,6 +43,23 @@ const guestProfiles: GuestProfile[] = [
     specialSkill: "犬の基本的なしつけ／ブルースハープ（ハーモニカ）／肩もみ",
   },
 ];
+
+// テスト表示用のダミーデータ（画像1・画像2のモックに対応）
+const programDetailDummyProps: ProgramDetailPageViewProps = {
+  hero: {
+    title: "企画名",
+    imageSrc: "/favicon/45th-LogoBlue.svg",
+    imageAlt: "企画名の画像",
+  },
+  intro: {
+    title: "魅惑の鮭かまワールドへようこそ",
+    body: "説明鮭かま鮭かま鮭かま鮭かま鮭かま鮭かま鮭かま鮭かま鮭かま鮭かま鮭かま鮭かま鮭かま",
+  },
+  info: {
+    location: "キッチンカーエリア",
+    title: "キッチンカーエリア",
+  },
+};
 
 const mcProfiles: GuestProfile[] = [
   {
@@ -114,6 +133,13 @@ export default function DevTopPageModulesPage() {
             </div>
           </DevPanel>
         ))}
+      </DevSection>
+      <DevSection title="ProgramDetailPageView">
+        <DevPanel title="ProgramDetailPageView (src/modules/event/programs/[slug])">
+          <div className="bg-base">
+            <ProgramDetailPageView {...programDetailDummyProps} />
+          </div>
+        </DevPanel>
       </DevSection>
     </DevPageContainer>
   );
