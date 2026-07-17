@@ -41,21 +41,16 @@ function EventHero({ title, imageSrc, imageAlt }: EventHeroProps) {
 
 export default function ProgramDetailPageView({ hero, intro, info }: ProgramDetailPageViewProps) {
     return (
-        // 大枠: flex-col / gap 60 / padding top,down 60
         <div className="flex flex-col gap-4l py-4l">
-            {/* 子要素1: flex-col / gap 60 */}
             <div className="flex flex-col gap-4l">
-                {/* 孫1-1: flex-col / gap 16 */}
                 <div className="flex flex-col gap-s">
                     <SectionTitle title="企画" />
                     <EventHero {...hero} />
                 </div>
-                {/* 孫1-2: padding left,right 32 */}
                 <div className="px-ll">
                     <EventIntroFrame {...intro} />
                 </div>
             </div>
-            {/* メモには未記載だが画像2に対応する要素として大枠の子に配置 */}
             <EventInfoCard {...info} />
         </div>
     )
