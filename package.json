@@ -34,7 +34,7 @@
     "embla-carousel-react": "^8.6.0",
     "embla-carousel-wheel-gestures": "^8.1.0",
     "graphql": "^16.14.0",
-    "lucide-react": "^1.16.0",
+    "lucide-react": "^1.24.0",
     "next": "16.2.6",
     "payload": "3.84.1",
     "postcss": "^8.5.14",
