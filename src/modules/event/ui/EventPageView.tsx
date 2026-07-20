@@ -1,3 +1,4 @@
+import Image from "next/image";
 import EventSection, { type EventSectionEvent } from "@/modules/event/ui/EventSection";
 import ButtonMain from "@/components/ui/ButtonMain";
 import SectionTitle from "@/components/ui/SectionTitle";
@@ -77,7 +78,20 @@ export default function EventPageView() {
   return (
     <div className="flex flex-col gap-4l pb-4l">
       <section aria-label="ゲスト" className="flex flex-col gap-s">
-        <SectionTitle title="ゲスト" />
+        <div className="md:px-pl">
+          <SectionTitle title="ゲスト" />
+        </div>
+        <div className="flex justify-center bg-secondary/20">
+          <div className="relative aspect-square w-full md:w-180">
+            <Image
+              src="/image/event/guest_decoration.svg"
+              alt="ゲスト"
+              fill
+              sizes="(min-width: 768px) 720px, 100vw"
+              className="object-cover"
+            />
+          </div>
+        </div>
         <div className="flex justify-center">
           <ButtonMain href="/guest" title="もっと見る" />
         </div>
