@@ -74,7 +74,7 @@ export default function EventFrame({ name, href, imageUrl }: EventFrameProps) {
       href={href}
       aria-label={name}
       prefetch={false}
-      className="flex h-54 w-37 flex-col rounded-lg bg-secondary pb-s shadow-[0px_6px_8px_rgba(60,224,232,0.6)] transition-all duration-200 hover:-translate-y-1 md:h-84 md:w-65 md:rounded-xl md:pb-l md:shadow-[0px_6px_8px_4px_rgba(60,224,232,0.8)]"
+      className="flex h-54 w-37 flex-col rounded-lg bg-secondary pb-s text-base-dark shadow-[0px_6px_8px_rgba(60,224,232,0.6)] transition-all duration-200 hover:-translate-y-1 md:h-84 md:w-65 md:rounded-xl md:pb-l md:shadow-[0px_6px_8px_4px_rgba(60,224,232,0.8)]"
     >
       <div className="flex h-33.5 shrink-0 items-center justify-center overflow-hidden rounded-tl-lg rounded-tr-lg bg-linear-to-b from-[#3ce0e8] to-secondary to-70% md:h-62 md:rounded-tl-xl md:rounded-tr-xl">
         {hasImageError ? (

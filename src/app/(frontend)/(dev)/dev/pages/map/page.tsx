@@ -25,7 +25,7 @@ export default function DevMapPageModules() {
       </DevSection>
 
       <DevSection title="MapMenu">
-        <DevPanel title="PC Default">
+        <DevPanel title="PC Default" fullWidth>
           <div className="flex min-h-224 justify-end overflow-hidden bg-secondary">
             <MapMenu className="static" />
           </div>

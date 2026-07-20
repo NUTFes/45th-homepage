@@ -8,7 +8,7 @@ export default function DevPreviewPage() {
       description="コンポーネントが増えても追いやすいよう、カテゴリ別ページに分割しています。"
       title="Dev Preview"
     >
-      <div className="grid gap-m md:grid-cols-2">
+      <div className="mx-auto grid w-full max-w-7xl gap-m px-m md:grid-cols-2">
         <Link
           href="/dev/layout"
           className="space-y-xs rounded-xl border border-base/20 bg-white p-m shadow-sm transition-colors hover:bg-secondary"
