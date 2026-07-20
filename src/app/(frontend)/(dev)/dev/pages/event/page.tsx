@@ -7,6 +7,7 @@ import ProgramPageView from "@/modules/event/ui/programs/category/[category]/Pro
 import { PROGRAM_CATEGORIES } from "@/lib/events/constants";
 import GuestProfileCard, { type GuestProfile } from "@/modules/event/guest/ui/GuestProfileCard";
 import GuestProfileSection from "@/modules/event/guest/ui/GuestProfileSection";
+import TagSearchComponentsPreview from "./TagSearchComponentsPreview";
 
 export const metadata = {
   title: "Event Page Modules - Dev",
@@ -121,6 +122,11 @@ export default function DevTopPageModulesPage() {
       title="Event Page Modules"
       description="src/modules/event/ui のコンポーネントをページ文脈で確認"
     >
+      <DevSection title="Tag Search Components">
+        <DevPanel title="ActiveTag / TagSearchButton (src/modules/event/ui)" fullWidth>
+          <TagSearchComponentsPreview />
+        </DevPanel>
+      </DevSection>
       <DevSection title="EventSection">
         <DevPanel title="EventSection (src/modules/event/ui)" fullWidth>
           <div className="bg-base">
