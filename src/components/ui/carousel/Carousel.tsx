@@ -17,6 +17,7 @@ import {
   useState,
   type CSSProperties,
   type ReactNode,
+  type WheelEvent,
 } from "react";
 import { twMerge } from "tailwind-merge";
 
@@ -41,6 +42,7 @@ type CarouselRootProps = {
 type CarouselViewportProps = {
   children: ReactNode;
   className?: string;
+  enableShiftWheelNavigation?: boolean;
   trackClassName?: string;
 };
 
@@ -423,12 +425,44 @@ export const CarouselRoot = ({
 export const CarouselViewport = ({
   children,
   className,
+  enableShiftWheelNavigation = false,
   trackClassName,
 }: CarouselViewportProps) => {
-  const { viewportRef } = useCarousel();
+  const { next, prev, viewportRef } = useCarousel();
+  const lastWheelNavigationAt = useRef(0);
+
+  const handleWheel = (event: WheelEvent<HTMLDivElement>) => {
+    if (
+      !enableShiftWheelNavigation ||
+      !event.shiftKey ||
+      window.getComputedStyle(event.currentTarget).overflowX !== "hidden"
+    ) {
+      return;
+    }
+
+    const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+
+    if (delta === 0) {
+      return;
+    }
+
+    event.preventDefault();
+
+    const now = performance.now();
+    if (now - lastWheelNavigationAt.current < 300) {
+      return;
+    }
+    lastWheelNavigationAt.current = now;
+
+    if (delta > 0) {
+      next();
+    } else {
+      prev();
+    }
+  };
 
   return (
-    <div className={className} ref={viewportRef}>
+    <div className={className} onWheel={handleWheel} ref={viewportRef}>
       <div className={twMerge("flex h-full touch-pan-y", trackClassName)}>{children}</div>
     </div>
   );
