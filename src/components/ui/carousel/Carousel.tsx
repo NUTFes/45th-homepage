@@ -17,7 +17,6 @@ import {
   useState,
   type CSSProperties,
   type ReactNode,
-  type WheelEvent,
 } from "react";
 import { twMerge } from "tailwind-merge";
 
@@ -42,7 +41,7 @@ type CarouselRootProps = {
 type CarouselViewportProps = {
   children: ReactNode;
   className?: string;
-  enableShiftWheelNavigation?: boolean;
+  enableWheelNavigation?: boolean;
   trackClassName?: string;
 };
 
@@ -425,44 +424,105 @@ export const CarouselRoot = ({
 export const CarouselViewport = ({
   children,
   className,
-  enableShiftWheelNavigation = false,
+  enableWheelNavigation = false,
   trackClassName,
 }: CarouselViewportProps) => {
   const { next, prev, viewportRef } = useCarousel();
-  const lastWheelNavigationAt = useRef(0);
+  const viewportElementRef = useRef<HTMLDivElement>(null);
+  const accumulatedWheelDelta = useRef(0);
+  const wheelDirection = useRef(0);
+  const hasNavigatedInWheelGesture = useRef(false);
+  const wheelGestureResetTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-  const handleWheel = (event: WheelEvent<HTMLDivElement>) => {
-    if (
-      !enableShiftWheelNavigation ||
-      !event.shiftKey ||
-      window.getComputedStyle(event.currentTarget).overflowX !== "hidden"
-    ) {
+  const handleWheel = useCallback(
+    (event: WheelEvent) => {
+      const viewport = viewportElementRef.current;
+      if (
+        !viewport ||
+        !enableWheelNavigation ||
+        window.getComputedStyle(viewport).overflowX !== "hidden"
+      ) {
+        return;
+      }
+
+      const isHorizontalGesture = Math.abs(event.deltaX) > Math.abs(event.deltaY);
+
+      if (!event.shiftKey && !isHorizontalGesture) {
+        return;
+      }
+
+      const deltaScale =
+        event.deltaMode === WheelEvent.DOM_DELTA_LINE
+          ? 16
+          : event.deltaMode === WheelEvent.DOM_DELTA_PAGE
+            ? viewport.clientWidth
+            : 1;
+      const delta = (isHorizontalGesture ? event.deltaX : event.deltaY) * deltaScale;
+
+      if (delta === 0) {
+        return;
+      }
+
+      event.preventDefault();
+
+      clearTimeout(wheelGestureResetTimer.current);
+      wheelGestureResetTimer.current = setTimeout(() => {
+        accumulatedWheelDelta.current = 0;
+        wheelDirection.current = 0;
+        hasNavigatedInWheelGesture.current = false;
+      }, 160);
+
+      if (hasNavigatedInWheelGesture.current) {
+        return;
+      }
+
+      const direction = Math.sign(delta);
+      if (wheelDirection.current !== direction) {
+        accumulatedWheelDelta.current = 0;
+        wheelDirection.current = direction;
+      }
+
+      accumulatedWheelDelta.current += delta;
+
+      if (Math.abs(accumulatedWheelDelta.current) < 30) {
+        return;
+      }
+
+      hasNavigatedInWheelGesture.current = true;
+
+      if (delta > 0) {
+        next();
+      } else {
+        prev();
+      }
+    },
+    [enableWheelNavigation, next, prev],
+  );
+
+  useEffect(() => {
+    const viewport = viewportElementRef.current;
+    if (!viewport) {
       return;
     }
 
-    const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+    viewport.addEventListener("wheel", handleWheel, { passive: false });
 
-    if (delta === 0) {
-      return;
-    }
+    return () => {
+      viewport.removeEventListener("wheel", handleWheel);
+      clearTimeout(wheelGestureResetTimer.current);
+    };
+  }, [handleWheel]);
 
-    event.preventDefault();
-
-    const now = performance.now();
-    if (now - lastWheelNavigationAt.current < 300) {
-      return;
-    }
-    lastWheelNavigationAt.current = now;
-
-    if (delta > 0) {
-      next();
-    } else {
-      prev();
-    }
-  };
+  const setViewportRef = useCallback(
+    (element: HTMLDivElement | null) => {
+      viewportElementRef.current = element;
+      viewportRef(element);
+    },
+    [viewportRef],
+  );
 
   return (
-    <div className={className} onWheel={handleWheel} ref={viewportRef}>
+    <div className={className} ref={setViewportRef}>
       <div className={twMerge("flex h-full touch-pan-y", trackClassName)}>{children}</div>
     </div>
   );
