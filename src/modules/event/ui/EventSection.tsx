@@ -35,6 +35,13 @@ export default function EventSection({ title, viewAllHref, id, events }: EventSe
           containScroll: "trimSnaps",
         }}
         slideCount={events.length}
+        wheelGestures={{
+          active: false,
+          breakpoints: {
+            "(min-width: 768px)": { active: true },
+          },
+          wheelDraggingClass: "",
+        }}
       >
         <div className="flex items-center justify-between pr-m pl-l md:px-pm">
           <div
@@ -60,7 +67,6 @@ export default function EventSection({ title, viewAllHref, id, events }: EventSe
           </CarouselPrevButton>
           <CarouselViewport
             className="w-full scrollbar-none overflow-x-auto md:w-fit md:max-w-65 md:overflow-hidden @min-[904px]:max-w-140 @min-[1204px]:max-w-215 @min-[1504px]:max-w-290 @min-[1804px]:max-w-365 @min-[2104px]:max-w-440 [&::-webkit-scrollbar]:hidden"
-            enableWheelNavigation
             trackClassName="touch-auto gap-s px-ll md:touch-pan-y md:gap-3l md:px-0"
           >
             {events.map((event, index) => (

@@ -1,5 +1,6 @@
 import type { AutoScrollOptionsType } from "embla-carousel-auto-scroll";
 import type { AutoplayOptionsType } from "embla-carousel-autoplay";
+import type { WheelGesturesPluginOptions } from "embla-carousel-wheel-gestures";
 
 export type CarouselImageSlide = {
   id: string;
@@ -22,6 +23,7 @@ type CarouselAutoScrollSettings = Pick<
 
 export type CarouselAutoPlayOption = boolean | CarouselAutoPlaySettings;
 export type CarouselAutoScrollOption = boolean | CarouselAutoScrollSettings;
+export type CarouselWheelGesturesOption = boolean | WheelGesturesPluginOptions;
 
 export type CarouselMotionOptions = {
   autoPlay?: CarouselAutoPlayOption;

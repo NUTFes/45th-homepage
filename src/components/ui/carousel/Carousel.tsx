@@ -6,6 +6,7 @@ import useEmblaCarousel, {
   type EmblaViewportRefType,
   type UseEmblaCarouselType,
 } from "embla-carousel-react";
+import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import {
   createContext,
   use,
@@ -23,6 +24,7 @@ import { twMerge } from "tailwind-merge";
 import type {
   CarouselAutoPlayOption,
   CarouselAutoScrollOption,
+  CarouselWheelGesturesOption,
 } from "@/components/ui/carousel/types";
 
 type CarouselRootProps = {
@@ -36,12 +38,12 @@ type CarouselRootProps = {
   options?: Omit<CarouselOptions, "loop">;
   onSelect?: (index: number) => void;
   slideCount?: number;
+  wheelGestures?: CarouselWheelGesturesOption;
 };
 
 type CarouselViewportProps = {
   children: ReactNode;
   className?: string;
-  enableWheelNavigation?: boolean;
   trackClassName?: string;
 };
 
@@ -80,6 +82,7 @@ type CarouselArrowButtonProps = {
 type MotionPlugin = AutoplayType | AutoScrollType;
 type EmblaApi = NonNullable<UseEmblaCarouselType[1]>;
 type CarouselOptions = NonNullable<Parameters<typeof useEmblaCarousel>[0]>;
+type EmblaPlugin = NonNullable<Parameters<typeof useEmblaCarousel>[1]>[number];
 
 type CarouselContextValue = {
   canScrollNext: boolean;
@@ -120,9 +123,7 @@ const defaultAutoScrollOption = {
   stopOnInteraction: false,
 } as const;
 
-const toStableMotionKey = (
-  option: CarouselAutoPlayOption | CarouselAutoScrollOption | undefined,
-) => {
+const toStableOptionKey = (option: boolean | object | undefined) => {
   if (option === undefined) {
     return "undefined";
   }
@@ -144,6 +145,11 @@ const normalizeAutoScroll = (
   autoScroll: CarouselAutoScrollOption,
 ): Parameters<typeof AutoScroll>[0] =>
   typeof autoScroll === "object" ? autoScroll : defaultAutoScrollOption;
+
+const normalizeWheelGestures = (
+  wheelGestures: CarouselWheelGesturesOption,
+): Parameters<typeof WheelGesturesPlugin>[0] =>
+  typeof wheelGestures === "object" ? wheelGestures : {};
 
 const getMotionPlugins = (emblaApi: EmblaApi | undefined): MotionPlugin[] => {
   if (!emblaApi) {
@@ -223,29 +229,31 @@ export const CarouselRoot = ({
   options,
   onSelect,
   slideCount: providedSlideCount,
+  wheelGestures = false,
 }: CarouselRootProps) => {
   const prefersReducedMotion = usePrefersReducedMotion();
   const hasConfiguredMotion = autoPlay || autoScroll;
-  const autoPlayKey = toStableMotionKey(autoPlay);
-  const autoScrollKey = toStableMotionKey(autoScroll);
+  const autoPlayKey = toStableOptionKey(autoPlay);
+  const autoScrollKey = toStableOptionKey(autoScroll);
+  const wheelGesturesKey = toStableOptionKey(wheelGestures);
 
-  const plugins = useMemo<MotionPlugin[]>(() => {
-    if (prefersReducedMotion) {
-      return [];
+  const plugins = useMemo<EmblaPlugin[]>(() => {
+    const carouselPlugins: EmblaPlugin[] = [];
+
+    if (autoPlay && !prefersReducedMotion) {
+      carouselPlugins.push(Autoplay(normalizeAutoPlay(autoPlay)));
     }
 
-    const motionPlugins: MotionPlugin[] = [];
-
-    if (autoPlay) {
-      motionPlugins.push(Autoplay(normalizeAutoPlay(autoPlay)));
+    if (autoScroll && !prefersReducedMotion) {
+      carouselPlugins.push(AutoScroll(normalizeAutoScroll(autoScroll)));
     }
 
-    if (autoScroll) {
-      motionPlugins.push(AutoScroll(normalizeAutoScroll(autoScroll)));
+    if (wheelGestures) {
+      carouselPlugins.push(WheelGesturesPlugin(normalizeWheelGestures(wheelGestures)));
     }
 
-    return motionPlugins;
-  }, [autoPlayKey, autoScrollKey, prefersReducedMotion]);
+    return carouselPlugins;
+  }, [autoPlayKey, autoScrollKey, prefersReducedMotion, wheelGesturesKey]);
 
   const [viewportRef, emblaApi] = useEmblaCarousel(
     {
@@ -424,105 +432,12 @@ export const CarouselRoot = ({
 export const CarouselViewport = ({
   children,
   className,
-  enableWheelNavigation = false,
   trackClassName,
 }: CarouselViewportProps) => {
-  const { next, prev, viewportRef } = useCarousel();
-  const viewportElementRef = useRef<HTMLDivElement>(null);
-  const accumulatedWheelDelta = useRef(0);
-  const wheelDirection = useRef(0);
-  const hasNavigatedInWheelGesture = useRef(false);
-  const wheelGestureResetTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
-
-  const handleWheel = useCallback(
-    (event: WheelEvent) => {
-      const viewport = viewportElementRef.current;
-      if (
-        !viewport ||
-        !enableWheelNavigation ||
-        window.getComputedStyle(viewport).overflowX !== "hidden"
-      ) {
-        return;
-      }
-
-      const isHorizontalGesture = Math.abs(event.deltaX) > Math.abs(event.deltaY);
-
-      if (!event.shiftKey && !isHorizontalGesture) {
-        return;
-      }
-
-      const deltaScale =
-        event.deltaMode === WheelEvent.DOM_DELTA_LINE
-          ? 16
-          : event.deltaMode === WheelEvent.DOM_DELTA_PAGE
-            ? viewport.clientWidth
-            : 1;
-      const delta = (isHorizontalGesture ? event.deltaX : event.deltaY) * deltaScale;
-
-      if (delta === 0) {
-        return;
-      }
-
-      event.preventDefault();
-
-      clearTimeout(wheelGestureResetTimer.current);
-      wheelGestureResetTimer.current = setTimeout(() => {
-        accumulatedWheelDelta.current = 0;
-        wheelDirection.current = 0;
-        hasNavigatedInWheelGesture.current = false;
-      }, 160);
-
-      if (hasNavigatedInWheelGesture.current) {
-        return;
-      }
-
-      const direction = Math.sign(delta);
-      if (wheelDirection.current !== direction) {
-        accumulatedWheelDelta.current = 0;
-        wheelDirection.current = direction;
-      }
-
-      accumulatedWheelDelta.current += delta;
-
-      if (Math.abs(accumulatedWheelDelta.current) < 30) {
-        return;
-      }
-
-      hasNavigatedInWheelGesture.current = true;
-
-      if (delta > 0) {
-        next();
-      } else {
-        prev();
-      }
-    },
-    [enableWheelNavigation, next, prev],
-  );
-
-  useEffect(() => {
-    const viewport = viewportElementRef.current;
-    if (!viewport) {
-      return;
-    }
-
-    viewport.addEventListener("wheel", handleWheel, { passive: false });
-
-    return () => {
-      viewport.removeEventListener("wheel", handleWheel);
-      clearTimeout(wheelGestureResetTimer.current);
-    };
-  }, [handleWheel]);
-
-  const setViewportRef = useCallback(
-    (element: HTMLDivElement | null) => {
-      viewportElementRef.current = element;
-      viewportRef(element);
-    },
-    [viewportRef],
-  );
+  const { viewportRef } = useCarousel();
 
   return (
-    <div className={className} ref={setViewportRef}>
+    <div className={className} ref={viewportRef}>
       <div className={twMerge("flex h-full touch-pan-y", trackClassName)}>{children}</div>
     </div>
   );
