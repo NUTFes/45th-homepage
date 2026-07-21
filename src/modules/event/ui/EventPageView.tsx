@@ -85,9 +85,10 @@ export default function EventPageView() {
           <div className="flex justify-center bg-secondary/20">
             <div className="relative aspect-square w-full md:w-180">
               <Image
-                src="/image/event/guest_decoration.svg"
-                alt="ゲスト"
+                src="/image/event/guest_decoration.webp"
+                alt="ゲスト画像"
                 fill
+                priority
                 sizes="(min-width: 768px) 720px, 100vw"
                 className="object-cover"
               />
