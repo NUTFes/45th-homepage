@@ -1,6 +1,6 @@
 "use client";
 
-import { ListSortDescending } from "lucide-react";
+import { ListFilter } from "lucide-react";
 import { Button, type ButtonProps, composeRenderProps } from "react-aria-components";
 import { twMerge } from "tailwind-merge";
 
@@ -20,11 +20,7 @@ export default function TagSearchButton({ label = "タグ検索", ...props }: Ta
       )}
     >
       <span>{label}</span>
-      <ListSortDescending
-        aria-hidden="true"
-        className="size-4 shrink-0 md:size-5"
-        strokeWidth={2}
-      />
+      <ListFilter aria-hidden="true" className="size-4 shrink-0 md:size-5" strokeWidth={2} />
     </Button>
   );
 }
