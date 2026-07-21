@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { Button } from "react-aria-components";
 
-import CategoryMenu, { type CategoryMenuVariant } from "@/modules/event/ui/CategoryMenu";
+import CategoryMenu from "@/modules/event/ui/CategoryMenu";
+import type { CategoryMenuVariant } from "@/modules/event/ui/categoryMenuData";
 
 const variants: CategoryMenuVariant[] = ["event", "program", "exhibition", "food", "goods"];
 
