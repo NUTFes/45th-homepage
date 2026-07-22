@@ -22,7 +22,8 @@ export type ProgramDetailPageViewProps = {
 function EventHero({ title, imageSrc, imageAlt }: EventHeroProps) {
     return (
         <div className="flex flex-col gap-ss md:gap-s">
-            <h1 className="text-center font-kaisotai text-title wrap-break-word text-font-main md:text-Ptitle">
+            {/* PC ようFigmaデザインの 44pxに設定（P-title は 36px のためハードコード）*/}
+            <h1 className="text-center font-kaisotai text-title wrap-break-word text-font-main md:text-[44px]">
                 {title}
             </h1>
             <div className="flex flex-col gap-s md:px-4l">
@@ -46,7 +47,10 @@ export default function ProgramDetailPageView({ hero, intro, info }: ProgramDeta
         <div className="flex flex-col gap-4l py-4l md:flex-row md:py-0 md:pl-pm">
             <div className="flex flex-col gap-4l md:min-w-0 md:flex-[609_1_0] md:gap-3l md:py-5l">
                 <div className="flex flex-col gap-s md:gap-xs">
-                    <SectionTitle title="企画" />
+                    {/* SectionTitle はスマホのみ。PC では非表示 */}
+                    <div className="md:hidden">
+                        <SectionTitle title="企画" />
+                    </div>
                     <div className="px-[52.5px] md:px-0">
                         <EventHero {...hero} />
                     </div>
