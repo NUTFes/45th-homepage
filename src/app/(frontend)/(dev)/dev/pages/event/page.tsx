@@ -204,7 +204,7 @@ export default function DevTopPageModulesPage() {
         ))}
       </DevSection>
       <DevSection title="ProgramDetailPageView">
-        <DevPanel title="ProgramDetailPageView (src/modules/event/programs/[slug])">
+        <DevPanel title="ProgramDetailPageView (src/modules/event/programs/[slug])" fullWidth>
           <div className="bg-base">
             <ProgramDetailPageView {...programDetailDummyProps} />
           </div>
