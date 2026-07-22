@@ -16,29 +16,29 @@ export default function DevTopPageModulesPage() {
       description="src/modules/top/ui のコンポーネントをページ文脈で確認"
     >
       <DevSection title="Top">
-        <DevPanel title="PickUpCarousel">
+        <DevPanel title="PickUpCarousel" fullWidth>
           <PickUpFrame>
             <PickUpCarousel slides={[...topModuleSlides]} autoPlay={{ delay: 2500 }} />
           </PickUpFrame>
         </DevPanel>
-        <DevPanel title="PickUpFrame">
+        <DevPanel title="PickUpFrame" fullWidth>
           <PickUpFrame>
             <PickUpCarousel slides={[]} />
           </PickUpFrame>
         </DevPanel>
       </DevSection>
       <DevSection title="Sponsor">
-        <DevPanel title="SponsorSection (src/modules/top/ui)">
+        <DevPanel title="SponsorSection (src/modules/top/ui)" fullWidth>
           <SponsorSection />
         </DevPanel>
       </DevSection>
       <DevSection title="InfoMenu">
-        <DevPanel title="InfoMenu (src/modules/top/ui)">
+        <DevPanel title="InfoMenu (src/modules/top/ui)" fullWidth>
           <InfoMenu />
         </DevPanel>
       </DevSection>
       <DevSection title="LogoInfo">
-        <DevPanel title="LogoInfo (src/modules/top/ui)">
+        <DevPanel title="LogoInfo (src/modules/top/ui)" fullWidth>
           <LogoInfo />
         </DevPanel>
       </DevSection>

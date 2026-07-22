@@ -15,7 +15,7 @@ export default function DevPageModulesIndexPage() {
       description="ページ単位のコンポーネント群をカテゴリ別で確認"
     >
       <DevSection title="Available Pages">
-        <div className="grid gap-m md:grid-cols-2">
+        <div className="mx-auto grid w-full max-w-7xl gap-m px-m md:grid-cols-2">
           <Link
             href="/dev/pages/top"
             className="space-y-xs rounded-lg border border-base/10 p-m transition-colors hover:bg-secondary"

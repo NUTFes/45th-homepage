@@ -7,8 +7,8 @@ type DevSectionProps = {
 
 export const DevSection = ({ children, title }: DevSectionProps) => {
   return (
-    <section className="space-y-s rounded-xl border border-base/20 bg-white p-m shadow-sm">
-      <h2 className="text-title-small text-base-dark">{title}</h2>
+    <section className="space-y-m">
+      <h2 className="mx-auto w-full max-w-7xl px-m text-title-small text-base-dark">{title}</h2>
       {children}
     </section>
   );

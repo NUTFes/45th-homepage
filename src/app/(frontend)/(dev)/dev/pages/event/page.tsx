@@ -1,8 +1,7 @@
 import { DevPageContainer } from "../../_components/DevPageContainer";
 import { DevPanel } from "../../_components/DevPanel";
 import { DevSection } from "../../_components/DevSection";
-import EventSection from "@/modules/event/ui/EventSection";
-import type { EventFrameProps } from "@/components/ui/EventFrame";
+import EventSection, { type EventSectionEvent } from "@/modules/event/ui/EventSection";
 import EventPageView from "@/modules/event/ui/EventPageView";
 import ProgramPageView from "@/modules/event/ui/programs/category/[category]/ProgramPageView";
 import ProgramDetailPageView from "@/modules/event/programs/[slug]/ProgramDetailPageView";
@@ -10,21 +9,86 @@ import type { ProgramDetailPageViewProps } from "@/modules/event/programs/[slug]
 import { PROGRAM_CATEGORIES } from "@/lib/events/constants";
 import GuestProfileCard, { type GuestProfile } from "@/modules/event/guest/ui/GuestProfileCard";
 import GuestProfileSection from "@/modules/event/guest/ui/GuestProfileSection";
+import TagSearchComponentsPreview from "./TagSearchComponentsPreview";
 
 export const metadata = {
   title: "Event Page Modules - Dev",
   description: "src/modules/event のコンポーネントをページ文脈で確認",
 };
 
-const dummyEvents: EventFrameProps[] = [
-  { name: "Sweet Photato Contest", href: "/news", imageUrl: "/icon/Instagram.png" },
-  { name: "カラフルコーラスフェスティバル", href: "/dev", imageUrl: "/icon/Instagram.png" },
+const dummyEvents: EventSectionEvent[] = [
   {
+    id: "sweet-photato-contest",
+    name: "Sweet Photato Contest",
+    href: "/news",
+    imageUrl: "/icon/Instagram.png",
+  },
+  {
+    id: "colorful-chorus-festival",
+    name: "カラフルコーラスフェスティバル",
+    href: "/dev",
+    imageUrl: "/icon/Instagram.png",
+  },
+  {
+    id: "drone-robot-long-name",
     name: "ドローン・ロボット操縦体験＋研究紹介ああああああああああああああ",
     href: "/dev/events",
     imageUrl: "/icon/Instagram.png",
   },
-  { name: "無線機器、電子工作物展示会", href: "/common", imageUrl: "/icon/Instagram.png" },
+  {
+    id: "radio-electronics-1",
+    name: "無線機器、電子工作物展示会",
+    href: "/common",
+    imageUrl: "/icon/Instagram.png",
+  },
+  {
+    id: "drone-robot-1",
+    name: "ドローン・ロボット操縦体験＋研究紹介",
+    href: "/dev/events",
+    imageUrl: "/icon/Instagram.png",
+  },
+  {
+    id: "radio-electronics-2",
+    name: "無線機器、電子工作物展示会",
+    href: "/common",
+    imageUrl: "/icon/Instagram.png",
+  },
+  {
+    id: "drone-robot-2",
+    name: "ドローン・ロボット操縦体験＋研究紹介",
+    href: "/dev/events",
+    imageUrl: "/icon/Instagram.png",
+  },
+  {
+    id: "radio-electronics-3",
+    name: "無線機器、電子工作物展示会",
+    href: "/common",
+    imageUrl: "/icon/Instagram.png",
+  },
+  {
+    id: "drone-robot-3",
+    name: "ドローン・ロボット操縦体験＋研究紹介",
+    href: "/dev/events",
+    imageUrl: "/icon/Instagram.png",
+  },
+  {
+    id: "radio-electronics-4",
+    name: "無線機器、電子工作物展示会",
+    href: "/common",
+    imageUrl: "/icon/Instagram.png",
+  },
+  {
+    id: "drone-robot-4",
+    name: "ドローン・ロボット操縦体験＋研究紹介",
+    href: "/dev/events",
+    imageUrl: "/icon/Instagram.png",
+  },
+  {
+    id: "radio-electronics-5",
+    name: "無線機器、電子工作物展示会",
+    href: "/common",
+    imageUrl: "/icon/Instagram.png",
+  },
 ];
 
 const guestProfiles: GuestProfile[] = [
@@ -77,8 +141,13 @@ export default function DevTopPageModulesPage() {
       title="Event Page Modules"
       description="src/modules/event/ui のコンポーネントをページ文脈で確認"
     >
+      <DevSection title="Tag Search Components">
+        <DevPanel title="ActiveTag / TagSearchButton (src/modules/event/ui)" fullWidth>
+          <TagSearchComponentsPreview />
+        </DevPanel>
+      </DevSection>
       <DevSection title="EventSection">
-        <DevPanel title="EventSection (src/modules/event/ui)">
+        <DevPanel title="EventSection (src/modules/event/ui)" fullWidth>
           <div className="bg-base">
             <EventSection id="event-section" title="企画" viewAllHref="/" events={dummyEvents} />
           </div>
@@ -86,7 +155,7 @@ export default function DevTopPageModulesPage() {
       </DevSection>
       <DevSection title="GuestProfileCard">
         <DevPanel title="GuestProfileCard (src/modules/event/guest/ui)">
-          <div className="flex max-w-[430px] flex-col gap-l bg-base p-s">
+          <div className="flex max-w-107.5 flex-col gap-l bg-base p-s">
             {guestProfiles.map((profile) => (
               <GuestProfileCard key={profile.name} profile={profile} />
             ))}
@@ -119,7 +188,7 @@ export default function DevTopPageModulesPage() {
         </DevPanel>
       </DevSection>
       <DevSection title="EventPageView">
-        <DevPanel title="EventPageView (src/modules/event/ui)">
+        <DevPanel title="EventPageView (src/modules/event/ui)" fullWidth>
           <div className="bg-base">
             <EventPageView />
           </div>
@@ -127,7 +196,7 @@ export default function DevTopPageModulesPage() {
       </DevSection>
       <DevSection title="ProgramPageView">
         {PROGRAM_CATEGORIES.map(({ value, label }) => (
-          <DevPanel key={value} title={`ProgramPageView - ${label}`}>
+          <DevPanel key={value} title={`ProgramPageView - ${label}`} fullWidth>
             <div className="bg-base">
               <ProgramPageView category={value} />
             </div>

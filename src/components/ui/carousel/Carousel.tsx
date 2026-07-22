@@ -6,6 +6,7 @@ import useEmblaCarousel, {
   type EmblaViewportRefType,
   type UseEmblaCarouselType,
 } from "embla-carousel-react";
+import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import {
   createContext,
   use,
@@ -23,6 +24,7 @@ import { twMerge } from "tailwind-merge";
 import type {
   CarouselAutoPlayOption,
   CarouselAutoScrollOption,
+  CarouselWheelGesturesOption,
 } from "@/components/ui/carousel/types";
 
 type CarouselRootProps = {
@@ -32,8 +34,11 @@ type CarouselRootProps = {
   children: ReactNode;
   className?: string;
   loop?: boolean;
+  navigationStep?: "single" | "half-visible";
   options?: Omit<CarouselOptions, "loop">;
   onSelect?: (index: number) => void;
+  slideCount?: number;
+  wheelGestures?: CarouselWheelGesturesOption;
 };
 
 type CarouselViewportProps = {
@@ -77,6 +82,7 @@ type CarouselArrowButtonProps = {
 type MotionPlugin = AutoplayType | AutoScrollType;
 type EmblaApi = NonNullable<UseEmblaCarouselType[1]>;
 type CarouselOptions = NonNullable<Parameters<typeof useEmblaCarousel>[0]>;
+type EmblaPlugin = NonNullable<Parameters<typeof useEmblaCarousel>[1]>[number];
 
 type CarouselContextValue = {
   canScrollNext: boolean;
@@ -117,9 +123,7 @@ const defaultAutoScrollOption = {
   stopOnInteraction: false,
 } as const;
 
-const toStableMotionKey = (
-  option: CarouselAutoPlayOption | CarouselAutoScrollOption | undefined,
-) => {
+const toStableOptionKey = (option: boolean | object | undefined) => {
   if (option === undefined) {
     return "undefined";
   }
@@ -142,12 +146,21 @@ const normalizeAutoScroll = (
 ): Parameters<typeof AutoScroll>[0] =>
   typeof autoScroll === "object" ? autoScroll : defaultAutoScrollOption;
 
+const normalizeWheelGestures = (
+  wheelGestures: CarouselWheelGesturesOption,
+): Parameters<typeof WheelGesturesPlugin>[0] =>
+  typeof wheelGestures === "object" ? wheelGestures : {};
+
 const getMotionPlugins = (emblaApi: EmblaApi | undefined): MotionPlugin[] => {
   if (!emblaApi) {
     return [];
   }
 
   const plugins = emblaApi.plugins();
+  if (!plugins) {
+    return [];
+  }
+
   const motionPlugins: MotionPlugin[] = [];
 
   if (plugins.autoplay) {
@@ -212,31 +225,35 @@ export const CarouselRoot = ({
   children,
   className,
   loop = true,
+  navigationStep = "single",
   options,
   onSelect,
+  slideCount: providedSlideCount,
+  wheelGestures = false,
 }: CarouselRootProps) => {
   const prefersReducedMotion = usePrefersReducedMotion();
   const hasConfiguredMotion = autoPlay || autoScroll;
-  const autoPlayKey = toStableMotionKey(autoPlay);
-  const autoScrollKey = toStableMotionKey(autoScroll);
+  const autoPlayKey = toStableOptionKey(autoPlay);
+  const autoScrollKey = toStableOptionKey(autoScroll);
+  const wheelGesturesKey = toStableOptionKey(wheelGestures);
 
-  const plugins = useMemo<MotionPlugin[]>(() => {
-    if (prefersReducedMotion) {
-      return [];
+  const plugins = useMemo<EmblaPlugin[]>(() => {
+    const carouselPlugins: EmblaPlugin[] = [];
+
+    if (autoPlay && !prefersReducedMotion) {
+      carouselPlugins.push(Autoplay(normalizeAutoPlay(autoPlay)));
     }
 
-    const motionPlugins: MotionPlugin[] = [];
-
-    if (autoPlay) {
-      motionPlugins.push(Autoplay(normalizeAutoPlay(autoPlay)));
+    if (autoScroll && !prefersReducedMotion) {
+      carouselPlugins.push(AutoScroll(normalizeAutoScroll(autoScroll)));
     }
 
-    if (autoScroll) {
-      motionPlugins.push(AutoScroll(normalizeAutoScroll(autoScroll)));
+    if (wheelGestures) {
+      carouselPlugins.push(WheelGesturesPlugin(normalizeWheelGestures(wheelGestures)));
     }
 
-    return motionPlugins;
-  }, [autoPlayKey, autoScrollKey, prefersReducedMotion]);
+    return carouselPlugins;
+  }, [autoPlayKey, autoScrollKey, prefersReducedMotion, wheelGesturesKey]);
 
   const [viewportRef, emblaApi] = useEmblaCarousel(
     {
@@ -271,13 +288,13 @@ export const CarouselRoot = ({
         canScrollNext: emblaApi.canScrollNext(),
         canScrollPrev: emblaApi.canScrollPrev(),
         selectedIndex: nextIndex,
-        slideCount: emblaApi.scrollSnapList().length,
+        slideCount: providedSlideCount ?? emblaApi.scrollSnapList().length,
       },
       type: "patch",
     });
     syncMotionState(emblaApi);
     onSelect?.(nextIndex);
-  }, [emblaApi, onSelect, syncMotionState]);
+  }, [emblaApi, onSelect, providedSlideCount, syncMotionState]);
 
   const onEmblaSelectRef = useRef(onEmblaSelect);
   onEmblaSelectRef.current = onEmblaSelect;
@@ -319,13 +336,37 @@ export const CarouselRoot = ({
     [emblaApi],
   );
 
+  const scrollByNavigationStep = useCallback(
+    (direction: -1 | 1) => {
+      if (!emblaApi) {
+        return;
+      }
+
+      if (navigationStep === "single") {
+        if (direction === -1) {
+          emblaApi.scrollPrev();
+        } else {
+          emblaApi.scrollNext();
+        }
+        return;
+      }
+
+      const visibleSlideCount = emblaApi.slidesInView().length;
+      const step = Math.max(1, Math.ceil(visibleSlideCount / 2));
+      const target = emblaApi.selectedScrollSnap() + direction * step;
+
+      emblaApi.scrollTo(target);
+    },
+    [emblaApi, navigationStep],
+  );
+
   const prev = useCallback(() => {
-    emblaApi?.scrollPrev();
-  }, [emblaApi]);
+    scrollByNavigationStep(-1);
+  }, [scrollByNavigationStep]);
 
   const next = useCallback(() => {
-    emblaApi?.scrollNext();
-  }, [emblaApi]);
+    scrollByNavigationStep(1);
+  }, [scrollByNavigationStep]);
 
   const toggleMotion = useCallback(() => {
     const motionPlugins = getMotionPlugins(emblaApi);
@@ -345,6 +386,7 @@ export const CarouselRoot = ({
   }, [emblaApi]);
 
   const hasMotionControl = hasConfiguredMotion && !prefersReducedMotion;
+  const announcedSlideCount = providedSlideCount ?? runtimeState.slideCount;
 
   const contextValue = useMemo<CarouselContextValue>(
     () => ({
@@ -356,7 +398,7 @@ export const CarouselRoot = ({
       prev,
       scrollTo,
       selectedIndex: runtimeState.selectedIndex,
-      slideCount: runtimeState.slideCount,
+      slideCount: announcedSlideCount,
       toggleMotion,
       viewportRef,
     }),
@@ -369,7 +411,7 @@ export const CarouselRoot = ({
       prev,
       scrollTo,
       runtimeState.selectedIndex,
-      runtimeState.slideCount,
+      announcedSlideCount,
       toggleMotion,
       viewportRef,
     ],
@@ -379,7 +421,7 @@ export const CarouselRoot = ({
     <CarouselContext.Provider value={contextValue}>
       <section aria-label={ariaLabel} aria-roledescription="carousel" className={className}>
         <span aria-live={runtimeState.isMotionPlaying ? "off" : "polite"} className="sr-only">
-          Slide {runtimeState.selectedIndex + 1} of {Math.max(runtimeState.slideCount, 1)}
+          Slide {runtimeState.selectedIndex + 1} of {Math.max(announcedSlideCount, 1)}
         </span>
         {children}
       </section>
