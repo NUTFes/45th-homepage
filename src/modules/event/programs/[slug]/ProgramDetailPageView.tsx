@@ -19,8 +19,7 @@ export type ProgramDetailPageViewProps = {
 function EventHero({ title, imageSrc, imageAlt }: EventHeroProps) {
   return (
     <div className="flex flex-col gap-ss md:gap-xs">
-      {/* PC 用Figmaデザインの 44pxに設定（P-title は 36px のためハードコード）*/}
-      <h1 className="text-center font-kaisotai text-title wrap-break-word text-font-main md:text-[44px]">
+      <h1 className="text-center font-kaisotai text-title wrap-break-word text-font-main md:text-Ptitle">
         {title}
       </h1>
       <div className="flex flex-col gap-s md:px-4l">
