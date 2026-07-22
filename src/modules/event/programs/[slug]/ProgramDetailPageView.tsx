@@ -1,11 +1,8 @@
 import Image from "next/image";
 
-import EventInfoCard from "@/components/ui/EventInfoCard";
-import EventIntroFrame from "@/components/ui/EventIntroFrame";
+import EventInfoCard, { type EventInfoCardProps } from "@/components/ui/EventInfoCard";
+import EventIntroFrame, { type EventIntroFrameProps } from "@/components/ui/EventIntroFrame";
 import SectionTitle from "@/components/ui/SectionTitle";
-
-import type { EventInfoCardProps } from "@/components/ui/EventInfoCard";  
-import type { EventIntroFrameProps } from "@/components/ui/EventIntroFrame";
 
 type EventHeroProps = {
     title: string;
@@ -21,13 +18,13 @@ export type ProgramDetailPageViewProps = {
 
 function EventHero({ title, imageSrc, imageAlt }: EventHeroProps) {
     return (
-        <div className="flex flex-col gap-ss md:gap-s">
-            {/* PC ようFigmaデザインの 44pxに設定（P-title は 36px のためハードコード）*/}
+        <div className="flex flex-col gap-ss md:gap-xs">
+            {/* PC 用Figmaデザインの 44pxに設定（P-title は 36px のためハードコード）*/}
             <h1 className="text-center font-kaisotai text-title wrap-break-word text-font-main md:text-[44px]">
                 {title}
             </h1>
             <div className="flex flex-col gap-s md:px-4l">
-                <div className="relative aspect-square w-full overflow-hidden border-2 border-main bg-base-dark">
+                <div className="relative aspect-square overflow-hidden border-2 border-main bg-base-dark">
                     <Image
                         src={imageSrc}
                         alt={imageAlt}
@@ -46,8 +43,7 @@ export default function ProgramDetailPageView({ hero, intro, info }: ProgramDeta
     return (
         <div className="flex flex-col gap-4l py-4l md:flex-row md:py-0 md:pl-pm">
             <div className="flex flex-col gap-4l md:min-w-0 md:flex-[609_1_0] md:gap-3l md:py-5l">
-                <div className="flex flex-col gap-s md:gap-xs">
-                    {/* SectionTitle はスマホのみ。PC では非表示 */}
+                <div className="flex flex-col gap-s">
                     <div className="md:hidden">
                         <SectionTitle title="企画" />
                     </div>
