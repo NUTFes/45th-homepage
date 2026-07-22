@@ -22,11 +22,11 @@ export default function EventIntroFrame({ title, body }: EventIntroFrameProps) {
       ))}
       <div className="px-xs font-kaisotai md:px-3l">
         <div className="border-b border-secondary px-s md:px-3l">
-          <p className="text-center text-title-small md:text-title">{title}</p>
+          <h2 className="text-center text-title-small md:text-title">{title}</h2>
         </div>
       </div>
       <div className="md:px-s">
-        <p className="font-sans text-text md:text-Ptext">{body}</p>
+        <p className="font-sans text-text whitespace-pre-line md:text-Ptext">{body}</p>
       </div>
     </div>
   );

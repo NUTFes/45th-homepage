@@ -47,11 +47,10 @@ const menuItems: MenuItem[] = [
   {
     label: "イベント・販売",
     icon: CalendarDays,
-    disabled: true,
     children: [
       {
         label: "ゲスト",
-        disabled: true,
+        href: "/event/guest",
       },
       {
         label: "コラボ",

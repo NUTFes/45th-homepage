@@ -149,11 +149,11 @@ export default function DevTopPageModulesPage() {
             <GuestProfileSection
               id="guest-preview"
               variant="guest"
-              performerName="ヨネダ２０００"
+              performerName="ヨネダ2000"
               profiles={guestProfiles}
               image={{
                 src: "/image/event/guest.jpg",
-                alt: "ヨネダ２０００",
+                alt: "ヨネダ2000",
               }}
             />
             <GuestProfileSection

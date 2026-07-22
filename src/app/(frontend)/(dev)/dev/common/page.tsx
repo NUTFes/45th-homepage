@@ -190,7 +190,31 @@ export default function DevCommonComponentsPage() {
         </DevPanel>
         <DevPanel title="EventInfoCard">
           <div className="flex flex-wrap items-center gap-m bg-base">
-            <EventInfoCard location="講義棟1階201教室" title="キッチンカーエリア" imageSrc="" />
+            <EventInfoCard
+              location="講義棟1階201教室"
+              schedules={[
+                {
+                  dateLabel: "9月19日(土)",
+                  startLabel: "10:00",
+                  endLabel: "17:00",
+                  startsAt: "2026-09-19T10:00:00+09:00",
+                  endsAt: "2026-09-19T17:00:00+09:00",
+                },
+              ]}
+              map={{ title: "キッチンカーエリア", imageSrc: "" }}
+            />
+            <EventInfoCard
+              location="体育館"
+              schedules={[
+                {
+                  dateLabel: "9月20日(日)",
+                  startLabel: "13:00",
+                  endLabel: "14:00",
+                  startsAt: "2026-09-20T13:00:00+09:00",
+                  endsAt: "2026-09-20T14:00:00+09:00",
+                },
+              ]}
+            />
           </div>
         </DevPanel>
       </DevSection>

@@ -1,0 +1,236 @@
+import Image from "next/image";
+import { CameraOff, Clock, DoorOpen, Hamburger, Tickets, TriangleAlert, Users } from "lucide-react";
+
+import EventInfoCard, { type EventSchedule } from "@/components/ui/EventInfoCard";
+import EventIntroFrame from "@/components/ui/EventIntroFrame";
+import SectionTitle from "@/components/ui/SectionTitle";
+import SponsorAdsBoundary from "@/modules/sponsors/ui/SponsorAdsBoundary";
+import GuestInformationSection, {
+  type GuestInformationBlock,
+} from "@/modules/event/guest/ui/GuestInformationSection";
+import GuestProfileSection from "@/modules/event/guest/ui/GuestProfileSection";
+import type { GuestProfile } from "@/modules/event/guest/ui/GuestProfileCard";
+
+const MOBILE_DUMMY_COPY = "本文笹かま笹かま笹かま笹かま逆さま笹かま笹かま笹かま笹かま笹かま";
+const DESKTOP_DUMMY_COPY =
+  "本文ああああああああああああああああああああああああああああああああああああああああああああああああああああああああ";
+
+type ResponsiveDummyCopyProps = {
+  desktopCopy?: string;
+  desktopAccent?: boolean;
+  desktopLead?: string;
+};
+
+function ResponsiveDummyCopy({
+  desktopCopy = DESKTOP_DUMMY_COPY,
+  desktopAccent,
+  desktopLead,
+}: ResponsiveDummyCopyProps) {
+  return (
+    <>
+      <span className="lg:hidden">{MOBILE_DUMMY_COPY}</span>
+      <span className={`hidden lg:inline ${desktopAccent ? "text-accent" : ""}`}>
+        {desktopLead ? <span className="text-accent">{desktopLead}</span> : null}
+        {desktopCopy}
+      </span>
+    </>
+  );
+}
+
+const INTRODUCTION = {
+  title: "ヨネダ2000がやってくる！",
+  body: `お笑い界の異端児「ヨネダ2000」が技大祭にやってくる！
+
+まさに奇想天外！M1ファイナリストにして脳を揺さぶる独特なテンポと、クセになるリズムネタが炸裂します！
+
+ゲストイベントは技大祭2日目、9月20日(日)13:00~14:00に体育館にて行われます。この日限りのヨネダワールドをぜひお見逃しなく!`,
+} as const;
+
+const GUEST_SCHEDULES: readonly EventSchedule[] = [
+  {
+    dateLabel: "9月20日(日)",
+    startLabel: "13:00",
+    endLabel: "14:00",
+    startsAt: "2026-09-20T13:00:00+09:00",
+    endsAt: "2026-09-20T14:00:00+09:00",
+  },
+];
+
+const TICKET_DISTRIBUTION_BLOCKS = [
+  {
+    title: "スケジュール",
+    icon: Clock,
+    body: <ResponsiveDummyCopy />,
+  },
+  {
+    title: "注意事項",
+    icon: TriangleAlert,
+    body: <ResponsiveDummyCopy />,
+  },
+] satisfies readonly GuestInformationBlock[];
+
+const ADMISSION_BLOCKS = [
+  {
+    title: "整理券での入場方法",
+    icon: Tickets,
+    body: (
+      <ResponsiveDummyCopy
+        desktopCopy="本文あああああああああああああああああああああああああああああああああああああああああああああああああああああ"
+        desktopLead="本文。"
+      />
+    ),
+  },
+  {
+    title: "一般入場枠について",
+    icon: Users,
+    body: <ResponsiveDummyCopy desktopAccent />,
+  },
+  {
+    title: "再入場について",
+    icon: DoorOpen,
+    body: <ResponsiveDummyCopy desktopAccent />,
+  },
+] satisfies readonly GuestInformationBlock[];
+
+const VENUE_CAUTION_BLOCKS = [
+  {
+    title: "イベント中の録音・撮影は原則禁止",
+    icon: CameraOff,
+    body: <ResponsiveDummyCopy />,
+  },
+  {
+    title: "体育館では食事禁止・水分補給のみ可能",
+    icon: Hamburger,
+    body: <ResponsiveDummyCopy />,
+  },
+] satisfies readonly GuestInformationBlock[];
+
+const GUEST_PROFILES: readonly GuestProfile[] = [
+  {
+    name: "誠さん(左)",
+    birthDate: "1999年03月25日",
+    birthplace: "東京都 世田谷区",
+    hobby: "テニス/絵を描く事/物作り/音楽鑑賞",
+    specialSkill: "ハーモニカ/散髪/髭剃り（理容師免許取得）",
+  },
+  {
+    name: "愛さん(右)",
+    birthDate: "1996年09月19日",
+    birthplace: "神奈川県 横浜市",
+    hobby: "動物鑑賞/音楽鑑賞/SMAP",
+    specialSkill: "犬の基本的なしつけ/ブルースハープ（ハーモニカ）/肩もみ",
+  },
+];
+
+const MC_PROFILES: readonly GuestProfile[] = [
+  {
+    name: "清野幹さん",
+    birthDate: "1979年02月22日",
+    birthplace: "阿賀野市",
+    hobby: "一人イントロクイズ",
+    specialSkill: "二段階右折",
+  },
+];
+
+export default function GuestPageView() {
+  return (
+    <div className="relative min-h-screen overflow-x-clip bg-base">
+      <h1 className="sr-only">ゲスト ヨネダ2000</h1>
+
+      <Image
+        src="/image/PageBack1.svg"
+        alt=""
+        aria-hidden="true"
+        width={287}
+        height={333}
+        className="pointer-events-none absolute top-0 left-1/2 z-0 hidden -translate-x-[107px] lg:block"
+      />
+      <Image
+        src="/image/PageBack2.svg"
+        alt=""
+        aria-hidden="true"
+        width={243}
+        height={644}
+        className="pointer-events-none absolute top-150 left-1/2 z-0 hidden -translate-x-[640px] lg:block"
+      />
+
+      <div className="relative z-10 mx-auto grid w-full max-w-320 grid-cols-1 gap-y-4l pb-4l lg:grid-cols-[minmax(0,609px)_minmax(320px,491px)] lg:gap-x-4l lg:pb-pm lg:pl-pm">
+        <div className="lg:col-start-1 lg:row-start-1 lg:pt-5l">
+          <Image
+            src="/image/event/guest-main.png"
+            alt="お笑いコンビ「ヨネダ2000」の誠さんと愛さん"
+            width={2992}
+            height={2992}
+            preload
+            sizes="(min-width: 1280px) 609px, (min-width: 1024px) calc(100vw - 500px), 100vw"
+            className="h-auto w-full"
+          />
+        </div>
+
+        <div className="px-xs lg:col-start-1 lg:row-start-2 lg:px-0">
+          <EventIntroFrame {...INTRODUCTION} />
+        </div>
+
+        <aside className="bg-base-dark lg:sticky lg:top-18 lg:col-start-2 lg:row-start-1 lg:row-end-7 lg:h-[calc(100dvh-4.5rem)] lg:self-start">
+          <EventInfoCard location="体育館" schedules={GUEST_SCHEDULES} />
+        </aside>
+
+        <GuestInformationSection
+          id="ticket-distribution"
+          title="整理券配布について"
+          blocks={TICKET_DISTRIBUTION_BLOCKS}
+          className="lg:col-start-1 lg:row-start-3 lg:mt-m"
+        />
+
+        <GuestInformationSection
+          id="admission"
+          title="入場について"
+          blocks={ADMISSION_BLOCKS}
+          className="lg:col-start-1 lg:row-start-4"
+        />
+
+        <GuestInformationSection
+          id="venue-cautions"
+          title="会場での注意事項"
+          blocks={VENUE_CAUTION_BLOCKS}
+          className="lg:col-start-1 lg:row-start-5"
+        />
+
+        <section
+          aria-labelledby="guest-performers-heading"
+          className="flex min-w-0 flex-col gap-s lg:col-start-1 lg:row-start-6"
+        >
+          <h2 id="guest-performers-heading" className="sr-only">
+            出演者情報
+          </h2>
+          <div aria-hidden="true">
+            <SectionTitle title="出演者情報" />
+          </div>
+          <div className="flex flex-col gap-4l lg:gap-5l">
+            <GuestProfileSection
+              id="yoneda-2000"
+              variant="guest"
+              performerName="ヨネダ2000"
+              profiles={GUEST_PROFILES}
+              image={{
+                src: "/image/event/guest.jpg",
+                alt: "ヨネダ2000の誠さんと愛さん",
+              }}
+            />
+            <GuestProfileSection
+              id="mc-kiyono-miki"
+              variant="mc"
+              profiles={MC_PROFILES}
+              image={{
+                src: "/image/event/mc.jpg",
+                alt: "MCの清野幹さん",
+              }}
+            />
+          </div>
+        </section>
+      </div>
+
+      <SponsorAdsBoundary className="relative z-10 pb-4l" />
+    </div>
+  );
+}
