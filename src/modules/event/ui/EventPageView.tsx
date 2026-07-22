@@ -86,7 +86,7 @@ export default function EventPageView() {
             <div className="relative aspect-square w-full md:w-180">
               <Image
                 src="/image/event/guest_decoration.webp"
-                alt="ゲスト画像"
+                alt="ヨネダ2000"
                 fill
                 priority
                 sizes="(min-width: 768px) 720px, 100vw"
