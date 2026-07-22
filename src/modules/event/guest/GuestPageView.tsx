@@ -134,7 +134,7 @@ const MC_PROFILES: readonly GuestProfile[] = [
 
 export default function GuestPageView() {
   return (
-    <div className="relative min-h-screen overflow-x-clip bg-base">
+    <div className="relative min-h-dvh overflow-x-clip bg-base">
       <h1 className="sr-only">ゲスト ヨネダ2000</h1>
 
       <Image

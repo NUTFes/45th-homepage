@@ -26,8 +26,9 @@ type McSectionProps = GuestProfileSectionBaseProps & {
 export type GuestProfileSectionProps = GuestSectionProps | McSectionProps;
 
 const IMAGE_SIZES = {
-  guest: "(min-width: 1024px) 310px, 224px",
-  mc: "(min-width: 1024px) 182px, 150px",
+  guest:
+    "(min-width: 1024px) 310px, (min-width: 768px) min(384px, calc(100vw - 356px)), min(224px, calc(100vw - 152px))",
+  mc: "(min-width: 1024px) 182px, (min-width: 768px) min(313px, 42vw), min(160px, 40vw)",
 } as const;
 
 export default function GuestProfileSection(props: GuestProfileSectionProps) {
@@ -36,7 +37,7 @@ export default function GuestProfileSection(props: GuestProfileSectionProps) {
   const headingId = `guest-profile-section-${id}`;
   const imageView = (
     <div
-      className={`relative shrink-0 overflow-hidden border-2 border-main ${isGuest ? "size-56 lg:size-77.5" : "h-56.25 w-37.5 lg:h-68.5 lg:w-45.5"}`}
+      className={`relative min-w-0 overflow-hidden border-2 border-main ${isGuest ? "aspect-4/3 max-w-56 flex-[1_1_14rem] md:aspect-3/2 md:max-w-96 lg:aspect-auto lg:size-77.5 lg:max-w-none lg:flex-none" : "aspect-2/3 max-w-40 flex-[1_1_8rem] md:max-w-78.25 lg:aspect-auto lg:h-68.5 lg:w-45.5 lg:max-w-none lg:flex-none"}`}
     >
       <Image
         alt={image.alt}
@@ -56,23 +57,23 @@ export default function GuestProfileSection(props: GuestProfileSectionProps) {
   );
 
   return (
-    <section aria-labelledby={headingId} className="w-full bg-base text-font-main">
-      <div className="flex w-full flex-col gap-ss">
-        <h3 id={headingId} className="px-l font-kaisotai text-title lg:text-Ptitle">
+    <section aria-labelledby={headingId} className="w-full bg-base text-font-main md:px-4l lg:px-0">
+      <div className="mx-auto flex w-full max-w-250 flex-col gap-ss">
+        <h3 id={headingId} className="px-l font-kaisotai text-title md:px-0 md:text-Ptitle lg:px-l">
           {isGuest ? "ゲスト" : "MC"}
         </h3>
         {isGuest ? (
-          <div className="flex min-w-0 flex-col gap-m lg:gap-ll">
-            <div className="flex min-w-0 items-center gap-m pr-l lg:gap-3l">
+          <div className="flex min-w-0 flex-col gap-m md:gap-3l lg:gap-ll">
+            <div className="flex min-w-0 items-center gap-m pr-l md:gap-3l">
               {imageView}
-              <p className="max-w-36 flex-none text-center text-button whitespace-nowrap lg:max-w-60 lg:text-title">
+              <p className="max-w-36 flex-none text-center text-button wrap-break-word md:max-w-60 md:text-title">
                 {props.performerName}
               </p>
             </div>
-            <div className="min-w-0 pl-l lg:pr-5l">{profileList}</div>
+            <div className="min-w-0 pl-l md:px-0 lg:pr-5l lg:pl-l">{profileList}</div>
           </div>
         ) : (
-          <div className="flex min-w-0 items-center justify-between pl-l">
+          <div className="flex min-w-0 items-center gap-m pl-l md:gap-4l md:pl-0 lg:gap-l lg:pl-l">
             <div className="min-w-0 flex-1">{profileList}</div>
             {imageView}
           </div>
