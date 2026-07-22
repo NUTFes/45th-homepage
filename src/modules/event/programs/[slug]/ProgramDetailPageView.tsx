@@ -19,21 +19,24 @@ export type ProgramDetailPageViewProps = {
     info: EventInfoCardProps;
 }
 
-// 孫1-1 の中身: 企画名 + 画像（SponsorCard のマークアップを参考に）
 function EventHero({ title, imageSrc, imageAlt }: EventHeroProps) {
     return (
-        <div className="flex w-full flex-col items-center gap-s">
-            <h1 className="max-w-full text-center font-kaisotai text-title wrap-break-word text-font-main">
+        <div className="flex flex-col gap-ss">
+            <h1 className="text-center font-kaisotai text-title wrap-break-word text-font-main">
                 {title}
             </h1>
-            <div className="relative aspect-square w-full max-w-80 overflow-hidden border-2 border-main bg-base-dark">
-                <Image
-                    src={imageSrc}
-                    alt={imageAlt}
-                    fill
-                    className="object-contain"
-                    sizes="320px"
-                />
+            {/* 画像 + タグ: タグ実装時に gap-s(16px) が効く受け皿として分けている */}
+            <div className="flex flex-col gap-s">
+                <div className="relative aspect-square w-full overflow-hidden border-2 border-main bg-base-dark">
+                    <Image
+                        src={imageSrc}
+                        alt={imageAlt}
+                        fill
+                        className="object-contain"
+                        sizes="(min-width: 768px) 400px, 100vw"
+                    />
+                </div>
+                {/* TODO: タグ（今回は作成しない） */}
             </div>
         </div>
     )
@@ -45,7 +48,9 @@ export default function ProgramDetailPageView({ hero, intro, info }: ProgramDeta
             <div className="flex flex-col gap-4l">
                 <div className="flex flex-col gap-s">
                     <SectionTitle title="企画" />
-                    <EventHero {...hero} />
+                    <div className="px-[52.5px]">
+                        <EventHero {...hero} />
+                    </div>
                 </div>
                 <div className="px-ll">
                     <EventIntroFrame {...intro} />
