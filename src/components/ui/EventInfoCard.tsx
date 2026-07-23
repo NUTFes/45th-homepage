@@ -15,7 +15,7 @@ type EventInfoMap = Pick<MapFrameProps, "title" | "imageSrc" | "alt"> & {
   buttonLabel?: string;
 };
 
-type EventInfoCardProps = {
+export type EventInfoCardProps = {
   location: string;
   schedules: readonly EventSchedule[];
   map?: EventInfoMap;

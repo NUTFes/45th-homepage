@@ -1,6 +1,7 @@
 export type EventIntroFrameProps = {
   title: string;
   body: string;
+  headingLevel?: 1 | 2;
 };
 
 const CORNER_CLASS_NAMES = [
@@ -10,7 +11,9 @@ const CORNER_CLASS_NAMES = [
   "bottom-0 right-0 border-b-[3.6] border-r-[3.6] md:bottom-0 md:right-0 md:border-b-[4.8] md:border-r-[4.8]", // 右下
 ] as const;
 
-export default function EventIntroFrame({ title, body }: EventIntroFrameProps) {
+export default function EventIntroFrame({ title, body, headingLevel = 2 }: EventIntroFrameProps) {
+  const Heading = headingLevel === 1 ? "h1" : "h2";
+
   return (
     <div className="relative flex w-full flex-col gap-s overflow-hidden border border-main bg-base px-m py-s text-secondary shadow-[0px_2px_6px_0px] shadow-base-shadow md:px-ll md:py-m">
       {CORNER_CLASS_NAMES.map((pos, index) => (
@@ -22,7 +25,9 @@ export default function EventIntroFrame({ title, body }: EventIntroFrameProps) {
       ))}
       <div className="px-xs font-kaisotai md:px-3l">
         <div className="border-b border-secondary px-s md:px-3l">
-          <h2 className="text-center text-title-small md:text-title">{title}</h2>
+          <Heading className="text-center text-title-small md:text-title xl:text-Ptitle">
+            {title}
+          </Heading>
         </div>
       </div>
       <div className="md:px-s">
