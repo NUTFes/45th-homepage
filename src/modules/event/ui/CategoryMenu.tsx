@@ -44,7 +44,7 @@ export default function CategoryMenu({ className, onClose, variant, ...props }: 
       <CheckboxGroup
         {...props}
         aria-label={props["aria-label"] ?? `${categoryMenuLabels[variant]}のタグ検索`}
-        className="flex w-full flex-wrap items-center justify-start gap-x-s gap-y-l px-ll md:gap-x-3l md:gap-y-ll md:px-4l"
+        className="grid w-full grid-cols-[repeat(auto-fill,9.25rem)] items-center justify-between gap-x-s gap-y-l px-ll md:grid-cols-[repeat(auto-fill,10.75rem)] md:gap-x-3l md:gap-y-ll md:px-4l"
       >
         {items.map((item) => (
           <CategoryCard
