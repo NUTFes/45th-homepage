@@ -1,6 +1,6 @@
 const ICON_BASE_PATH = "/image/event/category";
 
-export const categoryIcons = {
+const categoryIcons = {
   activity: `${ICON_BASE_PATH}/activity.svg`,
   children: `${ICON_BASE_PATH}/children.svg`,
   food: `${ICON_BASE_PATH}/food.svg`,
@@ -15,61 +15,72 @@ type CategoryIcon = keyof typeof categoryIcons;
 
 type CategoryMenuItem = {
   label: string;
-  icon?: CategoryIcon;
 };
 
 export type CategoryMenuVariant = "event" | "program" | "exhibition" | "food" | "goods";
 
+const categoryIconByLabel: Partial<Record<string, CategoryIcon>> = {
+  食販: "food",
+  物販: "goods",
+  "体験・遊ぶ": "activity",
+  "見る・聞く": "watch",
+  "展示・学ぶ": "learning",
+  子ども向け: "children",
+  要予約: "reservation",
+  景品あり: "prize",
+};
+
+export function getCategoryIconSrc(label: string) {
+  const icon = categoryIconByLabel[label];
+  return icon === undefined ? undefined : categoryIcons[icon];
+}
+
 export const categoryMenuItems = {
   event: [
-    { label: "食販", icon: "food" },
-    { label: "物販", icon: "goods" },
-    { label: "体験・遊ぶ", icon: "activity" },
-    { label: "見る・聞く", icon: "watch" },
-    { label: "展示・学ぶ", icon: "learning" },
-    { label: "子ども向け", icon: "children" },
-    { label: "要予約", icon: "reservation" },
-    { label: "景品あり", icon: "prize" },
+    { label: "食販" },
+    { label: "物販" },
+    { label: "体験・遊ぶ" },
+    { label: "見る・聞く" },
+    { label: "展示・学ぶ" },
+    { label: "子ども向け" },
+    { label: "要予約" },
+    { label: "景品あり" },
     { label: "１日目" },
     { label: "２日目" },
   ],
   program: [
-    { label: "体験・遊ぶ", icon: "activity" },
-    { label: "見る・聞く", icon: "watch" },
-    { label: "子ども向け", icon: "children" },
-    { label: "景品あり", icon: "prize" },
-    { label: "要予約", icon: "learning" },
-    { label: "講義棟", icon: "reservation" },
-    { label: "ステージ", icon: "food" },
-    { label: "体育館", icon: "goods" },
+    { label: "体験・遊ぶ" },
+    { label: "見る・聞く" },
+    { label: "子ども向け" },
+    { label: "景品あり" },
+    { label: "要予約" },
+    { label: "講義棟" },
+    { label: "ステージ" },
+    { label: "体育館" },
     { label: "１日目" },
     { label: "２日目" },
   ],
   exhibition: [
-    { label: "体験・遊ぶ", icon: "activity" },
-    { label: "見る・聞く", icon: "watch" },
-    { label: "展示・学ぶ", icon: "learning" },
-    { label: "子ども向け", icon: "children" },
-    { label: "講義棟", icon: "reservation" },
-    { label: "研究室", icon: "prize" },
+    { label: "体験・遊ぶ" },
+    { label: "見る・聞く" },
+    { label: "展示・学ぶ" },
+    { label: "子ども向け" },
+    { label: "講義棟" },
+    { label: "研究室" },
     { label: "１日目" },
     { label: "２日目" },
   ],
   food: [
-    { label: "フード", icon: "activity" },
-    { label: "スイーツ", icon: "watch" },
-    { label: "ドリンク", icon: "children" },
-    { label: "国際グルメ", icon: "prize" },
-    { label: "お酒あり", icon: "learning" },
-    { label: "学生出店", icon: "reservation" },
-    { label: "企業出店", icon: "food" },
-    { label: "キッチンカー", icon: "goods" },
+    { label: "フード" },
+    { label: "スイーツ" },
+    { label: "ドリンク" },
+    { label: "国際グルメ" },
+    { label: "お酒あり" },
+    { label: "学生出店" },
+    { label: "企業出店" },
+    { label: "キッチンカー" },
   ],
-  goods: [
-    { label: "体験あり", icon: "activity" },
-    { label: "子ども向け", icon: "watch" },
-    { label: "技大グッズ", icon: "children" },
-  ],
+  goods: [{ label: "体験あり" }, { label: "子ども向け" }, { label: "技大グッズ" }],
 } as const satisfies Record<CategoryMenuVariant, readonly CategoryMenuItem[]>;
 
 export const categoryMenuLabels = {

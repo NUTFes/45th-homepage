@@ -6,9 +6,9 @@ import { twMerge } from "tailwind-merge";
 
 import CategoryCard from "./CategoryCard";
 import {
-  categoryIcons,
   categoryMenuItems,
   categoryMenuLabels,
+  getCategoryIconSrc,
   type CategoryMenuVariant,
 } from "./categoryMenuData";
 
@@ -49,7 +49,7 @@ export default function CategoryMenu({ className, onClose, variant, ...props }: 
         {items.map((item) => (
           <CategoryCard
             key={item.label}
-            iconSrc={"icon" in item ? categoryIcons[item.icon] : undefined}
+            iconSrc={getCategoryIconSrc(item.label)}
             label={item.label}
             value={item.label}
           />
