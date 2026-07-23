@@ -11,6 +11,7 @@ import InfoFrame from "@/components/ui/InfoFrame";
 import InfoBlock from "@/components/ui/InfoBlock";
 import ImportantFrame from "@/components/ui/ImportantFrame";
 import NewsItem from "@/components/ui/NewsItem";
+import NewsRichText from "@/components/ui/NewsRichText";
 import EventIntroFrame from "@/components/ui/EventIntroFrame";
 import {
   Beer,
@@ -38,8 +39,7 @@ import EventInfoCard from "@/components/ui/EventInfoCard";
 
 const previewSlides = ["Slide 1", "Slide 2", "Slide 3"];
 const noImportantNewsMessage = "現在、重要なお知らせはありません。";
-const sampleImportantNewsBody =
-  sampleNewsItems.find((item) => item.important)?.body ?? noImportantNewsMessage;
+const sampleImportantNewsBody = sampleNewsItems.find((item) => item.important)?.body;
 
 export default function DevCommonComponentsPage() {
   return (
@@ -80,7 +80,7 @@ export default function DevCommonComponentsPage() {
               date="2026.04.08"
               dateTime="2026-04-08"
               title="タイトル"
-              content={"1行目のテキストです。\n2行目のテキストです。\n3行目のテキストです。"}
+              content={sampleNewsItems[0].body}
             />
           </div>
         </DevPanel>
@@ -90,7 +90,13 @@ export default function DevCommonComponentsPage() {
           </InfoFrame>
         </DevPanel>
         <DevPanel title="ImportantFrame">
-          <ImportantFrame title="重要なお知らせ">{sampleImportantNewsBody}</ImportantFrame>
+          <ImportantFrame title="重要なお知らせ">
+            {sampleImportantNewsBody ? (
+              <NewsRichText data={sampleImportantNewsBody} />
+            ) : (
+              <p>{noImportantNewsMessage}</p>
+            )}
+          </ImportantFrame>
         </DevPanel>
 
         <DevPanel title="InfoBlock">

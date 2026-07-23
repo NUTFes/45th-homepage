@@ -9,6 +9,7 @@ import NewsItem from "@/components/ui/NewsItem";
 import ImportantFrameSkeleton from "@/components/ui/ImportantFrameSkeleton";
 import SectionTitle from "@/components/ui/SectionTitle";
 import NewsItemSkeleton from "@/components/ui/NewsItemSkeleton";
+import NewsRichText from "@/components/ui/NewsRichText";
 import SponsorAdsBoundary from "@/modules/sponsors/ui/SponsorAdsBoundary";
 import LogoInfo from "./ui/LogoInfo";
 import SponsorSection from "./ui/SponsorSection";
@@ -65,11 +66,15 @@ function TopHero() {
   );
 }
 
-function ImportantNewsSection({ body }: { body: string | null }) {
+function ImportantNewsSection({
+  body,
+}: {
+  body: Awaited<ReturnType<typeof getImportantNewsBody>>;
+}) {
   return (
     <div className="w-full md:max-w-none">
       <ImportantFrame title="重要なお知らせ">
-        <p className="whitespace-pre-wrap">{body ?? NO_IMPORTANT_NEWS_MESSAGE}</p>
+        {body ? <NewsRichText data={body} /> : <p>{NO_IMPORTANT_NEWS_MESSAGE}</p>}
       </ImportantFrame>
     </div>
   );

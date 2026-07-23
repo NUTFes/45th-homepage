@@ -1,8 +1,11 @@
+import NewsRichText from "./NewsRichText";
+import type { News } from "@/payload-types";
+
 type NewsItemProps = {
   date: string;
   dateTime: string;
   title: string;
-  content: string;
+  content: News["body"];
   important?: boolean;
 };
 
@@ -22,7 +25,7 @@ export default function NewsItem({ date, dateTime, title, content, important }: 
       <div className="mt-1 -ml-[0.5em] text-button font-bold text-font-main before:content-['［_'] after:content-['_］'] md:text-Pbutton">
         {title}
       </div>
-      <p className="mt-ss text-justify whitespace-pre-wrap">{content}</p>
+      <NewsRichText data={content} className="mt-ss text-justify" />
     </li>
   );
 }
