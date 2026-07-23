@@ -1,3 +1,4 @@
+import Image from "next/image";
 import EventSection, { type EventSectionEvent } from "@/modules/event/ui/EventSection";
 import ButtonMain from "@/components/ui/ButtonMain";
 import SectionTitle from "@/components/ui/SectionTitle";
@@ -75,18 +76,38 @@ const EVENT_SECTIONS = PROGRAM_CATEGORIES.map(({ value, label }) => ({
 
 export default function EventPageView() {
   return (
-    <div className="flex flex-col gap-4l pb-4l">
-      <section aria-label="ゲスト" className="flex flex-col gap-s">
-        <SectionTitle title="ゲスト" />
-        <div className="flex justify-center">
-          <ButtonMain href="/guest" title="もっと見る" />
+    <div className="flex flex-col gap-4l pb-4l md:gap-5l">
+      <section aria-label="ゲスト" className="flex flex-col gap-m md:gap-ll">
+        <div className="md:px-pl">
+          <SectionTitle title="ゲスト" />
+        </div>
+        <div className="flex flex-col gap-m md:gap-3l">
+          <div className="flex justify-center bg-secondary/20">
+            <div className="relative aspect-square w-full md:w-180">
+              <Image
+                src="/image/event/guest_decoration.webp"
+                alt="ヨネダ2000"
+                fill
+                priority
+                sizes="(min-width: 768px) 720px, 100vw"
+                className="object-cover"
+              />
+            </div>
+          </div>
+          <div className="flex justify-center">
+            <ButtonMain href="/guest" title="ゲストページを見る" />
+          </div>
         </div>
       </section>
-      <section aria-label="イベント・販売" className="flex flex-col gap-3l">
-        <SectionTitle title="イベント・販売" />
-        {EVENT_SECTIONS.map((section) => (
-          <EventSection key={section.id} {...section} />
-        ))}
+      <section aria-label="イベント・販売" className="flex flex-col gap-s md:gap-ll">
+        <div className="md:px-pl">
+          <SectionTitle title="イベント・販売" />
+        </div>
+        <div className="flex flex-col gap-3l bg-base-dark md:gap-5l md:py-4l">
+          {EVENT_SECTIONS.map((section) => (
+            <EventSection key={section.id} {...section} />
+          ))}
+        </div>
       </section>
       <section aria-label="協賛企業">
         <div className="flex justify-center">
