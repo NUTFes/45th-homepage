@@ -1,7 +1,47 @@
-import type { CollectionConfig } from "payload";
+import {
+  BoldFeature,
+  FixedToolbarFeature,
+  ItalicFeature,
+  LinkFeature,
+  ParagraphFeature,
+  UnderlineFeature,
+  lexicalEditor,
+} from "@payloadcms/richtext-lexical";
+import type { CollectionConfig, TextFieldSingleValidation } from "payload";
 
 import { ensureSingleImportantNewsBeforeChange } from "./hooks/ensureSingleImportantNews";
 import { revalidateNewsAfterChange, revalidateNewsAfterDelete } from "./hooks/revalidateNews";
+
+const INVALID_LINK_MESSAGE =
+  "http(s) URL、サイト内パス（/から開始）、ページ内リンク（#から開始）、メール、電話番号を入力してください。";
+
+const validateNewsLink: TextFieldSingleValidation = (value) => {
+  if (typeof value !== "string" || value.length === 0) {
+    return "リンク先を入力してください。";
+  }
+
+  if (value !== value.trim() || /\s/.test(value)) {
+    return INVALID_LINK_MESSAGE;
+  }
+
+  if (
+    (value.startsWith("/") && !value.startsWith("//")) ||
+    (value.startsWith("#") && value.length > 1) ||
+    /^mailto:[^@\s]+@[^@\s]+\.[^@\s]+$/i.test(value) ||
+    /^tel:\+?[0-9().-]+$/i.test(value)
+  ) {
+    return true;
+  }
+
+  try {
+    const url = new URL(value);
+    return ["http:", "https:"].includes(url.protocol) && Boolean(url.hostname)
+      ? true
+      : INVALID_LINK_MESSAGE;
+  } catch {
+    return INVALID_LINK_MESSAGE;
+  }
+};
 
 export const News: CollectionConfig = {
   slug: "news",
@@ -114,8 +154,33 @@ export const News: CollectionConfig = {
         ja: "本文",
         en: "Body",
       },
-      type: "textarea",
+      type: "richText",
       required: true,
+      editor: lexicalEditor({
+        features: () => [
+          ParagraphFeature(),
+          BoldFeature(),
+          ItalicFeature(),
+          UnderlineFeature(),
+          LinkFeature({
+            enabledCollections: [],
+            fields: ({ defaultFields }) => [
+              ...defaultFields.filter((field) => !("name" in field && field.name === "url")),
+              {
+                name: "url",
+                type: "text",
+                label: {
+                  ja: "リンク先",
+                  en: "URL",
+                },
+                required: true,
+                validate: validateNewsLink,
+              },
+            ],
+          }),
+          FixedToolbarFeature(),
+        ],
+      }),
     },
   ],
   timestamps: true,

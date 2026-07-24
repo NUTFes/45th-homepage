@@ -125,7 +125,7 @@ export async function getLatestNews(limit = 3): Promise<NewsItem[]> {
   return result.docs.map(toNewsItem);
 }
 
-export async function getImportantNewsBody(): Promise<string | null> {
+export async function getImportantNewsBody(): Promise<News["body"] | null> {
   "use cache";
   cacheTag(CACHE_TAGS.news);
   cacheLife("minutes");

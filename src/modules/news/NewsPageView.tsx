@@ -10,6 +10,7 @@ import ImportantFrame from "@/components/ui/ImportantFrame";
 import ImportantFrameSkeleton from "@/components/ui/ImportantFrameSkeleton";
 import { toSafePage } from "./utils";
 import ButtonMain from "@/components/ui/ButtonMain";
+import NewsRichText from "@/components/ui/NewsRichText";
 
 type NewsPageViewProps = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -37,7 +38,11 @@ async function NewsPageContent({ searchParams }: NewsPageViewProps) {
     <>
       <div className="w-full">
         <ImportantFrame title="重要なお知らせ">
-          <p className="whitespace-pre-wrap">{importantNewsBody ?? NO_IMPORTANT_NEWS_MESSAGE}</p>
+          {importantNewsBody ? (
+            <NewsRichText data={importantNewsBody} />
+          ) : (
+            <p>{NO_IMPORTANT_NEWS_MESSAGE}</p>
+          )}
         </ImportantFrame>
       </div>
 
