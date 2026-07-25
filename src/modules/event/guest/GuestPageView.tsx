@@ -171,7 +171,7 @@ export default function GuestPageView() {
         className="pointer-events-none absolute top-171 left-xs z-0 hidden xl:block"
       />
 
-      <div className="relative z-10 mx-auto grid w-full max-w-320 grid-cols-1 gap-y-4l pb-4l xl:grid-cols-[minmax(0,740px)_minmax(320px,391px)] xl:gap-x-5l xl:pb-pm xl:pl-pm">
+      <div className="relative z-10 grid w-full grid-cols-1 gap-y-4l pb-4l xl:grid-cols-[minmax(0,740px)_minmax(320px,1fr)] xl:gap-x-5l xl:pb-pm xl:pl-pm">
         <div className="xl:col-start-1 xl:row-start-1 xl:pt-5l">
           <Image
             src="/image/event/guest-main.png"
@@ -188,7 +188,7 @@ export default function GuestPageView() {
           <EventIntroFrame {...INTRODUCTION} headingLevel={1} />
         </div>
 
-        <aside className="relative bg-base-dark xl:sticky xl:top-18 xl:z-20 xl:col-start-2 xl:row-start-1 xl:row-end-7 xl:h-[calc(100dvh-4.5rem)] xl:self-start xl:after:absolute xl:after:inset-y-0 xl:after:left-full xl:after:w-screen xl:after:bg-base-dark xl:after:content-['']">
+        <aside className="relative bg-base-dark xl:sticky xl:top-18 xl:z-20 xl:col-start-2 xl:row-start-1 xl:row-end-7 xl:h-[calc(100dvh-4.5rem)] xl:self-start">
           <EventInfoCard {...GUEST_EVENT_INFO} />
         </aside>
 
