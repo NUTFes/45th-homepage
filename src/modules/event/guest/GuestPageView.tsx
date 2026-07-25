@@ -57,6 +57,9 @@ const GUEST_EVENT_INFO = {
       endsAt: "2026-09-20T14:00:00+09:00",
     },
   ],
+  map: {
+    title: "体育館",
+  },
 } satisfies EventInfoCardProps;
 
 const TICKET_DISTRIBUTION_BLOCKS = [
@@ -168,7 +171,7 @@ export default function GuestPageView() {
         className="pointer-events-none absolute top-171 left-xs z-0 hidden xl:block"
       />
 
-      <div className="relative z-10 mx-auto grid w-full max-w-320 grid-cols-1 gap-y-4l pb-4l xl:grid-cols-[minmax(0,609px)_minmax(320px,391px)] xl:gap-x-5l xl:pb-pm xl:pl-pm">
+      <div className="relative z-10 mx-auto grid w-full max-w-320 grid-cols-1 gap-y-4l pb-4l xl:grid-cols-[minmax(0,740px)_minmax(320px,391px)] xl:gap-x-5l xl:pb-pm xl:pl-pm">
         <div className="xl:col-start-1 xl:row-start-1 xl:pt-5l">
           <Image
             src="/image/event/guest-main.png"
@@ -176,7 +179,7 @@ export default function GuestPageView() {
             width={2992}
             height={2992}
             preload
-            sizes="(min-width: 1280px) 609px, (min-width: 1024px) calc(100vw - 500px), 100vw"
+            sizes="(min-width: 1280px) 740px, (min-width: 1024px) calc(100vw - 500px), 100vw"
             className="h-auto w-full"
           />
         </div>
