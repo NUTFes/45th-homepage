@@ -57,7 +57,7 @@ export default function GuestProfileSection(props: GuestProfileSectionProps) {
   );
 
   return (
-    <section aria-labelledby={headingId} className="w-full bg-base text-font-main md:px-4l lg:px-0">
+    <section aria-labelledby={headingId} className="w-full text-font-main md:px-4l lg:px-0">
       <div className="mx-auto flex w-full max-w-250 flex-col gap-ss">
         <h3 id={headingId} className="px-l font-kaisotai text-title md:px-0 md:text-Ptitle lg:px-l">
           {isGuest ? "ゲスト" : "MC"}
