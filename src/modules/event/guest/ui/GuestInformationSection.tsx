@@ -7,7 +7,8 @@ import InfoFrame from "@/components/ui/InfoFrame";
 import SectionTitle from "@/components/ui/SectionTitle";
 
 export type GuestInformationBlock = {
-  title: string;
+  id: string;
+  title: ReactNode;
   icon: LucideIcon;
   body: ReactNode;
 };
@@ -42,7 +43,7 @@ export default function GuestInformationSection({
         <InfoFrame className="w-full">
           <div className="flex flex-col gap-l">
             {blocks.map((block) => (
-              <InfoBlock icon={block.icon} key={block.title} title={block.title}>
+              <InfoBlock icon={block.icon} key={block.id} title={block.title}>
                 {block.body}
               </InfoBlock>
             ))}

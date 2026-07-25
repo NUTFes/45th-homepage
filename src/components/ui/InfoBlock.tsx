@@ -3,7 +3,7 @@ import { HelpCircle, type LucideIcon } from "lucide-react";
 
 interface InfoBlockProps {
   icon?: LucideIcon;
-  title: string;
+  title: ReactNode;
   children: ReactNode;
 }
 

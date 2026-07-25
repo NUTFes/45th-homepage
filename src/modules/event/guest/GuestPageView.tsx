@@ -61,11 +61,13 @@ const GUEST_EVENT_INFO = {
 
 const TICKET_DISTRIBUTION_BLOCKS = [
   {
+    id: "schedule",
     title: "スケジュール",
     icon: Clock,
     body: <ResponsiveDummyCopy />,
   },
   {
+    id: "ticket-cautions",
     title: "注意事項",
     icon: TriangleAlert,
     body: <ResponsiveDummyCopy />,
@@ -74,6 +76,7 @@ const TICKET_DISTRIBUTION_BLOCKS = [
 
 const ADMISSION_BLOCKS = [
   {
+    id: "ticket-admission",
     title: "整理券での入場方法",
     icon: Tickets,
     body: (
@@ -84,11 +87,13 @@ const ADMISSION_BLOCKS = [
     ),
   },
   {
+    id: "general-admission",
     title: "一般入場枠について",
     icon: Users,
     body: <ResponsiveDummyCopy desktopAccent />,
   },
   {
+    id: "re-entry",
     title: "再入場について",
     icon: DoorOpen,
     body: <ResponsiveDummyCopy desktopAccent />,
@@ -97,11 +102,19 @@ const ADMISSION_BLOCKS = [
 
 const VENUE_CAUTION_BLOCKS = [
   {
-    title: "イベント中の録音・撮影は原則禁止",
+    id: "recording-and-photography",
+    title: (
+      <>
+        イベント中の
+        <wbr />
+        <span className="whitespace-nowrap">録音・撮影は原則禁止</span>
+      </>
+    ),
     icon: CameraOff,
     body: <ResponsiveDummyCopy />,
   },
   {
+    id: "food-and-drinks",
     title: "体育館では食事禁止・水分補給のみ可能",
     icon: Hamburger,
     body: <ResponsiveDummyCopy />,
