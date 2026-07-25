@@ -155,14 +155,6 @@ export default function GuestPageView() {
   return (
     <div className="relative min-h-dvh overflow-x-clip bg-base">
       <Image
-        src="/image/PageBack1.svg"
-        alt=""
-        aria-hidden="true"
-        width={287}
-        height={333}
-        className="pointer-events-none absolute top-0 left-1/2 z-0 hidden -translate-x-[107px] xl:block"
-      />
-      <Image
         src="/image/PageBack2.svg"
         alt=""
         aria-hidden="true"
@@ -172,7 +164,15 @@ export default function GuestPageView() {
       />
 
       <div className="relative z-10 grid w-full grid-cols-1 gap-y-4l pb-4l xl:grid-cols-[minmax(0,740px)_minmax(320px,1fr)] xl:gap-x-5l xl:pb-pm xl:pl-pm">
-        <div className="xl:col-start-1 xl:row-start-1 xl:pt-5l">
+        <div className="relative xl:col-start-1 xl:row-start-1 xl:pt-5l">
+          <Image
+            src="/image/PageBack1.svg"
+            alt=""
+            aria-hidden="true"
+            width={287}
+            height={333}
+            className="pointer-events-none absolute -top-5l -right-3l z-30 hidden max-w-none xl:block"
+          />
           <Image
             src="/image/event/guest-main.png"
             alt="お笑いコンビ「ヨネダ2000」の誠さんと愛さん"
@@ -180,7 +180,7 @@ export default function GuestPageView() {
             height={2992}
             preload
             sizes="(min-width: 1280px) 740px, (min-width: 1024px) calc(100vw - 500px), 100vw"
-            className="h-auto w-full"
+            className="relative z-10 h-auto w-full"
           />
         </div>
 
