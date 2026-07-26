@@ -10,10 +10,10 @@ async function SponsorAdsContent(props: SponsorAdsSectionProps) {
   return <SponsorAdsSection {...props} />;
 }
 
-export default function SponsorAdsBoundary({ className }: SponsorAdsSectionProps) {
+export default function SponsorAdsBoundary(props: SponsorAdsSectionProps) {
   return (
-    <Suspense fallback={<SponsorAdsSectionSkeleton className={className} />}>
-      <SponsorAdsContent className={className} />
+    <Suspense fallback={<SponsorAdsSectionSkeleton {...props} />}>
+      <SponsorAdsContent {...props} />
     </Suspense>
   );
 }

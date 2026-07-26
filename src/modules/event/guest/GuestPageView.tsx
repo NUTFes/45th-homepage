@@ -255,7 +255,10 @@ export default function GuestPageView() {
         </section>
       </div>
 
-      <SponsorAdsBoundary className="relative z-10 mx-auto w-full max-w-320 pb-4l" />
+      <SponsorAdsBoundary
+        className="relative z-10 mx-auto w-full max-w-320 pb-4l"
+        surface="transparent"
+      />
     </div>
   );
 }

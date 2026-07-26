@@ -8,8 +8,11 @@ import { hasSponsorImage } from "../utils";
 import SponsorAdCarousel from "./SponsorAdCarousel";
 import SponsorCard from "./SponsorCard";
 
+export type SponsorAdsSurface = "dark" | "transparent";
+
 export type SponsorAdsSectionProps = {
   className?: string;
+  surface?: SponsorAdsSurface;
 };
 
 const SPONSOR_AD_PLACEHOLDER_IDS = [
@@ -24,11 +27,14 @@ const SPONSOR_AD_PLACEHOLDER = {
   id: "sponsor-ad-placeholder",
 } satisfies SponsorDTO;
 
-function SponsorAdsEmptyState() {
+function SponsorAdsEmptyState({ surface }: Required<Pick<SponsorAdsSectionProps, "surface">>) {
   return (
     <>
       <p className="sr-only">協賛企業広告は現在準備中です。</p>
-      <div aria-hidden="true" className="w-full overflow-hidden bg-base-dark py-s lg:px-5l">
+      <div
+        aria-hidden="true"
+        className={`w-full overflow-hidden py-s lg:px-5l ${surface === "dark" ? "bg-base-dark" : "bg-transparent"}`}
+      >
         <div className="flex items-center">
           {SPONSOR_AD_PLACEHOLDER_IDS.map((id, index) => (
             <div
@@ -47,7 +53,10 @@ function SponsorAdsEmptyState() {
   );
 }
 
-export default async function SponsorAdsSection({ className }: SponsorAdsSectionProps) {
+export default async function SponsorAdsSection({
+  className,
+  surface = "dark",
+}: SponsorAdsSectionProps) {
   const { sponsors } = await getSponsorsPageData();
   const sponsorAds = sponsors.filter(hasSponsorImage);
 
@@ -57,9 +66,9 @@ export default async function SponsorAdsSection({ className }: SponsorAdsSection
       aria-label="協賛企業広告"
     >
       {sponsorAds.length > 0 ? (
-        <SponsorAdCarousel sponsors={sponsorAds} />
+        <SponsorAdCarousel sponsors={sponsorAds} surface={surface} />
       ) : (
-        <SponsorAdsEmptyState />
+        <SponsorAdsEmptyState surface={surface} />
       )}
       <ButtonMain href="/sponsors" title="ご協賛いただいた企業様" />
     </section>
