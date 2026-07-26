@@ -40,7 +40,7 @@ function EventHero({ title, imageSrc, imageAlt }: EventHeroProps) {
 
 export default function ProgramDetailPageView({ hero, intro, info }: ProgramDetailPageViewProps) {
   return (
-    <div className="flex flex-col gap-4l py-4l md:flex-row md:py-0 md:pl-pm md:gap-pm">
+    <div className="flex flex-col gap-4l py-4l md:flex-row md:gap-pm md:py-0 md:pl-pm">
       <div className="flex flex-col gap-4l md:min-w-0 md:flex-[609_1_0] md:gap-3l md:py-5l">
         <div className="flex flex-col gap-s">
           <div className="md:hidden">
