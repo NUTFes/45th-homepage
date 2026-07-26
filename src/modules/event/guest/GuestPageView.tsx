@@ -179,7 +179,7 @@ export default function GuestPageView() {
             width={2992}
             height={2992}
             preload
-            sizes="(min-width: 1280px) 740px, (min-width: 1024px) calc(100vw - 500px), 100vw"
+            sizes="(min-width: 1280px) 740px, 100vw"
             className="relative z-10 h-auto w-full"
           />
         </div>
