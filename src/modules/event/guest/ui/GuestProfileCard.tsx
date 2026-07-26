@@ -26,7 +26,7 @@ export default function GuestProfileCard({ profile }: GuestProfileCardProps) {
       <dl className="flex min-w-0 flex-col gap-1 text-text md:text-Ptext">
         {details.map(({ label, value }) => (
           <div key={label} className="min-w-0 wrap-break-word">
-            <dt className="inline font-bold text-accent">{label}：</dt>
+            <dt className="inline font-bold text-main">{label}：</dt>
             <dd className="inline">{value}</dd>
           </div>
         ))}
