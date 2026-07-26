@@ -14,6 +14,13 @@ const kaisotai = localFont({
   preload: false,
 });
 
+const goldman = localFont({
+  src: "../../../public/font/Goldman-Bold.ttf",
+  variable: "--font-goldman",
+  display: "swap",
+  preload: false,
+});
+
 const zenKakuGothicNew = localFont({
   src: [
     {
@@ -94,7 +101,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props;
 
   return (
-    <html lang="ja" className={`${zenKakuGothicNew.variable} ${kaisotai.variable}`}>
+    <html lang="ja" className={`${zenKakuGothicNew.variable} ${kaisotai.variable} ${goldman.variable}`}>
       <body className="pb-(--bottom-nav-offset) md:pb-0">
         <Header />
         <main>{children}</main>

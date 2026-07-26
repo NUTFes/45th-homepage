@@ -33,6 +33,7 @@ html {
   --color-placeholder: #c7c5c5;
 
   --font-kaisotai: var(--font-kaisotai-next), sans-serif;
+  --font-goldman: var(--font-goldman), sans-serif;
   --font-sans:
     var(--font-zen-kaku-gothic-new), "Hiragino Sans", "Hiragino Kaku Gothic ProN", "BIZ UDPGothic",
     "Yu Gothic", "Meiryo", system-ui, sans-serif;
