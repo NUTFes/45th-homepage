@@ -164,14 +164,14 @@ export default function GuestPageView() {
       />
 
       <div className="relative z-10 grid w-full grid-cols-1 gap-y-4l pb-4l xl:grid-cols-[minmax(0,740px)_minmax(320px,1fr)] xl:gap-x-5l xl:pb-pm xl:pl-pm">
-        <div className="relative xl:col-start-1 xl:row-start-1 xl:pt-5l">
+        <div className="relative isolate xl:col-start-1 xl:row-start-1 xl:pt-5l">
           <Image
             src="/image/PageBack1.svg"
             alt=""
             aria-hidden="true"
             width={287}
             height={333}
-            className="pointer-events-none absolute -top-5l -right-3l z-30 hidden max-w-none xl:block"
+            className="pointer-events-none absolute top-0 -right-[110px] z-0 hidden max-w-none xl:block"
           />
           <Image
             src="/image/event/guest-main.png"
