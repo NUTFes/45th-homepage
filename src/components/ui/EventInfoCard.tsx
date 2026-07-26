@@ -2,7 +2,7 @@ import ButtonMain from "@/components/ui/ButtonMain";
 import MapFrame from "@/components/ui/MapFrame";
 import type { MapFrameProps } from "@/components/ui/MapFrame";
 
-type EventInfoCardProps = Pick<MapFrameProps, "title" | "imageSrc" | "alt"> & {
+export type EventInfoCardProps = Pick<MapFrameProps, "title" | "imageSrc" | "alt"> & {
   location: string;
 };
 
