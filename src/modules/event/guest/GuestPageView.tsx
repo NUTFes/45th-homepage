@@ -163,7 +163,7 @@ export default function GuestPageView() {
         className="pointer-events-none absolute top-171 left-xs z-0 hidden xl:block"
       />
 
-      <div className="relative z-10 mx-auto grid w-full max-w-[1320px] grid-cols-1 gap-y-4l pb-4l xl:grid-cols-[minmax(0,1fr)_minmax(320px,540px)] xl:gap-x-5l xl:pb-pm">
+      <div className="relative z-10 mx-auto grid w-full max-w-[1320px] grid-cols-1 gap-y-4l pb-4l xl:grid-cols-[minmax(0,1fr)_minmax(320px,540px)] xl:gap-x-5l xl:pb-pm xl:pl-4l">
         <div className="relative isolate xl:col-start-1 xl:row-start-1 xl:pt-5l">
           <Image
             src="/image/PageBack1.svg"
@@ -179,7 +179,7 @@ export default function GuestPageView() {
             width={2992}
             height={2992}
             preload
-            sizes="(min-width: 1320px) 700px, (min-width: 1280px) calc(100vw - 620px), 100vw"
+            sizes="(min-width: 1320px) 640px, (min-width: 1280px) calc(100vw - 680px), 100vw"
             className="relative z-10 h-auto w-full"
           />
         </div>
