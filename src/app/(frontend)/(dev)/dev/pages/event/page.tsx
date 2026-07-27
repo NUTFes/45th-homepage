@@ -9,6 +9,7 @@ import type { ProgramDetailPageViewProps } from "@/modules/event/programs/[slug]
 import { PROGRAM_CATEGORIES } from "@/lib/events/constants";
 import GuestProfileCard, { type GuestProfile } from "@/modules/event/guest/ui/GuestProfileCard";
 import GuestProfileSection from "@/modules/event/guest/ui/GuestProfileSection";
+import CategoryMenuPreview from "./CategoryMenuPreview";
 import TagSearchComponentsPreview from "./TagSearchComponentsPreview";
 
 export const metadata = {
@@ -144,6 +145,9 @@ export default function DevTopPageModulesPage() {
       <DevSection title="Tag Search Components">
         <DevPanel title="ActiveTag / TagSearchButton (src/modules/event/ui)" fullWidth>
           <TagSearchComponentsPreview />
+        </DevPanel>
+        <DevPanel title="CategoryCard / CategoryMenu (src/modules/event/ui)" fullWidth>
+          <CategoryMenuPreview />
         </DevPanel>
       </DevSection>
       <DevSection title="EventSection">
