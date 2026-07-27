@@ -4,6 +4,8 @@ import { DevSection } from "../../_components/DevSection";
 import EventSection, { type EventSectionEvent } from "@/modules/event/ui/EventSection";
 import EventPageView from "@/modules/event/ui/EventPageView";
 import ProgramPageView from "@/modules/event/ui/programs/category/[category]/ProgramPageView";
+import ProgramDetailPageView from "@/modules/event/programs/[slug]/ProgramDetailPageView";
+import type { ProgramDetailPageViewProps } from "@/modules/event/programs/[slug]/ProgramDetailPageView";
 import { PROGRAM_CATEGORIES } from "@/lib/events/constants";
 import GuestProfileCard, { type GuestProfile } from "@/modules/event/guest/ui/GuestProfileCard";
 import GuestProfileSection from "@/modules/event/guest/ui/GuestProfileSection";
@@ -106,6 +108,41 @@ const guestProfiles: GuestProfile[] = [
   },
 ];
 
+// テスト表示用のダミーデータ（画像1・画像2のモックに対応）
+const programDetailDummyProps: ProgramDetailPageViewProps = {
+  hero: {
+    title: "企画名",
+    imageSrc: "/favicon/45th-LogoBlue.svg",
+    imageAlt: "企画名の画像",
+  },
+  intro: {
+    title: "魅惑の鮭かまワールドへようこそ",
+    body: "説明鮭かま鮭かま鮭かま鮭かま鮭かま鮭かま鮭かま鮭かま鮭かま鮭かま鮭かま鮭かま鮭かま",
+  },
+  info: {
+    location: "キッチンカーエリア",
+    schedules: [
+      {
+        dateLabel: "9月19日(土)",
+        startLabel: "10:00",
+        endLabel: "17:00",
+        startsAt: "2026-09-19T10:00:00+09:00",
+        endsAt: "2026-09-19T17:00:00+09:00",
+      },
+      {
+        dateLabel: "9月20日(日)",
+        startLabel: "10:00",
+        endLabel: "17:00",
+        startsAt: "2026-09-20T10:00:00+09:00",
+        endsAt: "2026-09-20T17:00:00+09:00",
+      },
+    ],
+    map: {
+      title: "キッチンカーエリア",
+    },
+  },
+};
+
 const mcProfiles: GuestProfile[] = [
   {
     name: "清野幹さん",
@@ -183,6 +220,13 @@ export default function DevTopPageModulesPage() {
             </div>
           </DevPanel>
         ))}
+      </DevSection>
+      <DevSection title="ProgramDetailPageView">
+        <DevPanel title="ProgramDetailPageView (src/modules/event/programs/[slug])" fullWidth>
+          <div className="bg-base">
+            <ProgramDetailPageView {...programDetailDummyProps} />
+          </div>
+        </DevPanel>
       </DevSection>
     </DevPageContainer>
   );
