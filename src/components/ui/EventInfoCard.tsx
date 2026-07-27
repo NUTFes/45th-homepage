@@ -23,9 +23,9 @@ export type EventInfoCardProps = {
 
 export default function EventInfoCard({ location, schedules, map }: EventInfoCardProps) {
   return (
-    <div className="flex w-full flex-col bg-base-dark pt-l lg:gap-ll lg:pt-5l lg:pb-pm">
+    <div className="flex w-full flex-col bg-base-dark pt-l lg:gap-ll lg:pt-5l lg:pb-pm xl:px-4l">
       <div className="flex flex-col gap-m">
-        <section className="flex flex-col gap-xs px-ll lg:gap-ss lg:pr-pm lg:pl-4l">
+        <section className="flex flex-col gap-xs px-ll lg:gap-ss xl:px-0">
           <div className="w-fit border-b px-1 text-secondary">
             <h2 className="text-title-small text-font-main lg:text-Ptitle-small">日時</h2>
           </div>
@@ -44,7 +44,7 @@ export default function EventInfoCard({ location, schedules, map }: EventInfoCar
             ))}
           </div>
         </section>
-        <section className="flex flex-col gap-xs px-ll pb-m lg:gap-ss lg:pr-pm lg:pb-0 lg:pl-4l">
+        <section className="flex flex-col gap-xs px-ll pb-m lg:gap-ss lg:pb-0 xl:px-0">
           <div className="w-fit border-b px-1 text-secondary">
             <h2 className="text-title-small text-font-main lg:text-Ptitle-small">場所</h2>
           </div>
@@ -53,10 +53,10 @@ export default function EventInfoCard({ location, schedules, map }: EventInfoCar
       </div>
       {map ? (
         <>
-          <div className="mb-l lg:mb-0 lg:pr-pm lg:pl-4l">
+          <div className="mb-l lg:mb-0 lg:px-ll xl:px-0">
             <MapFrame title={map.title} imageSrc={map.imageSrc} alt={map.alt ?? map.title} />
           </div>
-          <div className="flex items-center justify-center bg-base pt-m lg:bg-transparent lg:pt-0 lg:pr-pm lg:pl-4l">
+          <div className="flex items-center justify-center bg-base pt-m lg:bg-transparent lg:px-ll lg:pt-0 xl:justify-start xl:px-0">
             <ButtonMain
               href={map.href ?? "/map"}
               title={map.buttonLabel ?? "マップページはこちら"}
