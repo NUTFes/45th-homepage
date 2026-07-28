@@ -68,7 +68,7 @@ available_kib="$(df -Pk "${backup_dir}" | awk 'NR == 2 {print $4}')"
 ((available_kib >= MIN_BACKUP_FREE_KIB)) ||
   production_die "BACKUP_DIR has less than $((MIN_BACKUP_FREE_KIB / 1024)) MiB free"
 
-for service in postgres seaweedfs-master seaweedfs-volume seaweedfs-filer seaweedfs-s3; do
+for service in postgres seaweedfs-s3; do
   require_service_healthy "${service}"
 done
 

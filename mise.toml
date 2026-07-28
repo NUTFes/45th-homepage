@@ -9,7 +9,7 @@ pnpm = "10"
 [tasks."10:up"]
 description = "開発用コンテナを起動する"
 alias = "up"
-run = "docker compose up -d"
+run = "docker compose up -d --remove-orphans"
 
 [tasks."11:down"]
 description = "開発用コンテナを停止して削除する"
@@ -142,9 +142,6 @@ compose=(
   -d \
   --wait \
   postgres \
-  seaweedfs-master \
-  seaweedfs-volume \
-  seaweedfs-filer \
   seaweedfs-s3
 "${compose[@]}" stop -t 30 payload
 "${compose[@]}" run --rm -T --no-deps payload-migrate

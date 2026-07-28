@@ -71,8 +71,10 @@ cp .env.example .env
 mise run up
 ```
 
-バックグラウンドでコンテナ（Next.js / Payload + PostgreSQL）が起動します。
+バックグラウンドでコンテナ（Next.js / Payload + PostgreSQL + SeaweedFS `weed mini`）が起動します。
 初回はイメージのビルドがあるため、数分かかる場合があります。
+
+旧 split SeaweedFS を使っていた checkout では、`mise run up` が旧 container を削除して新しい空の `seaweedfs-data` を使います。開発用 media は必要に応じて再 upload してください。旧 volume は `down -v` しない限り残ります。
 
 ### ステップ 6: アクセスして確認
 
@@ -268,6 +270,8 @@ chore: vitest を追加
 
 Payload は単一 container とし、旧 Payload 停止 → 検証済み backup → one-shot migration → 新 Payload の strict health → Tunnel 起動、の順で処理します。migration / restore 開始後に `.deploy-state/restore-required.env` が残った場合は、手動削除せず運用ガイドの復旧手順を実行します。
 
+SeaweedFS は 1 container の `weed mini` です。旧 split 構成からの初回切替だけは既存 media を自動移行せず、管理者が管理画面で手動再登録します。切替前の保全、対象 field、緊急 rollback は運用ガイドの「既存本番からの初回切替」に従ってください。
+
 ### 主要コマンド
 
 | コマンド                  | 用途                                            |
@@ -286,7 +290,7 @@ Payload は単一 container とし、旧 Payload 停止 → 検証済み backup 
 
 ## 本番公開前のパフォーマンス試験
 
-`compose.perf.yml` は、本番用の Next.js standalone image、PostgreSQL、SeaweedFS S3 Gateway を起動し、別コンテナ内の headless Chromium で Lighthouse CLI を実行します。
+`compose.perf.yml` は、本番用の Next.js standalone image、PostgreSQL、SeaweedFS `weed mini` を起動し、別コンテナ内の headless Chromium で Lighthouse CLI を実行します。
 
 ```bash
 mise run prod:perf

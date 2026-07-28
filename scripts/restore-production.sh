@@ -68,6 +68,7 @@ s3_bucket="$(read_env_value S3_BUCKET "${ENV_FILE}")"
 site_url="$(read_env_value NEXT_PUBLIC_SITE_URL "${ENV_FILE}")"
 smoke_url="${PRODUCTION_SMOKE_URL:-${site_url%/}/api/health}"
 page_smoke_url="${PRODUCTION_PAGE_SMOKE_URL:-${site_url%/}/}"
+weed_mini_cutover_file="${STATE_DIR}/weed-mini-cutover.env"
 
 recovery_path="${backup_dir}/${recovery_name}"
 [[ -d "${recovery_path}" && ! -L "${recovery_path}" ]] ||
@@ -242,15 +243,7 @@ require_at_most_one_service_container payload
 require_at_most_one_service_container cloudflared
 require_service_healthy postgres
 "${COMPOSE[@]}" pull cloudflared
-for service in seaweedfs-master seaweedfs-volume seaweedfs-filer seaweedfs-s3; do
-  require_service_healthy "${service}"
-done
 "${COMPOSE[@]}" pull media-tool
-timeout --foreground "${RESTORE_OPERATION_TIMEOUT}" \
-  "${COMPOSE[@]}" run --rm -T --no-deps media-tool \
-  --endpoint-url http://seaweedfs-s3:8333 \
-  s3api head-bucket \
-  --bucket "${s3_bucket}" >/dev/null
 
 timeout --foreground "${RESTORE_OPERATION_TIMEOUT}" \
   "${COMPOSE[@]}" exec -T postgres pg_restore --list \
@@ -274,6 +267,9 @@ fi
 if [[ "${marker_media_required}" == "true" && "${restore_media}" != "true" ]]; then
   production_die "this recovery requires --restore-media because traffic may have written media"
 fi
+if [[ "${restore_mode}" == "legacy" && "${restore_media}" != "true" ]]; then
+  production_die "legacy recovery requires --restore-media to keep its database and media consistent"
+fi
 
 if [[ "${assume_yes}" != "true" ]]; then
   printf 'Recovery point: %s\n' "${recovery_path}"
@@ -293,6 +289,7 @@ rollback_tmp=""
 state_tmp=""
 desired_tmp=""
 restore_marker_tmp=""
+cutover_marker_tmp=""
 
 write_restore_marker() {
   local media_required="$1"
@@ -313,6 +310,51 @@ write_restore_marker() {
   restore_marker_tmp=""
 }
 
+validate_weed_mini_cutover_marker() {
+  local invalid_lines
+  local marker_status
+  local marker_created_at
+  local marker_backup_path
+
+  validate_private_file "${weed_mini_cutover_file}" "weed mini cutover marker"
+  invalid_lines="$(
+    sed -E '/^[[:space:]]*(#|$)/d' "${weed_mini_cutover_file}" |
+      grep -Ev '^(status|created_at|backup_path)=' ||
+      true
+  )"
+  [[ -z "${invalid_lines}" ]] ||
+    production_die "weed mini cutover marker contains unsupported entries"
+
+  marker_status="$(read_env_value status "${weed_mini_cutover_file}")"
+  marker_created_at="$(read_env_value created_at "${weed_mini_cutover_file}")"
+  marker_backup_path="$(read_env_value backup_path "${weed_mini_cutover_file}")"
+  [[ "${marker_status}" == "pending" ]] ||
+    production_die "weed mini cutover marker status is invalid"
+  [[ "${marker_created_at}" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}T ]] ||
+    production_die "weed mini cutover marker timestamp is invalid"
+  [[ "${marker_backup_path}" == "${backup_dir}/"* ]] ||
+    production_die "weed mini cutover marker backup path is invalid"
+}
+
+write_weed_mini_cutover_marker() {
+  if path_exists "${weed_mini_cutover_file}"; then
+    validate_weed_mini_cutover_marker
+  fi
+
+  cutover_marker_tmp="$(mktemp "${STATE_DIR}/.weed-mini-cutover.XXXXXX")"
+  {
+    printf 'status=pending\n'
+    printf 'created_at=%s\n' "$(date -u +%FT%TZ)"
+    printf 'backup_path=%s\n' "${recovery_path}"
+  } >"${cutover_marker_tmp}"
+  chmod 600 "${cutover_marker_tmp}"
+  atomic_replace_private_file \
+    "${cutover_marker_tmp}" \
+    "${weed_mini_cutover_file}" \
+    "weed mini cutover marker"
+  cutover_marker_tmp=""
+}
+
 handle_failed_restore() {
   local exit_code=$?
 
@@ -323,6 +365,7 @@ handle_failed_restore() {
   [[ -z "${state_tmp}" ]] || rm -f -- "${state_tmp}"
   [[ -z "${desired_tmp}" ]] || rm -f -- "${desired_tmp}"
   [[ -z "${restore_marker_tmp}" ]] || rm -f -- "${restore_marker_tmp}"
+  [[ -z "${cutover_marker_tmp}" ]] || rm -f -- "${cutover_marker_tmp}"
   if [[ "${phase}" != "pre_stop" && "${phase}" != "complete" ]]; then
     "${COMPOSE[@]}" stop -t 10 cloudflared payload >/dev/null 2>&1
     printf '\n[restore] RESTORE INCOMPLETE: %s\n' \
@@ -369,6 +412,41 @@ stop_all_service_containers payload-migrate 10
 require_no_running_service_containers payload-migrate
 require_no_running_service_containers payload
 require_no_running_service_containers cloudflared
+
+if [[ "${restore_mode}" == "legacy" ]]; then
+  write_weed_mini_cutover_marker
+  production_log "Re-armed the weed mini cutover marker for the next deploy"
+fi
+
+phase="storage_ready"
+failure_reason="weed mini or the media bucket did not become ready"
+if [[ "$(service_health_status seaweedfs-s3 || true)" != "healthy" ]]; then
+  production_log "Starting weed mini so the verified media backup can be restored"
+  "${COMPOSE[@]}" up \
+    -d \
+    --no-deps \
+    --wait \
+    --wait-timeout "${RESTORE_HEALTH_TIMEOUT}" \
+    seaweedfs-s3
+fi
+require_service_healthy seaweedfs-s3
+
+production_log "Waiting for the authenticated media bucket"
+restore_bucket_ready=false
+restore_bucket_deadline=$((SECONDS + RESTORE_HEALTH_TIMEOUT))
+while ((SECONDS < restore_bucket_deadline)); do
+  if timeout --foreground 10 \
+    "${COMPOSE[@]}" run --rm -T --no-deps media-tool \
+    --endpoint-url http://seaweedfs-s3:8333 \
+    s3api head-bucket \
+    --bucket "${s3_bucket}" >/dev/null 2>&1; then
+    restore_bucket_ready=true
+    break
+  fi
+  ((SECONDS < restore_bucket_deadline)) && sleep 2
+done
+[[ "${restore_bucket_ready}" == "true" ]] ||
+  production_die "media bucket did not become ready"
 
 phase="database_restore"
 failure_reason="PostgreSQL database recreation failed"

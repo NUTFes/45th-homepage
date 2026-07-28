@@ -12,16 +12,17 @@ Cloudflare Tunnel
 Payload / Next.js (1 container)
    |---------------- PostgreSQL
    |
-SeaweedFS S3 -> Filer -> Master + Volume
+SeaweedFS weed mini (1 container / 1 data volume / S3)
 ```
 
 - Payload は常に 1 container です。rolling update、`docker-rollout`、Traefik は使いません。
 - Cloudflare Tunnel の接続先は `http://payload:3000` です。host 公開 port はありません。
 - Dozzle は確認できた用途がなく、Docker socket と `7007/tcp` の公開を伴っていたため削除しました。通常は `docker compose logs` を使います。
-- SeaweedFS は既存 media の実体なので維持します。単一 process 化や外部 S3 への移行は、object 移行と照合を伴う別作業です。
+- SeaweedFS は単一 node 用の `weed mini` に統合します。Compose service / 内部 DNS 名の `seaweedfs-s3` は初回切替との互換性のため維持しますが、実体は master、volume、filer、S3 をまとめた 1 process です。
+- `weed mini` は新しい `seaweedfs-data` volume を使います。旧 3 volume は mount、変換、自動削除しません。初回切替の既存 media は自動移行せず、管理者が後述の手順で手動再登録します。
 - Payload の起動時 migration (`prodMigrations`) は使いません。同じ commit から作った one-shot migrator を、旧 Payload 停止後にだけ実行します。
 - `DATABASE_URL` は backup / restore 対象の `postgres:5432`、`POSTGRES_USER`、`POSTGRES_PASSWORD`、`POSTGRES_DB` と一致しなければ script が拒否します。query parameter は使いません。password に URL の予約文字を使う場合は URI encoding した値が decode 後に `POSTGRES_PASSWORD` と一致するようにします。
-- app deploy は PostgreSQL / SeaweedFS を更新しません。data 基盤の更新は別の maintenance とします。
+- 通常の app deploy は PostgreSQL / SeaweedFS を更新しません。初回の split 構成検出時だけ、旧 media の検証済み backup と DB migration の後に S3 service を fresh `weed mini` へ置き換えます。
 - GitHub Actions は app / migrator image と同じ commit の運用 file を release bundle にします。app / migrator は `@sha256:...`、基盤 / tool は `latest` ではない exact version tag で実行します。
 
 Compose project 名は本番が `45th-homepage`、性能試験が `45th-homepage-perf` に固定されています。
@@ -76,31 +77,58 @@ printf '%s' "$GHCR_TOKEN" | docker login ghcr.io -u <github-user> --password-std
 unset GHCR_TOKEN
 ```
 
-## 既存本番からの初回切替
+## 既存本番からの初回切替（split SeaweedFS → weed mini）
 
-この節を最初に実施します。既存の `.env.production` を example で上書きしてはいけません。
+この節は本構成を merge した後の最初の 1 回だけ実施します。既存 media の自動移行は行いません。既存の `.env.production` を example で上書きしないでください。
 
-1. VM / CT snapshot を取得し、現在の `pgbackup` volume の保存内容を別 disk / host に退避します。
-2. 現在の `.env.production` を暗号化して別保管し、file mode を `600` にします。
-3. `/srv/45th-homepage/backups` を deploy user 所有・mode `700` で作成し、既存 `.env.production` に `BACKUP_DIR=/srv/45th-homepage/backups` だけを追記します。
-4. release bundle を上記手順で配置します。
-5. Cloudflare Zero Trust の Public Hostname service を、旧 `http://traefik:80` から `http://payload:3000` に変更します。
-6. 新 backup script を一度手動実行し、`COMPLETE`、checksum、DB archive、media 件数を確認します。この実行時に、稼働中の旧 Payload image は専用 rollback tag と image ID で保存されます。
-7. 後述の 6 時間ごとの timer / cron と off-host 複製を有効化し、実際に 1 回成功したことを確認します。
-8. `./scripts/deploy-production.sh` を実行します。
+### 切替前の保全と棚卸し
+
+1. VM / CT snapshot を取得し、現在の `pgbackup` volume を別 disk / host に退避します。
+2. 公開中の原画像を手元へ保存し、Media の filename / alt、使用箇所を一覧化します。参照箇所は Top Page の `PICKUP`、Programs の `企画画像` / `地図画像`、Sponsors Page の `広告画像` です。
+3. 現在の `.env.production`、旧 `compose.prod.yml`、使用中の Payload image 情報を暗号化して別保管します。`.env.production` の mode は `600` にします。
+4. 旧 `seaweedfs-master-data`、`seaweedfs-volume-data`、`seaweedfs-filer-data` を snapshot とともに保持します。`docker compose down -v` と `docker volume prune` は実行しません。
+5. `/srv/45th-homepage/backups` を deploy user 所有・mode `700` で作成し、既存 `.env.production` に `BACKUP_DIR=/srv/45th-homepage/backups` だけを追記します。
+
+release bundle を配置し、Cloudflare Zero Trust の Public Hostname service を旧 `http://traefik:80` から `http://payload:3000` に変更します。次に、旧 split SeaweedFS がまだ稼働している状態で新 backup script を実行します。
 
 ```bash
 cd /opt/45th-homepage
 chmod 600 .env.production .env.production.images
 ./scripts/backup-production.sh --stop-app
+```
+
+`COMPLETE`、`SHA256SUMS`、DB archive、media 件数・容量・checksum を確認し、recovery point を off-host に複製します。この backup は旧 S3 の object を退避しますが、成功時の `weed mini` へ import する移行処理ではありません。
+
+### 初回デプロイ
+
+事前 backup の検証後に実行します。`seaweedfs-s3` を手動で `up` / recreate してはいけません。旧 S3 の backup 前に fresh volume へ切り替わるのを防ぐためです。
+
+```bash
 ./scripts/deploy-production.sh
 ```
 
-初回の手動 backup（省略した場合は最初の deploy）が旧 local image に専用 rollback tag を付け、image ID とともに `.deploy-state/legacy-rollback.env` と recovery point に記録します。そのため、旧 image が mutable tag しか持たない現在の構成でも DB 復元後に戻せます。状態記録のない停止済み Payload は rollback 元として信用せず、script は操作を拒否します。
+script は旧 master / volume / filer の 3 service を検出すると、次の順で処理します。
 
-この legacy image は同じ Docker host 内だけで利用できます。最初の immutable release が成功し、その recovery point の off-host 複製と復元確認が終わるまで、手順 1 の VM / CT snapshot を保持してください。
+1. 旧 Payload / Tunnel を停止し、旧 DB と旧 S3 をもう一度同じ recovery point へ保存・検証する
+2. one-shot migration を実行する
+3. `seaweedfs-s3` container を、空の新規 `seaweedfs-data` を使う `weed mini` として recreate する
+4. bucket health を確認し、空であることを検証する。失敗後の再試行でも bucket を空にし、旧 object は import しない
+5. 新 Payload / Tunnel を起動し、health と S3 read/write/delete を確認する
 
-成功時に旧 Traefik、Dozzle、`pg-backup` container は orphan として削除されます。旧 `pgbackup` volume 自体は自動削除しません。新 backup の off-host 複製と復元 drill が完了するまで手動削除しないでください。
+必須の初回事前 backup は旧 local Payload image に専用 rollback tag を付け、image ID とともに `.deploy-state/legacy-rollback.env` と recovery point に記録します。deploy も停止後に 2 つ目の recovery point を作成します。script は初回切替を `.deploy-state/weed-mini-cutover.env` に記録し、deploy が最後まで成功した時だけ削除します。この file は手動削除しません。失敗後の再試行でも成功経路へ旧 object が混入しないための marker です。
+
+migration 後の失敗では、表示された recovery point を `--restore-media` 付きで復元します。S3 gateway の置換前なら旧 S3、置換後なら mini に旧 object を戻して旧 DB / Payload を起動します。legacy recovery は media なしでは開始できず、切替 marker を再作成します。これは障害復旧だけに使い、次の切替再試行では marker に従って mini を再度空にします。復旧自体が失敗した場合の最終手段は事前の VM / CT snapshot です。
+
+### 管理者による手動再登録
+
+初回デプロイが `Deployment completed` を表示して終了した後にだけ、管理画面で棚卸し済みの画像を再登録します。
+
+1. 既存 Media record の編集画面で原画像を再 upload できる場合は、alt を確認して同じ record を保存します。ID と既存参照を維持できます。その場合も参照元の Top Page、Sponsors Page、各 Program を保存し直し、Program は必要な公開版まで公開して cache を更新します。
+2. 同じ record で置換できない場合は新しい Media を作り、Top Page の `PICKUP`、Programs の `企画画像` / `地図画像`、Sponsors Page の `広告画像` を新しい Media に選び直します。Programs は必要な公開版まで保存・公開します。
+3. Media 一覧の thumbnail、Top / Events・各 Program / Sponsors page、代表 media URL を確認します。古い Media record は全参照の付け替え確認後にだけ削除します。
+4. 再登録完了後に `./scripts/backup-production.sh --stop-app` を実行し、DB と mini の media を含む新しい recovery point を検証・off-host 複製します。
+
+ここまで終えて初回切替完了です。それまでは事前 snapshot、初回 recovery point、旧 3 volume を削除しません。成功した deploy は最後に旧 master / volume / filer、Traefik、Dozzle、`pg-backup` container の削除を試みます。cleanup 失敗は新 release を停止せず log に残すため、後で `--remove-orphans` を再実行します。旧 data volume と `pgbackup` volume は削除しません。
 
 ## 新規 host の初期セットアップ
 
@@ -118,7 +146,7 @@ chmod 600 .env.production .env.production.images
 sudo install -d -m 0700 -o "$USER" -g "$(id -gn)" /srv/45th-homepage/backups
 ```
 
-初回だけ data 基盤を起動し、bucket を作ります。
+初回だけ data 基盤を起動し、`weed mini` が作成した bucket を確認します。
 
 ```bash
 docker compose \
@@ -126,14 +154,14 @@ docker compose \
   --env-file .env.production \
   --env-file .env.production.images \
   -f compose.prod.yml \
-  pull postgres seaweedfs-master seaweedfs-volume seaweedfs-filer seaweedfs-s3
+  pull postgres seaweedfs-s3
 
 docker compose \
   --project-name 45th-homepage \
   --env-file .env.production \
   --env-file .env.production.images \
   -f compose.prod.yml \
-  up -d --wait postgres seaweedfs-master seaweedfs-volume seaweedfs-filer seaweedfs-s3
+  up -d --wait postgres seaweedfs-s3
 
 docker compose \
   --project-name 45th-homepage \
@@ -142,10 +170,10 @@ docker compose \
   -f compose.prod.yml \
   run --rm -T media-tool \
   --endpoint-url http://seaweedfs-s3:8333 \
-  s3api create-bucket --bucket media
+  s3api head-bucket --bucket media
 ```
 
-`S3_BUCKET` が `media` 以外なら最後の引数も合わせます。既存 bucket は `s3api head-bucket --bucket <name>` で確認します。その後、通常 deploy を 1 回実行します。
+`weed mini` は `S3_BUCKET` の bucket を初回起動時に作ります。`S3_BUCKET` が `media` 以外なら最後の引数も合わせます。その後、通常 deploy を 1 回実行します。
 
 ## 通常デプロイ
 
@@ -161,15 +189,17 @@ script は local Docker socket と固定 project を使い、親 shell の `COMP
 
 1. secret mode、placeholder、path、空き容量、digest、release revision、`DATABASE_URL` と backup 対象 DB の同一性を検証する
 2. app / migrator / Tunnel / backup tool だけを pull し、app と migrator の OCI revision が一致することを確認する
-3. Payload が 1 container 以下、migration job が停止済みで、PostgreSQL と 4 つの SeaweedFS service が healthy であることを確認する
+3. Payload が 1 container 以下、migration job が停止済みで、PostgreSQL と現在の S3 service（旧 gateway または `weed mini`）が healthy であることを確認する
 4. Cloudflare Tunnel と旧 Payload を停止する
 5. PostgreSQL dump と media bucket を同じ recovery point に保存して検証する
 6. 復旧点を記録した `.deploy-state/restore-required.env` を作り、one-shot migrator を実行する
-7. 新 Payload の strict DB health を待ち、S3 put / head / delete を行う
-8. Tunnel を起動し、外部 health JSON の release revision と代表 page の HTTP 200 を確認する
-9. 成功した state を原子的に記録し、復旧要求 marker を削除する
+7. 初回に旧 split 構成を検出した場合だけ S3 service を `weed mini` へ置換し、切替再試行を含め bucket が空であることを確認する。backup から object は import しない
+8. bucket readiness、新 Payload の strict DB health、S3 put / head / delete を確認する
+9. Tunnel を起動し、外部 health JSON の release revision と代表 page の HTTP 200 を確認する
+10. 成功した state を原子的に記録し、復旧要求 marker と初回切替 marker を削除する
+11. 旧構成の orphan container を best-effort で削除する。失敗しても検証済み release は継続する
 
-旧 app と新 schema、または新旧 app が同時稼働する時間はありません。通常の停止時間は手順 4 から 8 までです。
+旧 app と新 schema、または新旧 app が同時稼働する時間はありません。通常の停止時間は手順 4 から 9 までです。
 
 ### 失敗時
 
@@ -178,8 +208,11 @@ script は local Docker socket と固定 project を使い、親 shell の `COMP
 | 停止前                    | 何も変更せず終了                                                                                                            |
 | 旧 app 停止〜migration 前 | 旧 Payload、health、旧 Tunnel、外部 health の順で復旧を試みる                                                               |
 | migration 開始後          | Payload / Tunnel を停止し、recovery point と migration log を表示する。DB/media を同じ時点へ戻すため `--restore-media` 必須 |
+| 成功 state 記録後         | 検証済み新 release は継続する。`restore-required.env` が残れば restore、なければ手動再登録前に deploy を再試行する          |
 
 migration は file ごとの transaction なので、途中失敗時は先行 file が commit 済みの場合があります。旧 image を自動起動せず、次の restore を使います。`migrate:down` は使いません。
+
+初回 `weed mini` 切替で migration 境界を越えた後も、同じ `--restore-media` を使います。gateway 置換後なら旧 S3 の論理 backup を mini に復元してから旧 DB / Payload を戻す緊急復旧であり、成功時の手動再登録方針を変更するものではありません。切替 marker は残るため、次の deploy は mini を空にしてから新 Payload を起動します。復元できなければ VM / CT snapshot と旧 Compose / 3 volume を一体で戻します。
 
 `restore-required.env` がある間は deploy と backup を失敗終了させます。marker には使用すべき recovery point と media 復元の要否が記録されています。deploy の migration 境界を越えた失敗では常に DB と media を同じ recovery point へ戻します。手動で marker を削除せず、表示された recovery point に対して restore script を完了させてください。restore 自体も DB を変更する前に同じ marker を作るため、process kill や host 再起動後にも未完了状態が残ります。
 
@@ -241,7 +274,7 @@ sha256sum -c SHA256SUMS
 if test -s MEDIA_SHA256SUMS; then sha256sum -c MEDIA_SHA256SUMS; fi
 ```
 
-S3 backup は object body と key の論理 copy です。任意の object metadata、version history、SeaweedFS 内部 metadata の完全複製ではありません。現在の Payload media の復旧用途を対象とします。
+S3 backup は object body と key の論理 copy です。任意の object metadata、version history、SeaweedFS 内部 metadata の完全複製ではありません。Payload media の復旧用途を対象とします。初回切替直前の recovery point は旧 split S3 から取得しますが、成功経路では mini へ import せず、緊急復旧時だけ `--restore-media` で利用します。
 
 ## ロールバック / 復元
 
@@ -255,7 +288,7 @@ schema を変更した、migration が失敗した、または不明なら、検
 ./scripts/restore-production.sh <recovery-point-name> --yes
 ```
 
-media も recovery point と完全一致させる必要がある場合だけ、破壊的な option を付けます。
+通常の recovery で media も完全一致させる場合は、破壊的な option を付けます。初回の legacy recovery と marker が要求する場合は必須です。
 
 ```bash
 ./scripts/restore-production.sh <recovery-point-name> --restore-media
@@ -271,7 +304,7 @@ restore script は production lock を取得し、`COMPLETE`、root と DB/media
 
 新規 host で Payload が一度も稼働しておらず、rollback image 記録のない recovery point は bootstrap recovery として扱います。DB（指定時は media）だけを復元し、失敗した未追跡 Payload container を削除して Payload / Tunnel を停止したまま終了します。その後、同じ release bundle で通常 deploy を再実行します。既に current / legacy state がある host では、古い bootstrap recovery point の利用を拒否します。
 
-初回の legacy rollback 後は `.env.production.images` に次の immutable release bundle を配置してから通常 deploy してください。restore が途中で失敗した場合も marker を削除せず、同じコマンドを再実行します。
+初回の legacy rollback では旧 S3 object の論理 backup も戻すため `--restore-media` が必須で、script も media なしの legacy restore を拒否します。gateway 置換後は復元先が `weed mini` になり、次回 deploy で空にする初回切替 marker が再作成されます。旧 split topology 自体へ戻す必要がある場合は、Payload / Tunnel を停止したまま事前 snapshot と旧 Compose / 3 volume を一体で戻します。rollback 後は `.env.production.images` に次の immutable release bundle を配置してから通常 deploy してください。restore が途中で失敗した場合も marker を削除せず、同じコマンドを再実行します。
 
 ## Data 基盤の更新
 
@@ -280,7 +313,7 @@ restore script は production lock を取得し、`COMPLETE`、root と DB/media
 1. off-host 複製済み recovery point と VM / CT snapshot を確認
 2. Payload / Tunnel を停止
 3. review 済みの exact version へ対象 image を pull
-4. PostgreSQL / SeaweedFS だけを `up -d --wait`
+4. PostgreSQL / `seaweedfs-s3` (`weed mini`) だけを `up -d --wait`
 5. current release の通常 deploy を実行し、全 health と page を確認
 
 data volume の major upgrade はこの手順に含めず、製品固有の upgrade / restore drill を別途作成します。
@@ -307,7 +340,7 @@ docker inspect \
 
 確認順:
 
-1. PostgreSQL と 4 つの SeaweedFS service
+1. PostgreSQL と `seaweedfs-s3` (`weed mini`)
 2. `.deploy-state/releases/*.migrate.log`
 3. Payload strict health
 4. S3 bucket

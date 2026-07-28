@@ -32,14 +32,73 @@ prepare_state_directory
 
 backup_dir="$(validate_backup_directory "$(read_env_value BACKUP_DIR "${ENV_FILE}")")"
 site_url="$(read_env_value NEXT_PUBLIC_SITE_URL "${ENV_FILE}")"
+s3_bucket="$(read_env_value S3_BUCKET "${ENV_FILE}")"
+media_endpoint="http://seaweedfs-s3:8333"
 smoke_url="${PRODUCTION_SMOKE_URL:-${site_url%/}/api/health}"
 page_smoke_url="${PRODUCTION_PAGE_SMOKE_URL:-${site_url%/}/}"
+weed_mini_cutover_file="${STATE_DIR}/weed-mini-cutover.env"
+cutover_marker_tmp=""
+
+validate_weed_mini_cutover_marker() {
+  local invalid_lines
+  local marker_status
+  local marker_created_at
+  local marker_backup_path
+
+  validate_private_file "${weed_mini_cutover_file}" "weed mini cutover marker"
+  invalid_lines="$(
+    sed -E '/^[[:space:]]*(#|$)/d' "${weed_mini_cutover_file}" |
+      grep -Ev '^(status|created_at|backup_path)=' ||
+      true
+  )"
+  [[ -z "${invalid_lines}" ]] ||
+    production_die "weed mini cutover marker contains unsupported entries"
+
+  marker_status="$(read_env_value status "${weed_mini_cutover_file}")"
+  marker_created_at="$(read_env_value created_at "${weed_mini_cutover_file}")"
+  marker_backup_path="$(read_env_value backup_path "${weed_mini_cutover_file}")"
+  [[ "${marker_status}" == "pending" ]] ||
+    production_die "weed mini cutover marker status is invalid"
+  [[ "${marker_created_at}" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}T ]] ||
+    production_die "weed mini cutover marker timestamp is invalid"
+  [[ "${marker_backup_path}" == "${backup_dir}/"* ]] ||
+    production_die "weed mini cutover marker backup path is invalid"
+}
+
+write_weed_mini_cutover_marker() {
+  cutover_marker_tmp="$(mktemp "${STATE_DIR}/.weed-mini-cutover.XXXXXX")"
+  {
+    printf 'status=pending\n'
+    printf 'created_at=%s\n' "$(date -u +%FT%TZ)"
+    printf 'backup_path=%s\n' "${backup_path}"
+  } >"${cutover_marker_tmp}"
+  chmod 600 "${cutover_marker_tmp}"
+  atomic_replace_private_file \
+    "${cutover_marker_tmp}" \
+    "${weed_mini_cutover_file}" \
+    "weed mini cutover marker"
+  cutover_marker_tmp=""
+}
+
+remove_weed_mini_cutover_marker() {
+  if path_exists "${weed_mini_cutover_file}"; then
+    validate_weed_mini_cutover_marker
+    rm -f -- "${weed_mini_cutover_file}"
+  fi
+}
 
 build_compose_command
 "${COMPOSE[@]}" config -q
 validate_local_docker
 acquire_production_lock
 require_no_restore_marker
+
+weed_mini_cutover_pending=false
+if path_exists "${weed_mini_cutover_file}"; then
+  validate_weed_mini_cutover_marker
+  weed_mini_cutover_pending=true
+  production_log "Resuming the pending split SeaweedFS to weed mini cutover"
+fi
 
 available_kib="$(df -Pk "${backup_dir}" | awk 'NR == 2 {print $4}')"
 [[ "${available_kib}" =~ ^[0-9]+$ ]] ||
@@ -52,9 +111,45 @@ production_log "Pulling the immutable release and pinned edge/backup tools"
 verify_release_images
 verify_database_url_identity payload-migrate
 
-for service in postgres seaweedfs-master seaweedfs-volume seaweedfs-filer seaweedfs-s3; do
+for service in postgres seaweedfs-s3; do
   require_service_healthy "${service}"
 done
+
+seaweedfs_container="$(compose_container_id seaweedfs-s3)"
+seaweedfs_command="$(
+  docker inspect --format '{{json .Config.Cmd}}' "${seaweedfs_container}"
+)"
+seaweedfs_is_mini=false
+if [[ "${seaweedfs_command}" == *'"mini"'* ]]; then
+  seaweedfs_is_mini=true
+fi
+
+legacy_seaweedfs_layout=false
+legacy_seaweedfs_services=0
+for service in seaweedfs-master seaweedfs-volume seaweedfs-filer; do
+  load_service_container_ids "${service}"
+  if ((${#SERVICE_CONTAINER_IDS[@]} > 0)); then
+    require_at_most_one_service_container "${service}"
+    ((legacy_seaweedfs_services += 1))
+  fi
+done
+if [[ "${seaweedfs_is_mini}" == "true" ]]; then
+  if ((legacy_seaweedfs_services > 0)); then
+    if [[ "${weed_mini_cutover_pending}" != "true" ]] &&
+      ! path_exists "${STATE_DIR}/current-images.env"; then
+      production_die "weed mini was started before the legacy S3 backup; recover the old gateway or VM snapshot"
+    fi
+    production_log "Detected stale split SeaweedFS containers; they will be removed after deploy"
+  fi
+elif ((legacy_seaweedfs_services != 3)); then
+  production_die "seaweedfs-s3 is not weed mini and the complete legacy layout is unavailable"
+else
+  for service in seaweedfs-master seaweedfs-volume seaweedfs-filer; do
+    require_service_healthy "${service}"
+  done
+  legacy_seaweedfs_layout=true
+  production_log "Detected the legacy split SeaweedFS layout; its media will only be backed up"
+fi
 
 require_at_most_one_service_container payload
 require_at_most_one_service_container cloudflared
@@ -165,6 +260,7 @@ handle_failed_deploy() {
   [[ -z "${release_tmp}" ]] || rm -f -- "${release_tmp}"
   [[ -z "${state_tmp}" ]] || rm -f -- "${state_tmp}"
   [[ -z "${restore_marker_tmp}" ]] || rm -f -- "${restore_marker_tmp}"
+  [[ -z "${cutover_marker_tmp}" ]] || rm -f -- "${cutover_marker_tmp}"
 
   case "${phase}" in
     pre_stop)
@@ -199,6 +295,16 @@ handle_failed_deploy() {
       printf '[deploy] External traffic and Payload are stopped.\n' >&2
       printf '[deploy] Recovery point: %s\n' "${backup_path}" >&2
       printf '[deploy] Media may have changed; restore with --restore-media.\n' >&2
+      ;;
+    finalizing)
+      printf '\n[deploy] DEPLOYMENT HEALTHY BUT FINALIZATION FAILED: %s\n' \
+        "${failure_reason:-could not finalize deployment state}" >&2
+      printf '[deploy] Payload and Tunnel remain on the verified new release.\n' >&2
+      if path_exists "${RESTORE_REQUIRED_FILE}"; then
+        printf '[deploy] Inspect restore-required.env and run the documented restore.\n' >&2
+      else
+        printf '[deploy] Inspect state and retry deploy before manual media registration.\n' >&2
+      fi
       ;;
     complete)
       ;;
@@ -267,9 +373,21 @@ if ! PRODUCTION_LOCK_FD=9 \
 fi
 phase="backup_complete"
 
-for service in postgres seaweedfs-master seaweedfs-volume seaweedfs-filer seaweedfs-s3; do
+for service in postgres seaweedfs-s3; do
   require_service_healthy "${service}"
 done
+if [[ "${legacy_seaweedfs_layout}" == "true" ]]; then
+  for service in seaweedfs-master seaweedfs-volume seaweedfs-filer; do
+    require_service_healthy "${service}"
+  done
+fi
+
+if [[ "${legacy_seaweedfs_layout}" == "true" &&
+  "${weed_mini_cutover_pending}" != "true" ]]; then
+  write_weed_mini_cutover_marker
+  weed_mini_cutover_pending=true
+  production_log "Recorded the pending weed mini cutover until deploy fully succeeds"
+fi
 
 write_deploy_restore_marker true
 
@@ -285,6 +403,68 @@ fi
 chmod 600 "${migration_log}"
 require_no_running_service_containers payload-migrate
 
+if [[ "${legacy_seaweedfs_layout}" == "true" ]]; then
+  production_log "Replacing the legacy S3 gateway with a fresh weed mini data volume"
+  production_log "The recovery point is retained, but media is not imported into weed mini"
+  failure_reason="weed mini did not become healthy"
+  if ! "${COMPOSE[@]}" up \
+    -d \
+    --no-deps \
+    --force-recreate \
+    --wait \
+    --wait-timeout "${DEPLOY_HEALTH_TIMEOUT}" \
+    seaweedfs-s3; then
+    exit 1
+  fi
+fi
+
+production_log "Waiting for the authenticated media bucket"
+failure_reason="media bucket is not ready"
+bucket_ready=false
+bucket_deadline=$((SECONDS + SMOKE_TIMEOUT))
+while ((SECONDS < bucket_deadline)); do
+  if timeout --foreground 10 \
+    "${COMPOSE[@]}" run --rm -T --no-deps media-tool \
+    --endpoint-url "${media_endpoint}" \
+    s3api head-bucket \
+    --bucket "${s3_bucket}" >/dev/null 2>&1; then
+    bucket_ready=true
+    break
+  fi
+  ((SECONDS < bucket_deadline)) && sleep 2
+done
+if [[ "${bucket_ready}" != "true" ]]; then
+  exit 1
+fi
+
+if [[ "${weed_mini_cutover_pending}" == "true" ]]; then
+  production_log "Emptying weed mini for administrator-led media re-registration"
+  failure_reason="weed mini could not be reset for manual media re-registration"
+  if ! timeout --foreground "${SMOKE_TIMEOUT}" \
+    "${COMPOSE[@]}" run --rm -T --no-deps media-tool \
+    --endpoint-url "${media_endpoint}" \
+    s3 rm \
+    "s3://${s3_bucket}" \
+    --recursive \
+    --only-show-errors; then
+    exit 1
+  fi
+
+  cutover_media_listing=""
+  if ! cutover_media_listing="$(
+    timeout --foreground "${SMOKE_TIMEOUT}" \
+      "${COMPOSE[@]}" run --rm -T --no-deps media-tool \
+      --endpoint-url "${media_endpoint}" \
+      s3 ls \
+      "s3://${s3_bucket}" \
+      --recursive
+  )"; then
+    exit 1
+  fi
+  [[ -z "${cutover_media_listing}" ]] ||
+    production_die "weed mini is not empty; automatic media migration is not allowed"
+fi
+
 production_log "Starting the new Payload image and waiting for strict health"
 failure_reason="Payload did not become healthy"
 if ! "${COMPOSE[@]}" up \
@@ -297,8 +477,6 @@ if ! "${COMPOSE[@]}" up \
 fi
 phase="payload_started"
 
-s3_bucket="$(read_env_value S3_BUCKET "${ENV_FILE}")"
-media_endpoint="http://seaweedfs-s3:8333"
 smoke_key="_deploy-smoke/${backup_name}"
 
 production_log "Checking media bucket read/write/delete"
@@ -336,15 +514,6 @@ timeout --foreground "${SMOKE_TIMEOUT}" \
   s3api delete-object \
   --bucket "${s3_bucket}" \
   --key "${smoke_key}" >/dev/null
-
-production_log "Removing services retired from the legacy stack"
-failure_reason="legacy orphan cleanup failed"
-"${COMPOSE[@]}" up \
-  -d \
-  --no-deps \
-  --no-recreate \
-  --remove-orphans \
-  payload >/dev/null
 
 phase="traffic_starting"
 production_log "Starting Cloudflare Tunnel"
@@ -395,7 +564,24 @@ atomic_replace_private_file \
   "current release state"
 state_tmp=""
 
+phase="finalizing"
+failure_reason="could not finalize successful deployment state"
 remove_restore_marker
+if [[ "${weed_mini_cutover_pending}" == "true" ]]; then
+  remove_weed_mini_cutover_marker
+  weed_mini_cutover_pending=false
+fi
+
+production_log "Removing services retired from the legacy stack"
+if ! "${COMPOSE[@]}" up \
+  -d \
+  --no-deps \
+  --no-recreate \
+  --remove-orphans \
+  payload >/dev/null; then
+  production_error "legacy orphan cleanup failed; retry it after deployment"
+fi
+
 phase="complete"
 failure_reason=""
 production_log "Deployment completed"
