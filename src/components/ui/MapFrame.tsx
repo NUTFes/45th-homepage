@@ -13,7 +13,7 @@ export default function MapFrame({ imageSrc, alt, title, type = "long" }: MapFra
       <div className="w-full px-10 md:px-0">
         <div className="flex w-full items-stretch gap-0">
           <div
-            className={`bg-main px-4 py-1 text-text-large text-base ${type === "short" ? "w-12.5" : "w-48.5"}`}
+            className={`bg-main px-4 py-1 text-text-large text-base ${type === "short" ? "w-17" : "w-48.5"}`}
           >
             <span className="leading-tight wrap-break-word whitespace-normal">{title}</span>
           </div>
