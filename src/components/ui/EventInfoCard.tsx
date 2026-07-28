@@ -56,7 +56,7 @@ export default function EventInfoCard({ location, schedules, map }: EventInfoCar
           <div className="mb-l lg:mb-0 lg:px-ll xl:px-0">
             <MapFrame title={map.title} imageSrc={map.imageSrc} alt={map.alt ?? map.title} />
           </div>
-          <div className="flex items-center justify-center bg-base pt-m lg:bg-transparent lg:px-ll lg:pt-0 xl:justify-start xl:px-0">
+          <div className="flex items-center justify-center bg-base pt-m lg:bg-transparent lg:px-ll lg:pt-0 xl:px-0">
             <ButtonMain
               href={map.href ?? "/map"}
               title={map.buttonLabel ?? "マップページはこちら"}
