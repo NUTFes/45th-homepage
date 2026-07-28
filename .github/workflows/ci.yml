@@ -130,7 +130,7 @@ jobs:
             --env S3_ACCESS_KEY_ID \
             --env S3_SECRET_ACCESS_KEY \
             45th-homepage-migrator:ci \
-            --help
+            info
 
   publish-production-images:
     name: Publish Production Images
