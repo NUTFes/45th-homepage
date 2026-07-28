@@ -9,6 +9,7 @@ export type MapMenuEntry = {
   id: string;
   label: string;
   disabled?: boolean;
+  type?: "short" | "long";
 };
 
 export type MapMenuSection = MapMenuEntry & {
@@ -25,7 +26,7 @@ export type MapMenuProps = {
   className?: string;
 };
 
-export const defaultMapMenuSections = [
+export const defaultMapMenuSections: MapMenuSection[] = [
   {
     id: "overall",
     label: "全体",
@@ -34,9 +35,9 @@ export const defaultMapMenuSections = [
     id: "lecture-building",
     label: "講義棟内",
     items: [
-      { id: "lecture-building-1f", label: "1 F" },
-      { id: "lecture-building-2f", label: "2 F" },
-      { id: "lecture-building-3f", label: "3 F" },
+      { id: "lecture-building-1f", label: "1F", type: "short" },
+      { id: "lecture-building-2f", label: "2F", type: "short" },
+      { id: "lecture-building-3f", label: "3F", type: "short" },
     ],
   },
   {
@@ -60,7 +61,7 @@ export const defaultMapMenuSections = [
     id: "mystery-solving",
     label: "謎解き",
   },
-] satisfies MapMenuSection[];
+];
 
 type MapMenuSectionWithItems = MapMenuSection & {
   items: MapMenuEntry[];
