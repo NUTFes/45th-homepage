@@ -1,5 +1,7 @@
+import type { ReactNode } from "react";
+
 export type EventIntroFrameProps = {
-  title: string;
+  title: ReactNode;
   body: string;
   headingLevel?: 1 | 2;
 };

@@ -38,7 +38,12 @@ function ResponsiveDummyCopy({
 }
 
 const INTRODUCTION = {
-  title: "ヨネダ２０００がやってくる！",
+  title: (
+    <>
+      <span>ヨネダ２０００が</span>
+      <span className="xl:block">やってくる！</span>
+    </>
+  ),
   body: `お笑い界の異端児「ヨネダ2000」が技大祭にやってくる！
 
 まさに奇想天外！M1ファイナリストにして脳を揺さぶる独特なテンポと、クセになるリズムネタが炸裂します！
