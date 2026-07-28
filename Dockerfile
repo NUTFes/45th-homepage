@@ -25,7 +25,28 @@ RUN --mount=type=cache,target=/pnpm/store \
   corepack enable pnpm && pnpm install --frozen-lockfile
 
 # ============================================
-# Stage 2: Build Next.js application in standalone mode
+# Stage 2: One-shot Payload migration image
+# ============================================
+
+FROM dependencies AS migrator
+
+# The application image never runs migrations. This target keeps the Payload
+# CLI and migration sources in a separate image built from the same commit.
+RUN pnpm prune --prod
+
+COPY --chown=node:node package.json pnpm-lock.yaml tsconfig.json ./
+COPY --chown=node:node src ./src
+
+ENV NODE_ENV=production
+ENV HOME=/tmp
+
+USER node
+
+ENTRYPOINT ["node", "node_modules/payload/bin.js"]
+CMD ["migrate"]
+
+# ============================================
+# Stage 3: Build Next.js application in standalone mode
 # ============================================
 
 FROM node:${NODE_VERSION} AS builder
@@ -55,7 +76,7 @@ ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 RUN corepack enable pnpm && pnpm build
 
 # ============================================
-# Stage 3: Run Next.js application
+# Stage 4: Run Next.js application
 # ============================================
 
 FROM node:${NODE_VERSION} AS runner

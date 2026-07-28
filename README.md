@@ -99,6 +99,7 @@ mise run up
 ├── docs/                 # ドキュメント類
 ├── compose.yml           # 開発用 Docker Compose 設定
 ├── compose.prod.yml      # 本番用 Docker Compose 設定
+├── scripts/              # 本番のdeploy・backup・restore script
 ├── mise.toml             # mise タスク定義
 └── .env.example          # 環境変数のテンプレート
 ```
@@ -164,7 +165,9 @@ mise run rm lodash
     ↓
 生成されたファイルを Git にコミット
     ↓
-コンテナ再起動で自動適用（または手動で mise run migrate）
+CI が app と専用 migrator image を同じ commit から生成
+    ↓
+本番 deploy が旧 Payload 停止後に migrator を1回実行
 ```
 
 ### コマンド一覧
@@ -188,6 +191,7 @@ git commit -m "feat: お知らせコレクションのマイグレーション�
 ```
 
 > UIや見た目のみの変更（Reactコンポーネントなど）では、マイグレーションは不要です。
+> `mise run migrate` は開発・保守用です。本番では起動時 migration や手動実行を行わず、直列 deploy script に任せます。
 
 ---
 
@@ -258,19 +262,25 @@ chore: vitest を追加
 
 ## 本番運用・デプロイ
 
-詳細は [デプロイセットアップガイド](docs/docker-rollout-setup.md) を参照してください。
+詳細は [本番運用ガイド](docs/production-operations.md) を参照してください。
+
+本番 image は `main` の CI が GHCR に生成します。CI artifact には同じ commit の digest、Compose、deploy / backup / restore script がまとまっています。VM / CT 上で source を `git pull`・build せず、release bundle 全体を配置して deploy します。
+
+Payload は単一 container とし、旧 Payload 停止 → 検証済み backup → one-shot migration → 新 Payload の strict health → Tunnel 起動、の順で処理します。migration / restore 開始後に `.deploy-state/restore-required.env` が残った場合は、手動削除せず運用ガイドの復旧手順を実行します。
 
 ### 主要コマンド
 
-| コマンド                  | 用途                                     |
-| ------------------------- | ---------------------------------------- |
-| `mise run prod:up`        | 初回デプロイ（コンテナが未稼働の場合）   |
-| `mise run prod:deploy`    | ローリングアップデート（コンテナ稼働中） |
-| `mise run prod:down`      | 本番コンテナの停止・削除                 |
-| `mise run prod:ps`        | ステータス確認                           |
-| `mise run prod:logs`      | ログ監視                                 |
-| `mise run prod:perf`      | 本番相当の Docker 環境で Lighthouse 実行 |
-| `mise run prod:perf:down` | 性能試験用コンテナの停止・削除           |
+| コマンド                  | 用途                                            |
+| ------------------------- | ----------------------------------------------- |
+| `mise run prod:up`        | data基盤初期化後の初回appを含む直列デプロイ     |
+| `mise run prod:deploy`    | backup・migration・health確認を含む直列デプロイ |
+| `mise run prod:backup`    | Payloadを停止してDBとメディアの復旧点を作成     |
+| `mise run prod:restore`   | 検証済み復旧点からDBと旧Payloadを復元           |
+| `mise run prod:down`      | 本番コンテナの停止・削除（永続volumeは保持）    |
+| `mise run prod:ps`        | ステータス確認                                  |
+| `mise run prod:logs`      | ログ監視                                        |
+| `mise run prod:perf`      | 本番相当の Docker 環境で Lighthouse 実行        |
+| `mise run prod:perf:down` | 性能試験用コンテナの停止・削除                  |
 
 ---
 
@@ -327,6 +337,8 @@ mise run install
 
 ### マイグレーションエラーが出る
 
+開発環境では次を確認します。
+
 ```bash
 # マイグレーションの適用状況を確認
 mise run migrate:status
@@ -334,6 +346,8 @@ mise run migrate:status
 # 手動でマイグレーションを実行
 mise run migrate
 ```
+
+本番では旧 image を直接起動したり `migrate:down` を実行したりせず、[本番運用ガイドのロールバック / 復元](docs/production-operations.md#ロールバック--復元) に従い、検証付き restore script で deploy 直前の recovery point を復元します。
 
 ### ポート 3000 がすでに使われている
 

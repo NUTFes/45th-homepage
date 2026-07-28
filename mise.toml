@@ -84,7 +84,7 @@ alias = ["migrate:status", "ms"]
 run = "docker compose exec payload pnpm payload migrate:status"
 
 [tasks."32:migrate"]
-description = "保留中のマイグレーションを手動で実行する (通常は起動時に自動実行されます)"
+description = "保留中のマイグレーションを手動で実行する (開発・保守用)"
 alias = ["migrate", "m"]
 run = "docker compose exec payload pnpm payload migrate"
 
@@ -93,43 +93,89 @@ run = "docker compose exec payload pnpm payload migrate"
 # ============================================================
 
 [tasks."90:prod:up"]
-description = "本番用コンテナをビルドして起動する (.env.productionを使用)"
+description = "本番へdigest固定イメージを直列デプロイする"
 alias = "prod:up"
-run = "docker compose --env-file .env.production -f compose.prod.yml up -d --build --remove-orphans"
+run = "./scripts/deploy-production.sh"
 
 [tasks."91:prod:down"]
 description = "本番用コンテナを停止して削除する"
 alias = "prod:down"
-run = "docker compose --env-file .env.production -f compose.prod.yml down"
+run = "docker compose --project-name 45th-homepage --env-file .env.production --env-file .env.production.images -f compose.prod.yml down"
 
 [tasks."92:prod:logs"]
 description = "本番用コンテナのログを表示する"
 alias = "prod:logs"
-run = "docker compose --env-file .env.production -f compose.prod.yml logs -f"
+run = "docker compose --project-name 45th-homepage --env-file .env.production --env-file .env.production.images -f compose.prod.yml logs -f"
 
 [tasks."93:prod:ps"]
 description = "本番用コンテナのステータスを表示する"
 alias = "prod:ps"
-run = "docker compose --env-file .env.production -f compose.prod.yml ps"
+run = "docker compose --project-name 45th-homepage --env-file .env.production --env-file .env.production.images -f compose.prod.yml ps"
 
 [tasks."94:prod:deploy"]
-description = "本番環境にゼロダウンタイムデプロイする (docker rollout)"
+description = "本番へdigest固定イメージを直列デプロイする"
 alias = "prod:deploy"
-run = '''
-#!/usr/bin/env bash
-set -euo pipefail
+run = "./scripts/deploy-production.sh"
 
-git pull origin "$(git branch --show-current)"
-docker compose --env-file .env.production -f compose.prod.yml build payload
-docker rollout --env-file .env.production -f compose.prod.yml --timeout 120 payload
-'''
+[tasks."95:prod:backup"]
+description = "Payloadを停止してPostgreSQLとメディアの復旧点を作成する"
+alias = "prod:backup"
+run = "./scripts/backup-production.sh --stop-app"
 
-[tasks."95:prod:perf"]
+[tasks."96:prod:perf"]
 description = "本番相当のDocker環境でLighthouseを実行する (.env.productionを使用)"
 alias = "prod:perf"
-run = "docker compose --env-file .env.production -f compose.perf.yml up --build --abort-on-container-exit --exit-code-from lighthouse"
+run = '''
+#!/usr/bin/env bash
+set -Eeuo pipefail
 
-[tasks."96:prod:perf:down"]
+compose=(
+  docker compose
+  --project-name 45th-homepage-perf
+  --env-file .env.production
+  -f compose.perf.yml
+)
+
+"${compose[@]}" down -v --remove-orphans
+"${compose[@]}" build payload payload-migrate lighthouse
+"${compose[@]}" up \
+  -d \
+  --wait \
+  postgres \
+  seaweedfs-master \
+  seaweedfs-volume \
+  seaweedfs-filer \
+  seaweedfs-s3
+"${compose[@]}" stop -t 30 payload
+"${compose[@]}" run --rm -T --no-deps payload-migrate
+"${compose[@]}" up -d --no-deps --wait --wait-timeout 180 payload
+"${compose[@]}" run --rm -T --no-deps lighthouse
+'''
+
+[tasks."97:prod:perf:down"]
 description = "Lighthouse性能試験用コンテナを停止して削除する"
 alias = "prod:perf:down"
-run = "docker compose --env-file .env.production -f compose.perf.yml down"
+run = "docker compose --project-name 45th-homepage-perf --env-file .env.production -f compose.perf.yml down -v --remove-orphans"
+
+[tasks."98:prod:restore"]
+description = "検証済み復旧点からPostgreSQLと旧Payloadを復元する"
+alias = "prod:restore"
+usage = '''
+  arg "<recovery_point>" help="BACKUP_DIR直下の復旧点directory名"
+  flag "--restore-media" help="media bucketも復旧点で完全置換する"
+  flag "-y --yes" help="対話確認を省略する"
+'''
+run = '''
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+args=("${usage_recovery_point?}")
+if [[ "${usage_restore_media:-false}" == "true" ]]; then
+  args+=(--restore-media)
+fi
+if [[ "${usage_yes:-false}" == "true" ]]; then
+  args+=(--yes)
+fi
+
+./scripts/restore-production.sh "${args[@]}"
+'''

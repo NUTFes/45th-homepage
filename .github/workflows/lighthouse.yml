@@ -29,7 +29,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:18-alpine
+        image: postgres:18.4-alpine3.23
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: mysecretpassword
@@ -63,6 +63,11 @@ jobs:
 
       - name: Build Next.js
         run: pnpm run build
+
+      - name: Run database migrations
+        run: pnpm payload migrate
+        env:
+          NODE_ENV: production
 
       - name: Run Lighthouse CI
         id: lhci

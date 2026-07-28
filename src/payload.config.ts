@@ -17,7 +17,6 @@ import { EventsPage } from "./globals/EventsPage";
 import { SponsorsPage } from "./globals/SponsorsPage";
 import { TopPage } from "./globals/TopPage";
 import { WeatherSettings } from "./globals/WeatherSettings";
-import { migrations } from "./migrations";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -91,7 +90,6 @@ export default buildConfig({
     pool: {
       connectionString: env.DATABASE_URL,
     },
-    prodMigrations: migrations,
   }),
   sharp,
   plugins: [
