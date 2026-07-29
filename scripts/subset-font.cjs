@@ -35,6 +35,8 @@ const KAISOTAI_FONT_USAGE_FILE_PATHS = [
   "src/modules/attention/AttentionPageView.tsx",
   "src/modules/notfound/NotFoundView.tsx",
   "src/modules/sponsors/SponsorPageView.tsx",
+  "src/modules/event/guest/GuestPageView.tsx",
+  "src/modules/event/guest/ui/GuestProfileSection.tsx",
 ].map((relativePath) => path.join(__dirname, "..", relativePath));
 
 const ZEN_KAKU_FONT_USAGE_ROOTS = ["src/app/(frontend)", "src/components", "src/modules"].map(

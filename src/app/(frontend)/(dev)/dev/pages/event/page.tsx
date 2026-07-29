@@ -122,7 +122,25 @@ const programDetailDummyProps: ProgramDetailPageViewProps = {
   },
   info: {
     location: "キッチンカーエリア",
-    title: "キッチンカーエリア",
+    schedules: [
+      {
+        dateLabel: "9月19日(土)",
+        startLabel: "10:00",
+        endLabel: "17:00",
+        startsAt: "2026-09-19T10:00:00+09:00",
+        endsAt: "2026-09-19T17:00:00+09:00",
+      },
+      {
+        dateLabel: "9月20日(日)",
+        startLabel: "10:00",
+        endLabel: "17:00",
+        startsAt: "2026-09-20T10:00:00+09:00",
+        endsAt: "2026-09-20T17:00:00+09:00",
+      },
+    ],
+    map: {
+      title: "キッチンカーエリア",
+    },
   },
 };
 
@@ -176,7 +194,7 @@ export default function DevTopPageModulesPage() {
               profiles={guestProfiles}
               image={{
                 src: "/image/event/guest.jpg",
-                alt: "ヨネダ２０００",
+                alt: "ヨネダ2000",
               }}
             />
             <GuestProfileSection

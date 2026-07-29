@@ -8,7 +8,7 @@ export default function InfoFrame({
   return (
     <div className={className}>
       <div className="bg-main shadow-[0px_0px_8px_0px_#111d53] md:shadow-[0px_0px_12px_0px_#111d53]">
-        <div className="rounded-3xl border-2 border-main bg-base-dark px-m py-ll text-text text-white">
+        <div className="rounded-3xl border-2 border-main bg-base-dark px-m py-ll text-text text-white lg:px-ll">
           {children}
         </div>
       </div>

@@ -6,9 +6,11 @@ import { CarouselRoot, CarouselSlide, CarouselViewport } from "@/components/ui/c
 
 import type { SponsorWithImageDTO } from "../types";
 import SponsorCard from "./SponsorCard";
+import type { SponsorAdsSurface } from "./SponsorAdsSection";
 
 type SponsorAdCarouselProps = {
   sponsors: SponsorWithImageDTO[];
+  surface?: SponsorAdsSurface;
 };
 
 const DESKTOP_SPONSOR_AD_VISIBLE_COUNT = 4;
@@ -38,7 +40,7 @@ const useIsDesktopSponsorAdViewport = () =>
     getSponsorAdDesktopViewportServerSnapshot,
   );
 
-export default function SponsorAdCarousel({ sponsors }: SponsorAdCarouselProps) {
+export default function SponsorAdCarousel({ sponsors, surface = "dark" }: SponsorAdCarouselProps) {
   const isDesktop = useIsDesktopSponsorAdViewport();
   const visibleSponsorCount =
     isDesktop === false ? MOBILE_SPONSOR_AD_VISIBLE_COUNT : DESKTOP_SPONSOR_AD_VISIBLE_COUNT;
@@ -65,7 +67,7 @@ export default function SponsorAdCarousel({ sponsors }: SponsorAdCarouselProps) 
       options={{ align: "start", containScroll: "trimSnaps", slidesToScroll: 1 }}
     >
       <CarouselViewport
-        className="w-full overflow-hidden bg-base-dark py-s lg:px-5l"
+        className={`w-full overflow-hidden py-s lg:px-5l ${surface === "dark" ? "bg-base-dark" : "bg-transparent"}`}
         trackClassName="items-center"
       >
         {sponsors.map((sponsor, index) => (
