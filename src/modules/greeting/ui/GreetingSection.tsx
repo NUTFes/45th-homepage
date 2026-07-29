@@ -23,11 +23,9 @@ export default function GreetingSection({
   return (
     <div className="flex flex-col border-y border-main bg-base-dark text-font-main md:flex-row md:pl-pm">
       <div className="md:flex md:flex-1 md:items-center md:justify-center md:gap-ss">
-        {/* 英語名（縦書き・PC のみ表示） */}
         <p className="hidden font-kaisotai text-title [writing-mode:vertical-rl] md:block">
           {nameEng}
         </p>
-        {/* 写真 + 名前（PC では 400px 固定幅のバッファ内で中央寄せ） */}
         <div className="border-b border-main bg-base md:flex md:h-[909px] md:w-100 md:items-center md:justify-center md:py-4l">
           <div className="flex items-center gap-3l md:w-full md:flex-col md:gap-m">
             <Image
@@ -45,7 +43,6 @@ export default function GreetingSection({
           </div>
         </div>
       </div>
-      {/* 挨拶文 */}
       <div className="flex flex-col gap-m p-ll md:gap-l md:pr-pm md:pl-4l">
         <h2 className="text-textb md:text-Ptitle-small">{greetingTitle}</h2>
         <p className="text-text whitespace-pre-line md:text-Ptext">{greetingBody}</p>
