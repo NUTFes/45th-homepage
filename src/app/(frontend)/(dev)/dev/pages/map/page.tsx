@@ -1,3 +1,4 @@
+import MapPageView from "@/modules/map/MapPageView";
 import MapAccordion from "@/modules/map/ui/MapAccordion";
 import MapMenu from "@/modules/map/ui/MapMenu";
 
@@ -28,6 +29,14 @@ export default function DevMapPageModules() {
         <DevPanel title="PC Default" fullWidth>
           <div className="flex min-h-224 justify-end overflow-hidden bg-secondary">
             <MapMenu className="static" />
+          </div>
+        </DevPanel>
+      </DevSection>
+
+      <DevSection title="MapPageView">
+        <DevPanel title="Default">
+          <div className="mx-auto h-150 w-full overflow-y-auto [--header-height:0px]">
+            <MapPageView />
           </div>
         </DevPanel>
       </DevSection>
