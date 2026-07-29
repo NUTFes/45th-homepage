@@ -101,7 +101,10 @@ export default function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props;
 
   return (
-    <html lang="ja" className={`${zenKakuGothicNew.variable} ${kaisotai.variable} ${goldman.variable}`}>
+    <html
+      lang="ja"
+      className={`${zenKakuGothicNew.variable} ${kaisotai.variable} ${goldman.variable}`}
+    >
       <body className="pb-(--bottom-nav-offset) md:pb-0">
         <Header />
         <main>{children}</main>
