@@ -37,14 +37,16 @@ export default function GreetingSection({
               height={144}
               className={`${itemSize} aspect-[2/3] w-full border-2 border-main object-cover`}
             />
-            <div className={`flex items-center md:shrink-0 md:flex-col md:justify-center ${itemSize}`}>
+            <div
+              className={`flex items-center md:shrink-0 md:flex-col md:justify-center ${itemSize}`}
+            >
               <h2 className="text-title-small md:text-Ptitle-small">{name}</h2>
             </div>
           </div>
         </div>
       </div>
       {/* 挨拶文 */}
-      <div className="flex flex-col gap-m p-ll md:gap-l md:pl-4l md:pr-pm">
+      <div className="flex flex-col gap-m p-ll md:gap-l md:pr-pm md:pl-4l">
         <h2 className="text-textb md:text-Ptitle-small">{greetingTitle}</h2>
         <p className="text-text whitespace-pre-line md:text-Ptext">{greetingBody}</p>
       </div>
