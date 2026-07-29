@@ -2,11 +2,21 @@ import Image from "next/image";
 
 export default function ThemeSection(){
     return(
-        <div className="bg-base_dark w-full text-white">
-            <div className="font-kaisotai text-Ptitle px-pl py-5l flex flex-col gap-y-ss z-10">
+        <div className="relative overflow-hidden bg-base-dark w-full text-white">
+            <div className="absolute -top-4 right-0 pointer-events-none z-0">
+                <Image
+                    src="/image/greeting/45th-logo-touka.svg"
+                    alt="45thロゴ"
+                    width={220}
+                    height={220}
+                    className="mix-blend-screen opacity-90"
+                />
+            </div>
+            <div className="font-kaisotai text-title md:text-Ptitle px-ll md:px-pl py-5l flex flex-col justify-start gap-y-ss z-10">
                 <div>技大祭テーマ</div>
-                <div className="font-goldman">Bluem Up Date</div>
-                <div className="font-sans text-Ptext">青春の中で積み重ねた努力を当日に花開かせ、技大祭をさらに進化させていくことを表現しています。</div>
+                <div className="font-goldman hidden sm:flex">Bluem Up Date</div>
+                <div className="font-goldman sm:hidden">Bluem Up <br/>Date</div>
+                <div className="font-sans text-text md:text-Ptext">青春の中で積み重ねた努力を当日に花開かせ、技大祭をさらに進化させていくことを表現しています。</div>
             </div>
         </div>
     );
