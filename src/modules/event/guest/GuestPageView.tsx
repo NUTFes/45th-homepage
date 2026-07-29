@@ -1,41 +1,12 @@
 import Image from "next/image";
-import { CameraOff, Clock, DoorOpen, Hamburger, Tickets, TriangleAlert, Users } from "lucide-react";
 
 import EventInfoCard, { type EventInfoCardProps } from "@/components/ui/EventInfoCard";
 import EventIntroFrame from "@/components/ui/EventIntroFrame";
 import SectionTitle from "@/components/ui/SectionTitle";
 import SponsorAdsBoundary from "@/modules/sponsors/ui/SponsorAdsBoundary";
-import GuestInformationSection, {
-  type GuestInformationBlock,
-} from "@/modules/event/guest/ui/GuestInformationSection";
+import GuestInformationSection from "@/modules/event/guest/ui/GuestInformationSection";
 import GuestProfileSection from "@/modules/event/guest/ui/GuestProfileSection";
 import type { GuestProfile } from "@/modules/event/guest/ui/GuestProfileCard";
-
-const MOBILE_DUMMY_COPY = "本文笹かま笹かま笹かま笹かま逆さま笹かま笹かま笹かま笹かま笹かま";
-const DESKTOP_DUMMY_COPY =
-  "本文ああああああああああああああああああああああああああああああああああああああああああああああああああああああああ";
-
-type ResponsiveDummyCopyProps = {
-  desktopCopy?: string;
-  desktopAccent?: boolean;
-  desktopLead?: string;
-};
-
-function ResponsiveDummyCopy({
-  desktopCopy = DESKTOP_DUMMY_COPY,
-  desktopAccent,
-  desktopLead,
-}: ResponsiveDummyCopyProps) {
-  return (
-    <>
-      <span className="lg:hidden">{MOBILE_DUMMY_COPY}</span>
-      <span className={`hidden lg:inline ${desktopAccent ? "text-accent" : ""}`}>
-        {desktopLead ? <span className="text-accent">{desktopLead}</span> : null}
-        {desktopCopy}
-      </span>
-    </>
-  );
-}
 
 const INTRODUCTION = {
   title: (
@@ -66,68 +37,6 @@ const GUEST_EVENT_INFO = {
     title: "体育館",
   },
 } satisfies EventInfoCardProps;
-
-const TICKET_DISTRIBUTION_BLOCKS = [
-  {
-    id: "schedule",
-    title: "スケジュール",
-    icon: Clock,
-    body: <ResponsiveDummyCopy />,
-  },
-  {
-    id: "ticket-cautions",
-    title: "注意事項",
-    icon: TriangleAlert,
-    body: <ResponsiveDummyCopy />,
-  },
-] satisfies readonly GuestInformationBlock[];
-
-const ADMISSION_BLOCKS = [
-  {
-    id: "ticket-admission",
-    title: "整理券での入場方法",
-    icon: Tickets,
-    body: (
-      <ResponsiveDummyCopy
-        desktopCopy="本文あああああああああああああああああああああああああああああああああああああああああああああああああああああ"
-        desktopLead="本文。"
-      />
-    ),
-  },
-  {
-    id: "general-admission",
-    title: "一般入場枠について",
-    icon: Users,
-    body: <ResponsiveDummyCopy desktopAccent />,
-  },
-  {
-    id: "re-entry",
-    title: "再入場について",
-    icon: DoorOpen,
-    body: <ResponsiveDummyCopy desktopAccent />,
-  },
-] satisfies readonly GuestInformationBlock[];
-
-const VENUE_CAUTION_BLOCKS = [
-  {
-    id: "recording-and-photography",
-    title: (
-      <>
-        イベント中の
-        <wbr />
-        <span className="whitespace-nowrap">録音・撮影は原則禁止</span>
-      </>
-    ),
-    icon: CameraOff,
-    body: <ResponsiveDummyCopy />,
-  },
-  {
-    id: "food-and-drinks",
-    title: "体育館では食事禁止・水分補給のみ可能",
-    icon: Hamburger,
-    body: <ResponsiveDummyCopy />,
-  },
-] satisfies readonly GuestInformationBlock[];
 
 const GUEST_PROFILES: readonly GuestProfile[] = [
   {
@@ -202,21 +111,21 @@ export default function GuestPageView() {
         <GuestInformationSection
           id="ticket-distribution"
           title="整理券配布について"
-          blocks={TICKET_DISTRIBUTION_BLOCKS}
+          status="coming-soon"
           className="xl:col-start-1 xl:row-start-3 xl:mt-m"
         />
 
         <GuestInformationSection
           id="admission"
           title="入場について"
-          blocks={ADMISSION_BLOCKS}
+          status="coming-soon"
           className="xl:col-start-1 xl:row-start-4"
         />
 
         <GuestInformationSection
           id="venue-cautions"
           title="会場での注意事項"
-          blocks={VENUE_CAUTION_BLOCKS}
+          status="coming-soon"
           className="xl:col-start-1 xl:row-start-5"
         />
 

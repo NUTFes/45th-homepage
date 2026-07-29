@@ -13,19 +13,26 @@ export type GuestInformationBlock = {
   body: ReactNode;
 };
 
-type GuestInformationSectionProps = {
+type GuestInformationSectionBaseProps = {
   id: string;
   title: string;
-  blocks: readonly GuestInformationBlock[];
   className?: string;
 };
 
-export default function GuestInformationSection({
-  id,
-  title,
-  blocks,
-  className,
-}: GuestInformationSectionProps) {
+type GuestInformationSectionProps = GuestInformationSectionBaseProps &
+  (
+    | {
+        status?: "published";
+        blocks: readonly GuestInformationBlock[];
+      }
+    | {
+        status: "coming-soon";
+        blocks?: never;
+      }
+  );
+
+export default function GuestInformationSection(props: GuestInformationSectionProps) {
+  const { id, title, className, status } = props;
   const headingId = `guest-information-${id}`;
 
   return (
@@ -41,13 +48,19 @@ export default function GuestInformationSection({
       </div>
       <div className="px-ll py-1 lg:px-0">
         <InfoFrame className="w-full">
-          <div className="flex flex-col gap-l">
-            {blocks.map((block) => (
-              <InfoBlock icon={block.icon} key={block.id} title={block.title}>
-                {block.body}
-              </InfoBlock>
-            ))}
-          </div>
+          {status === "coming-soon" ? (
+            <p className="flex min-h-pm items-center justify-center text-center font-kaisotai text-title text-main md:text-Ptitle">
+              COMING SOON
+            </p>
+          ) : (
+            <div className="flex flex-col gap-l">
+              {props.blocks.map((block) => (
+                <InfoBlock icon={block.icon} key={block.id} title={block.title}>
+                  {block.body}
+                </InfoBlock>
+              ))}
+            </div>
+          )}
         </InfoFrame>
       </div>
     </section>
