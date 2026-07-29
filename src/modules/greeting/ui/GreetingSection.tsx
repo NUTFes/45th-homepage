@@ -23,7 +23,7 @@ export default function GreetingSection({
   return (
     <div className="flex flex-col md:flex-row border-t border-b border-main md:pl-pm bg-base-dark text-font-main">
       <div className="md:flex md:flex-1 md:flex-row md:items-center md:justify-center md:gap-ss">
-        <div className="md:[writing-mode:vertical-rl] md:text-title md:font-kaisotai">
+        <div className="hidden md:block md:[writing-mode:vertical-rl] md:text-title md:font-kaisotai">
             <h1>{nameEng}</h1>
         </div>
         <div className="border-b border-main bg-base md:flex md:h-[909px] md:w-100 md:items-center md:justify-center md:py-4l">
