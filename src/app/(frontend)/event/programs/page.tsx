@@ -23,7 +23,7 @@ async function ProgramsPageContent() {
       title="企画"
       programs={flattenEventCategories(data.categories)}
       filterVariant="event"
-      sponsorAds={<SponsorAdsBoundary />}
+      sponsorAds={<SponsorAdsBoundary surface="transparent" />}
     />
   );
 }

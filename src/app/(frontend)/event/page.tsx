@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 async function EventPageContent() {
   await connection();
   const data = await getEventsPageData();
-  return <EventPageView data={data} sponsorAds={<SponsorAdsBoundary />} />;
+  return <EventPageView data={data} sponsorAds={<SponsorAdsBoundary surface="transparent" />} />;
 }
 
 export default function Page() {

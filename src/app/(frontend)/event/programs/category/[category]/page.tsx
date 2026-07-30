@@ -53,7 +53,7 @@ async function ProgramCategoryPageContent({ category }: { category: string }) {
       title={matched.label}
       programs={matched.programs}
       filterVariant={category}
-      sponsorAds={<SponsorAdsBoundary />}
+      sponsorAds={<SponsorAdsBoundary surface="transparent" />}
     />
   );
 }
