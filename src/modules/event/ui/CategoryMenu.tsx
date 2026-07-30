@@ -1,4 +1,5 @@
 "use client";
+import type { Ref } from "react";
 
 import { X } from "lucide-react";
 import { Button, CheckboxGroup, type CheckboxGroupProps } from "react-aria-components";
@@ -14,11 +15,18 @@ import {
 
 export type CategoryMenuProps = Omit<CheckboxGroupProps, "children" | "className" | "label"> & {
   className?: string;
+  closeButtonRef?: Ref<HTMLButtonElement>;
   onClose: () => void;
   variant: CategoryMenuVariant;
 };
 
-export default function CategoryMenu({ className, onClose, variant, ...props }: CategoryMenuProps) {
+export default function CategoryMenu({
+  closeButtonRef,
+  className,
+  onClose,
+  variant,
+  ...props
+}: CategoryMenuProps) {
   const items = categoryMenuItems[variant];
 
   return (
@@ -34,6 +42,7 @@ export default function CategoryMenu({ className, onClose, variant, ...props }: 
         </h2>
         <Button
           aria-label="タグ検索を閉じる"
+          ref={closeButtonRef}
           className="flex size-8 cursor-pointer items-center justify-center rounded-sm text-font-main transition-colors hover:bg-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main md:size-10 pressed:bg-base"
           onPress={onClose}
         >
