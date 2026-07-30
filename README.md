@@ -164,7 +164,7 @@ mise run rm lodash
     ↓
 生成されたファイルを Git にコミット
     ↓
-コンテナ再起動で自動適用（または手動で mise run migrate）
+本番デプロイ中に専用サービスから明示適用
 ```
 
 ### コマンド一覧
@@ -258,25 +258,28 @@ chore: vitest を追加
 
 ## 本番運用・デプロイ
 
-詳細は [デプロイセットアップガイド](docs/docker-rollout-setup.md) を参照してください。
+詳細は [本番運用ガイド](docs/production-operations.md) を参照してください。
 
 ### 主要コマンド
 
-| コマンド                  | 用途                                     |
-| ------------------------- | ---------------------------------------- |
-| `mise run prod:up`        | 初回デプロイ（コンテナが未稼働の場合）   |
-| `mise run prod:deploy`    | ローリングアップデート（コンテナ稼働中） |
-| `mise run prod:down`      | 本番コンテナの停止・削除                 |
-| `mise run prod:ps`        | ステータス確認                           |
-| `mise run prod:logs`      | ログ監視                                 |
-| `mise run prod:perf`      | 本番相当の Docker 環境で Lighthouse 実行 |
-| `mise run prod:perf:down` | 性能試験用コンテナの停止・削除           |
+| コマンド                     | 用途                                   |
+| ---------------------------- | -------------------------------------- |
+| `mise run prod:deploy`       | 停止を伴う直列デプロイ                 |
+| `mise run prod:stop`         | PayloadとCloudflare Tunnelを停止       |
+| `mise run prod:backup`       | PostgreSQLとmediaを統合backup          |
+| `mise run prod:migrate`      | migrationを専用サービスで明示実行      |
+| `mise run prod:start-app`    | 単一Payloadを起動                      |
+| `mise run prod:start-tunnel` | Cloudflare Tunnelを起動                |
+| `mise run prod:ps`           | ステータス確認                         |
+| `mise run prod:logs`         | ログ監視                               |
+| `mise run prod:perf`         | 本番相当のDocker環境でLighthouseを実行 |
+| `mise run prod:perf:down`    | 性能試験用コンテナを停止して削除       |
 
 ---
 
 ## 本番公開前のパフォーマンス試験
 
-`compose.perf.yml` は、本番用の Next.js standalone image、PostgreSQL、SeaweedFS S3 Gateway を起動し、別コンテナ内の headless Chromium で Lighthouse CLI を実行します。
+`compose.perf.yml` は、本番用の Next.js standalone image、PostgreSQL、SeaweedFS `weed mini`を起動し、別コンテナ内の headless Chromium で Lighthouse CLI を実行します。
 
 ```bash
 mise run prod:perf
