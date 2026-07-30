@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { Check } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Checkbox } from "react-aria-components";
+import { Checkbox, Dialog, Modal, ModalOverlay } from "react-aria-components";
 
 import ActiveTag from "@/modules/event/ui/ActiveTag";
 import CategoryMenu from "@/modules/event/ui/CategoryMenu";
@@ -35,8 +35,6 @@ type ProgramFilterControlsProps = {
   filterVariant: CategoryMenuVariant;
   title: string;
 };
-
-const DIALOG_TRANSITION_MS = 300;
 
 function buildHref(pathname: string, params: URLSearchParams) {
   const query = params.toString();
@@ -77,18 +75,6 @@ export function useProgramFilters(
     const intervalId = window.setInterval(updateNow, 60_000);
     return () => window.clearInterval(intervalId);
   }, [activeOnly]);
-
-  useEffect(() => {
-    if (!isMenuOpen) {
-      return;
-    }
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [isMenuOpen]);
 
   const replaceFilters = (values: readonly string[]) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -134,45 +120,6 @@ export default function ProgramFilterControls({
   title,
 }: ProgramFilterControlsProps) {
   const drawerId = useId();
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const [isDialogVisible, setIsDialogVisible] = useState(false);
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) {
-      return;
-    }
-
-    let firstFrame = 0;
-    let secondFrame = 0;
-    let closeTimer = 0;
-
-    if (controller.isMenuOpen) {
-      if (!dialog.open) {
-        setIsDialogVisible(false);
-        dialog.showModal();
-        closeButtonRef.current?.focus();
-      }
-
-      firstFrame = window.requestAnimationFrame(() => {
-        secondFrame = window.requestAnimationFrame(() => setIsDialogVisible(true));
-      });
-    } else {
-      setIsDialogVisible(false);
-      if (dialog.open) {
-        const closeDelay = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-          ? 0
-          : DIALOG_TRANSITION_MS;
-        closeTimer = window.setTimeout(() => dialog.close(), closeDelay);
-      }
-    }
-
-    return () => {
-      window.cancelAnimationFrame(firstFrame);
-      window.cancelAnimationFrame(secondFrame);
-      window.clearTimeout(closeTimer);
-    };
-  }, [controller.isMenuOpen]);
   const definitionByValue = useMemo(
     () =>
       new Map<string, CategoryFilterDefinition>(
@@ -241,45 +188,36 @@ export default function ProgramFilterControls({
         ) : null}
       </div>
 
-      <div className="[--header-height:72px]">
-        <dialog
-          ref={dialogRef}
-          id={drawerId}
-          aria-label={`${title}のタグ検索`}
-          className="fixed top-(--header-height) right-0 bottom-0 left-0 m-0 h-[calc(100dvh-var(--header-height))] max-h-none w-full max-w-none overflow-hidden border-0 bg-transparent p-0 text-inherit backdrop:bg-transparent"
-          onCancel={(event) => {
-            event.preventDefault();
-            controller.setIsMenuOpen(false);
-          }}
-          onClose={() => {
-            setIsDialogVisible(false);
-            controller.setIsMenuOpen(false);
-          }}
+      <ModalOverlay
+        isDismissable
+        isOpen={controller.isMenuOpen}
+        onOpenChange={controller.setIsMenuOpen}
+        className={({ isEntering, isExiting }) =>
+          `fixed top-0 right-0 bottom-(--bottom-nav-offset) left-0 z-290 bg-base/40 ease-out [--header-height:72px] motion-safe:transition-opacity motion-safe:duration-200 md:top-(--header-height) md:bottom-0 md:z-300 md:duration-300 ${
+            isEntering || isExiting ? "opacity-0 ease-in" : "opacity-100"
+          }`
+        }
+      >
+        <Modal
+          className={({ isEntering, isExiting }) =>
+            `fixed right-0 bottom-(--bottom-nav-offset) left-0 z-295 h-[71svh] overflow-y-auto overscroll-contain bg-base ease-out will-change-transform outline-none motion-safe:transition-transform motion-safe:duration-300 md:top-(--header-height) md:right-0 md:bottom-0 md:left-auto md:z-350 md:h-[calc(100dvh-var(--header-height))] md:w-126 md:scrollbar-gutter-stable md:bg-base-dark ${
+              isEntering || isExiting
+                ? "translate-y-full ease-in md:translate-x-full md:translate-y-0"
+                : "translate-y-0"
+            }`
+          }
         >
-          <div
-            className={`relative z-10 ml-auto h-full w-full scrollbar-gutter-stable overflow-y-auto overscroll-contain bg-base ease-out will-change-transform motion-safe:transition-transform motion-safe:duration-300 md:w-126 md:bg-base-dark ${
-              isDialogVisible ? "translate-x-0" : "translate-x-full ease-in"
-            }`}
-          >
+          <Dialog id={drawerId} aria-label={`${title}のタグ検索`} className="h-full outline-none">
             <CategoryMenu
-              closeButtonRef={closeButtonRef}
+              className="min-h-full"
               variant={filterVariant}
               value={controller.selectedFilterValues}
               onChange={controller.replaceFilters}
               onClose={() => controller.setIsMenuOpen(false)}
             />
-          </div>
-          <button
-            type="button"
-            tabIndex={-1}
-            aria-hidden="true"
-            className={`absolute inset-0 bg-base/40 ease-out motion-safe:transition-opacity motion-safe:duration-300 ${
-              isDialogVisible ? "opacity-100" : "opacity-0 ease-in"
-            }`}
-            onClick={() => controller.setIsMenuOpen(false)}
-          />
-        </dialog>
-      </div>
+          </Dialog>
+        </Modal>
+      </ModalOverlay>
     </>
   );
 }
