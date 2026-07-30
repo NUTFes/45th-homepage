@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { Check } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Checkbox } from "react-aria-components";
@@ -88,21 +88,6 @@ export function useProgramFilters(
     };
   }, [isMenuOpen]);
 
-  useEffect(() => {
-    if (!isMenuOpen) {
-      return;
-    }
-
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setIsMenuOpen(false);
-      }
-    };
-
-    window.addEventListener("keydown", closeOnEscape);
-    return () => window.removeEventListener("keydown", closeOnEscape);
-  }, [isMenuOpen]);
-
   const replaceFilters = (values: readonly string[]) => {
     const params = new URLSearchParams(searchParams.toString());
     if (values.length > 0) {
@@ -147,6 +132,21 @@ export default function ProgramFilterControls({
   title,
 }: ProgramFilterControlsProps) {
   const drawerId = useId();
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) {
+      return;
+    }
+
+    if (controller.isMenuOpen) {
+      if (!dialog.open) {
+        dialog.showModal();
+      }
+    } else if (dialog.open) {
+      dialog.close();
+    }
+  }, [controller.isMenuOpen]);
   const definitionByValue = useMemo(
     () =>
       new Map<string, CategoryFilterDefinition>(
@@ -216,22 +216,12 @@ export default function ProgramFilterControls({
       </div>
 
       <div className="[--header-height:72px]">
-        <div
-          aria-hidden="true"
-          className={`fixed top-(--header-height) right-0 bottom-0 left-0 z-400 bg-base/40 ease-out motion-safe:transition-opacity motion-safe:duration-300 ${
-            controller.isMenuOpen ? "opacity-100" : "pointer-events-none opacity-0 ease-in"
-          }`}
-          onClick={() => controller.setIsMenuOpen(false)}
-        />
-        <div
+        <dialog
+          ref={dialogRef}
           id={drawerId}
-          role="dialog"
-          aria-modal="true"
           aria-label={`${title}のタグ検索`}
-          aria-hidden={!controller.isMenuOpen}
-          className={`fixed top-(--header-height) right-0 z-450 h-[calc(100dvh-var(--header-height))] w-full overflow-y-auto overscroll-contain bg-base ease-out motion-safe:transition-transform motion-safe:duration-300 md:max-w-126 md:bg-base-dark ${
-            controller.isMenuOpen ? "translate-x-0" : "pointer-events-none translate-x-full ease-in"
-          }`}
+          className="fixed top-(--header-height) right-0 bottom-auto left-auto m-0 h-[calc(100dvh-var(--header-height))] max-h-none w-full max-w-none overflow-y-auto overscroll-contain border-0 bg-base p-0 text-inherit backdrop:bg-base/40 md:w-126 md:bg-base-dark"
+          onClose={() => controller.setIsMenuOpen(false)}
         >
           {controller.isMenuOpen ? (
             <CategoryMenu
@@ -241,7 +231,7 @@ export default function ProgramFilterControls({
               onClose={() => controller.setIsMenuOpen(false)}
             />
           ) : null}
-        </div>
+        </dialog>
       </div>
     </>
   );

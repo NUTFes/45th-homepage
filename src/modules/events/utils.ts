@@ -116,14 +116,6 @@ export const toEventProgramDTO = (program: Program): EventProgramDTO | null => {
   };
 };
 
-export const filterProgramsForWeather = (
-  programs: readonly EventProgramDTO[],
-  weather: Weather,
-): EventProgramDTO[] =>
-  programs
-    .map((program) => filterProgramScheduleForWeather(program, weather))
-    .filter((program) => program.scheduleItems.length > 0);
-
 export const filterProgramScheduleForWeather = (
   program: EventProgramDTO,
   weather: Weather,
@@ -133,3 +125,19 @@ export const filterProgramScheduleForWeather = (
     (item) => item.weather === "both" || item.weather === weather,
   ),
 });
+
+export function filterProgramsForWeather(
+  programs: readonly EventProgramDTO[],
+  weather: Weather,
+): EventProgramDTO[] {
+  const filteredPrograms: EventProgramDTO[] = [];
+
+  for (const program of programs) {
+    const filteredProgram = filterProgramScheduleForWeather(program, weather);
+    if (filteredProgram.scheduleItems.length > 0) {
+      filteredPrograms.push(filteredProgram);
+    }
+  }
+
+  return filteredPrograms;
+}
