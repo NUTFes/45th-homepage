@@ -201,17 +201,23 @@ const updateEventsPage = async ({
   data: Partial<Record<ProgramCategoryItemField, ProgramOrderRow[]>>;
   req: Parameters<CollectionAfterChangeHook>[0]["req"];
 }) => {
-  await req.payload.updateGlobal({
-    slug: "events-page",
-    data: toPayloadRows(data),
-    overrideAccess: true,
-    req,
-    context: {
-      ...req.context,
-      disableRevalidate: true,
-      skipProgramEventsPageSync: true,
-    },
-  });
+  const originalContext = req.context;
+
+  try {
+    await req.payload.updateGlobal({
+      slug: "events-page",
+      data: toPayloadRows(data),
+      overrideAccess: true,
+      req,
+      context: {
+        ...originalContext,
+        disableRevalidate: true,
+        skipProgramEventsPageSync: true,
+      },
+    });
+  } finally {
+    req.context = originalContext;
+  }
 };
 
 export const syncProgramWithEventsPageAfterChange: CollectionAfterChangeHook = async ({

@@ -71,7 +71,6 @@ export interface Config {
     media: Media;
     news: News;
     programs: Program;
-    'program-tags': ProgramTag;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -83,7 +82,6 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     news: NewsSelect<false> | NewsSelect<true>;
     programs: ProgramsSelect<false> | ProgramsSelect<true>;
-    'program-tags': ProgramTagsSelect<false> | ProgramTagsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -242,7 +240,30 @@ export interface Program {
   locationName: string;
   image?: (number | null) | Media;
   mapImage?: (number | null) | Media;
-  tags?: (number | ProgramTag)[] | null;
+  /**
+   * Select from the predefined tags. The selected order is used on the program detail page.
+   */
+  tags?:
+    | (
+        | 'activity'
+        | 'watch'
+        | 'learning'
+        | 'children'
+        | 'reservation'
+        | 'prize'
+        | 'stage'
+        | 'laboratory'
+        | 'food'
+        | 'sweets'
+        | 'drink'
+        | 'international-food'
+        | 'alcohol'
+        | 'student'
+        | 'corporate'
+        | 'with-activity'
+        | 'nagaoka-ut-goods'
+      )[]
+    | null;
   catchphrase?: string | null;
   /**
    * Enter visitor-facing information such as description, notes, requirements, ticketing, and rainy-day handling.
@@ -355,18 +376,6 @@ export interface Program {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * Manage tags used for filtering programs.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "program-tags".
- */
-export interface ProgramTag {
-  id: number;
-  name: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -405,10 +414,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'programs';
         value: number | Program;
-      } | null)
-    | ({
-        relationTo: 'program-tags';
-        value: number | ProgramTag;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -549,15 +554,6 @@ export interface ProgramsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "program-tags_select".
- */
-export interface ProgramTagsSelect<T extends boolean = true> {
-  name?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -621,13 +617,22 @@ export interface TopPage {
   createdAt?: string | null;
 }
 /**
- * Configure program display order and visible tag order. Manage program publication from the Programs menu.
+ * Configure guest ticket information and program display order. Manage program publication from the Programs menu.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "events-page".
  */
 export interface EventsPage {
   id: number;
+  /**
+   * Copy shown in the ticket distribution banner at the top of the guest page.
+   */
+  guestTicketInformation?: {
+    /**
+     * Enter the current ticket distribution status. Line breaks are preserved.
+     */
+    statusText?: string | null;
+  };
   /**
    * Drag rows to configure display order for program programs. Missing published programs are restored on save.
    */
@@ -693,10 +698,6 @@ export interface EventsPage {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Configure visible tags and display order.
-   */
-  visibleTags?: (number | ProgramTag)[] | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -767,6 +768,11 @@ export interface TopPageSelect<T extends boolean = true> {
  * via the `definition` "events-page_select".
  */
 export interface EventsPageSelect<T extends boolean = true> {
+  guestTicketInformation?:
+    | T
+    | {
+        statusText?: T;
+      };
   programItems?:
     | T
     | {
@@ -802,7 +808,6 @@ export interface EventsPageSelect<T extends boolean = true> {
         programLabel?: T;
         id?: T;
       };
-  visibleTags?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

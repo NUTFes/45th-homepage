@@ -5,6 +5,7 @@ import * as migration_20260416_125350_add_news_important_select from './20260416
 import * as migration_20260608_084434_add_events_cms from './20260608_084434_add_events_cms';
 import * as migration_20260617_133059_add_sponsors_page from './20260617_133059_add_sponsors_page';
 import * as migration_20260723_161524_news_body_rich_text from './20260723_161524_news_body_rich_text';
+import * as migration_20260731_011747_connect_event_cms from './20260731_011747_connect_event_cms';
 
 export const migrations = [
   {
@@ -40,6 +41,11 @@ export const migrations = [
   {
     up: migration_20260723_161524_news_body_rich_text.up,
     down: migration_20260723_161524_news_body_rich_text.down,
-    name: '20260723_161524_news_body_rich_text'
+    name: '20260723_161524_news_body_rich_text',
+  },
+  {
+    up: migration_20260731_011747_connect_event_cms.up,
+    down: migration_20260731_011747_connect_event_cms.down,
+    name: '20260731_011747_connect_event_cms',
   },
 ];

@@ -9,6 +9,7 @@ import {
   PROGRAM_AREAS,
   PROGRAM_CATEGORIES,
   PROGRAM_SCHEDULE_WEATHERS,
+  PROGRAM_TAG_SELECT_OPTIONS,
   toPayloadSelectOptions,
 } from "@/lib/events/constants";
 import {
@@ -178,12 +179,17 @@ export const Programs: CollectionConfig = {
         ja: "タグ",
         en: "Tags",
       },
-      type: "relationship",
-      relationTo: "program-tags",
+      type: "select",
       hasMany: true,
       required: false,
+      options: PROGRAM_TAG_SELECT_OPTIONS,
       admin: {
-        sortOptions: "name",
+        isClearable: true,
+        isSortable: true,
+        description: {
+          ja: "定義済みのタグから選択してください。選択順は企画詳細での表示順になります。",
+          en: "Select from the predefined tags. The selected order is used on the program detail page.",
+        },
       },
     },
     {

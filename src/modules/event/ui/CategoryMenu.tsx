@@ -48,10 +48,10 @@ export default function CategoryMenu({ className, onClose, variant, ...props }: 
       >
         {items.map((item) => (
           <CategoryCard
-            key={item.label}
+            key={item.value}
             iconSrc={getCategoryIconSrc(item.label)}
             label={item.label}
-            value={item.label}
+            value={item.value}
           />
         ))}
       </CheckboxGroup>

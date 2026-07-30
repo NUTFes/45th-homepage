@@ -3,9 +3,10 @@ import type {
   ProgramArea,
   ProgramCategory,
   ProgramScheduleWeather,
+  ProgramTagValue,
   Weather,
 } from "@/lib/events/constants";
-import type { Media, Program, ProgramTag } from "@/payload-types";
+import type { Media, Program } from "@/payload-types";
 
 export type EventMediaDTO = {
   id: Media["id"];
@@ -16,8 +17,8 @@ export type EventMediaDTO = {
 };
 
 export type EventProgramTagDTO = {
-  id: ProgramTag["id"];
-  name: ProgramTag["name"];
+  value: ProgramTagValue;
+  label: string;
 };
 
 export type EventScheduleItemDTO = {
@@ -49,8 +50,11 @@ export type EventsPageCategoryDTO = {
 
 export type EventsPageDTO = {
   categories: EventsPageCategoryDTO[];
-  visibleTags: EventProgramTagDTO[];
   weather: Weather;
+};
+
+export type GuestPageDTO = {
+  ticketDistributionStatusText: string;
 };
 
 export type SchedulePageDTO = {

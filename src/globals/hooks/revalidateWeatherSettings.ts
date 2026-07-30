@@ -13,8 +13,7 @@ export const revalidateWeatherSettingsAfterChange: GlobalAfterChangeHook = ({
     revalidateTag(CACHE_TAGS.events, "max");
     revalidateTag(CACHE_TAGS.weatherSettings, "max");
     revalidatePath("/");
-    revalidatePath("/events");
-    revalidatePath("/events/programs");
+    revalidatePath("/event", "layout");
   }
 
   return doc;

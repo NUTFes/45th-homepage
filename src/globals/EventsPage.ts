@@ -1,5 +1,5 @@
 import type { GlobalBeforeChangeHook, GlobalConfig } from "payload";
-import { array, relationship } from "payload/shared";
+import { array } from "payload/shared";
 
 import {
   PROGRAM_CATEGORIES,
@@ -11,8 +11,6 @@ import {
 import {
   getProgramOrderRowProgramId,
   normalizeProgramOrderIds,
-  normalizeRelationshipId,
-  normalizeRelationshipIds,
   relationshipIdKey,
   type ProgramOrderRowInput,
   type RelationshipId,
@@ -20,9 +18,7 @@ import {
 
 import { revalidateEventsPageAfterChange } from "./hooks/revalidateEventsPage";
 
-type EventsPageData = Partial<Record<ProgramCategoryItemField, unknown>> & {
-  visibleTags?: unknown;
-};
+type EventsPageData = Partial<Record<ProgramCategoryItemField, unknown>>;
 
 type ProgramForEventsPage = {
   id: RelationshipId;
@@ -33,9 +29,6 @@ type ProgramForEventsPage = {
 
 type ArrayValidationValue = Parameters<typeof array>[0];
 type ArrayValidationContext = Parameters<typeof array>[1];
-type RelationshipValidationValue = Parameters<typeof relationship>[0];
-type RelationshipValidationContext = Parameters<typeof relationship>[1];
-
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null && !Array.isArray(value);
 
@@ -69,9 +62,6 @@ const getProgramOrderRowValue = (row: unknown) =>
 const findProgramOrderRow = (value: unknown, id: RelationshipId) =>
   toArray(value).find((row) => getProgramOrderRowProgramId(row) === id);
 
-const findRelationshipValue = (value: unknown, id: RelationshipId) =>
-  toArray(value).find((item) => normalizeRelationshipId(item) === id);
-
 const assertNoDuplicateIds = (
   ids: RelationshipId[],
   getMessage: (id: RelationshipId) => string,
@@ -91,9 +81,9 @@ const assertNoDuplicateIds = (
 };
 
 const buildValidationData = (
-  fieldName: ProgramCategoryItemField | "visibleTags",
+  fieldName: ProgramCategoryItemField,
   value: unknown,
-  context: ArrayValidationContext | RelationshipValidationContext,
+  context: ArrayValidationContext,
 ): EventsPageData => ({
   ...toRecord("originalDoc" in context ? context.originalDoc : undefined),
   ...toRecord(context.data),
@@ -198,23 +188,6 @@ const validateProgramCategoryRows = async (
   }
 
   return true;
-};
-
-const validateVisibleTags = async (
-  value: RelationshipValidationValue,
-  context: RelationshipValidationContext,
-) => {
-  const defaultResult = await relationship(value, context);
-  if (defaultResult !== true) {
-    return defaultResult;
-  }
-
-  const nextData = buildValidationData("visibleTags", value, context);
-  return assertNoDuplicateIds(
-    normalizeRelationshipIds(nextData.visibleTags),
-    (id) =>
-      `「${getRelationshipLabel(findRelationshipValue(nextData.visibleTags, id), "選択されたタグ")}」タグが重複しています。`,
-  );
 };
 
 const reconcilePublishedProgramsBeforeChange: GlobalBeforeChangeHook = async ({
@@ -396,8 +369,8 @@ export const EventsPage: GlobalConfig = {
       en: "Site Settings",
     },
     description: {
-      ja: "この画面では企画の表示順だけを管理します。行を追加・削除しても企画自体は作成・削除されません。企画の追加や非公開化は「企画」メニューで行ってください。天候切り替えは「天候設定」で操作します。",
-      en: "Configure program display order and visible tag order. Manage program publication from the Programs menu.",
+      ja: "ゲストの整理券配布情報と企画の表示順を管理します。行を追加・削除しても企画自体は作成・削除されません。企画の追加や非公開化は「企画」メニューで行ってください。天候切り替えは「天候設定」で操作します。",
+      en: "Configure guest ticket information and program display order. Manage program publication from the Programs menu.",
     },
   },
   hooks: {
@@ -407,34 +380,54 @@ export const EventsPage: GlobalConfig = {
   fields: [
     {
       type: "tabs",
-      tabs: PROGRAM_CATEGORIES.map((category) => ({
-        label: {
-          ja: category.label,
-          en: category.value,
+      tabs: [
+        {
+          label: {
+            ja: "ゲスト",
+            en: "Guest",
+          },
+          fields: [
+            {
+              name: "guestTicketInformation",
+              label: {
+                ja: "整理券配布情報",
+                en: "Guest Ticket Information",
+              },
+              type: "group",
+              admin: {
+                description: {
+                  ja: "ゲストページ上部の「整理券配布情報」に表示する本文です。",
+                  en: "Copy shown in the ticket distribution banner at the top of the guest page.",
+                },
+              },
+              fields: [
+                {
+                  name: "statusText",
+                  label: {
+                    ja: "配布状況",
+                    en: "Distribution Status",
+                  },
+                  type: "textarea",
+                  maxLength: 2000,
+                  admin: {
+                    description: {
+                      ja: "現在の整理券配布状況を入力します。",
+                      en: "Enter the current ticket distribution status. Line breaks are preserved.",
+                    },
+                  },
+                },
+              ],
+            },
+          ],
         },
-        fields: [categoryArrayField(category)],
-      })),
-    },
-    {
-      name: "visibleTags",
-      label: {
-        ja: "一覧に表示するタグ",
-        en: "Visible Tags",
-      },
-      type: "relationship",
-      relationTo: "program-tags",
-      hasMany: true,
-      required: false,
-      admin: {
-        isSortable: true,
-        allowCreate: false,
-        sortOptions: "name",
-        description: {
-          ja: "企画一覧の絞り込みに表示するタグを選び、ドラッグして表示順を変更します。",
-          en: "Configure visible tags and display order.",
-        },
-      },
-      validate: validateVisibleTags,
+        ...PROGRAM_CATEGORIES.map((category) => ({
+          label: {
+            ja: category.label,
+            en: category.value,
+          },
+          fields: [categoryArrayField(category)],
+        })),
+      ],
     },
   ],
 };

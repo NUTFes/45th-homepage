@@ -49,6 +49,10 @@ const menuItems: MenuItem[] = [
     icon: CalendarDays,
     children: [
       {
+        label: "すべてのイベント・販売",
+        href: "/event",
+      },
+      {
         label: "ゲスト",
         href: "/event/guest",
       },
@@ -58,23 +62,23 @@ const menuItems: MenuItem[] = [
       },
       {
         label: "企画",
-        disabled: true,
+        href: "/event/programs",
       },
       {
         label: "展示・体験",
-        disabled: true,
+        href: "/event/programs/category/exhibition",
       },
       {
         label: "食品販売",
-        disabled: true,
+        href: "/event/programs/category/food",
       },
       {
         label: "物品販売",
-        disabled: true,
+        href: "/event/programs/category/goods",
       },
       {
         label: "企業ブース",
-        disabled: true,
+        href: "/event/programs/category/corporate",
       },
     ],
   },

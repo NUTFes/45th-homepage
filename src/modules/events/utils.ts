@@ -3,20 +3,24 @@ import {
   PROGRAM_AREAS,
   PROGRAM_CATEGORIES,
   PROGRAM_SCHEDULE_WEATHERS,
+  PROGRAM_TAG_LABELS,
+  PROGRAM_TAGS,
   WEATHER_OPTIONS,
   type FestivalDay,
   type ProgramArea,
   type ProgramCategory,
   type ProgramScheduleWeather,
+  type ProgramTagValue,
   type Weather,
 } from "@/lib/events/constants";
-import type { Media, Program, ProgramTag } from "@/payload-types";
+import type { Media, Program } from "@/payload-types";
 
 import type { EventMediaDTO, EventProgramDTO, EventProgramTagDTO } from "./types";
 
 const programCategoryValues = new Set(PROGRAM_CATEGORIES.map(({ value }) => value));
 const programAreaValues = new Set(PROGRAM_AREAS.map(({ value }) => value));
 const scheduleWeatherValues = new Set(PROGRAM_SCHEDULE_WEATHERS.map(({ value }) => value));
+const programTagValues = new Set(PROGRAM_TAGS.map(({ value }) => value));
 const weatherValues = new Set(WEATHER_OPTIONS.map(({ value }) => value));
 const festivalDayValues = new Set(Object.keys(FESTIVAL_DAY_LABELS));
 
@@ -29,6 +33,9 @@ export const isProgramArea = (value: unknown): value is ProgramArea =>
 export const isProgramScheduleWeather = (value: unknown): value is ProgramScheduleWeather =>
   typeof value === "string" && scheduleWeatherValues.has(value as ProgramScheduleWeather);
 
+export const isProgramTagValue = (value: unknown): value is ProgramTagValue =>
+  typeof value === "string" && programTagValues.has(value as ProgramTagValue);
+
 export const isWeather = (value: unknown): value is Weather =>
   typeof value === "string" && weatherValues.has(value as Weather);
 
@@ -37,9 +44,6 @@ export const isFestivalDay = (value: unknown): value is FestivalDay =>
 
 const isMediaDoc = (value: Program["image"]): value is Media =>
   typeof value === "object" && value !== null && "id" in value;
-
-const isProgramTagDoc = (value: unknown): value is ProgramTag =>
-  typeof value === "object" && value !== null && "id" in value && "name" in value;
 
 export const toEventMediaDTO = (value: Program["image"]): EventMediaDTO | undefined => {
   if (!isMediaDoc(value) || !value.url) {
@@ -56,13 +60,13 @@ export const toEventMediaDTO = (value: Program["image"]): EventMediaDTO | undefi
 };
 
 export const toEventProgramTagDTO = (value: unknown): EventProgramTagDTO | null => {
-  if (!isProgramTagDoc(value)) {
+  if (!isProgramTagValue(value)) {
     return null;
   }
 
   return {
-    id: value.id,
-    name: value.name,
+    value,
+    label: PROGRAM_TAG_LABELS[value],
   };
 };
 
@@ -113,20 +117,19 @@ export const toEventProgramDTO = (program: Program): EventProgramDTO | null => {
 };
 
 export const filterProgramsForWeather = (
-  programs: EventProgramDTO[],
+  programs: readonly EventProgramDTO[],
   weather: Weather,
 ): EventProgramDTO[] =>
-  programs.flatMap((program) => {
-    const scheduleItems = program.scheduleItems.filter(
-      (item) => item.weather === "both" || item.weather === weather,
-    );
+  programs
+    .map((program) => filterProgramScheduleForWeather(program, weather))
+    .filter((program) => program.scheduleItems.length > 0);
 
-    return scheduleItems.length
-      ? [
-          {
-            ...program,
-            scheduleItems,
-          },
-        ]
-      : [];
-  });
+export const filterProgramScheduleForWeather = (
+  program: EventProgramDTO,
+  weather: Weather,
+): EventProgramDTO => ({
+  ...program,
+  scheduleItems: program.scheduleItems.filter(
+    (item) => item.weather === "both" || item.weather === weather,
+  ),
+});

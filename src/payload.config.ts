@@ -12,7 +12,6 @@ import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
 import { News } from "./collections/News";
 import { Programs } from "./collections/Programs";
-import { ProgramTags } from "./collections/ProgramTags";
 import { EventsPage } from "./globals/EventsPage";
 import { SponsorsPage } from "./globals/SponsorsPage";
 import { TopPage } from "./globals/TopPage";
@@ -80,7 +79,7 @@ export default buildConfig({
       },
     },
   },
-  collections: [Users, Media, News, Programs, ProgramTags],
+  collections: [Users, Media, News, Programs],
   globals: [TopPage, EventsPage, SponsorsPage, WeatherSettings],
   editor: lexicalEditor(),
   secret: env.PAYLOAD_SECRET,

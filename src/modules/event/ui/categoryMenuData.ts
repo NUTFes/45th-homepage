@@ -1,3 +1,11 @@
+import {
+  PROGRAM_TAG_LABELS,
+  type FestivalDay,
+  type ProgramArea,
+  type ProgramCategory,
+  type ProgramTagValue,
+} from "@/lib/events/constants";
+
 const ICON_BASE_PATH = "/image/event/category";
 
 const categoryIcons = {
@@ -13,11 +21,31 @@ const categoryIcons = {
 
 type CategoryIcon = keyof typeof categoryIcons;
 
-type CategoryMenuItem = {
+export type CategoryFilterMatch =
+  | { type: "category"; value: ProgramCategory }
+  | { type: "area"; value: ProgramArea }
+  | { type: "day"; value: FestivalDay }
+  | { type: "programTag"; value: ProgramTagValue };
+
+export type CategoryFilterDefinition = {
+  value: string;
   label: string;
+  match: CategoryFilterMatch;
 };
 
-export type CategoryMenuVariant = "event" | "program" | "exhibition" | "food" | "goods";
+export type CategoryMenuVariant =
+  | "event"
+  | "program"
+  | "exhibition"
+  | "food"
+  | "goods"
+  | "corporate";
+
+const programTagFilter = (value: ProgramTagValue): CategoryFilterDefinition => ({
+  value: `tag:${value}`,
+  label: PROGRAM_TAG_LABELS[value],
+  match: { type: "programTag", value },
+});
 
 const categoryIconByLabel: Partial<Record<string, CategoryIcon>> = {
   食販: "food",
@@ -37,51 +65,60 @@ export function getCategoryIconSrc(label: string) {
 
 export const categoryMenuItems = {
   event: [
-    { label: "食販" },
-    { label: "物販" },
-    { label: "体験・遊ぶ" },
-    { label: "見る・聞く" },
-    { label: "展示・学ぶ" },
-    { label: "子ども向け" },
-    { label: "要予約" },
-    { label: "景品あり" },
-    { label: "１日目" },
-    { label: "２日目" },
+    { value: "category:food", label: "食販", match: { type: "category", value: "food" } },
+    { value: "category:goods", label: "物販", match: { type: "category", value: "goods" } },
+    programTagFilter("activity"),
+    programTagFilter("watch"),
+    programTagFilter("learning"),
+    programTagFilter("children"),
+    programTagFilter("reservation"),
+    programTagFilter("prize"),
+    { value: "day:day1", label: "１日目", match: { type: "day", value: "day1" } },
+    { value: "day:day2", label: "２日目", match: { type: "day", value: "day2" } },
   ],
   program: [
-    { label: "体験・遊ぶ" },
-    { label: "見る・聞く" },
-    { label: "子ども向け" },
-    { label: "景品あり" },
-    { label: "要予約" },
-    { label: "講義棟" },
-    { label: "ステージ" },
-    { label: "体育館" },
-    { label: "１日目" },
-    { label: "２日目" },
+    programTagFilter("activity"),
+    programTagFilter("watch"),
+    programTagFilter("children"),
+    programTagFilter("prize"),
+    programTagFilter("reservation"),
+    { value: "area:lecture", label: "講義棟", match: { type: "area", value: "lecture" } },
+    programTagFilter("stage"),
+    { value: "area:gym", label: "体育館", match: { type: "area", value: "gym" } },
+    { value: "day:day1", label: "１日目", match: { type: "day", value: "day1" } },
+    { value: "day:day2", label: "２日目", match: { type: "day", value: "day2" } },
   ],
   exhibition: [
-    { label: "体験・遊ぶ" },
-    { label: "見る・聞く" },
-    { label: "展示・学ぶ" },
-    { label: "子ども向け" },
-    { label: "講義棟" },
-    { label: "研究室" },
-    { label: "１日目" },
-    { label: "２日目" },
+    programTagFilter("activity"),
+    programTagFilter("watch"),
+    programTagFilter("learning"),
+    programTagFilter("children"),
+    { value: "area:lecture", label: "講義棟", match: { type: "area", value: "lecture" } },
+    programTagFilter("laboratory"),
+    { value: "day:day1", label: "１日目", match: { type: "day", value: "day1" } },
+    { value: "day:day2", label: "２日目", match: { type: "day", value: "day2" } },
   ],
   food: [
-    { label: "フード" },
-    { label: "スイーツ" },
-    { label: "ドリンク" },
-    { label: "国際グルメ" },
-    { label: "お酒あり" },
-    { label: "学生出店" },
-    { label: "企業出店" },
-    { label: "キッチンカー" },
+    programTagFilter("food"),
+    programTagFilter("sweets"),
+    programTagFilter("drink"),
+    programTagFilter("international-food"),
+    programTagFilter("alcohol"),
+    programTagFilter("student"),
+    programTagFilter("corporate"),
+    {
+      value: "area:kitchen-car",
+      label: "キッチンカー",
+      match: { type: "area", value: "kitchen_car" },
+    },
   ],
-  goods: [{ label: "体験あり" }, { label: "子ども向け" }, { label: "技大グッズ" }],
-} as const satisfies Record<CategoryMenuVariant, readonly CategoryMenuItem[]>;
+  goods: [
+    programTagFilter("with-activity"),
+    programTagFilter("children"),
+    programTagFilter("nagaoka-ut-goods"),
+  ],
+  corporate: [],
+} as const satisfies Record<CategoryMenuVariant, readonly CategoryFilterDefinition[]>;
 
 export const categoryMenuLabels = {
   event: "ゲスト・企画情報",
@@ -89,4 +126,5 @@ export const categoryMenuLabels = {
   exhibition: "展示・体験",
   food: "食販",
   goods: "物販",
+  corporate: "企業ブース",
 } as const satisfies Record<CategoryMenuVariant, string>;
