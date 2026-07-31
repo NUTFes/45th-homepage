@@ -153,18 +153,19 @@ mise run rm lodash
 ## データベース・マイグレーション
 
 `src/collections/` 以下のコレクション定義（DBスキーマ）を変更した場合、
-マイグレーションファイルを作成して Git にコミットする必要があります。
+DBスキーマのマイグレーションファイルを作成して Git にコミットする必要があります。
+ここでいうマイグレーションはPostgreSQLのスキーマ変更であり、CMS登録データの移行とは別です。
 
 ### 基本的な流れ
 
 ```
 コレクションを変更
     ↓
-マイグレーションファイルを作成
+DBスキーマのマイグレーションファイルを作成
     ↓
 生成されたファイルを Git にコミット
     ↓
-本番デプロイ中に専用サービスから明示適用
+本番デプロイ中に専用サービスでDBスキーママイグレーションを明示適用
 ```
 
 ### コマンド一覧
@@ -262,18 +263,18 @@ chore: vitest を追加
 
 ### 主要コマンド
 
-| コマンド                     | 用途                                   |
-| ---------------------------- | -------------------------------------- |
-| `mise run prod:deploy`       | 停止を伴う直列デプロイ                 |
-| `mise run prod:stop`         | PayloadとCloudflare Tunnelを停止       |
-| `mise run prod:backup`       | PostgreSQLとmediaを統合backup          |
-| `mise run prod:migrate`      | migrationを専用サービスで明示実行      |
-| `mise run prod:start-app`    | 単一Payloadを起動                      |
-| `mise run prod:start-tunnel` | Cloudflare Tunnelを起動                |
-| `mise run prod:ps`           | ステータス確認                         |
-| `mise run prod:logs`         | ログ監視                               |
-| `mise run prod:perf`         | 本番相当のDocker環境でLighthouseを実行 |
-| `mise run prod:perf:down`    | 性能試験用コンテナを停止して削除       |
+| コマンド                     | 用途                                               |
+| ---------------------------- | -------------------------------------------------- |
+| `mise run prod:deploy`       | 停止を伴う直列デプロイ                             |
+| `mise run prod:stop`         | PayloadとCloudflare Tunnelを停止                   |
+| `mise run prod:backup`       | PostgreSQLとmediaを統合backup                      |
+| `mise run prod:migrate`      | DBスキーママイグレーションを専用サービスで明示実行 |
+| `mise run prod:start-app`    | 単一Payloadを起動                                  |
+| `mise run prod:start-tunnel` | Cloudflare Tunnelを起動                            |
+| `mise run prod:ps`           | ステータス確認                                     |
+| `mise run prod:logs`         | ログ監視                                           |
+| `mise run prod:perf`         | 本番相当のDocker環境でLighthouseを実行             |
+| `mise run prod:perf:down`    | 性能試験用コンテナを停止して削除                   |
 
 ---
 

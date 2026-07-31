@@ -113,7 +113,7 @@ alias = "prod:backup"
 run = "scripts/prod/backup.sh"
 
 [tasks."94:prod:migrate"]
-description = "現在のrelease imageでPayload migrationを明示実行する"
+description = "現在のrelease imageでPayload DBスキーママイグレーションを明示実行する"
 alias = "prod:migrate"
 run = "docker compose --env-file .env.production --env-file .env.release -f compose.prod.yml --profile tools run --rm --no-deps payload-migrate"
 

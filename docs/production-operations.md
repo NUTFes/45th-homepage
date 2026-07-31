@@ -4,10 +4,12 @@
 
 ## 初期設定
 
+初回は空のPostgreSQLとSeaweedFSへDB schemaを作成し、管理画面からデータを登録します。既存releaseのbackupを前提とする`prod:deploy`は使用しません。
+
 1. `.env.production.example` を `.env.production` にコピーし、秘密情報を設定する。
-2. `.env.release.example` を `.env.release` にコピーし、現在使うcommit SHA付きimageを設定する。新規構築時は現在の`main`のSHAを使う。
+2. `.env.release.example` を `.env.release` にコピーし、現在の`main`のcommit SHA付きimageを設定する。
 3. Cloudflare DashboardのTunnelの「Published application route」で、転送先を `http://payload:3000` にする。Traefikなどを経由させない。
-4. Compose設定と基盤サービスを確認する。
+4. Compose設定を検証し、imageと空の基盤サービスを準備する。
 
 ```bash
 bash <<'EOF'
@@ -50,21 +52,52 @@ docker compose \
 EOF
 ```
 
-初回もmigration、Payload、Tunnelの順に起動し、起動後にログを確認します。
+DBスキーママイグレーションを適用し、Tunnelを起動せずPayloadだけを起動します。
 
 ```bash
 bash <<'EOF'
 set -euo pipefail
 mise run prod:migrate
 mise run prod:start-app
-mise run prod:start-tunnel
-mise run prod:logs
+mise run prod:ps
 EOF
 ```
 
-別端末またはブラウザから公開URLへアクセスし、Tunnel経由で応答することまで確認します。
+Payloadはホストの`127.0.0.1:3000`だけに公開されます。別端末から操作する場合はSSH port forwardingを開始し、`http://127.0.0.1:3000/admin`へアクセスします。
+
+```bash
+ssh -L 3000:127.0.0.1:3000 USER@PRODUCTION_HOST
+```
+
+初期管理者を作成し、画像、企画タグ、企画、企画ページ設定、お知らせ、トップページ、協賛企業ページ、天候設定の順に登録します。企画とお知らせは公開状態まで確認します。
+
+Tunnelを起動する前に、`prod:ps`でPayloadがhealthyであること、画像のuploadとthumbnail取得、主要ページでの画像表示を確認します。確認後、最初のbaseline backupを作成します。
+
+```bash
+bash <<'EOF'
+set -euo pipefail
+mise run prod:stop
+mise run prod:backup
+mise run prod:start-app
+mise run prod:ps
+EOF
+```
+
+最後にTunnelを起動します。
+
+```bash
+mise run prod:start-tunnel
+mise run prod:ps
+mise run prod:logs
+```
+
+ログ確認後に`Ctrl-C`で追跡を終了し、別端末またはブラウザから公開URLへアクセスしてTunnel経由で応答することを確認します。
+
+初回設定とbaseline backupが完了した後の更新だけ、次の通常デプロイを使用します。
 
 ## 通常デプロイ
+
+既存のPayload releaseが起動済みであることが前提です。初回構築では前節の手順を使用します。
 
 本番サーバーのコンソールで次だけを実行します。
 
@@ -82,26 +115,26 @@ mise run prod:deploy
 6. 新imageのPayloadを1コンテナだけ起動する
 7. strict health checkと直近100行のログを表示する
 8. 人が承認した場合だけ`.env.release`を一時ファイルから`mv`する
-9. `cloudflared`を起動し、状態とログを表示して、人が公開URLへの到達を確認する
+9. `cloudflared`を起動し、状態とログを表示して、人が公開URLへの到達を確認する。確認できなければTunnelを停止する
 
-途中で失敗すると、その場所を表示して終了します。旧imageの削除、rollback、DB復元、Tunnel再開は行いません。表示されたログを確認して手動で判断してください。
+既存のPayload releaseがない場合は初期設定を案内して開始しません。途中で失敗すると、その場所と現在の状態を表示して終了します。公開URLを確認できない場合は`cloudflared`を停止し、Payloadだけを稼働状態に保ちます。旧imageの削除、rollback、DB復元は行わないため、表示されたログを確認して手動で判断してください。
 
 ## miseタスク
 
-| タスク              | 内容                                   |
-| ------------------- | -------------------------------------- |
-| `prod:ps`           | サービス状態を表示                     |
-| `prod:logs`         | 本番ログを追跡                         |
-| `prod:stop`         | PayloadとTunnelを停止                  |
-| `prod:backup`       | 停止状態を確認してDBとmediaをbackup    |
-| `prod:migrate`      | `.env.release`のimageでmigrationを実行 |
-| `prod:start-app`    | `.env.release`のPayloadを1コンテナ起動 |
-| `prod:start-tunnel` | Tunnelを起動                           |
-| `prod:deploy`       | 上記の通常デプロイを実行               |
-| `prod:perf`         | 本番相当のLighthouse試験               |
-| `prod:perf:down`    | Lighthouse試験コンテナを削除           |
+| タスク              | 内容                                                    |
+| ------------------- | ------------------------------------------------------- |
+| `prod:ps`           | サービス状態を表示                                      |
+| `prod:logs`         | 本番ログを追跡                                          |
+| `prod:stop`         | PayloadとTunnelを停止                                   |
+| `prod:backup`       | 停止状態を確認してDBとmediaをbackup                     |
+| `prod:migrate`      | `.env.release`のimageでDBスキーママイグレーションを実行 |
+| `prod:start-app`    | `.env.release`のPayloadを1コンテナ起動                  |
+| `prod:start-tunnel` | Tunnelを起動                                            |
+| `prod:deploy`       | 上記の通常デプロイを実行                                |
+| `prod:perf`         | 本番相当のLighthouse試験                                |
+| `prod:perf:down`    | Lighthouse試験コンテナを削除                            |
 
-migrationだけを実行する生のコマンドは次のとおりです。
+DBスキーママイグレーションだけを実行する生のコマンドは次のとおりです。
 
 ```bash
 docker compose \
@@ -111,7 +144,7 @@ docker compose \
   --profile tools run --rm --no-deps payload-migrate
 ```
 
-`payload`と`payload-migrate`は同じ`PAYLOAD_IMAGE`を参照します。Payload起動時にmigrationは実行されません。
+`payload`と`payload-migrate`は同じ`PAYLOAD_IMAGE`を参照します。Payload起動時にDBスキーママイグレーションは実行されません。
 
 ## backupと復元
 
@@ -237,83 +270,3 @@ media uploadは既存objectを自動削除しません。完全な巻き戻し�
 記録後に`mise run prod:start-tunnel`と`mise run prod:ps`を実行し、`cloudflared`のログと公開URLを確認します。
 
 旧アプリと新schemaに互換性がない場合は、先に同じデプロイで作ったbackupからDBとmediaを復元します。
-
-## 初回SeaweedFS移行
-
-これは通常デプロイに混ぜません。旧master・volume・filer・S3 gatewayが稼働している状態から、保守時間を確保して1回だけ手動実施します。
-
-1. VM・CT snapshotを取得する。旧Composeを退避し、旧commitと使用imageを控える。
-2. 新しい`origin/main`へ更新し、ローカルの`main`と同じcommitであることを確認する。`prod:deploy`はまだ実行しない。
-3. 旧構成が稼働中のままCloudflare Dashboardの転送先を`http://payload:3000`へ変更し、公開URLへの到達を確認する。
-4. PayloadとTunnelを停止し、旧S3から統合backupを作る。
-5. 旧SeaweedFS、`pg-backup`、Traefikなどのサービスを停止する。旧volumeは削除しない。
-6. `seaweedfs-mini-data`という名前を含むvolumeが存在しないことを確認する。存在する場合は削除せず、内容と作成理由を確認する。
-7. 新しい`weed mini`を起動し、backupのmediaをS3 API経由でuploadする。
-8. object keyと容量の一覧を比較する。
-9. 通常デプロイを行い、`cloudflared`のログと公開URLを確認する。CMSのmediaレコードは再登録しない。
-
-```bash
-(
-  set -euo pipefail
-
-  # 旧構成の稼働中
-  old_commit="$(git rev-parse HEAD)"
-  cp compose.prod.yml /tmp/compose.prod.legacy.yml
-  old_payload_id="$(docker compose --env-file .env.production -f compose.prod.yml ps -aq payload)"
-  old_image="$(docker inspect --format '{{.Config.Image}}' "$old_payload_id")"
-  release_temp="$(mktemp ./.env.release.XXXXXX)"
-  printf 'PAYLOAD_IMAGE=%s\n' "$old_image" >"$release_temp"
-  mv "$release_temp" .env.release
-
-  git pull --ff-only origin main
-  new_commit="$(git rev-parse HEAD)"
-  origin_main_commit="$(git rev-parse origin/main)"
-  if [[ "$new_commit" != "$origin_main_commit" ]]; then
-    echo "Local main does not match origin/main; inspect unpublished commits before migration" >&2
-    exit 1
-  fi
-
-  printf "Cloudflare originをhttp://payload:3000へ変更し、公開URLを確認しましたか? [y/N] "
-  read -r answer
-  if [[ "$answer" != "y" && "$answer" != "Y" ]]; then
-    echo "Cloudflare originの切り替えを確認してから再実行してください" >&2
-    exit 1
-  fi
-  mise run prod:stop
-  BACKUP_COMMIT_SHA="$old_commit" mise run prod:backup
-  # 表示された backups/<timestamp> を以降の backup に設定
-  backup=backups/<timestamp>
-
-  node scripts/prod/media-inventory.mjs directory \
-    "$backup/media" backups/seaweedfs-old.json
-
-  docker compose \
-    --project-directory "$PWD" \
-    --env-file .env.production \
-    -f /tmp/compose.prod.legacy.yml \
-    stop \
-    pg-backup \
-    seaweedfs-s3 seaweedfs-filer seaweedfs-volume seaweedfs-master \
-    traefik dozzle-agent
-
-  existing_volumes="$(docker volume ls --format '{{.Name}}')"
-  if grep -q seaweedfs-mini-data <<<"$existing_volumes"; then
-    echo "seaweedfs-mini-data already exists; inspect it and stop here" >&2
-    exit 1
-  fi
-  docker compose \
-    --env-file .env.production \
-    --env-file .env.release \
-    -f compose.prod.yml up -d --no-deps --wait seaweedfs-s3
-
-  scripts/prod/media-tool.sh upload "$backup/media"
-  scripts/prod/media-tool.sh inventory backups/seaweedfs-new.json
-  node scripts/prod/media-inventory.mjs compare \
-    backups/seaweedfs-old.json backups/seaweedfs-new.json
-
-  # 旧image tagがcommit SHAでなかった最初の1回だけoverrideする
-  BACKUP_COMMIT_SHA="$old_commit" mise run prod:deploy
-)
-```
-
-確認期間が終わるまで旧SeaweedFS volume、退避したCompose、VM・CT snapshotを保持します。削除はこの手順の対象外です。

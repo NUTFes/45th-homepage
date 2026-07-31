@@ -52,11 +52,7 @@ fi
 payload_image="$(docker inspect --format '{{.Config.Image}}' "$payload_id")"
 commit_sha="${payload_image##*:}"
 if [[ ! "$commit_sha" =~ ^[0-9a-f]{40}$ ]]; then
-  commit_sha="${BACKUP_COMMIT_SHA:-}"
-fi
-if [[ ! "$commit_sha" =~ ^[0-9a-f]{40}$ ]]; then
   echo "Cannot determine a full commit SHA from image $payload_image" >&2
-  echo "For the one-time legacy backup, set BACKUP_COMMIT_SHA explicitly" >&2
   exit 1
 fi
 

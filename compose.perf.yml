@@ -8,6 +8,8 @@
 #   LIGHTHOUSE_URLS="http://payload:3000/ http://payload:3000/news" mise run prod:perf
 # ============================================================
 
+name: 45th-homepage-perf
+
 services:
   postgres:
     image: postgres:18-alpine

@@ -34,6 +34,12 @@ compose=(
   -f compose.prod.yml
 )
 
+payload_id="$("${compose[@]}" ps -a -q payload)"
+if [[ -z "$payload_id" ]]; then
+  echo "No existing Payload release was found. Follow the initial production setup instead." >&2
+  exit 1
+fi
+
 echo "1/9 Updating main..."
 git pull --ff-only origin main
 commit_sha="$(git rev-parse HEAD)"
@@ -54,7 +60,7 @@ echo "3/9 Stopping the tunnel and Payload..."
 echo "4/9 Backing up PostgreSQL and media..."
 scripts/prod/backup.sh
 
-echo "5/9 Running migrations with $new_image..."
+echo "5/9 Running DB schema migrations with $new_image..."
 PAYLOAD_IMAGE="$new_image" "${compose[@]}" --profile tools run --rm --no-deps payload-migrate
 
 echo "6/9 Starting one Payload container..."
@@ -83,7 +89,8 @@ echo "9/9 Starting Cloudflare Tunnel..."
 printf "Confirm the public site is reachable through Cloudflare? [y/N] "
 read -r answer
 if [[ "$answer" != "y" && "$answer" != "Y" ]]; then
-  echo "Deploy is running, but public reachability was not confirmed. Inspect Cloudflare Tunnel." >&2
+  "${compose[@]}" stop cloudflared
+  echo "Public reachability was not confirmed. Cloudflare Tunnel was stopped; Payload remains running." >&2
   exit 1
 fi
 

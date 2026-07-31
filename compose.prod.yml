@@ -1,3 +1,5 @@
+name: 45th-homepage-prod
+
 services:
   postgres:
     image: postgres:18-alpine
@@ -62,6 +64,8 @@ services:
         NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:?NEXT_PUBLIC_SITE_URL is required}
     restart: unless-stopped
     stop_grace_period: 30s
+    ports:
+      - "127.0.0.1:3000:3000"
     env_file:
       - .env.production
     environment:
