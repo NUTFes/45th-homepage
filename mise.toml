@@ -128,7 +128,7 @@ alias = "prod:start-tunnel"
 run = "docker compose --env-file .env.production --env-file .env.release -f compose.prod.yml up -d --no-deps cloudflared"
 
 [tasks."97:prod:deploy"]
-description = "本番環境へ停止を伴う直列デプロイを行う"
+description = "checkout済みのmainを本番環境へ停止を伴って直列デプロイする"
 alias = "prod:deploy"
 run = "scripts/prod/deploy.sh"
 

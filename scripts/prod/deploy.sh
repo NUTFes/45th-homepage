@@ -40,12 +40,13 @@ if [[ -z "$payload_id" ]]; then
   exit 1
 fi
 
-echo "1/9 Updating main..."
-git pull --ff-only origin main
+echo "1/9 Fetching origin and verifying the checked-out main..."
+git fetch --prune origin
 commit_sha="$(git rev-parse HEAD)"
 origin_main_sha="$(git rev-parse origin/main)"
 if [[ "$commit_sha" != "$origin_main_sha" ]]; then
-  echo "Local main does not match origin/main; inspect unpublished commits before deploying" >&2
+  echo "Local main does not match origin/main." >&2
+  echo "Run 'git pull --ff-only origin main', review the update, then rerun this deploy." >&2
   exit 1
 fi
 new_image="45th-homepage:$commit_sha"
@@ -73,7 +74,10 @@ PAYLOAD_IMAGE="$new_image" "${compose[@]}" logs --tail 100 payload
 printf "Record this release and start Cloudflare Tunnel? [y/N] "
 read -r answer
 if [[ "$answer" != "y" && "$answer" != "Y" ]]; then
-  echo "Release was not recorded. Payload remains running and the tunnel remains stopped." >&2
+  PAYLOAD_IMAGE="$new_image" "${compose[@]}" stop payload
+  echo "Release was not recorded. Payload and Cloudflare Tunnel are stopped." >&2
+  echo "DB schema migrations may already have been applied." >&2
+  echo "Do not start the recorded old image without checking schema compatibility." >&2
   exit 1
 fi
 

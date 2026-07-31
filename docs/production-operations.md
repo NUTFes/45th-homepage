@@ -6,6 +6,9 @@
 
 初回は空のPostgreSQLとSeaweedFSへDB schemaを作成し、管理画面からデータを登録します。既存releaseのbackupを前提とする`prod:deploy`は使用しません。
 
+この手順は、旧Compose projectと旧`cloudflared`を含むservice・named volumeが削除され、新しい`45th-homepage-prod`のvolumeが存在しないことを確認済みであることを前提とします。
+削除対象は`docker compose ls`と`docker volume ls`で人が確認し、旧Tunnelを残したまま新しいTunnelを起動しません。
+
 1. `.env.production.example` を `.env.production` にコピーし、秘密情報を設定する。
 2. `.env.release.example` を `.env.release` にコピーし、現在の`main`のcommit SHA付きimageを設定する。
 3. Cloudflare DashboardのTunnelの「Published application route」で、転送先を `http://payload:3000` にする。Traefikなどを経由させない。
@@ -34,6 +37,7 @@ fi
 release_temp="$(mktemp ./.env.release.XXXXXX)"
 printf 'PAYLOAD_IMAGE=45th-homepage:%s\n' "$commit_sha" >"$release_temp"
 mv "$release_temp" .env.release
+chmod 600 .env.production .env.release
 
 docker compose \
   --env-file .env.production \
@@ -102,12 +106,13 @@ mise run prod:logs
 本番サーバーのコンソールで次だけを実行します。
 
 ```bash
+git pull --ff-only origin main
 mise run prod:deploy
 ```
 
 スクリプトは直列に以下を行います。
 
-1. `origin/main`を取得し、ローカルの`main`が同じcommitであることを確認する
+1. `origin`を取得し、checkout済みの`main`が`origin/main`と同じcommitであることを確認する
 2. `45th-homepage:<commit-sha>`をbuildする
 3. `cloudflared`、`payload`の順に停止する
 4. PostgreSQLとmediaを同じディレクトリへbackupする
@@ -117,7 +122,9 @@ mise run prod:deploy
 8. 人が承認した場合だけ`.env.release`を一時ファイルから`mv`する
 9. `cloudflared`を起動し、状態とログを表示して、人が公開URLへの到達を確認する。確認できなければTunnelを停止する
 
-既存のPayload releaseがない場合は初期設定を案内して開始しません。途中で失敗すると、その場所と現在の状態を表示して終了します。公開URLを確認できない場合は`cloudflared`を停止し、Payloadだけを稼働状態に保ちます。旧imageの削除、rollback、DB復元は行わないため、表示されたログを確認して手動で判断してください。
+既存のPayload releaseがない場合は初期設定を案内して開始しません。healthとログの確認を承認しなかった場合は、未記録の候補Payloadを停止し、Tunnelも停止した状態にします。この時点ではDBスキーママイグレーションが適用済みの可能性があるため、schema互換性を確認せず`.env.release`に記録された旧imageを起動しません。
+
+そのほかの途中失敗では、その場所と現在の状態を表示して終了します。公開URLを確認できない場合は`cloudflared`を停止し、記録済みのPayloadだけを稼働状態に保ちます。旧imageの削除、rollback、DB復元は行わないため、表示されたログを確認して手動で判断してください。
 
 ## miseタスク
 
@@ -270,3 +277,14 @@ media uploadは既存objectを自動削除しません。完全な巻き戻し�
 記録後に`mise run prod:start-tunnel`と`mise run prod:ps`を実行し、`cloudflared`のログと公開URLを確認します。
 
 旧アプリと新schemaに互換性がない場合は、先に同じデプロイで作ったbackupからDBとmediaを復元します。
+
+## Image保持
+
+公開確認後にDockerの使用量とimage一覧を確認します。
+
+```bash
+docker system df
+docker image ls 45th-homepage
+```
+
+現在のreleaseと直前のrollback候補を残し、それより古いimageは人が確認して削除します。自動pruneは行いません。
