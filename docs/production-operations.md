@@ -31,13 +31,13 @@ docker compose \
   -f compose.prod.yml up -d --wait postgres seaweedfs-s3
 ```
 
-初回もmigration、Payload、Tunnelの順に起動します。
+初回もmigration、Payload、Tunnelの順に起動し、起動後にログを確認します。
 
 ```bash
 mise run prod:migrate
 mise run prod:start-app
-mise run prod:logs
 mise run prod:start-tunnel
+mise run prod:logs
 ```
 
 ## 通常デプロイ
@@ -114,17 +114,21 @@ backups/<timestamp>/
 復元前に、対象ディレクトリを明示して再検証します。
 
 ```bash
-backup=backups/<timestamp>
-test -f "$backup/COMPLETE"
-(cd "$backup" && sha256sum --check SHA256SUMS)
-docker compose \
-  --env-file .env.production \
-  --env-file .env.release \
-  -f compose.prod.yml exec -T postgres pg_restore --list \
-  <"$backup/postgres.dump" >/dev/null
+(
+  set -euo pipefail
+
+  backup=backups/<timestamp>
+  test -f "$backup/COMPLETE"
+  (cd "$backup" && sha256sum --check SHA256SUMS)
+  docker compose \
+    --env-file .env.production \
+    --env-file .env.release \
+    -f compose.prod.yml exec -T postgres pg_restore --list \
+    <"$backup/postgres.dump" >/dev/null
+)
 ```
 
-復元は既存データを置換し得るため自動化していません。VM・CT snapshotを取得し、PayloadとTunnelを停止したうえで、できるだけ空のDBとbucketへ復元してください。
+復元は既存データを置換し得るため自動化していません。上の検証ブロックが成功した場合だけ、VM・CT snapshotを取得し、PayloadとTunnelを停止したうえで、できるだけ空のDBとbucketへ復元してください。
 
 ```bash
 docker compose \
@@ -177,49 +181,53 @@ mv "$release_temp" .env.release
 8. 通常デプロイを行う。CMSのmediaレコードは再登録しない。
 
 ```bash
-# 旧構成の稼働中
-old_commit="$(git rev-parse HEAD)"
-cp compose.prod.yml /tmp/compose.prod.legacy.yml
-old_payload_id="$(docker compose --env-file .env.production -f compose.prod.yml ps -aq payload)"
-old_image="$(docker inspect --format '{{.Config.Image}}' "$old_payload_id")"
-release_temp="$(mktemp ./.env.release.XXXXXX)"
-printf 'PAYLOAD_IMAGE=%s\n' "$old_image" >"$release_temp"
-mv "$release_temp" .env.release
+(
+  set -euo pipefail
 
-git pull --ff-only origin main
-mise run prod:stop
-BACKUP_COMMIT_SHA="$old_commit" mise run prod:backup
-# 表示された backups/<timestamp> を以降の backup に設定
-backup=backups/<timestamp>
+  # 旧構成の稼働中
+  old_commit="$(git rev-parse HEAD)"
+  cp compose.prod.yml /tmp/compose.prod.legacy.yml
+  old_payload_id="$(docker compose --env-file .env.production -f compose.prod.yml ps -aq payload)"
+  old_image="$(docker inspect --format '{{.Config.Image}}' "$old_payload_id")"
+  release_temp="$(mktemp ./.env.release.XXXXXX)"
+  printf 'PAYLOAD_IMAGE=%s\n' "$old_image" >"$release_temp"
+  mv "$release_temp" .env.release
 
-(cd "$backup/media" && find . -type f -printf '%P\t%s\n' | LC_ALL=C sort) \
-  >backups/seaweedfs-old.tsv
+  git pull --ff-only origin main
+  mise run prod:stop
+  BACKUP_COMMIT_SHA="$old_commit" mise run prod:backup
+  # 表示された backups/<timestamp> を以降の backup に設定
+  backup=backups/<timestamp>
 
-docker compose \
-  --project-directory "$PWD" \
-  --env-file .env.production \
-  -f /tmp/compose.prod.legacy.yml \
-  stop seaweedfs-s3 seaweedfs-filer seaweedfs-volume seaweedfs-master
+  node scripts/prod/media-inventory.mjs directory \
+    "$backup/media" backups/seaweedfs-old.json
 
-if docker volume ls --format '{{.Name}}' | grep -q seaweedfs-mini-data; then
-  echo "seaweedfs-mini-data already exists; inspect it and stop here" >&2
-  exit 1
-fi
-docker compose \
-  --env-file .env.production \
-  --env-file .env.release \
-  -f compose.prod.yml up -d --no-deps --wait seaweedfs-s3
+  docker compose \
+    --project-directory "$PWD" \
+    --env-file .env.production \
+    -f /tmp/compose.prod.legacy.yml \
+    stop \
+    seaweedfs-s3 seaweedfs-filer seaweedfs-volume seaweedfs-master \
+    traefik dozzle-agent
 
-scripts/prod/media-tool.sh upload "$backup/media"
-scripts/prod/media-tool.sh inventory backups/seaweedfs-new.tsv
+  existing_volumes="$(docker volume ls --format '{{.Name}}')"
+  if grep -q seaweedfs-mini-data <<<"$existing_volumes"; then
+    echo "seaweedfs-mini-data already exists; inspect it and stop here" >&2
+    exit 1
+  fi
+  docker compose \
+    --env-file .env.production \
+    --env-file .env.release \
+    -f compose.prod.yml up -d --no-deps --wait seaweedfs-s3
 
-diff -u backups/seaweedfs-old.tsv backups/seaweedfs-new.tsv
-wc -l backups/seaweedfs-old.tsv backups/seaweedfs-new.tsv
-awk -F '\t' '{ total += $2 } END { print total + 0 }' backups/seaweedfs-old.tsv
-awk -F '\t' '{ total += $2 } END { print total + 0 }' backups/seaweedfs-new.tsv
+  scripts/prod/media-tool.sh upload "$backup/media"
+  scripts/prod/media-tool.sh inventory backups/seaweedfs-new.json
+  node scripts/prod/media-inventory.mjs compare \
+    backups/seaweedfs-old.json backups/seaweedfs-new.json
 
-# 旧image tagがcommit SHAでなかった最初の1回だけoverrideする
-BACKUP_COMMIT_SHA="$old_commit" mise run prod:deploy
+  # 旧image tagがcommit SHAでなかった最初の1回だけoverrideする
+  BACKUP_COMMIT_SHA="$old_commit" mise run prod:deploy
+)
 ```
 
 確認期間が終わるまで旧SeaweedFS volume、退避したCompose、VM・CT snapshotを保持します。削除はこの手順の対象外です。

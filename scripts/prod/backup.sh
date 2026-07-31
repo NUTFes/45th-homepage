@@ -73,20 +73,19 @@ echo "Creating PostgreSQL dump..."
   >"$backup_dir/postgres.dump"
 "${compose[@]}" exec -T postgres pg_restore --list <"$backup_dir/postgres.dump" >/dev/null
 
-source_inventory="$backup_dir/.source-media.tsv"
-local_inventory="$backup_dir/.local-media.tsv"
+source_inventory="$backup_dir/.source-media.json"
+local_inventory="$backup_dir/.local-media.json"
 
 echo "Downloading media through the S3 API..."
 scripts/prod/media-tool.sh inventory "$source_inventory"
 scripts/prod/media-tool.sh download "$backup_dir/media"
-(
-  cd "$backup_dir/media"
-  find . -type f -printf '%P\t%s\n' | LC_ALL=C sort
-) >"$local_inventory"
-diff -u "$source_inventory" "$local_inventory"
-
-media_objects="$(wc -l <"$source_inventory" | tr -d ' ')"
-media_bytes="$(awk -F '\t' '{ total += $2 } END { print total + 0 }' "$source_inventory")"
+node scripts/prod/media-inventory.mjs directory \
+  "$backup_dir/media" "$local_inventory"
+inventory_stats="$(
+  node scripts/prod/media-inventory.mjs compare \
+    "$source_inventory" "$local_inventory"
+)"
+IFS=$'\t' read -r media_objects media_bytes <<<"$inventory_stats"
 rm "$source_inventory" "$local_inventory"
 
 cat >"$backup_dir/manifest.env" <<EOF
@@ -99,7 +98,11 @@ EOF
 
 (
   cd "$backup_dir"
-  find . -type f ! -name "SHA256SUMS*" ! -name COMPLETE -print0 |
+  find . -type f \
+    ! -path "./SHA256SUMS" \
+    ! -path "./SHA256SUMS.tmp" \
+    ! -path "./COMPLETE" \
+    -print0 |
     LC_ALL=C sort -z |
     xargs -0 sha256sum >SHA256SUMS.tmp
   mv SHA256SUMS.tmp SHA256SUMS
