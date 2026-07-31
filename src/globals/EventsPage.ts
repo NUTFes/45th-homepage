@@ -292,8 +292,8 @@ const reconcilePublishedProgramsBeforeChange: GlobalBeforeChangeHook = async ({
 const categoryArrayField = (category: (typeof PROGRAM_CATEGORIES)[number]) => ({
   name: PROGRAM_CATEGORY_ITEM_FIELDS[category.value],
   label: {
-    ja: `${category.label}の表示順`,
-    en: `${category.value} Program Order`,
+    ja: `${category.label}の公開企画表示順`,
+    en: "Published Program Display Order",
   },
   labels: {
     singular: {
@@ -307,13 +307,12 @@ const categoryArrayField = (category: (typeof PROGRAM_CATEGORIES)[number]) => ({
   },
   type: "array" as const,
   admin: {
-    initCollapsed: true,
     components: {
-      RowLabel: "/components/admin/ProgramOrderRowLabel#ProgramOrderRowLabel",
+      Field: "/components/admin/ProgramOrderField#ProgramOrderField",
     },
     description: {
-      ja: `行をドラッグして${category.label}カテゴリの表示順を変更します。公開中の企画は行を削除しても保存時に末尾へ戻ります。非公開にする場合は「企画」メニューで操作してください。`,
-      en: `Drag rows to configure display order for ${category.value} programs. Missing published programs are restored on save.`,
+      ja: `公開中の${category.label}企画を、サイトに表示したい順へドラッグしてください。企画の追加・編集・公開・非公開は「企画」メニューで操作します。`,
+      en: "Drag these published programs into their site display order. Add, edit, publish, or unpublish programs from the Programs menu.",
     },
   },
   fields: [
@@ -369,8 +368,8 @@ export const EventsPage: GlobalConfig = {
       en: "Site Settings",
     },
     description: {
-      ja: "ゲストの整理券配布情報と企画の表示順を管理します。行を追加・削除しても企画自体は作成・削除されません。企画の追加や非公開化は「企画」メニューで行ってください。天候切り替えは「天候設定」で操作します。",
-      en: "Configure guest ticket information and program display order. Manage program publication from the Programs menu.",
+      ja: "ゲストの整理券配布情報と、公開中企画のカテゴリ内表示順を管理します。企画の追加・編集・公開・非公開は「企画」メニュー、天候の切り替えは「天候設定」で操作してください。",
+      en: "Configure guest ticket information and per-category display order for published programs. Manage program content and publication from the Programs menu.",
     },
   },
   hooks: {

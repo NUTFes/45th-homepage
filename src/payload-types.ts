@@ -226,7 +226,7 @@ export interface News {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * Manage program information used on event pages and timetables.
+ * Manage program information used on event list and detail pages. Publish or unpublish each program to control its site visibility.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "programs".
@@ -617,7 +617,7 @@ export interface TopPage {
   createdAt?: string | null;
 }
 /**
- * Configure guest ticket information and program display order. Manage program publication from the Programs menu.
+ * Configure guest ticket information and per-category display order for published programs. Manage program content and publication from the Programs menu.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "events-page".
@@ -634,7 +634,7 @@ export interface EventsPage {
     statusText?: string | null;
   };
   /**
-   * Drag rows to configure display order for program programs. Missing published programs are restored on save.
+   * Drag these published programs into their site display order. Add, edit, publish, or unpublish programs from the Programs menu.
    */
   programItems?:
     | {
@@ -647,7 +647,7 @@ export interface EventsPage {
       }[]
     | null;
   /**
-   * Drag rows to configure display order for exhibition programs. Missing published programs are restored on save.
+   * Drag these published programs into their site display order. Add, edit, publish, or unpublish programs from the Programs menu.
    */
   exhibitionItems?:
     | {
@@ -660,7 +660,7 @@ export interface EventsPage {
       }[]
     | null;
   /**
-   * Drag rows to configure display order for food programs. Missing published programs are restored on save.
+   * Drag these published programs into their site display order. Add, edit, publish, or unpublish programs from the Programs menu.
    */
   foodItems?:
     | {
@@ -673,7 +673,7 @@ export interface EventsPage {
       }[]
     | null;
   /**
-   * Drag rows to configure display order for goods programs. Missing published programs are restored on save.
+   * Drag these published programs into their site display order. Add, edit, publish, or unpublish programs from the Programs menu.
    */
   goodsItems?:
     | {
@@ -686,7 +686,7 @@ export interface EventsPage {
       }[]
     | null;
   /**
-   * Drag rows to configure display order for corporate programs. Missing published programs are restored on save.
+   * Drag these published programs into their site display order. Add, edit, publish, or unpublish programs from the Programs menu.
    */
   corporateItems?:
     | {

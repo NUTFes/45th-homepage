@@ -30,7 +30,7 @@ const headerNavItems: HeaderNavItem[] = [
       { label: "企業ブース", href: "/event/programs/category/corporate" },
     ],
   },
-  { label: "スケジュール", href: "/schedule" },
+  { label: "スケジュール", href: "/schedule", disabled: true },
   { label: "マップ", href: "/map" },
   {
     label: "利用案内",

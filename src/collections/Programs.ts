@@ -79,8 +79,8 @@ export const Programs: CollectionConfig = {
       en: "Content",
     },
     description: {
-      ja: "企画一覧・企画詳細・タイムスケジュールで使用する企画情報を管理します。",
-      en: "Manage program information used on event pages and timetables.",
+      ja: "企画一覧・企画詳細で使用する企画情報を管理します。サイトへの表示・非表示は、各企画の公開・非公開で切り替えてください。",
+      en: "Manage program information used on event list and detail pages. Publish or unpublish each program to control its site visibility.",
     },
   },
   versions: {
