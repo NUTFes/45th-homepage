@@ -1,1 +1,0 @@
-const TEST_KAISOTAI_CHARS = "トムブラウンがやってくる！";
