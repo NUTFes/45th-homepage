@@ -31,7 +31,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: write
 
     services:
       postgres:
@@ -49,10 +48,27 @@ jobs:
           --health-retries 5
 
     steps:
+      - name: Resolve checkout ref
+        id: target
+        env:
+          DEFAULT_REF: ${{ github.sha }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+        run: |
+          if [[ -z "$PR_NUMBER" ]]; then
+            ref="$DEFAULT_REF"
+          elif [[ "$PR_NUMBER" =~ ^[1-9][0-9]*$ ]]; then
+            ref="refs/pull/$PR_NUMBER/merge"
+          else
+            echo "pr_number must be a positive integer" >&2
+            exit 1
+          fi
+          printf 'ref=%s\n' "$ref" >> "$GITHUB_OUTPUT"
+
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: ${{ inputs.pr_number != '' && format('refs/pull/{0}/merge', inputs.pr_number) || github.sha }}
+          ref: ${{ steps.target.outputs.ref }}
+          persist-credentials: false
 
       - name: Setup pnpm
         uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271
@@ -83,74 +99,158 @@ jobs:
           uploadArtifacts: true
           temporaryPublicStorage: true
 
+      - name: Upload Lighthouse comment data
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: lighthouse-comment-data
+          path: |
+            .lighthouseci/links.json
+            .lighthouseci/manifest.json
+          if-no-files-found: ignore
+          retention-days: 1
+
+  comment:
+    name: Comment Lighthouse results
+    runs-on: ubuntu-latest
+    needs: lighthouse
+    if: ${{ always() && inputs.pr_number != '' }}
+    permissions:
+      actions: read
+      pull-requests: write
+
+    steps:
+      - name: Download Lighthouse comment data
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        continue-on-error: true
+        with:
+          name: lighthouse-comment-data
+          path: ${{ runner.temp }}/lighthouse-comment-data
+
       - name: Comment on PR
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
-        if: ${{ always() && inputs.pr_number != '' }}
         env:
-          LINKS_JSON: ${{ steps.lhci.outputs.links }}
           PR_NUMBER: ${{ inputs.pr_number }}
-          RESULTS_PATH: ${{ steps.lhci.outputs.resultsPath }}
+          RESULTS_PATH: ${{ runner.temp }}/lighthouse-comment-data
         with:
           script: |
             const fs = require('fs');
             const path = require('path');
-            const links = JSON.parse(process.env.LINKS_JSON || '{}');
-            const issueNumber = Number(process.env.PR_NUMBER);
+            const prNumber = process.env.PR_NUMBER;
             const resultsPath = process.env.RESULTS_PATH;
 
-            if (!Number.isInteger(issueNumber) || issueNumber < 1) {
+            if (!/^[1-9][0-9]*$/.test(prNumber)) {
               throw new Error('pr_number must be a positive integer');
             }
 
-            let comment = '## ⚡️ Lighthouse CI Results\n\n';
+            const issueNumber = Number(prNumber);
+            if (!Number.isSafeInteger(issueNumber)) {
+              throw new Error('pr_number exceeds the safe integer range');
+            }
+
+            const marker = '## ⚡️ Lighthouse CI Results';
+            let comment = `${marker}\n\n`;
 
             try {
-              const manifestStr = fs.readFileSync(path.join(resultsPath, 'manifest.json'), 'utf8');
-              const manifest = JSON.parse(manifestStr);
-              
+              const readJson = (fileName) => {
+                const filePath = path.join(resultsPath, fileName);
+                const stat = fs.lstatSync(filePath);
+
+                if (!stat.isFile() || stat.size > 1024 * 1024) {
+                  throw new Error(`Invalid ${fileName}`);
+                }
+
+                return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+              };
+
+              const links = readJson('links.json');
+              const manifest = readJson('manifest.json');
+
+              if (!Array.isArray(manifest) || !links || typeof links !== 'object' || Array.isArray(links)) {
+                throw new Error('Invalid Lighthouse result schema');
+              }
+
+              const asHttpUrl = (value) => {
+                if (typeof value !== 'string' || value.length > 2048) return null;
+
+                try {
+                  const url = new URL(value);
+                  return url.protocol === 'http:' || url.protocol === 'https:' ? url.href : null;
+                } catch {
+                  return null;
+                }
+              };
+
+              const escapeTableCell = (value) =>
+                value.replaceAll('\\', '\\\\').replaceAll('|', '\\|').replace(/[\r\n]+/g, ' ');
+
+              const fmt = (score) => {
+                if (typeof score !== 'number' || !Number.isFinite(score) || score < 0 || score > 1) {
+                  return '-';
+                }
+
+                const val = Math.round(score * 100);
+                let icon = '🟢';
+                if (val < 90) icon = '🟠';
+                if (val < 50) icon = '🔴';
+                return `${icon} ${val}`;
+              };
+
+              const rows = manifest
+                .filter((result) => result && typeof result === 'object' && result.isRepresentativeRun === true)
+                .slice(0, 50)
+                .map((result) => {
+                  const url = asHttpUrl(result.url);
+                  if (!url) return null;
+
+                  const link = asHttpUrl(links[result.url]);
+                  const summary =
+                    result.summary && typeof result.summary === 'object' && !Array.isArray(result.summary)
+                      ? result.summary
+                      : {};
+                  const report = link ? `[View Report](<${link}>)` : '-';
+
+                  return `| ${escapeTableCell(url)} | ${fmt(summary.performance)} | ${fmt(summary.accessibility)} | ${fmt(summary['best-practices'])} | ${fmt(summary.seo)} | ${report} |`;
+                })
+                .filter(Boolean);
+
+              if (rows.length === 0) {
+                throw new Error('No representative Lighthouse results');
+              }
+
               comment += '| URL | Performance | Accessibility | Best Practices | SEO | Report |\n';
               comment += '| --- | --- | --- | --- | --- | --- |\n';
-              
-              manifest.filter(res => res.isRepresentativeRun).forEach(res => {
-                const url = res.url;
-                const link = links[url] || '#';
-                const s = res.summary || {};
-                
-                const fmt = (score) => {
-                  if (score === undefined) return '-';
-                  const val = Math.round(score * 100);
-                  let icon = '🟢';
-                  if (val < 90) icon = '🟠';
-                  if (val < 50) icon = '🔴';
-                  return `${icon} ${val}`;
-                };
-                
-                comment += `| ${url} | ${fmt(s.performance)} | ${fmt(s.accessibility)} | ${fmt(s['best-practices'])} | ${fmt(s.seo)} | [View Report](${link}) |\n`;
-              });
+              comment += `${rows.join('\n')}\n`;
             } catch (error) {
               comment += '⚠️ Could not parse Lighthouse results.\n';
               console.error(error);
             }
 
-            const { data: comments } = await github.rest.issues.listComments({
+            const comments = await github.paginate(github.rest.issues.listComments, {
               issue_number: issueNumber,
               owner: context.repo.owner,
               repo: context.repo.repo,
+              per_page: 100,
             });
-            const botComment = comments.find(c => c.user.type === 'Bot' && c.body.includes('## ⚡️ Lighthouse CI Results'));
+            const botComment = comments.find(
+              (candidate) =>
+                candidate.user?.type === 'Bot' &&
+                typeof candidate.body === 'string' &&
+                candidate.body.includes(marker),
+            );
 
             if (botComment) {
               await github.rest.issues.updateComment({
                 comment_id: botComment.id,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: comment
+                body: comment,
               });
             } else {
               await github.rest.issues.createComment({
                 issue_number: issueNumber,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: comment
+                body: comment,
               });
             }
