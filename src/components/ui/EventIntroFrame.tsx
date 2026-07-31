@@ -7,10 +7,10 @@ export type EventIntroFrameProps = {
 };
 
 const CORNER_CLASS_NAMES = [
-  "top-0 left-0 border-t-[3.6] border-l-[3.6] md:top-0 md:left-0 md:border-t-[4.8] md:border-l-[4.8]", // 左上
-  "top-0 right-0 border-t-[3.6] border-r-[3.6] md:top-0 md:right-0 md:border-t-[4.8] md:border-r-[4.8]", // 右上
-  "bottom-0 left-0 border-b-[3.6] border-l-[3.6] md:bottom-0 md:left-0 md:border-b-[4.8] md:border-l-[4.8]", // 左下
-  "bottom-0 right-0 border-b-[3.6] border-r-[3.6] md:bottom-0 md:right-0 md:border-b-[4.8] md:border-r-[4.8]", // 右下
+  "top-0 left-0 border-t-[3.6px] border-l-[3.6px] md:top-0 md:left-0 md:border-t-[4.8px] md:border-l-[4.8px]", // 左上
+  "top-0 right-0 border-t-[3.6px] border-r-[3.6px] md:top-0 md:right-0 md:border-t-[4.8px] md:border-r-[4.8px]", // 右上
+  "bottom-0 left-0 border-b-[3.6px] border-l-[3.6px] md:bottom-0 md:left-0 md:border-b-[4.8px] md:border-l-[4.8px]", // 左下
+  "bottom-0 right-0 border-b-[3.6px] border-r-[3.6px] md:bottom-0 md:right-0 md:border-b-[4.8px] md:border-r-[4.8px]", // 右下
 ] as const;
 
 export default function EventIntroFrame({ title, body, headingLevel = 2 }: EventIntroFrameProps) {

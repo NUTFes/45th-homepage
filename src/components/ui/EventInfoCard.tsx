@@ -30,18 +30,24 @@ export default function EventInfoCard({ location, schedules, map }: EventInfoCar
             <h2 className="text-title-small text-font-main lg:text-Ptitle-small">日時</h2>
           </div>
           <div className="flex flex-col gap-1">
-            {schedules.map((schedule) => (
-              <div
-                key={schedule.startsAt}
-                className="flex flex-wrap gap-x-m gap-y-1 pl-ss text-text-large text-font-main lg:text-Ptext-large"
-              >
-                <time dateTime={schedule.startsAt}>{schedule.dateLabel}</time>
-                <span>
-                  <time dateTime={schedule.startsAt}>{schedule.startLabel}</time>~
-                  <time dateTime={schedule.endsAt}>{schedule.endLabel}</time>
-                </span>
-              </div>
-            ))}
+            {schedules.length > 0 ? (
+              schedules.map((schedule) => (
+                <div
+                  key={`${schedule.startsAt}-${schedule.endsAt}`}
+                  className="flex flex-wrap gap-x-m gap-y-1 pl-ss text-text-large text-font-main lg:text-Ptext-large"
+                >
+                  <time dateTime={schedule.startsAt}>{schedule.dateLabel}</time>
+                  <span>
+                    <time dateTime={schedule.startsAt}>{schedule.startLabel}</time>~
+                    <time dateTime={schedule.endsAt}>{schedule.endLabel}</time>
+                  </span>
+                </div>
+              ))
+            ) : (
+              <p className="pl-ss text-text text-font-main lg:text-Ptext-large">
+                開催日時は現在調整中です
+              </p>
+            )}
           </div>
         </section>
         <section className="flex flex-col gap-xs px-ll pb-m lg:gap-ss lg:pb-0 xl:px-0">

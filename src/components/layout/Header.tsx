@@ -16,21 +16,21 @@ type HeaderNavItem =
       disabled?: boolean;
     };
 
-// TODO: 各ページへのリンクを教えてもらう
 const headerNavItems: HeaderNavItem[] = [
   {
     label: "企画情報",
     items: [
+      { label: "すべてのイベント・販売", href: "/event" },
       { label: "ゲスト", href: "/event/guest" },
       { label: "コラボ", href: "/#", disabled: true },
-      { label: "企画", href: "/event/programs", disabled: true },
-      { label: "展示・体験", href: "/#", disabled: true },
-      { label: "食品販売", href: "/#", disabled: true },
-      { label: "物品販売", href: "/#", disabled: true },
-      { label: "企業ブース", href: "/#", disabled: true },
+      { label: "企画", href: "/event/programs/category/program" },
+      { label: "展示・体験", href: "/event/programs/category/exhibition" },
+      { label: "食品販売", href: "/event/programs/category/food" },
+      { label: "物品販売", href: "/event/programs/category/goods" },
+      { label: "企業ブース", href: "/event/programs/category/corporate" },
     ],
   },
-  { label: "スケジュール", href: "/schedule" },
+  { label: "スケジュール", href: "/schedule", disabled: true },
   { label: "マップ", href: "/map" },
   {
     label: "利用案内",

@@ -6,6 +6,7 @@
     "src/migrations",
     "node_modules",
     ".next",
+    "src/app/(frontend)/fonts/generated",
     "pnpm-lock.yaml",
     "skills-lock.json",
     ".agent",

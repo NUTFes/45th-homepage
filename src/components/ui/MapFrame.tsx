@@ -21,7 +21,13 @@ export default function MapFrame({ imageSrc, alt, title, type = "long" }: MapFra
         </div>
         <div className="relative flex aspect-4/3 items-center justify-center overflow-hidden border-2 border-main text-text-large">
           {imageSrc ? (
-            <Image src={imageSrc} alt={alt || ""} fill className="object-cover" />
+            <Image
+              src={imageSrc}
+              alt={alt || ""}
+              fill
+              sizes="(min-width: 1280px) 420px, (min-width: 768px) 40vw, 100vw"
+              className="object-cover"
+            />
           ) : (
             <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-base text-center text-main">
               <p className="font-kaisotai text-[24px]">MAP</p>

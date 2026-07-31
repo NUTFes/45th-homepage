@@ -3,10 +3,12 @@ import Image from "next/image";
 import EventInfoCard, { type EventInfoCardProps } from "@/components/ui/EventInfoCard";
 import EventIntroFrame from "@/components/ui/EventIntroFrame";
 import SectionTitle from "@/components/ui/SectionTitle";
+import TicketDistributionInfo from "@/components/ui/TicketDistributionInfo";
 import SponsorAdsBoundary from "@/modules/sponsors/ui/SponsorAdsBoundary";
 import GuestInformationSection from "@/modules/event/guest/ui/GuestInformationSection";
 import GuestProfileSection from "@/modules/event/guest/ui/GuestProfileSection";
 import type { GuestProfile } from "@/modules/event/guest/ui/GuestProfileCard";
+import type { GuestPageDTO } from "@/modules/events/types";
 
 const INTRODUCTION = {
   title: (
@@ -65,9 +67,14 @@ const MC_PROFILES: readonly GuestProfile[] = [
   },
 ];
 
-export default function GuestPageView() {
+type GuestPageViewProps = {
+  data: GuestPageDTO;
+};
+
+export default function GuestPageView({ data }: GuestPageViewProps) {
   return (
     <div className="relative min-h-dvh overflow-x-clip bg-base">
+      <TicketDistributionInfo statusText={data.ticketDistributionStatusText} />
       <Image
         src="/image/PageBack2.svg"
         alt=""
@@ -77,7 +84,7 @@ export default function GuestPageView() {
         className="pointer-events-none absolute top-171 left-xs z-0 hidden xl:block"
       />
 
-      <div className="relative z-10 mx-auto grid w-full max-w-[1320px] grid-cols-1 gap-y-4l pb-4l xl:grid-cols-[minmax(0,1fr)_minmax(320px,540px)] xl:gap-x-5l xl:pb-pm xl:pl-4l">
+      <div className="relative z-10 mx-auto grid w-full max-w-[1320px] grid-cols-1 gap-y-4l pb-4l md:pb-pm xl:grid-cols-[minmax(0,1fr)_minmax(320px,540px)] xl:gap-x-5l xl:pl-4l">
         <div className="relative isolate xl:col-start-1 xl:row-start-1 xl:pt-5l">
           <Image
             src="/image/PageBack1.svg"
