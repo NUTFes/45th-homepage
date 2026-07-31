@@ -2,10 +2,10 @@
 # Docker Compose — Production-like Lighthouse performance test
 # ============================================================
 # Run:
-#   docker compose --env-file .env.production -f compose.perf.yml up --build --abort-on-container-exit --exit-code-from lighthouse
+#   mise run prod:perf
 #
 # Optional:
-#   LIGHTHOUSE_URLS="http://payload:3000/ http://payload:3000/news" docker compose --env-file .env.production -f compose.perf.yml up --build --abort-on-container-exit --exit-code-from lighthouse
+#   LIGHTHOUSE_URLS="http://payload:3000/ http://payload:3000/news" mise run prod:perf
 # ============================================================
 
 services:

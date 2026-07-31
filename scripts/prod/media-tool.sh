@@ -66,6 +66,15 @@ case "$action" in
       echo "Media directory does not exist: $path" >&2
       exit 1
     }
+    backup_dir="${path%/media}"
+    [[ -f "$backup_dir/COMPLETE" ]] || {
+      echo "Backup is incomplete: $backup_dir/COMPLETE is missing" >&2
+      exit 1
+    }
+    (
+      cd "$backup_dir"
+      sha256sum --check SHA256SUMS
+    )
     "${compose[@]}" run --rm --no-deps media-tool \
       s3 sync "$container_path" "s3://$bucket" --only-show-errors
     ;;

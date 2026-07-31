@@ -37,6 +37,11 @@ compose=(
 echo "1/9 Updating main..."
 git pull --ff-only origin main
 commit_sha="$(git rev-parse HEAD)"
+origin_main_sha="$(git rev-parse origin/main)"
+if [[ "$commit_sha" != "$origin_main_sha" ]]; then
+  echo "Local main does not match origin/main; inspect unpublished commits before deploying" >&2
+  exit 1
+fi
 new_image="45th-homepage:$commit_sha"
 
 echo "2/9 Building $new_image..."
@@ -74,5 +79,12 @@ mv "$release_temp" .env.release
 echo "9/9 Starting Cloudflare Tunnel..."
 "${compose[@]}" up --detach --no-deps cloudflared
 "${compose[@]}" ps payload cloudflared
+"${compose[@]}" logs --tail 50 cloudflared
+printf "Confirm the public site is reachable through Cloudflare? [y/N] "
+read -r answer
+if [[ "$answer" != "y" && "$answer" != "Y" ]]; then
+  echo "Deploy is running, but public reachability was not confirmed. Inspect Cloudflare Tunnel." >&2
+  exit 1
+fi
 
 echo "Deploy complete: $new_image"

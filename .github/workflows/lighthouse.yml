@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       pr_number:
-        description: "結果をコメントするPR番号（省略時はコメントしない）"
+        description: "測定対象および結果をコメントするPR番号（省略時は選択したrefを測定）"
         required: false
         type: string
 
@@ -51,6 +51,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ inputs.pr_number != '' && format('refs/pull/{0}/merge', inputs.pr_number) || github.sha }}
 
       - name: Setup pnpm
         uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271

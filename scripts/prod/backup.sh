@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+umask 077
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$repo_root"
@@ -62,8 +63,9 @@ fi
 timestamp="$(date +%Y%m%dT%H%M%S%z)"
 backup_dir="backups/$timestamp"
 mkdir -p backups
-mkdir "$backup_dir"
-mkdir "$backup_dir/media"
+chmod 700 backups
+mkdir -m 700 "$backup_dir"
+mkdir -m 700 "$backup_dir/media"
 
 echo "Creating PostgreSQL dump..."
 # The variables are expanded by sh inside the PostgreSQL container.
