@@ -23,7 +23,7 @@ const headerNavItems: HeaderNavItem[] = [
       { label: "すべてのイベント・販売", href: "/event" },
       { label: "ゲスト", href: "/event/guest" },
       { label: "コラボ", href: "/#", disabled: true },
-      { label: "企画", href: "/event/programs" },
+      { label: "企画", href: "/event/programs/category/program" },
       { label: "展示・体験", href: "/event/programs/category/exhibition" },
       { label: "食品販売", href: "/event/programs/category/food" },
       { label: "物品販売", href: "/event/programs/category/goods" },

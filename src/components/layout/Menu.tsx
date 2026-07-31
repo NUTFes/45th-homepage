@@ -62,7 +62,7 @@ const menuItems: MenuItem[] = [
       },
       {
         label: "企画",
-        href: "/event/programs",
+        href: "/event/programs/category/program",
       },
       {
         label: "展示・体験",
