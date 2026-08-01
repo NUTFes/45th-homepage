@@ -113,9 +113,58 @@ alias = "prod:backup"
 run = "scripts/prod/backup.sh"
 
 [tasks."94:prod:migrate"]
-description = "現在のrelease imageでPayload DBスキーママイグレーションを明示実行する"
+description = "停止中の本番環境へPayload DBスキーママイグレーションを明示実行する"
 alias = "prod:migrate"
-run = "docker compose --env-file .env.production --env-file .env.release -f compose.prod.yml --profile tools run --rm --no-deps payload-migrate"
+run = '''
+#!/usr/bin/env bash
+set -euo pipefail
+
+compose=(docker compose --env-file .env.production --env-file .env.release -f compose.prod.yml)
+
+inspect_value() {
+  local field="$1"
+  local object="$2"
+  docker inspect "$object" |
+    INSPECT_FIELD="$field" node -e '
+      const fs = require("node:fs");
+      const [document] = JSON.parse(fs.readFileSync(0, "utf8"));
+      const value = process.env.INSPECT_FIELD
+        .split(".")
+        .reduce((current, key) => current?.[key], document);
+      if (typeof value !== "string" || value.length === 0) process.exit(1);
+      process.stdout.write(value);
+    '
+}
+
+for service in payload cloudflared; do
+  container_id="$("${compose[@]}" ps -a -q "$service")"
+  if [[ -z "$container_id" ]]; then
+    continue
+  fi
+
+  state="$(inspect_value State.Status "$container_id")"
+  if [[ "$state" != "exited" && "$state" != "created" ]]; then
+    echo "Stop payload and cloudflared before migration: mise run prod:stop" >&2
+    exit 1
+  fi
+done
+
+for service in postgres seaweedfs-s3; do
+  container_id="$("${compose[@]}" ps --status running -q "$service")"
+  if [[ -z "$container_id" ]]; then
+    echo "$service must already be running" >&2
+    exit 1
+  fi
+
+  health="$(inspect_value State.Health.Status "$container_id")"
+  if [[ "$health" != "healthy" ]]; then
+    echo "$service is not healthy: $health" >&2
+    exit 1
+  fi
+done
+
+"${compose[@]}" --profile tools run --rm --no-deps payload-migrate
+'''
 
 [tasks."95:prod:start-app"]
 description = "現在のrelease imageで単一のPayloadを起動する"
@@ -123,9 +172,62 @@ alias = "prod:start-app"
 run = "docker compose --env-file .env.production --env-file .env.release -f compose.prod.yml up -d --no-deps --wait --wait-timeout 120 payload"
 
 [tasks."96:prod:start-tunnel"]
-description = "Cloudflare Tunnelを起動する"
+description = "記録済みのhealthyなPayloadに対してTunnelを起動する"
 alias = "prod:start-tunnel"
-run = "docker compose --env-file .env.production --env-file .env.release -f compose.prod.yml up -d --no-deps cloudflared"
+run = '''
+#!/usr/bin/env bash
+set -euo pipefail
+
+compose=(docker compose --env-file .env.production --env-file .env.release -f compose.prod.yml)
+
+inspect_value() {
+  local field="$1"
+  local object="$2"
+  docker inspect "$object" |
+    INSPECT_FIELD="$field" node -e '
+      const fs = require("node:fs");
+      const [document] = JSON.parse(fs.readFileSync(0, "utf8"));
+      const value = process.env.INSPECT_FIELD
+        .split(".")
+        .reduce((current, key) => current?.[key], document);
+      if (typeof value !== "string" || value.length === 0) process.exit(1);
+      process.stdout.write(value);
+    '
+}
+payload_id="$("${compose[@]}" ps --status running -q payload)"
+if [[ -z "$payload_id" ]]; then
+  echo "The recorded Payload release must already be running" >&2
+  exit 1
+fi
+
+health="$(inspect_value State.Health.Status "$payload_id")"
+if [[ "$health" != "healthy" ]]; then
+  echo "Payload is not healthy: $health" >&2
+  exit 1
+fi
+
+recorded_image="$(
+  "${compose[@]}" config --format json --no-env-resolution |
+    node -e '
+      const fs = require("node:fs");
+      const config = JSON.parse(fs.readFileSync(0, "utf8"));
+      process.stdout.write(config.services.payload.image ?? "");
+    '
+)"
+if [[ -z "$recorded_image" ]]; then
+  echo "Cannot resolve the recorded Payload image" >&2
+  exit 1
+fi
+
+recorded_image_id="$(inspect_value Id "$recorded_image")"
+running_image_id="$(inspect_value Image "$payload_id")"
+if [[ "$recorded_image_id" != "$running_image_id" ]]; then
+  echo "Running Payload does not match .env.release: $recorded_image" >&2
+  exit 1
+fi
+
+"${compose[@]}" up -d --no-deps cloudflared
+'''
 
 [tasks."97:prod:deploy"]
 description = "checkout済みのmainを本番環境へ停止を伴って直列デプロイする"

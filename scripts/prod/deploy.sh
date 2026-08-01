@@ -11,12 +11,31 @@ on_error() {
 }
 trap on_error ERR
 
+stop_candidate_on_interrupt() {
+  trap - HUP INT TERM
+  echo "Confirmation was interrupted. Stopping the unrecorded Payload candidate." >&2
+  PAYLOAD_IMAGE="$new_image" "${compose[@]}" stop payload || true
+  exit 130
+}
+
+stop_tunnel_on_interrupt() {
+  trap - HUP INT TERM
+  echo "Public confirmation was interrupted. Stopping Cloudflare Tunnel." >&2
+  "${compose[@]}" stop cloudflared || true
+  exit 130
+}
+
 for file in .env.production .env.release; do
   if [[ ! -f "$file" ]]; then
     echo "Required file is missing: $file" >&2
     exit 1
   fi
 done
+
+if [[ ! -t 0 || ! -t 1 ]]; then
+  echo "Production deploys require an interactive terminal for release approval" >&2
+  exit 1
+fi
 
 if [[ "$(git branch --show-current)" != "main" ]]; then
   echo "Production deploys must run from the main branch" >&2
@@ -72,14 +91,20 @@ echo "7/9 Review the strict health status and logs:"
 PAYLOAD_IMAGE="$new_image" "${compose[@]}" ps payload
 PAYLOAD_IMAGE="$new_image" "${compose[@]}" logs --tail 100 payload
 printf "Record this release and start Cloudflare Tunnel? [y/N] "
-read -r answer
+answer=""
+trap stop_candidate_on_interrupt HUP INT TERM
+if ! read -r answer; then
+  echo "Confirmation input closed; treating the release as rejected." >&2
+fi
 if [[ "$answer" != "y" && "$answer" != "Y" ]]; then
+  trap - HUP INT TERM
   PAYLOAD_IMAGE="$new_image" "${compose[@]}" stop payload
   echo "Release was not recorded. Payload and Cloudflare Tunnel are stopped." >&2
   echo "DB schema migrations may already have been applied." >&2
   echo "Do not start the recorded old image without checking schema compatibility." >&2
   exit 1
 fi
+trap - HUP INT TERM
 
 echo "8/9 Recording $new_image in .env.release..."
 release_temp="$(mktemp ./.env.release.XXXXXX)"
@@ -91,11 +116,17 @@ echo "9/9 Starting Cloudflare Tunnel..."
 "${compose[@]}" ps payload cloudflared
 "${compose[@]}" logs --tail 50 cloudflared
 printf "Confirm the public site is reachable through Cloudflare? [y/N] "
-read -r answer
+answer=""
+trap stop_tunnel_on_interrupt HUP INT TERM
+if ! read -r answer; then
+  echo "Confirmation input closed; treating public reachability as unconfirmed." >&2
+fi
 if [[ "$answer" != "y" && "$answer" != "Y" ]]; then
+  trap - HUP INT TERM
   "${compose[@]}" stop cloudflared
   echo "Public reachability was not confirmed. Cloudflare Tunnel was stopped; Payload remains running." >&2
   exit 1
 fi
+trap - HUP INT TERM
 
 echo "Deploy complete: $new_image"

@@ -71,7 +71,7 @@ echo "Creating PostgreSQL dump..."
   >"$backup_dir/postgres.dump"
 "${compose[@]}" exec -T postgres pg_restore --list <"$backup_dir/postgres.dump" >/dev/null
 
-source_inventory="$backup_dir/.source-media.json"
+source_inventory="$backup_dir/media-metadata.json"
 local_inventory="$backup_dir/.local-media.json"
 
 echo "Downloading media through the S3 API..."
@@ -84,7 +84,7 @@ inventory_stats="$(
     "$source_inventory" "$local_inventory"
 )"
 IFS=$'\t' read -r media_objects media_bytes <<<"$inventory_stats"
-rm "$source_inventory" "$local_inventory"
+rm "$local_inventory"
 
 cat >"$backup_dir/manifest.env" <<EOF
 CREATED_AT=$timestamp

@@ -2,6 +2,8 @@
 
 単一ホスト上で `postgres`、`seaweedfs-s3`、`payload`、`cloudflared` の4サービスだけを常駐させます。Payloadは常に1コンテナで、デプロイ中は数分の停止を許容します。自動rollbackは行いません。
 
+mediaは将来の外部S3への切り替えを想定し、PayloadからS3互換APIだけを使用します。現在は単一ホスト内の`weed mini`をその境界として維持し、SeaweedFS固有APIへ依存しません。
+
 ## 初期設定
 
 初回は空のPostgreSQLとSeaweedFSへDB schemaを作成し、管理画面からデータを登録します。既存releaseのbackupを前提とする`prod:deploy`は使用しません。
@@ -11,8 +13,9 @@
 
 1. `.env.production.example` を `.env.production` にコピーし、秘密情報を設定する。
 2. `.env.release.example` を `.env.release` にコピーし、現在の`main`のcommit SHA付きimageを設定する。
-3. Cloudflare DashboardのTunnelの「Published application route」で、転送先を `http://payload:3000` にする。Traefikなどを経由させない。
-4. Compose設定を検証し、imageと空の基盤サービスを準備する。
+3. Proxmoxで、Docker named volumeを含むVM・CT全体のbackup先、実行間隔、保持世代を設定する。
+4. Cloudflare DashboardのTunnelの「Published application route」で、転送先を `http://payload:3000` にする。Traefikなどを経由させない。
+5. Compose設定を検証し、imageと空の基盤サービスを準備する。
 
 ```bash
 bash <<'EOF'
@@ -87,6 +90,8 @@ mise run prod:ps
 EOF
 ```
 
+baseline backupの作成後にProxmox backupを1回実行し、成功したbackupから隔離環境へVM・CTを復元できることを確認します。この確認が終わるまでTunnelを起動しません。
+
 最後にTunnelを起動します。
 
 ```bash
@@ -105,6 +110,8 @@ mise run prod:logs
 
 本番サーバーのコンソールで次だけを実行します。
 
+`prod:deploy`はstdinとstdoutがterminalでない場合は開始しません。確認入力のEOFや`Ctrl-C`、SSH切断は承認として扱わず、確認段階に応じて未記録のPayloadまたはTunnelを停止します。
+
 ```bash
 git pull --ff-only origin main
 mise run prod:deploy
@@ -122,34 +129,26 @@ mise run prod:deploy
 8. 人が承認した場合だけ`.env.release`を一時ファイルから`mv`する
 9. `cloudflared`を起動し、状態とログを表示して、人が公開URLへの到達を確認する。確認できなければTunnelを停止する
 
-既存のPayload releaseがない場合は初期設定を案内して開始しません。healthとログの確認を承認しなかった場合は、未記録の候補Payloadを停止し、Tunnelも停止した状態にします。この時点ではDBスキーママイグレーションが適用済みの可能性があるため、schema互換性を確認せず`.env.release`に記録された旧imageを起動しません。
+既存のPayload releaseがない場合は初期設定を案内して開始しません。healthとログの確認を承認しなかった場合、または確認が中断された場合は、未記録の候補Payloadを停止し、Tunnelも停止した状態にします。この時点ではDBスキーママイグレーションが適用済みの可能性があるため、schema互換性を確認せず`.env.release`に記録された旧imageを起動しません。
 
 そのほかの途中失敗では、その場所と現在の状態を表示して終了します。公開URLを確認できない場合は`cloudflared`を停止し、記録済みのPayloadだけを稼働状態に保ちます。旧imageの削除、rollback、DB復元は行わないため、表示されたログを確認して手動で判断してください。
 
 ## miseタスク
 
-| タスク              | 内容                                                    |
-| ------------------- | ------------------------------------------------------- |
-| `prod:ps`           | サービス状態を表示                                      |
-| `prod:logs`         | 本番ログを追跡                                          |
-| `prod:stop`         | PayloadとTunnelを停止                                   |
-| `prod:backup`       | 停止状態を確認してDBとmediaをbackup                     |
-| `prod:migrate`      | `.env.release`のimageでDBスキーママイグレーションを実行 |
-| `prod:start-app`    | `.env.release`のPayloadを1コンテナ起動                  |
-| `prod:start-tunnel` | Tunnelを起動                                            |
-| `prod:deploy`       | 上記の通常デプロイを実行                                |
-| `prod:perf`         | 本番相当のLighthouse試験                                |
-| `prod:perf:down`    | Lighthouse試験コンテナを削除                            |
+| タスク              | 内容                                                           |
+| ------------------- | -------------------------------------------------------------- |
+| `prod:ps`           | サービス状態を表示                                             |
+| `prod:logs`         | 本番ログを追跡                                                 |
+| `prod:stop`         | PayloadとTunnelを停止                                          |
+| `prod:backup`       | 停止状態を確認してDBとmediaをbackup                            |
+| `prod:migrate`      | PayloadとTunnelの停止、DBとS3のhealthを確認してmigrationを実行 |
+| `prod:start-app`    | `.env.release`のPayloadを1コンテナ起動                         |
+| `prod:start-tunnel` | healthyな記録済みPayloadだけにTunnelを起動                     |
+| `prod:deploy`       | 上記の通常デプロイを実行                                       |
+| `prod:perf`         | 本番相当のLighthouse試験                                       |
+| `prod:perf:down`    | Lighthouse試験コンテナを削除                                   |
 
-DBスキーママイグレーションだけを実行する生のコマンドは次のとおりです。
-
-```bash
-docker compose \
-  --env-file .env.production \
-  --env-file .env.release \
-  -f compose.prod.yml \
-  --profile tools run --rm --no-deps payload-migrate
-```
+DBスキーママイグレーションは`prod:migrate`だけを使用します。このタスクはPayloadとTunnelが停止中で、PostgreSQLとSeaweedFSがhealthyな場合だけ、`.env.release`のimageからmigrationを実行します。tools serviceを直接実行してこの確認を迂回しません。
 
 `payload`と`payload-migrate`は同じ`PAYLOAD_IMAGE`を参照します。Payload起動時にDBスキーママイグレーションは実行されません。
 
@@ -157,9 +156,17 @@ docker compose \
 
 backupスクリプトはサービスを停止・起動しません。PayloadまたはTunnelが稼働中なら失敗します。
 
-このリポジトリではbackupの定期実行や世代削除を行いません。デプロイ時のbackupだけでは、最後のデプロイ以降の変更を失い得ます。必要なRPOに応じて、ホスト側でVM・CT snapshotまたは別ホストへのbackupを定期実行してください。
+定期的な災害復旧backupはProxmoxのVM・CT backupを正とし、Docker named volume上のPostgreSQLとSeaweedFSをVM・CTごと保存します。リポジトリのdeploy時backupは、migration直前の論理backupと将来の外部S3移行用exportであり、最後のdeploy以降の変更を保護しません。
 
-手動backupはDBとmediaの完全なcopyを毎回作ります。実行前に空き容量を確認し、復元確認済みの外部copyを確保してから、運用側で決めた保持世代を超えた古いディレクトリを手動で削除します。
+本番公開前に、Proxmox側で次を確定します。
+
+- backup先を本番ホストとは別のstorageにする
+- 必要なRPOを満たす実行間隔と保持世代を設定する
+- `45th-homepage-prod_pgdata`と`45th-homepage-prod_seaweedfs-mini-data`を格納するVM・CT diskが対象に含まれることを確認する
+- backup jobの失敗を運用者が確認できるようにする
+- 隔離環境へのVM・CT restore後にDB health、画像取得、主要ページを確認する
+
+手動の論理backupはDB dumpに加え、mediaのobject key、bytes、`Content-Type`を保存します。実行前に空き容量を確認し、Proxmox backupの成功を確認してから、運用側で決めた保持世代を超えた古いディレクトリを手動で削除します。
 
 ```bash
 df -h .
@@ -173,12 +180,13 @@ mise run prod:backup
 backups/<timestamp>/
 ├── postgres.dump
 ├── media/
+├── media-metadata.json
 ├── manifest.env
 ├── SHA256SUMS
 └── COMPLETE
 ```
 
-`postgres.dump`はcustom formatです。backup時にS3上とローカルのobject key・件数・容量、`pg_restore --list`、全ファイルのSHA-256を検証します。
+`postgres.dump`はcustom formatです。backup時にS3上とローカルのobject key・件数・容量・`Content-Type`、`pg_restore --list`、全ファイルのSHA-256を検証します。
 
 手動backupが成功したら、まずPayloadを起動して状態を確認します。
 
@@ -211,7 +219,7 @@ mise run prod:ps
 )
 ```
 
-復元は既存データを置換し得るため自動化していません。上の検証ブロックが成功した場合だけ、VM・CT snapshotを取得し、PayloadとTunnelを停止したうえで、できるだけ空のDBとbucketへ復元してください。
+ホストまたはDocker volumeの障害からの復旧には、Proxmox backupからVM・CT全体を復元します。次の論理復元はrelease単位のrollbackまたは外部S3への移行に使用します。既存データを置換し得るため自動化していません。検証ブロックが成功した場合だけ、追加のProxmox snapshotを取得し、PayloadとTunnelを停止したうえで、できるだけ空のDBとbucketへ復元してください。
 
 ```bash
 (
@@ -232,7 +240,7 @@ mise run prod:ps
 )
 ```
 
-media uploadは既存objectを自動削除しません。完全な巻き戻しには空のSeaweedFS volumeを使ってください。
+media uploadはmanifestに記録した`Content-Type`を設定し、upload後のkey・容量・`Content-Type`を検証します。既存objectは自動削除しないため、完全な巻き戻しには空のSeaweedFS volumeを使ってください。
 
 ## 手動rollback
 

@@ -263,18 +263,20 @@ chore: vitest を追加
 
 ### 主要コマンド
 
-| コマンド                     | 用途                                               |
-| ---------------------------- | -------------------------------------------------- |
-| `mise run prod:deploy`       | 停止を伴う直列デプロイ                             |
-| `mise run prod:stop`         | PayloadとCloudflare Tunnelを停止                   |
-| `mise run prod:backup`       | PostgreSQLとmediaを統合backup                      |
-| `mise run prod:migrate`      | DBスキーママイグレーションを専用サービスで明示実行 |
-| `mise run prod:start-app`    | 単一Payloadを起動                                  |
-| `mise run prod:start-tunnel` | Cloudflare Tunnelを起動                            |
-| `mise run prod:ps`           | ステータス確認                                     |
-| `mise run prod:logs`         | ログ監視                                           |
-| `mise run prod:perf`         | 本番相当のDocker環境でLighthouseを実行             |
-| `mise run prod:perf:down`    | 性能試験用コンテナを停止して削除                   |
+| コマンド                     | 用途                                             |
+| ---------------------------- | ------------------------------------------------ |
+| `mise run prod:deploy`       | 停止を伴う直列デプロイ                           |
+| `mise run prod:stop`         | PayloadとCloudflare Tunnelを停止                 |
+| `mise run prod:backup`       | PostgreSQLとmediaのdeploy前論理backup            |
+| `mise run prod:migrate`      | 停止状態とDB・S3 healthを確認してmigrationを実行 |
+| `mise run prod:start-app`    | 単一Payloadを起動                                |
+| `mise run prod:start-tunnel` | healthyな記録済みPayloadに対してTunnelを起動     |
+| `mise run prod:ps`           | ステータス確認                                   |
+| `mise run prod:logs`         | ログ監視                                         |
+| `mise run prod:perf`         | 本番相当のDocker環境でLighthouseを実行           |
+| `mise run prod:perf:down`    | 性能試験用コンテナを停止して削除                 |
+
+定期的な災害復旧backupにはProxmoxのVM・CT backupを使用します。deploy時の論理backupはmigration直前の復旧と将来の外部S3移行に使用します。
 
 ---
 

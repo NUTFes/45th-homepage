@@ -37,25 +37,24 @@ compose=(
   -f compose.prod.yml
   --profile tools
 )
+host_user="$(id -u):$(id -g)"
 
-bucket="$(
-  "${compose[@]}" config --format json --no-env-resolution |
-    node -e '
-      const fs = require("node:fs");
-      const config = JSON.parse(fs.readFileSync(0, "utf8"));
-      process.stdout.write(config.services["seaweedfs-s3"].environment.S3_BUCKET ?? "");
-    '
-)"
-if [[ -z "$bucket" ]]; then
-  echo "S3_BUCKET is missing from the resolved Compose configuration" >&2
-  exit 1
-fi
 
 case "$action" in
   download)
+    [[ "$path" == backups/*/media ]] || {
+      echo "Download path must be a backup media directory: $path" >&2
+      exit 2
+    }
+    backup_dir="${path%/media}"
+    manifest="$backup_dir/media-metadata.json"
+    [[ -f "$manifest" ]] || {
+      echo "Media manifest does not exist: $manifest" >&2
+      exit 1
+    }
     mkdir -p "$path"
-    "${compose[@]}" run --rm --no-deps media-tool \
-      s3 sync "s3://$bucket" "$container_path" --only-show-errors
+    "${compose[@]}" run --rm --no-deps --user "$host_user" media-tool \
+      download "$container_path" "/backups/${manifest#backups/}"
     ;;
   upload)
     [[ "$path" == backups/*/media ]] || {
@@ -75,18 +74,17 @@ case "$action" in
       cd "$backup_dir"
       sha256sum --check SHA256SUMS
     )
-    "${compose[@]}" run --rm --no-deps media-tool \
-      s3 sync "$container_path" "s3://$bucket" --only-show-errors
+    manifest="$backup_dir/media-metadata.json"
+    [[ -f "$manifest" ]] || {
+      echo "Media manifest does not exist: $manifest" >&2
+      exit 1
+    }
+    "${compose[@]}" run --rm --no-deps --user "$host_user" media-tool \
+      upload "$container_path" "/backups/${manifest#backups/}"
     ;;
   inventory)
     mkdir -p "$(dirname "$path")"
-    temp_path="${path}.tmp"
-    "${compose[@]}" run --rm --no-deps media-tool \
-      s3api list-objects-v2 \
-      --bucket "$bucket" \
-      --query "Contents[].{key: Key, size: Size}" \
-      --output json >"$temp_path"
-    mv "$temp_path" "$path"
+    "${compose[@]}" run --rm --no-deps --user "$host_user" media-tool inventory "$container_path"
     ;;
   *)
     usage
