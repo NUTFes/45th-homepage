@@ -76,6 +76,12 @@ ENV HOSTNAME="0.0.0.0"
 # Copy production assets
 COPY --from=builder --chown=node:node /app/public ./public
 
+# Keep the Payload CLI and migration sources in the same image as the app.
+COPY --from=builder --chown=node:node /app/node_modules ./node_modules
+COPY --from=builder --chown=node:node /app/package.json /app/pnpm-lock.yaml /app/tsconfig.json ./
+COPY --from=builder --chown=node:node /app/src ./src
+COPY --from=builder --chown=node:node /app/scripts/prod/media-storage.mjs ./scripts/prod/media-storage.mjs
+
 # Set the correct permission for prerender cache
 RUN mkdir -p .next/cache && chown -R node:node .next
 
