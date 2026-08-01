@@ -265,7 +265,7 @@ chore: vitest を追加
 
 | コマンド                     | 用途                                             |
 | ---------------------------- | ------------------------------------------------ |
-| `mise run prod:deploy`       | 停止を伴う直列デプロイ                           |
+| `mise run prod:deploy`       | メンテナンス表示を伴う直列デプロイ               |
 | `mise run prod:stop`         | PayloadとCloudflare Tunnelを停止                 |
 | `mise run prod:backup`       | PostgreSQLとmediaのdeploy前論理backup            |
 | `mise run prod:migrate`      | 停止状態とDB・S3 healthを確認してmigrationを実行 |

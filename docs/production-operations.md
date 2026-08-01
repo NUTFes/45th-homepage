@@ -15,7 +15,8 @@ mediaは将来の外部S3への切り替えを想定し、PayloadからS3互換A
 2. `.env.release.example` を `.env.release` にコピーし、現在の`main`のcommit SHA付きimageを設定する。
 3. Proxmoxで、Docker named volumeを含むVM・CT全体のbackup先、実行間隔、保持世代を設定する。
 4. Cloudflare DashboardのTunnelの「Published application route」で、転送先を `http://payload:3000` にする。Traefikなどを経由させない。
-5. Compose設定を検証し、imageと空の基盤サービスを準備する。
+5. 後述の「メンテナンスページ」に従い、Cloudflare Workerをdeployする。本番hostnameのRouteはまだ追加しない。
+6. Compose設定を検証し、imageと空の基盤サービスを準備する。
 
 ```bash
 bash <<'EOF'
@@ -104,13 +105,32 @@ mise run prod:logs
 
 初回設定とbaseline backupが完了した後の更新だけ、次の通常デプロイを使用します。
 
+## メンテナンスページ
+
+`workers/index.js`は、originに依存せずHTTP 503と`X-NUTFes-Maintenance: 1`を返します。通常時はWorkerを残し、本番hostnameのRouteだけを外します。
+
+### 初回準備
+
+1. [Cloudflare Workers Playground](https://workers.cloudflare.com/playground)を開く。
+2. `index.js`、`data.js`、`welcome.html`の3 moduleを削除・renameせず残す。`index.js`だけを`workers/index.js`で置き換え、ほかの2 moduleは既存内容のままにする。
+3. PreviewでGETとHEADが503になり、`X-NUTFes-Maintenance: 1`が返ることを確認する。503がerror表示になるのは正常で、`No such module`は失敗である。
+4. `45th-homepage-maintenance`としてdeployし、[公開済みworkers.dev URL](https://45th-homepage-maintenance.nutfes-nutmeg9488.workers.dev/)でも同じ応答を確認する。本番hostnameのRouteは追加しない。
+
+### 切替
+
+メンテナンス開始時は、Workerの **Settings > Domains & Routes > Add > Route** から`www.nutfes.net/*`を追加します。**Custom Domainは使用しません**。`*nutfes.net/*`のように他のsubdomainを含むpatternも使用しません。
+
+公開URLの表示と`curl -sS -I https://www.nutfes.net/`の503・識別headerを確認してから、TunnelやPayloadを停止します。`prod:deploy`では画面の指示に従ってRouteを追加し、スクリプトの自動確認を通過させます。
+
+終了時はPayloadのhealthとTunnelの起動を確認し、`www.nutfes.net/*`のRouteだけを削除します。通常ページと画像が表示され、識別headerが返らないことを確認します。失敗した場合は先に同じRouteを戻してから調査します。
+
 ## 通常デプロイ
 
-既存のPayload releaseが起動済みであることが前提です。初回構築では前節の手順を使用します。
+既存のPayload releaseが起動済みで、前節のWorkerがdeploy済みであることが前提です。初回構築では初期設定の手順を使用します。
 
 本番サーバーのコンソールで次だけを実行します。
 
-`prod:deploy`はstdinとstdoutがterminalでない場合は開始しません。確認入力のEOFや`Ctrl-C`、SSH切断は承認として扱わず、確認段階に応じて未記録のPayloadまたはTunnelを停止します。
+`prod:deploy`はstdinとstdoutがterminalでない場合は開始しません。Tunnelを停止する前にメンテナンスページの目視確認を要求し、GETとPOSTの応答が503かつ`X-NUTFes-Maintenance: 1`であることを自動検証します。確認入力のEOFや`Ctrl-C`、SSH切断は承認として扱わず、確認段階に応じて未記録のPayloadまたはTunnelを停止します。
 
 ```bash
 git pull --ff-only origin main
@@ -121,17 +141,18 @@ mise run prod:deploy
 
 1. `origin`を取得し、checkout済みの`main`が`origin/main`と同じcommitであることを確認する
 2. `45th-homepage:<commit-sha>`をbuildする
-3. `cloudflared`、`payload`の順に停止する
-4. PostgreSQLとmediaを同じディレクトリへbackupする
-5. 新imageの`payload-migrate`を1回実行する
-6. 新imageのPayloadを1コンテナだけ起動する
-7. strict health checkと直近100行のログを表示する
-8. 人が承認した場合だけ`.env.release`を一時ファイルから`mv`する
-9. `cloudflared`を起動し、状態とログを表示して、人が公開URLへの到達を確認する。確認できなければTunnelを停止する
+3. 本番hostnameへWorker Routeを追加し、公開URLのメンテナンス表示を人が確認する。スクリプトもGETとPOSTの503・識別headerを確認する
+4. `cloudflared`、`payload`の順に停止する
+5. PostgreSQLとmediaを同じディレクトリへbackupする
+6. 新imageの`payload-migrate`を1回実行する
+7. 新imageのPayloadを1コンテナだけ起動する
+8. strict health checkと直近100行のログを表示する
+9. 人が承認した場合だけ`.env.release`を一時ファイルから`mv`する
+10. `cloudflared`を起動して状態とログを表示する。人がWorker Routeを削除し、通常ページへの到達を確認する
 
-既存のPayload releaseがない場合は初期設定を案内して開始しません。healthとログの確認を承認しなかった場合、または確認が中断された場合は、未記録の候補Payloadを停止し、Tunnelも停止した状態にします。この時点ではDBスキーママイグレーションが適用済みの可能性があるため、schema互換性を確認せず`.env.release`に記録された旧imageを起動しません。
+メンテナンスページを確認できない場合、または503と識別headerの自動検証に失敗した場合は、サービスを停止せず終了します。既存のPayload releaseがない場合は初期設定を案内して開始しません。healthとログの確認を承認しなかった場合、または確認が中断された場合は、未記録の候補Payloadを停止し、Tunnelも停止した状態にします。Worker Routeは有効なまま残します。この時点ではDBスキーママイグレーションが適用済みの可能性があるため、schema互換性を確認せず`.env.release`に記録された旧imageを起動しません。
 
-そのほかの途中失敗では、その場所と現在の状態を表示して終了します。公開URLを確認できない場合は`cloudflared`を停止し、記録済みのPayloadだけを稼働状態に保ちます。旧imageの削除、rollback、DB復元は行わないため、表示されたログを確認して手動で判断してください。
+そのほかの途中失敗でもWorker Routeを残し、その場所と現在の状態を表示して終了します。通常ページを確認できない場合は、Worker Routeを再追加してから否定応答を入力します。スクリプトは`cloudflared`を停止し、記録済みのPayloadだけを稼働状態に保ちます。旧imageの削除、rollback、DB復元は行わないため、表示されたログを確認して手動で判断してください。
 
 ## miseタスク
 
@@ -144,13 +165,15 @@ mise run prod:deploy
 | `prod:migrate`      | PayloadとTunnelの停止、DBとS3のhealthを確認してmigrationを実行 |
 | `prod:start-app`    | `.env.release`のPayloadを1コンテナ起動                         |
 | `prod:start-tunnel` | healthyな記録済みPayloadだけにTunnelを起動                     |
-| `prod:deploy`       | 上記の通常デプロイを実行                                       |
+| `prod:deploy`       | メンテナンス表示を確認して通常デプロイを実行                   |
 | `prod:perf`         | 本番相当のLighthouse試験                                       |
 | `prod:perf:down`    | Lighthouse試験コンテナを削除                                   |
 
 DBスキーママイグレーションは`prod:migrate`だけを使用します。このタスクはPayloadとTunnelが停止中で、PostgreSQLとSeaweedFSがhealthyな場合だけ、`.env.release`のimageからmigrationを実行します。tools serviceを直接実行してこの確認を迂回しません。
 
 `payload`と`payload-migrate`は同じ`PAYLOAD_IMAGE`を参照します。Payload起動時にDBスキーママイグレーションは実行されません。
+
+`prod:stop`と`prod:start-tunnel`はWorker Routeを切り替えません。`prod:deploy`の表示に従うか、前節の手順でRouteを手動操作します。
 
 ## backupと復元
 
@@ -246,11 +269,13 @@ media uploadはmanifestに記録した`Content-Type`を設定し、upload後のk
 
 直前のimageは削除されません。DB schemaに互換性がある場合は次の順序で戻します。
 
-1. `mise run prod:stop`
-2. 旧imageを指定してPayloadを起動する
-3. strict healthと`mise run prod:logs`を確認する
-4. `.env.release`を一時ファイルから`mv`で更新する
-5. `mise run prod:start-tunnel`
+1. Worker Routeを追加し、公開URLのメンテナンス表示を確認する
+2. `mise run prod:stop`
+3. 旧imageを指定してPayloadを起動する
+4. strict healthと`mise run prod:logs`を確認する
+5. `.env.release`を一時ファイルから`mv`で更新する
+6. `mise run prod:start-tunnel`
+7. Worker Routeを削除し、通常ページを確認する
 
 ```bash
 (
@@ -282,7 +307,7 @@ media uploadはmanifestに記録した`Content-Type`を設定し、upload後のk
 )
 ```
 
-記録後に`mise run prod:start-tunnel`と`mise run prod:ps`を実行し、`cloudflared`のログと公開URLを確認します。
+記録後に`mise run prod:start-tunnel`と`mise run prod:ps`を実行し、`cloudflared`のログを確認します。その後にWorker Routeを削除して公開URLを確認します。通常ページを確認できなければWorker Routeを再追加し、Tunnelを停止します。
 
 旧アプリと新schemaに互換性がない場合は、先に同じデプロイで作ったbackupからDBとmediaを復元します。
 
