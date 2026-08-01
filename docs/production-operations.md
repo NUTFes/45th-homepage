@@ -13,12 +13,6 @@ PayloadはS3互換APIだけを使い、SeaweedFS固有APIへ依存しません�
 初回構築では、空のPostgreSQLにDBスキーマを作成し、空のSeaweedFSを使って管理画面からデータを登録します。
 `prod:deploy`は既存リリースのバックアップを前提とするため、初回構築では使用しません。
 
-作業を始める前に、`docker compose ls`と`docker volume ls`を使って次の状態を確認します。
-
-- 旧Composeプロジェクトと、旧`cloudflared`を含むサービスが削除されている。
-- 旧環境の名前付きボリュームが削除され、新しい`45th-homepage-prod`のボリュームが存在しない。
-- 旧Tunnelが停止している。
-
 1. `.env.production.example`を`.env.production`にコピーし、秘密情報を設定する。
 2. `.env.release.example`を`.env.release`にコピーする（後続のコマンドが現在の`main`コミットのSHAをタグにしたイメージへ更新する）。
 3. Proxmoxで、Dockerの名前付きボリュームを含むVMまたはCT全体のバックアップ先、実行間隔、保持世代を設定する。
