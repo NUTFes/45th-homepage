@@ -179,7 +179,7 @@ export default function GuestPageView({ data }: GuestPageViewProps) {
       </div>
 
       <SponsorAdsBoundary
-        className="relative z-10 mx-auto mt-4l w-full max-w-320 pb-4l xl:mt-pm"
+        className="relative z-10 mx-auto w-full max-w-320 pb-4l"
         surface="transparent"
       />
     </div>
