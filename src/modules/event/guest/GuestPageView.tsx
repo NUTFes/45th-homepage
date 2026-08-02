@@ -109,12 +109,12 @@ export default function GuestPageView({ data }: GuestPageViewProps) {
           <EventIntroFrame {...INTRODUCTION} headingLevel={1} />
         </div>
 
-        <aside className="relative bg-base-dark xl:sticky xl:top-18 xl:z-20 xl:col-start-2 xl:row-start-1 xl:row-end-7 xl:h-[calc(100dvh-4.5rem)] xl:self-start">
-          <div className="relative min-h-full bg-base-dark xl:h-full xl:after:pointer-events-none xl:after:absolute xl:after:inset-y-0 xl:after:left-full xl:after:w-screen xl:after:bg-base-dark xl:after:content-['']">
-            <div className="xl:h-full xl:overflow-y-auto">
-              <EventInfoCard {...GUEST_EVENT_INFO} />
-            </div>
-          </div>
+        <div
+          aria-hidden="true"
+          className="relative hidden bg-base-dark xl:col-start-2 xl:row-start-1 xl:row-end-7 xl:block xl:after:pointer-events-none xl:after:absolute xl:after:inset-y-0 xl:after:left-full xl:after:w-screen xl:after:bg-base-dark xl:after:content-['']"
+        />
+        <aside className="relative bg-base-dark xl:sticky xl:top-18 xl:z-20 xl:col-start-2 xl:row-start-1 xl:row-end-7 xl:self-start">
+          <EventInfoCard {...GUEST_EVENT_INFO} />
         </aside>
 
         <GuestInformationSection
