@@ -4,11 +4,7 @@ import { useState } from "react";
 import { Minus, Plus } from "lucide-react";
 import { Button, Disclosure, DisclosurePanel } from "react-aria-components";
 import { twMerge } from "tailwind-merge";
-import {
-  defaultMapMenuSections,
-  type MapMenuEntry,
-  type MapMenuSection,
-} from "./mapMenuData";
+import { defaultMapMenuSections, type MapMenuEntry, type MapMenuSection } from "./mapMenuData";
 
 export type { MapMenuEntry, MapMenuSection };
 
