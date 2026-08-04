@@ -28,7 +28,7 @@ export type MapAccordionProps = Omit<
 
 const itemClassName = "group border-y border-secondary -mb-px";
 const headingClassName =
-  "sticky top-[var(--header-height,72px)] z-20 m-0 border-b border-secondary bg-base";
+  "sticky top-[var(--header-height,72px)] z-30 m-0 border-b border-secondary bg-base";
 const triggerClassName =
   "flex w-full items-center justify-between gap-s px-4l py-m text-left focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-main";
 const titleClassName = "text-title-small text-font-main";
