@@ -1,5 +1,3 @@
-"use client";
-
 import MapAccordion, { type MapAccordionItem } from "@/modules/map/ui/MapAccordion";
 import { defaultMapMenuSections } from "@/modules/map/ui/mapMenuData";
 import MapFrame from "@/components/ui/MapFrame";
