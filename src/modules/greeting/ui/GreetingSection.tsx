@@ -21,31 +21,37 @@ export default function GreetingSection({
   greetingBody,
 }: GreetingSectionProps) {
   return (
-    <div className="flex flex-col border-y border-main bg-base-dark text-font-main md:flex-row md:pl-pm">
-      <div className="md:flex md:flex-1 md:items-center md:justify-center md:gap-ss">
-        <p className="hidden font-kaisotai text-title [writing-mode:vertical-rl] md:block">
+    // 背景は指定しない（本番ページの背景を透過させる）。border-y のみ全体に引く
+    <div className="flex flex-col border-y border-main text-font-main lg:flex-row lg:items-stretch lg:pl-pm">
+      {/* 左：写真 + 名前。枠は最外要素の高さいっぱいに伸ばし、内部で上下中央に配置。
+          右テキストが超えたら余白（透過背景）が縦線の内側で自動的に広がる */}
+      <div className="lg:flex lg:flex-1 lg:justify-center lg:gap-ss">
+        <p className="hidden font-kaisotai text-title [writing-mode:vertical-rl] lg:block lg:self-center">
           {nameEng}
         </p>
-        <div className="border-b border-main bg-base md:flex md:h-[909px] md:w-100 md:items-center md:justify-center md:py-4l">
-          <div className="flex items-center gap-3l md:w-full md:flex-col md:gap-m">
+        {/* 写真と名前を縦線（左右ボーダー）で囲む。縦線はフルハイト、
+            上下の横線はコンポーネント最外の border-y に任せる */}
+        <div className="border-b border-main lg:flex lg:w-100 lg:flex-col lg:justify-center lg:border-x lg:border-b-0 lg:py-4l">
+          <div className="flex items-center gap-3l lg:w-full lg:flex-col lg:gap-m">
             <Image
               src={imageSrc}
               alt={imageAlt}
               width={96}
               height={144}
-              className={`${itemSize} aspect-[2/3] w-full border-2 border-main object-cover`}
+              className={`${itemSize} aspect-[2/3] w-full border border-main object-cover`}
             />
             <div
-              className={`flex items-center md:shrink-0 md:flex-col md:justify-center ${itemSize}`}
+              className={`flex items-center lg:shrink-0 lg:flex-col lg:justify-center ${itemSize}`}
             >
-              <h2 className="text-title-small md:text-Ptitle-small">{name}</h2>
+              <h2 className="text-title-small lg:text-Ptitle-small">{name}</h2>
             </div>
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-m p-ll md:gap-l md:pr-pm md:pl-4l">
-        <h2 className="text-textb md:text-Ptitle-small">{greetingTitle}</h2>
-        <p className="text-text whitespace-pre-line md:text-Ptext">{greetingBody}</p>
+      {/* 右：あいさつ文。背景を持つのはこの要素のみ。枠内で上下中央揃え */}
+      <div className="flex flex-col justify-center gap-m bg-base-dark p-ll lg:gap-l lg:pr-pm lg:pl-4l">
+        <h2 className="text-textb lg:text-Ptitle-small">{greetingTitle}</h2>
+        <p className="text-text whitespace-pre-line lg:text-Ptext">{greetingBody}</p>
       </div>
     </div>
   );
