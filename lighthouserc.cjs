@@ -8,6 +8,7 @@ module.exports = {
         "http://localhost:3000/attention",
         "http://localhost:3000/contact",
         "http://localhost:3000/sponsors",
+        "http://localhost:3000/event/guest",
       ],
       numberOfRuns: 3,
     },

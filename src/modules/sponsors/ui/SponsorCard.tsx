@@ -30,7 +30,12 @@ export default function SponsorCard({
             sizes={imageSizes}
             src={sponsor.image.url}
           />
-        ) : null}
+        ) : (
+          <div className="flex size-full flex-col items-center justify-center text-center text-main">
+            <span className="font-kaisotai text-title leading-normal">AD</span>
+            <span className="text-[22px] leading-normal">NO IMAGE</span>
+          </div>
+        )}
       </div>
     </article>
   );

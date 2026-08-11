@@ -3,10 +3,14 @@ import { DevPanel } from "../../_components/DevPanel";
 import { DevSection } from "../../_components/DevSection";
 import EventSection, { type EventSectionEvent } from "@/modules/event/ui/EventSection";
 import EventPageView from "@/modules/event/ui/EventPageView";
-import ProgramPageView from "@/modules/event/ui/programs/category/[category]/ProgramPageView";
+import ProgramListPageView from "@/modules/event/programs/ProgramListPageView";
+import ProgramDetailPageView from "@/modules/event/programs/ProgramDetailPageView";
+import type { ProgramDetailPageViewProps } from "@/modules/event/programs/ProgramDetailPageView";
 import { PROGRAM_CATEGORIES } from "@/lib/events/constants";
+import type { EventProgramDTO, EventsPageDTO } from "@/modules/events/types";
 import GuestProfileCard, { type GuestProfile } from "@/modules/event/guest/ui/GuestProfileCard";
 import GuestProfileSection from "@/modules/event/guest/ui/GuestProfileSection";
+import CategoryMenuPreview from "./CategoryMenuPreview";
 import TagSearchComponentsPreview from "./TagSearchComponentsPreview";
 
 export const metadata = {
@@ -106,6 +110,78 @@ const guestProfiles: GuestProfile[] = [
   },
 ];
 
+const dummyPrograms = PROGRAM_CATEGORIES.map(
+  ({ value, label }, index): EventProgramDTO => ({
+    id: index + 1,
+    title: `${label}サンプル`,
+    category: value,
+    area: index % 2 === 0 ? "lecture" : "gym",
+    locationName: "講義棟 1F",
+    tags: [{ value: "activity", label: "体験・遊ぶ" }],
+    catchphrase: `${label}の見どころ`,
+    description: `${label}の説明文サンプルです。`,
+    scheduleItems: [
+      {
+        weather: "both",
+        day: index % 2 === 0 ? "day1" : "day2",
+        startTime: "10:00",
+        endTime: "17:00",
+      },
+    ],
+  }),
+);
+
+const eventPageDummyData: EventsPageDTO = {
+  categories: PROGRAM_CATEGORIES.map(({ value, label }) => ({
+    category: value,
+    label,
+    programs: dummyPrograms.filter((program) => program.category === value),
+  })),
+  weather: "sunny",
+};
+
+const SponsorAdsPreview = () => (
+  <div className="bg-base-dark px-l py-ll text-center text-text text-font-main">
+    協賛企業広告プレビュー
+  </div>
+);
+
+// テスト表示用のダミーデータ（画像1・画像2のモックに対応）
+const programDetailDummyProps: Omit<ProgramDetailPageViewProps, "sponsorAds"> = {
+  hero: {
+    title: "企画名",
+    imageSrc: "/favicon/45th-LogoBlue.svg",
+    imageAlt: "企画名の画像",
+    tags: [{ value: "activity", label: "体験・遊ぶ" }],
+  },
+  intro: {
+    title: "魅惑の鮭かまワールドへようこそ",
+    body: "説明鮭かま鮭かま鮭かま鮭かま鮭かま鮭かま鮭かま鮭かま鮭かま鮭かま鮭かま鮭かま鮭かま",
+  },
+  info: {
+    location: "キッチンカーエリア",
+    schedules: [
+      {
+        dateLabel: "9月19日(土)",
+        startLabel: "10:00",
+        endLabel: "17:00",
+        startsAt: "2026-09-19T10:00:00+09:00",
+        endsAt: "2026-09-19T17:00:00+09:00",
+      },
+      {
+        dateLabel: "9月20日(日)",
+        startLabel: "10:00",
+        endLabel: "17:00",
+        startsAt: "2026-09-20T10:00:00+09:00",
+        endsAt: "2026-09-20T17:00:00+09:00",
+      },
+    ],
+    map: {
+      title: "キッチンカーエリア",
+    },
+  },
+};
+
 const mcProfiles: GuestProfile[] = [
   {
     name: "清野幹さん",
@@ -125,6 +201,9 @@ export default function DevTopPageModulesPage() {
       <DevSection title="Tag Search Components">
         <DevPanel title="ActiveTag / TagSearchButton (src/modules/event/ui)" fullWidth>
           <TagSearchComponentsPreview />
+        </DevPanel>
+        <DevPanel title="CategoryCard / CategoryMenu (src/modules/event/ui)" fullWidth>
+          <CategoryMenuPreview />
         </DevPanel>
       </DevSection>
       <DevSection title="EventSection">
@@ -153,7 +232,7 @@ export default function DevTopPageModulesPage() {
               profiles={guestProfiles}
               image={{
                 src: "/image/event/guest.jpg",
-                alt: "ヨネダ２０００",
+                alt: "ヨネダ2000",
               }}
             />
             <GuestProfileSection
@@ -171,7 +250,7 @@ export default function DevTopPageModulesPage() {
       <DevSection title="EventPageView">
         <DevPanel title="EventPageView (src/modules/event/ui)" fullWidth>
           <div className="bg-base">
-            <EventPageView />
+            <EventPageView data={eventPageDummyData} sponsorAds={<SponsorAdsPreview />} />
           </div>
         </DevPanel>
       </DevSection>
@@ -179,10 +258,25 @@ export default function DevTopPageModulesPage() {
         {PROGRAM_CATEGORIES.map(({ value, label }) => (
           <DevPanel key={value} title={`ProgramPageView - ${label}`} fullWidth>
             <div className="bg-base">
-              <ProgramPageView category={value} />
+              <ProgramListPageView
+                title={label}
+                programs={dummyPrograms.filter((program) => program.category === value)}
+                filterVariant={value}
+                sponsorAds={<SponsorAdsPreview />}
+              />
             </div>
           </DevPanel>
         ))}
+      </DevSection>
+      <DevSection title="ProgramDetailPageView">
+        <DevPanel title="ProgramDetailPageView (src/modules/event/programs)" fullWidth>
+          <div className="bg-base">
+            <ProgramDetailPageView
+              {...programDetailDummyProps}
+              sponsorAds={<SponsorAdsPreview />}
+            />
+          </div>
+        </DevPanel>
       </DevSection>
     </DevPageContainer>
   );

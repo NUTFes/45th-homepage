@@ -15,7 +15,7 @@ import { DevSection } from "../_components/DevSection";
 const headerDropdownItems = [
   { label: "ゲスト", href: "/event/guest" },
   { label: "コラボ", href: "/#", disabled: true },
-  { label: "企画", href: "/event/programs" },
+  { label: "企画", href: "/event/programs/category/program" },
   { label: "展示・体験", href: "/#", disabled: true },
 ];
 const sponsorSamples = [

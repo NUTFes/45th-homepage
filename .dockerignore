@@ -56,6 +56,10 @@ playwright.config.*
 .env.test
 .env.production
 .env.production.local
+.env.release
+
+# Production backups stay on the host.
+backups/
 
 # Docker configuration files (not needed inside build context)
 Dockerfile*

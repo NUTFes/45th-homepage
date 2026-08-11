@@ -11,13 +11,18 @@ const SPONSOR_AD_SKELETON_IDS = [
   "sponsor-ad-skeleton-3",
 ] as const;
 
-export default function SponsorAdsSectionSkeleton({ className }: SponsorAdsSectionProps) {
+export default function SponsorAdsSectionSkeleton({
+  className,
+  surface = "dark",
+}: SponsorAdsSectionProps) {
   return (
     <section
       aria-hidden="true"
       className={twMerge("flex w-full flex-col items-center gap-m", className)}
     >
-      <div className="w-full overflow-hidden bg-base-dark py-s lg:px-5l">
+      <div
+        className={`w-full overflow-hidden py-s lg:px-5l ${surface === "dark" ? "bg-base-dark" : "bg-transparent"}`}
+      >
         <div className="flex items-center">
           {SPONSOR_AD_SKELETON_IDS.map((id) => (
             <div className="min-w-0 flex-[0_0_100%] px-ll lg:flex-[0_0_25%] lg:px-0" key={id}>

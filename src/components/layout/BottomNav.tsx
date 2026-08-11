@@ -13,7 +13,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: "ホーム", icon: House, href: "/" },
   { label: "スケジュール", icon: Clock, disabled: true, href: "/schedule" },
   { label: "マップ", icon: MapPin, disabled: true, href: "/map" },
-  { label: "企画", icon: CalendarDays, disabled: true, href: "/events" },
+  { label: "企画", icon: CalendarDays, href: "/event" },
 ];
 
 const ENABLED_ITEM_CLASS_NAME =

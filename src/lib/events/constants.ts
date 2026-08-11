@@ -30,6 +30,26 @@ export const PROGRAM_AREAS = [
   { value: "other", label: "その他" },
 ] as const;
 
+export const PROGRAM_TAGS = [
+  { value: "activity", label: "体験・遊ぶ" },
+  { value: "watch", label: "見る・聞く" },
+  { value: "learning", label: "展示・学ぶ" },
+  { value: "children", label: "子ども向け" },
+  { value: "reservation", label: "要予約" },
+  { value: "prize", label: "景品あり" },
+  { value: "stage", label: "ステージ" },
+  { value: "laboratory", label: "研究室" },
+  { value: "food", label: "フード" },
+  { value: "sweets", label: "スイーツ" },
+  { value: "drink", label: "ドリンク" },
+  { value: "international-food", label: "国際グルメ" },
+  { value: "alcohol", label: "お酒あり" },
+  { value: "student", label: "学生出店" },
+  { value: "corporate", label: "企業出店" },
+  { value: "with-activity", label: "体験あり" },
+  { value: "nagaoka-ut-goods", label: "技大グッズ" },
+] as const;
+
 export const PROGRAM_TIME_SLOT_MINUTES = 15;
 
 export const TIMETABLE_START_TIME = "10:00";
@@ -54,6 +74,7 @@ export const WEATHER_OPTIONS = [
 export type ProgramCategory = (typeof PROGRAM_CATEGORIES)[number]["value"];
 export type FestivalDay = keyof Pick<typeof FESTIVAL_DAYS, "day1" | "day2">;
 export type ProgramArea = (typeof PROGRAM_AREAS)[number]["value"];
+export type ProgramTagValue = (typeof PROGRAM_TAGS)[number]["value"];
 export type ProgramScheduleWeather = (typeof PROGRAM_SCHEDULE_WEATHERS)[number]["value"];
 export type Weather = (typeof WEATHER_OPTIONS)[number]["value"];
 
@@ -75,6 +96,10 @@ export const PROGRAM_CATEGORY_LABELS = Object.fromEntries(
 export const PROGRAM_AREA_LABELS = Object.fromEntries(
   PROGRAM_AREAS.map(({ label, value }) => [value, label]),
 ) as Record<ProgramArea, string>;
+
+export const PROGRAM_TAG_LABELS = Object.fromEntries(
+  PROGRAM_TAGS.map(({ label, value }) => [value, label]),
+) as Record<ProgramTagValue, string>;
 
 export const PROGRAM_SCHEDULE_WEATHER_LABELS = Object.fromEntries(
   PROGRAM_SCHEDULE_WEATHERS.map(({ label, value }) => [value, label]),
@@ -117,3 +142,11 @@ export const FESTIVAL_DAY_SELECT_OPTIONS = [
     value: FESTIVAL_DAYS.day2.value,
   },
 ];
+
+export const PROGRAM_TAG_SELECT_OPTIONS = PROGRAM_TAGS.map(({ label, value }) => ({
+  label: {
+    ja: label,
+    en: label,
+  },
+  value,
+}));

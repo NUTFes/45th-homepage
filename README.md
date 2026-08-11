@@ -11,6 +11,7 @@ Next.js + Payload CMS + PostgreSQL を使ったホームページプロジェク
 - [ディレクトリ構成](#ディレクトリ構成)
 - [開発コマンド一覧](#開発コマンド一覧)
 - [パッケージ管理](#パッケージ管理)
+- [フォント運用](#フォント運用)
 - [データベース・マイグレーション](#データベースマイグレーション)
 - [コンポーネント試験ページ](#コンポーネント試験ページ)
 - [開発ルール](#開発ルール)
@@ -150,21 +151,39 @@ mise run rm lodash
 
 ---
 
+## フォント運用
+
+ページやPayload CMSの文言を追加・変更するだけであれば、フォントの再生成や文字一覧への追記は不要です。
+
+新しいフォントファミリー、ウェイト、スタイルの追加や、フォント原本の差し替えを行う場合は、次のコマンドで固定チャンクを生成・検証します。
+
+```bash
+pnpm run fonts:generate
+pnpm run fonts:check
+```
+
+生成されたCSS、マニフェスト、WOFF2は原本・設定と同じコミットに含めてください。生成ファイルを手作業で編集したり、フォント原本を `public/` に配置したりしないでください。
+
+設定項目、追加・削除手順、ライセンス確認、エラー対応については、[フォント運用ガイド](docs/font-assets.md)を参照してください。
+
+---
+
 ## データベース・マイグレーション
 
 `src/collections/` 以下のコレクション定義（DBスキーマ）を変更した場合、
-マイグレーションファイルを作成して Git にコミットする必要があります。
+DBスキーマのマイグレーションファイルを作成して Git にコミットする必要があります。
+ここでいうマイグレーションはPostgreSQLのスキーマ変更であり、CMS登録データの移行とは別です。
 
 ### 基本的な流れ
 
 ```
 コレクションを変更
     ↓
-マイグレーションファイルを作成
+DBスキーマのマイグレーションファイルを作成
     ↓
 生成されたファイルを Git にコミット
     ↓
-コンテナ再起動で自動適用（または手動で mise run migrate）
+本番デプロイ中に専用サービスでDBスキーママイグレーションを明示適用
 ```
 
 ### コマンド一覧
@@ -258,25 +277,30 @@ chore: vitest を追加
 
 ## 本番運用・デプロイ
 
-詳細は [デプロイセットアップガイド](docs/docker-rollout-setup.md) を参照してください。
+詳細は [本番運用ガイド](docs/production-operations.md) を参照してください。
 
 ### 主要コマンド
 
-| コマンド                  | 用途                                     |
-| ------------------------- | ---------------------------------------- |
-| `mise run prod:up`        | 初回デプロイ（コンテナが未稼働の場合）   |
-| `mise run prod:deploy`    | ローリングアップデート（コンテナ稼働中） |
-| `mise run prod:down`      | 本番コンテナの停止・削除                 |
-| `mise run prod:ps`        | ステータス確認                           |
-| `mise run prod:logs`      | ログ監視                                 |
-| `mise run prod:perf`      | 本番相当の Docker 環境で Lighthouse 実行 |
-| `mise run prod:perf:down` | 性能試験用コンテナの停止・削除           |
+| コマンド                     | 用途                                             |
+| ---------------------------- | ------------------------------------------------ |
+| `mise run prod:deploy`       | メンテナンス表示を伴う直列デプロイ               |
+| `mise run prod:stop`         | PayloadとCloudflare Tunnelを停止                 |
+| `mise run prod:backup`       | PostgreSQLとmediaのdeploy前論理backup            |
+| `mise run prod:migrate`      | 停止状態とDB・S3 healthを確認してmigrationを実行 |
+| `mise run prod:start-app`    | 単一Payloadを起動                                |
+| `mise run prod:start-tunnel` | healthyな記録済みPayloadに対してTunnelを起動     |
+| `mise run prod:ps`           | ステータス確認                                   |
+| `mise run prod:logs`         | ログ監視                                         |
+| `mise run prod:perf`         | 本番相当のDocker環境でLighthouseを実行           |
+| `mise run prod:perf:down`    | 性能試験用コンテナを停止して削除                 |
+
+定期的な災害復旧backupにはProxmoxのVM・CT backupを使用します。deploy時の論理backupはmigration直前の復旧と将来の外部S3移行に使用します。
 
 ---
 
 ## 本番公開前のパフォーマンス試験
 
-`compose.perf.yml` は、本番用の Next.js standalone image、PostgreSQL、SeaweedFS S3 Gateway を起動し、別コンテナ内の headless Chromium で Lighthouse CLI を実行します。
+`compose.perf.yml` は、本番用の Next.js standalone image、PostgreSQL、SeaweedFS `weed mini`を起動し、別コンテナ内の headless Chromium で Lighthouse CLI を実行します。
 
 ```bash
 mise run prod:perf
