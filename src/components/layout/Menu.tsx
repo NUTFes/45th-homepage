@@ -153,7 +153,7 @@ function MenuItem({ item }: MenuItemProps) {
   const disabled = item.disabled === true;
 
   return (
-    <li className="border-b border-font-gray">
+    <li className={`border-b border-font-gray ${item.mobileOnly ? "md:hidden" : ""}`}>
       {isLeaf ? (
         !disabled ? (
           <Link href={item.href ?? "/"} className={enabledItemClassName}>
