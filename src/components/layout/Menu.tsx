@@ -14,6 +14,7 @@ import {
   Building2,
   UserStar,
   Info,
+  Puzzle,
 } from "lucide-react";
 
 type SubMenuItem = {
@@ -119,6 +120,10 @@ const menuItems: MenuItem[] = [
     label: "協賛企業一覧",
     icon: Building2,
     href: "/sponsors",
+  },
+  {
+    label: "謎解きヒント",
+    icon: Puzzle,
   },
 ];
 
