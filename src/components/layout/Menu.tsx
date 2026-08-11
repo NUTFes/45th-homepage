@@ -28,6 +28,7 @@ type MenuLeafItem = {
   icon: LucideIcon;
   href?: string;
   disabled?: boolean;
+  mobileOnly?: boolean;
 };
 
 type MenuParentItem = {
@@ -124,6 +125,7 @@ const menuItems: MenuItem[] = [
   {
     label: "謎解きヒント",
     icon: Puzzle,
+    mobileOnly: true,
   },
 ];
 
