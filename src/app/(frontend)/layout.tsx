@@ -58,7 +58,6 @@ export default function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props;
 
   return (
-
     <html lang="ja">
       <body className="pb-(--bottom-nav-offset) md:pb-0">
         <Header />

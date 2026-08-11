@@ -22,7 +22,7 @@ export default function ThemeSection() {
       </div>
       <div className="z-10 flex flex-col justify-start gap-y-ss px-ll py-5l font-kaisotai text-title md:px-pl md:text-Ptitle">
         <div>技大祭テーマ</div>
-        <div className="hidden font-goldman sm:flex">Bluem Up Date</div>
+        <div className="font-goldman hidden sm:flex">Bluem Up Date</div>
         <div className="font-goldman sm:hidden">
           Bluem Up <br />
           Date
