@@ -11,6 +11,7 @@ export default function ThemeSection() {
           height={220}
           className="opacity-90 mix-blend-screen md:hidden"
         />
+        {/* pc版ロゴ↓ */}
                 <Image
           src="/image/greeting/45th-logo-touka.svg"
           alt="45thロゴ"
