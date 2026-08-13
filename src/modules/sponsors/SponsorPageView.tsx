@@ -62,7 +62,7 @@ function SponsorNameList({
             <span className="size-4 shrink-0 rounded-full bg-secondary" aria-hidden="true" />
             {sponsor.href ? (
               <Link
-                className="min-w-0 text-text-large wrap-break-word underline decoration-secondary decoration-2 underline-offset-4 transition-opacity hover:opacity-70 focus-visible:opacity-70 md:text-Ptext-large"
+                className="min-w-0 text-text-large wrap-break-word transition-opacity hover:opacity-70 focus-visible:opacity-70 md:text-Ptext-large"
                 href={sponsor.href}
               >
                 {sponsor.companyName}
