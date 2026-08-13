@@ -11,6 +11,7 @@ export type SponsorMediaDTO = {
 export type SponsorDTO = {
   id: string;
   companyName: string;
+  href?: string;
   image?: SponsorMediaDTO;
 };
 

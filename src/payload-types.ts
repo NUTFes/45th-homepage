@@ -726,6 +726,10 @@ export interface SponsorsPage {
          * If set, this sponsor is shown as an ad card. If empty, it is shown in the name-only list. Prefer a 4:3 image.
          */
         image?: (number | null) | Media;
+        /**
+         * If empty, the advertisement image will not be clickable.
+         */
+        href?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -823,6 +827,7 @@ export interface SponsorsPageSelect<T extends boolean = true> {
     | {
         companyName?: T;
         image?: T;
+        href?: T;
         id?: T;
       };
   updatedAt?: T;

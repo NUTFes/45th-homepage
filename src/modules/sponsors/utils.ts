@@ -7,6 +7,27 @@ type SponsorRow = NonNullable<SponsorsPage["sponsors"]>[number];
 const isMediaDoc = (value: SponsorRow["image"]): value is Media =>
   typeof value === "object" && value !== null && "id" in value;
 
+const normalizeHref = (rawHref?: string | null): string | undefined => {
+  if (!rawHref) {
+    return undefined;
+  }
+
+  const href = rawHref.trim();
+  if (!href) {
+    return undefined;
+  }
+
+  if (href.startsWith("/") && !href.startsWith("//")) {
+    return href;
+  }
+
+  if (/^https?:\/\//i.test(href)) {
+    return href;
+  }
+
+  return undefined;
+};
+
 export const toSponsorMediaDTO = (value: SponsorRow["image"]): SponsorMediaDTO | undefined => {
   if (!isMediaDoc(value) || !value.url) {
     return undefined;
@@ -28,11 +49,13 @@ export const toSponsorDTO = (row: SponsorRow, index: number): SponsorDTO | null 
     return null;
   }
 
+  const href = normalizeHref(row.href);
   const image = toSponsorMediaDTO(row.image);
 
   return {
     companyName,
     id: row.id ?? `${companyName}-${index}`,
+    ...(href ? { href } : {}),
     ...(image ? { image } : {}),
   };
 };
