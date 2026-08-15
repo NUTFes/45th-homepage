@@ -126,7 +126,8 @@ const menuItems: MenuItem[] = [
     label: "謎解きヒント",
     icon: Puzzle,
     mobileOnly: true,
-    href: "/riddle"
+    href: "/riddle",
+    disabled: true,
   },
 ];
 
