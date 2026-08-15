@@ -14,6 +14,7 @@ import {
   Building2,
   UserStar,
   Info,
+  Puzzle,
 } from "lucide-react";
 
 type SubMenuItem = {
@@ -27,6 +28,7 @@ type MenuLeafItem = {
   icon: LucideIcon;
   href?: string;
   disabled?: boolean;
+  mobileOnly?: boolean;
 };
 
 type MenuParentItem = {
@@ -34,6 +36,7 @@ type MenuParentItem = {
   icon: LucideIcon;
   children: SubMenuItem[];
   disabled?: boolean;
+  mobileOnly?: boolean;
 };
 
 type MenuItem = MenuLeafItem | MenuParentItem;
@@ -120,6 +123,13 @@ const menuItems: MenuItem[] = [
     icon: Building2,
     href: "/sponsors",
   },
+  {
+    label: "謎解きヒント",
+    icon: Puzzle,
+    mobileOnly: true,
+    href: "/riddle",
+    disabled: true,
+  },
 ];
 
 type MenuItemProps = {
@@ -146,7 +156,7 @@ function MenuItem({ item }: MenuItemProps) {
   const disabled = item.disabled === true;
 
   return (
-    <li className="border-b border-font-gray">
+    <li className={`border-b border-font-gray ${item.mobileOnly ? "md:hidden" : ""}`}>
       {isLeaf ? (
         !disabled ? (
           <Link href={item.href ?? "/"} className={enabledItemClassName}>
