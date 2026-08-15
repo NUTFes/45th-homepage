@@ -36,6 +36,7 @@ type MenuParentItem = {
   icon: LucideIcon;
   children: SubMenuItem[];
   disabled?: boolean;
+  mobileOnly?: boolean;
 };
 
 type MenuItem = MenuLeafItem | MenuParentItem;
