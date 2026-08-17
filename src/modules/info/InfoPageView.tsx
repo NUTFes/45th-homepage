@@ -19,7 +19,7 @@ const MAP_IMAGE = {
 } as const;
 
 const TSHIRT_IMAGE = {
-  aspect: "aspect-[450/232]",
+  aspect: "aspect-[312/234]",
   alt: "技大祭Tシャツ",
   caption: "技大祭Tシャツ",
   placeholderNote: "技大祭Tシャツ画像",
