@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Button, Dialog, DialogTrigger, Modal, ModalOverlay } from "react-aria-components";
 
 export type InfoImageProps = {
@@ -37,16 +38,6 @@ function ImageBox({
   placeholderNote,
   fullscreen = false,
 }: InfoImageProps & { fullscreen?: boolean }) {
-  if (fullscreen && src) {
-    return (
-      <img
-        alt={alt}
-        src={src}
-        className="max-h-[90vh] max-w-[95vw] border-2 border-main object-contain"
-      />
-    );
-  }
-
   const sizeClass = fullscreen ? `${aspect} max-h-[85vh] w-[85vw] max-w-250` : `${aspect} w-full`;
 
   return (
@@ -54,12 +45,12 @@ function ImageBox({
       className={`relative flex items-center justify-center overflow-hidden border-2 border-main ${sizeClass}`}
     >
       {src ? (
-        <img
+        <Image
           alt={alt}
           src={src}
-          loading="lazy"
-          decoding="async"
-          className="absolute inset-0 size-full object-cover"
+          fill
+          sizes={fullscreen ? "85vw" : "(min-width: 1024px) 50vw, 100vw"}
+          className={fullscreen ? "object-contain" : "object-cover"}
         />
       ) : (
         <Placeholder placeholderTitle={placeholderTitle} placeholderNote={placeholderNote} />
