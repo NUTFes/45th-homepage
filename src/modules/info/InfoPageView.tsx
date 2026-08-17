@@ -22,8 +22,7 @@ const TSHIRT_IMAGE = {
   aspect: "aspect-[450/232]",
   alt: "技大祭Tシャツ",
   caption: "技大祭Tシャツ",
-  placeholderTitle: "T-SHIRT",
-  placeholderNote: "NO IMAGE",
+  placeholderNote: "技大祭Tシャツ画像",
 } as const;
 
 const DISTRIBUTION_ITEMS: readonly InfoItem[] = [
@@ -103,11 +102,6 @@ function InfoListItem({ item }: { item: InfoItem }) {
   );
 }
 
-/**
- * 画像2枚並び。
- * lg未満は縦積み（中央・最大800px）、lg以上は px-pll の中で2枚が自動で幅いっぱいに広がり
- * 左右が padding にピタッと揃う。
- */
 function InfoImagePair({ children }: { children: ReactNode }) {
   return (
     <div className="flex flex-col items-center gap-3l px-3l lg:flex-row lg:items-stretch lg:px-pll">
@@ -116,7 +110,7 @@ function InfoImagePair({ children }: { children: ReactNode }) {
   );
 }
 
-export default function InfoPageView() {
+export default function InfoPageView({ sponsorAds }: { sponsorAds?: ReactNode }) {
   return (
     <div className="flex w-full flex-col bg-base">
       <ImportantBanner />
@@ -183,6 +177,8 @@ export default function InfoPageView() {
             ))}
           </div>
         </Section>
+
+        {sponsorAds ? <div className="lg:hidden">{sponsorAds}</div> : null}
       </div>
     </div>
   );
