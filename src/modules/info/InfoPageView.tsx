@@ -5,11 +5,6 @@ import InfoImage, { type InfoImageProps } from "./ui/InfoImage";
 
 type InfoItem = { title: string; body: string; image?: InfoImageProps };
 
-const HELP_DESCRIPTIONS: readonly [string, string] = [
-  "案内所は、講義棟前と体育館前にございます。ご来場の際は、こちらでパンフレットやガイドマップなどの配布物をお受け取りください。",
-  "体調不良や落とし物など、お困りの際は案内所へお立ち寄りいただくか、技大祭Tシャツを着用したスタッフまでお声がけください。",
-];
-
 const MAP_IMAGE: InfoImageProps = {
   aspect: "aspect-[312/234]",
   alt: "会場マップ",
@@ -24,6 +19,19 @@ const TSHIRT_IMAGE: InfoImageProps = {
   caption: "技大祭Tシャツ",
   placeholderNote: "技大祭Tシャツ画像",
 };
+
+const HELP_ITEMS: readonly { description: string; image: InfoImageProps }[] = [
+  {
+    description:
+      "案内所は、講義棟前と体育館前にございます。ご来場の際は、こちらでパンフレットやガイドマップなどの配布物をお受け取りください。",
+    image: MAP_IMAGE,
+  },
+  {
+    description:
+      "体調不良や落とし物など、お困りの際は案内所へお立ち寄りいただくか、技大祭Tシャツを着用したスタッフまでお声がけください。",
+    image: TSHIRT_IMAGE,
+  },
+];
 
 const PAMPHLET_IMAGE: InfoImageProps = {
   aspect: "aspect-[326/201]",
@@ -68,7 +76,16 @@ const DISTRIBUTION_ITEMS: readonly InfoItem[] = [
   },
 ];
 
-const DISTRIBUTION_IMAGE_INDEX = 3;
+type DistributionImageItem = InfoItem & { image: InfoImageProps };
+
+const DISTRIBUTION_IMAGES = DISTRIBUTION_ITEMS.filter(
+  (item): item is DistributionImageItem => item.image !== undefined,
+);
+
+const DISTRIBUTION_SPLIT = DISTRIBUTION_ITEMS.reduce(
+  (split, item, index) => (item.image ? index + 1 : split),
+  0,
+);
 
 const LOST_ITEMS: readonly InfoItem[] = [
   {
@@ -133,28 +150,28 @@ export default function InfoPageView({ sponsorAds }: { sponsorAds?: ReactNode })
           <SectionHeading>案内所</SectionHeading>
 
           <div className="flex flex-col gap-ll lg:hidden">
-            <div className="flex flex-col gap-s">
-              <p className="px-ll text-text text-white">{HELP_DESCRIPTIONS[0]}</p>
-              <div className="px-3l">
-                <InfoImage {...MAP_IMAGE} />
+            {HELP_ITEMS.map((item) => (
+              <div key={item.image.alt} className="flex flex-col gap-s">
+                <p className="px-ll text-text text-white">{item.description}</p>
+                <div className="px-3l">
+                  <InfoImage {...item.image} />
+                </div>
               </div>
-            </div>
-            <div className="flex flex-col gap-s">
-              <p className="px-ll text-text text-white">{HELP_DESCRIPTIONS[1]}</p>
-              <div className="px-3l">
-                <InfoImage {...TSHIRT_IMAGE} />
-              </div>
-            </div>
+            ))}
           </div>
 
           <div className="hidden flex-col gap-ll lg:flex">
             <div className="flex flex-col gap-l px-pll">
-              <p className="text-Ptext text-white">{HELP_DESCRIPTIONS[0]}</p>
-              <p className="text-Ptext text-white">{HELP_DESCRIPTIONS[1]}</p>
+              {HELP_ITEMS.map((item) => (
+                <p key={item.image.alt} className="text-Ptext text-white">
+                  {item.description}
+                </p>
+              ))}
             </div>
             <InfoImagePair>
-              <InfoImage {...MAP_IMAGE} />
-              <InfoImage {...TSHIRT_IMAGE} />
+              {HELP_ITEMS.map((item) => (
+                <InfoImage key={item.image.alt} {...item.image} />
+              ))}
             </InfoImagePair>
           </div>
         </section>
@@ -184,16 +201,17 @@ export default function InfoPageView({ sponsorAds }: { sponsorAds?: ReactNode })
 
             <div className="hidden flex-col gap-3l lg:flex">
               <div className="flex flex-col gap-3l px-pll">
-                {DISTRIBUTION_ITEMS.slice(0, DISTRIBUTION_IMAGE_INDEX).map((item) => (
+                {DISTRIBUTION_ITEMS.slice(0, DISTRIBUTION_SPLIT).map((item) => (
                   <InfoListItem key={item.title} item={item} />
                 ))}
               </div>
               <InfoImagePair>
-                <InfoImage {...PAMPHLET_IMAGE} />
-                <InfoImage {...GUIDEMAP_IMAGE} />
+                {DISTRIBUTION_IMAGES.map((item) => (
+                  <InfoImage key={item.title} {...item.image} />
+                ))}
               </InfoImagePair>
               <div className="flex flex-col gap-3l px-pll">
-                {DISTRIBUTION_ITEMS.slice(DISTRIBUTION_IMAGE_INDEX).map((item) => (
+                {DISTRIBUTION_ITEMS.slice(DISTRIBUTION_SPLIT).map((item) => (
                   <InfoListItem key={item.title} item={item} />
                 ))}
               </div>
