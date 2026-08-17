@@ -72,7 +72,7 @@ export default function InfoImage(props: InfoImageProps) {
   const { alt, caption } = props;
 
   return (
-    <figure className="flex w-full max-w-200 min-w-0 flex-col gap-ss lg:max-w-none lg:flex-1">
+    <figure className="flex w-full min-w-0 max-w-200 flex-col gap-ss lg:max-w-none lg:flex-1">
       <div className="flex flex-1 items-center">
         <DialogTrigger>
           <Button
