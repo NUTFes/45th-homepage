@@ -16,9 +16,15 @@ function Placeholder({
   placeholderNote,
 }: Pick<InfoImageProps, "placeholderTitle" | "placeholderNote">) {
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-base text-center text-main">
-      {placeholderTitle ? <p className="font-kaisotai text-[24px]">{placeholderTitle}</p> : null}
-      {placeholderNote ? <p className="text-text-large">{placeholderNote}</p> : null}
+    <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-base px-m text-center">
+      {placeholderTitle ? (
+        <p className="font-kaisotai text-[24px] text-main">{placeholderTitle}</p>
+      ) : null}
+      {placeholderNote ? (
+        <p className={placeholderTitle ? "text-text-large text-main" : "text-text text-font-main"}>
+          {placeholderNote}
+        </p>
+      ) : null}
     </div>
   );
 }
@@ -96,7 +102,7 @@ export default function InfoImage(props: InfoImageProps) {
         </DialogTrigger>
       </div>
       {caption ? (
-        <figcaption className="hidden text-center text-Ptext-large text-white lg:block">
+        <figcaption className="hidden text-center text-text text-font-main lg:block">
           {caption}
         </figcaption>
       ) : null}
