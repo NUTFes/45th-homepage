@@ -1,29 +1,43 @@
 import type { ReactNode } from "react";
 
 import SectionTitle from "@/components/ui/SectionTitle";
-import InfoImage from "./ui/InfoImage";
+import InfoImage, { type InfoImageProps } from "./ui/InfoImage";
 
-type InfoItem = { title: string; body: string };
+type InfoItem = { title: string; body: string; image?: InfoImageProps };
 
 const HELP_DESCRIPTIONS: readonly [string, string] = [
   "案内所は、講義棟前と体育館前にございます。ご来場の際は、こちらでパンフレットやガイドマップなどの配布物をお受け取りください。",
   "体調不良や落とし物など、お困りの際は案内所へお立ち寄りいただくか、技大祭Tシャツを着用したスタッフまでお声がけください。",
 ];
 
-const MAP_IMAGE = {
+const MAP_IMAGE: InfoImageProps = {
   aspect: "aspect-[312/234]",
   alt: "会場マップ",
   caption: "会場マップ",
   placeholderTitle: "MAP",
   placeholderNote: "NO IMAGE",
-} as const;
+};
 
-const TSHIRT_IMAGE = {
+const TSHIRT_IMAGE: InfoImageProps = {
   aspect: "aspect-[312/234]",
   alt: "技大祭Tシャツ",
   caption: "技大祭Tシャツ",
   placeholderNote: "技大祭Tシャツ画像",
-} as const;
+};
+
+const PAMPHLET_IMAGE: InfoImageProps = {
+  aspect: "aspect-[326/201]",
+  alt: "パンフレット",
+  caption: "パンフレット",
+  placeholderNote: "パンフデジタル画像",
+};
+
+const GUIDEMAP_IMAGE: InfoImageProps = {
+  aspect: "aspect-[326/201]",
+  alt: "ガイドマップ",
+  caption: "ガイドマップ",
+  placeholderNote: "ガイドマップデジタル画像",
+};
 
 const DISTRIBUTION_ITEMS: readonly InfoItem[] = [
   {
@@ -33,10 +47,12 @@ const DISTRIBUTION_ITEMS: readonly InfoItem[] = [
   {
     title: "パンフレット",
     body: "企画紹介やタイムスケジュールなど、技大祭をより楽しむための情報が詰まったパンフレットです。謎解きの回答欄等も掲載しているので、ご来場の際はぜひお受け取りください！",
+    image: PAMPHLET_IMAGE,
   },
   {
     title: "ガイドマップ",
     body: "会場全体の配置をひと目で確認できるガイドマップです。企画や施設の場所を確認しながら、スムーズに技大祭をお楽しみいただけます。",
+    image: GUIDEMAP_IMAGE,
   },
   {
     title: "スタンプラリー台紙",
@@ -77,14 +93,11 @@ function ImportantBanner() {
   );
 }
 
-function Section({ title, children }: { title: string; children: ReactNode }) {
+function SectionHeading({ children }: { children: string }) {
   return (
-    <section className="flex flex-col gap-ll md:gap-3l">
-      <div className="md:px-pl">
-        <SectionTitle title={title} />
-      </div>
-      {children}
-    </section>
+    <div className="md:px-pl">
+      <SectionTitle title={children} />
+    </div>
   );
 }
 
@@ -115,16 +128,22 @@ export default function InfoPageView({ sponsorAds }: { sponsorAds?: ReactNode })
     <div className="flex w-full flex-col bg-base">
       <ImportantBanner />
 
-      <div className="flex flex-col gap-4l py-4l md:gap-pm md:py-5l">
-        <Section title="案内所">
-          <div className="flex flex-col gap-l lg:hidden">
-            <p className="px-ll text-text text-white">{HELP_DESCRIPTIONS[0]}</p>
-            <div className="px-3l">
-              <InfoImage {...MAP_IMAGE} />
+      <div className="flex flex-col gap-4l py-4l md:gap-pm md:pt-5l md:pb-pm">
+        <section className="flex flex-col gap-s lg:gap-4l">
+          <SectionHeading>案内所</SectionHeading>
+
+          <div className="flex flex-col gap-ll lg:hidden">
+            <div className="flex flex-col gap-s">
+              <p className="px-ll text-text text-white">{HELP_DESCRIPTIONS[0]}</p>
+              <div className="px-3l">
+                <InfoImage {...MAP_IMAGE} />
+              </div>
             </div>
-            <p className="px-ll text-text text-white">{HELP_DESCRIPTIONS[1]}</p>
-            <div className="px-3l">
-              <InfoImage {...TSHIRT_IMAGE} />
+            <div className="flex flex-col gap-s">
+              <p className="px-ll text-text text-white">{HELP_DESCRIPTIONS[1]}</p>
+              <div className="px-3l">
+                <InfoImage {...TSHIRT_IMAGE} />
+              </div>
             </div>
           </div>
 
@@ -138,45 +157,59 @@ export default function InfoPageView({ sponsorAds }: { sponsorAds?: ReactNode })
               <InfoImage {...TSHIRT_IMAGE} />
             </InfoImagePair>
           </div>
-        </Section>
+        </section>
 
-        <Section title="配布物">
-          <p className="px-ll text-text text-white md:px-pll md:text-Ptext">
-            以下を案内所で配布しています。
-          </p>
-          <div className="flex flex-col gap-3l px-ll md:px-pll">
-            {DISTRIBUTION_ITEMS.slice(0, DISTRIBUTION_IMAGE_INDEX).map((item) => (
-              <InfoListItem key={item.title} item={item} />
-            ))}
-          </div>
-          <InfoImagePair>
-            <InfoImage
-              aspect="aspect-[326/201]"
-              alt="パンフレット"
-              caption="パンフレット"
-              placeholderNote="パンフデジタル画像"
-            />
-            <InfoImage
-              aspect="aspect-[326/201]"
-              alt="ガイドマップ"
-              caption="ガイドマップ"
-              placeholderNote="ガイドマップデジタル画像"
-            />
-          </InfoImagePair>
-          <div className="flex flex-col gap-3l px-ll md:px-pll">
-            {DISTRIBUTION_ITEMS.slice(DISTRIBUTION_IMAGE_INDEX).map((item) => (
-              <InfoListItem key={item.title} item={item} />
-            ))}
-          </div>
-        </Section>
+        <section className="flex flex-col gap-s lg:gap-ll">
+          <SectionHeading>配布物</SectionHeading>
 
-        <Section title="落とし物">
+          <div className="flex flex-col gap-3l lg:gap-ll">
+            <p className="px-ll text-text text-white md:px-pll md:text-Ptext">
+              以下を案内所で配布しています。
+            </p>
+
+            <div className="flex flex-col gap-3l lg:hidden">
+              {DISTRIBUTION_ITEMS.map((item) => (
+                <div key={item.title} className="flex flex-col gap-s">
+                  <div className="px-ll">
+                    <InfoListItem item={item} />
+                  </div>
+                  {item.image ? (
+                    <div className="px-3l">
+                      <InfoImage {...item.image} />
+                    </div>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+
+            <div className="hidden flex-col gap-3l lg:flex">
+              <div className="flex flex-col gap-3l px-pll">
+                {DISTRIBUTION_ITEMS.slice(0, DISTRIBUTION_IMAGE_INDEX).map((item) => (
+                  <InfoListItem key={item.title} item={item} />
+                ))}
+              </div>
+              <InfoImagePair>
+                <InfoImage {...PAMPHLET_IMAGE} />
+                <InfoImage {...GUIDEMAP_IMAGE} />
+              </InfoImagePair>
+              <div className="flex flex-col gap-3l px-pll">
+                {DISTRIBUTION_ITEMS.slice(DISTRIBUTION_IMAGE_INDEX).map((item) => (
+                  <InfoListItem key={item.title} item={item} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="flex flex-col gap-l lg:gap-ll">
+          <SectionHeading>落とし物</SectionHeading>
+
           <div className="flex flex-col gap-3l px-ll md:px-pll">
             {LOST_ITEMS.map((item) => (
               <InfoListItem key={item.title} item={item} />
             ))}
           </div>
-        </Section>
+        </section>
 
         {sponsorAds ? <div className="lg:hidden">{sponsorAds}</div> : null}
       </div>
