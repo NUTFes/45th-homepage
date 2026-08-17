@@ -86,7 +86,7 @@ export default function InfoImage(props: InfoImageProps) {
             className="fixed inset-0 z-200 flex items-center justify-center bg-black/80 p-m backdrop-blur-sm entering:animate-in entering:fade-in exiting:animate-out exiting:fade-out"
           >
             <Modal className="outline-none entering:animate-in entering:zoom-in-95 exiting:animate-out exiting:zoom-out-95">
-              <Dialog className="outline-none">
+              <Dialog aria-label={`${caption ?? alt}の全画面表示`} className="outline-none">
                 {({ close }) => (
                   <Button
                     aria-label="全画面表示を閉じる"

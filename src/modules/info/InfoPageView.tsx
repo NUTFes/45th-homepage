@@ -129,7 +129,7 @@ export default function InfoPageView({ sponsorAds }: { sponsorAds?: ReactNode })
       <ImportantBanner />
 
       <div className="flex flex-col gap-4l py-4l md:gap-pm md:pt-5l md:pb-pm">
-        <section className="flex flex-col gap-s lg:gap-4l">
+        <section aria-label="案内所" className="flex flex-col gap-s lg:gap-4l">
           <SectionHeading>案内所</SectionHeading>
 
           <div className="flex flex-col gap-ll lg:hidden">
@@ -159,7 +159,7 @@ export default function InfoPageView({ sponsorAds }: { sponsorAds?: ReactNode })
           </div>
         </section>
 
-        <section className="flex flex-col gap-s lg:gap-ll">
+        <section aria-label="配布物" className="flex flex-col gap-s lg:gap-ll">
           <SectionHeading>配布物</SectionHeading>
 
           <div className="flex flex-col gap-3l lg:gap-ll">
@@ -201,7 +201,7 @@ export default function InfoPageView({ sponsorAds }: { sponsorAds?: ReactNode })
           </div>
         </section>
 
-        <section className="flex flex-col gap-l lg:gap-ll">
+        <section aria-label="落とし物" className="flex flex-col gap-l lg:gap-ll">
           <SectionHeading>落とし物</SectionHeading>
 
           <div className="flex flex-col gap-3l px-ll md:px-pll">
