@@ -67,7 +67,7 @@ async function NewsPageContent({ searchParams }: NewsPageViewProps) {
           <NewsPagination currentPage={newsData.page} totalPages={newsData.totalPages} />
         </div>
       </div>
-      <div className="relative flex items-center justify-center">
+      <div className="relative flex items-center justify-center pb-pm">
         <ButtonMain href="/" title="トップへ戻る" />
       </div>
     </>

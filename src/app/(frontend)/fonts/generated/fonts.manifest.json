@@ -1,0 +1,1474 @@
+{
+  "schemaVersion": 2,
+  "inputs": [
+    {
+      "path": "assets/fonts/joyo-kanji.txt",
+      "sha256": "1e12b1c00c4bef2bf1bf2881428c42d9da9dc1f6016f7e61be2ee78003c0ea28"
+    },
+    {
+      "path": "assets/fonts/kaisotai-next/Kaisotai-Next-UP-B.woff2",
+      "sha256": "57a5725019bcd6f91daf8b69675dc363a679fc89b5f60316a82cc39be8a45664"
+    },
+    {
+      "path": "assets/fonts/zen-kaku-gothic-new/ZenKakuGothicNew-Bold.ttf",
+      "sha256": "0081cedabc4921982fcd061f845a005664ac7fb642af2dd34b4007bc63ccd235"
+    },
+    {
+      "path": "assets/fonts/zen-kaku-gothic-new/ZenKakuGothicNew-Medium.ttf",
+      "sha256": "651a3f7280b7f36262601ee76d8388a8dc4372dcc67aff025a608939a562b525"
+    },
+    {
+      "path": "assets/fonts/zen-kaku-gothic-new/ZenKakuGothicNew-Regular.ttf",
+      "sha256": "b840cd07a67d89cacca44249ae49aa99ee7640eb5ce623be8d8983d6aabac801"
+    },
+    {
+      "path": "scripts/font-assets.cjs",
+      "sha256": "02fd076ad288c3b90361dd10061cc26e09061d2b6a134210c49cb0bb1e1af62e"
+    }
+  ],
+  "fonts": [
+    {
+      "id": "kaisotai",
+      "family": "Kaisotai Next 45th",
+      "source": "assets/fonts/kaisotai-next/Kaisotai-Next-UP-B.woff2",
+      "sha256": "57a5725019bcd6f91daf8b69675dc363a679fc89b5f60316a82cc39be8a45664",
+      "codePointCount": 5007,
+      "commonProfile": "display",
+      "weight": null,
+      "style": "normal"
+    },
+    {
+      "id": "zen-kaku-400",
+      "family": "Zen Kaku Gothic New 45th",
+      "source": "assets/fonts/zen-kaku-gothic-new/ZenKakuGothicNew-Regular.ttf",
+      "sha256": "b840cd07a67d89cacca44249ae49aa99ee7640eb5ce623be8d8983d6aabac801",
+      "codePointCount": 7737,
+      "commonProfile": "content",
+      "weight": "400",
+      "style": "normal"
+    },
+    {
+      "id": "zen-kaku-500",
+      "family": "Zen Kaku Gothic New 45th",
+      "source": "assets/fonts/zen-kaku-gothic-new/ZenKakuGothicNew-Medium.ttf",
+      "sha256": "651a3f7280b7f36262601ee76d8388a8dc4372dcc67aff025a608939a562b525",
+      "codePointCount": 7737,
+      "commonProfile": "content",
+      "weight": "500",
+      "style": "normal"
+    },
+    {
+      "id": "zen-kaku-700",
+      "family": "Zen Kaku Gothic New 45th",
+      "source": "assets/fonts/zen-kaku-gothic-new/ZenKakuGothicNew-Bold.ttf",
+      "sha256": "0081cedabc4921982fcd061f845a005664ac7fb642af2dd34b4007bc63ccd235",
+      "codePointCount": 7737,
+      "commonProfile": "content",
+      "weight": "700",
+      "style": "normal"
+    }
+  ],
+  "chunks": [
+    {
+      "fontId": "kaisotai",
+      "family": "Kaisotai Next 45th",
+      "weight": null,
+      "style": "normal",
+      "kind": "common",
+      "index": 0,
+      "label": "common",
+      "fileBase": "kaisotai-next-common",
+      "codePointCount": 460,
+      "asset": "kaisotai-next-common.b54fc4a2da47.woff2"
+    },
+    {
+      "fontId": "kaisotai",
+      "family": "Kaisotai Next 45th",
+      "weight": null,
+      "style": "normal",
+      "kind": "extended",
+      "index": 1,
+      "label": "extended-01",
+      "fileBase": "kaisotai-next-extended-01",
+      "codePointCount": 256,
+      "asset": "kaisotai-next-extended-01.4213f8117972.woff2"
+    },
+    {
+      "fontId": "kaisotai",
+      "family": "Kaisotai Next 45th",
+      "weight": null,
+      "style": "normal",
+      "kind": "extended",
+      "index": 2,
+      "label": "extended-02",
+      "fileBase": "kaisotai-next-extended-02",
+      "codePointCount": 256,
+      "asset": "kaisotai-next-extended-02.2f7003b2d369.woff2"
+    },
+    {
+      "fontId": "kaisotai",
+      "family": "Kaisotai Next 45th",
+      "weight": null,
+      "style": "normal",
+      "kind": "extended",
+      "index": 3,
+      "label": "extended-03",
+      "fileBase": "kaisotai-next-extended-03",
+      "codePointCount": 256,
+      "asset": "kaisotai-next-extended-03.b09e62262227.woff2"
+    },
+    {
+      "fontId": "kaisotai",
+      "family": "Kaisotai Next 45th",
+      "weight": null,
+      "style": "normal",
+      "kind": "extended",
+      "index": 4,
+      "label": "extended-04",
+      "fileBase": "kaisotai-next-extended-04",
+      "codePointCount": 256,
+      "asset": "kaisotai-next-extended-04.2571094e3228.woff2"
+    },
+    {
+      "fontId": "kaisotai",
+      "family": "Kaisotai Next 45th",
+      "weight": null,
+      "style": "normal",
+      "kind": "extended",
+      "index": 5,
+      "label": "extended-05",
+      "fileBase": "kaisotai-next-extended-05",
+      "codePointCount": 256,
+      "asset": "kaisotai-next-extended-05.f1e6a9b1e20d.woff2"
+    },
+    {
+      "fontId": "kaisotai",
+      "family": "Kaisotai Next 45th",
+      "weight": null,
+      "style": "normal",
+      "kind": "extended",
+      "index": 6,
+      "label": "extended-06",
+      "fileBase": "kaisotai-next-extended-06",
+      "codePointCount": 256,
+      "asset": "kaisotai-next-extended-06.5b6eb4530b4d.woff2"
+    },
+    {
+      "fontId": "kaisotai",
+      "family": "Kaisotai Next 45th",
+      "weight": null,
+      "style": "normal",
+      "kind": "extended",
+      "index": 7,
+      "label": "extended-07",
+      "fileBase": "kaisotai-next-extended-07",
+      "codePointCount": 256,
+      "asset": "kaisotai-next-extended-07.b11252a85a4a.woff2"
+    },
+    {
+      "fontId": "kaisotai",
+      "family": "Kaisotai Next 45th",
+      "weight": null,
+      "style": "normal",
+      "kind": "extended",
+      "index": 8,
+      "label": "extended-08",
+      "fileBase": "kaisotai-next-extended-08",
+      "codePointCount": 256,
+      "asset": "kaisotai-next-extended-08.9fe829e4db49.woff2"
+    },
+    {
+      "fontId": "kaisotai",
+      "family": "Kaisotai Next 45th",
+      "weight": null,
+      "style": "normal",
+      "kind": "extended",
+      "index": 9,
+      "label": "extended-09",
+      "fileBase": "kaisotai-next-extended-09",
+      "codePointCount": 256,
+      "asset": "kaisotai-next-extended-09.7e30173acd11.woff2"
+    },
+    {
+      "fontId": "kaisotai",
+      "family": "Kaisotai Next 45th",
+      "weight": null,
+      "style": "normal",
+      "kind": "extended",
+      "index": 10,
+      "label": "extended-10",
+      "fileBase": "kaisotai-next-extended-10",
+      "codePointCount": 256,
+      "asset": "kaisotai-next-extended-10.a61802b67c26.woff2"
+    },
+    {
+      "fontId": "kaisotai",
+      "family": "Kaisotai Next 45th",
+      "weight": null,
+      "style": "normal",
+      "kind": "extended",
+      "index": 11,
+      "label": "extended-11",
+      "fileBase": "kaisotai-next-extended-11",
+      "codePointCount": 256,
+      "asset": "kaisotai-next-extended-11.e32c280cdf56.woff2"
+    },
+    {
+      "fontId": "kaisotai",
+      "family": "Kaisotai Next 45th",
+      "weight": null,
+      "style": "normal",
+      "kind": "extended",
+      "index": 12,
+      "label": "extended-12",
+      "fileBase": "kaisotai-next-extended-12",
+      "codePointCount": 256,
+      "asset": "kaisotai-next-extended-12.503c96e715cb.woff2"
+    },
+    {
+      "fontId": "kaisotai",
+      "family": "Kaisotai Next 45th",
+      "weight": null,
+      "style": "normal",
+      "kind": "extended",
+      "index": 13,
+      "label": "extended-13",
+      "fileBase": "kaisotai-next-extended-13",
+      "codePointCount": 256,
+      "asset": "kaisotai-next-extended-13.5ca1d8148cdb.woff2"
+    },
+    {
+      "fontId": "kaisotai",
+      "family": "Kaisotai Next 45th",
+      "weight": null,
+      "style": "normal",
+      "kind": "extended",
+      "index": 14,
+      "label": "extended-14",
+      "fileBase": "kaisotai-next-extended-14",
+      "codePointCount": 256,
+      "asset": "kaisotai-next-extended-14.120349ff7fd4.woff2"
+    },
+    {
+      "fontId": "kaisotai",
+      "family": "Kaisotai Next 45th",
+      "weight": null,
+      "style": "normal",
+      "kind": "extended",
+      "index": 15,
+      "label": "extended-15",
+      "fileBase": "kaisotai-next-extended-15",
+      "codePointCount": 256,
+      "asset": "kaisotai-next-extended-15.90d0b3125a94.woff2"
+    },
+    {
+      "fontId": "kaisotai",
+      "family": "Kaisotai Next 45th",
+      "weight": null,
+      "style": "normal",
+      "kind": "extended",
+      "index": 16,
+      "label": "extended-16",
+      "fileBase": "kaisotai-next-extended-16",
+      "codePointCount": 256,
+      "asset": "kaisotai-next-extended-16.b7edb4d6c911.woff2"
+    },
+    {
+      "fontId": "kaisotai",
+      "family": "Kaisotai Next 45th",
+      "weight": null,
+      "style": "normal",
+      "kind": "extended",
+      "index": 17,
+      "label": "extended-17",
+      "fileBase": "kaisotai-next-extended-17",
+      "codePointCount": 256,
+      "asset": "kaisotai-next-extended-17.76e858da3074.woff2"
+    },
+    {
+      "fontId": "kaisotai",
+      "family": "Kaisotai Next 45th",
+      "weight": null,
+      "style": "normal",
+      "kind": "extended",
+      "index": 18,
+      "label": "extended-18",
+      "fileBase": "kaisotai-next-extended-18",
+      "codePointCount": 195,
+      "asset": "kaisotai-next-extended-18.6bb3ecfd17f9.woff2"
+    },
+    {
+      "fontId": "zen-kaku-400",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "400",
+      "style": "normal",
+      "kind": "common",
+      "index": 0,
+      "label": "common",
+      "fileBase": "zen-kaku-gothic-new-400-common",
+      "codePointCount": 2795,
+      "asset": "zen-kaku-gothic-new-400-common.509868dd2a3a.woff2"
+    },
+    {
+      "fontId": "zen-kaku-400",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "400",
+      "style": "normal",
+      "kind": "extended",
+      "index": 1,
+      "label": "extended-01",
+      "fileBase": "zen-kaku-gothic-new-400-extended-01",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-400-extended-01.c39d802d8c0b.woff2"
+    },
+    {
+      "fontId": "zen-kaku-400",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "400",
+      "style": "normal",
+      "kind": "extended",
+      "index": 2,
+      "label": "extended-02",
+      "fileBase": "zen-kaku-gothic-new-400-extended-02",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-400-extended-02.f9d35df9f1f5.woff2"
+    },
+    {
+      "fontId": "zen-kaku-400",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "400",
+      "style": "normal",
+      "kind": "extended",
+      "index": 3,
+      "label": "extended-03",
+      "fileBase": "zen-kaku-gothic-new-400-extended-03",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-400-extended-03.2f2908f17163.woff2"
+    },
+    {
+      "fontId": "zen-kaku-400",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "400",
+      "style": "normal",
+      "kind": "extended",
+      "index": 4,
+      "label": "extended-04",
+      "fileBase": "zen-kaku-gothic-new-400-extended-04",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-400-extended-04.cec3322d7a52.woff2"
+    },
+    {
+      "fontId": "zen-kaku-400",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "400",
+      "style": "normal",
+      "kind": "extended",
+      "index": 5,
+      "label": "extended-05",
+      "fileBase": "zen-kaku-gothic-new-400-extended-05",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-400-extended-05.100e8e40dcd5.woff2"
+    },
+    {
+      "fontId": "zen-kaku-400",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "400",
+      "style": "normal",
+      "kind": "extended",
+      "index": 6,
+      "label": "extended-06",
+      "fileBase": "zen-kaku-gothic-new-400-extended-06",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-400-extended-06.c164457417ed.woff2"
+    },
+    {
+      "fontId": "zen-kaku-400",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "400",
+      "style": "normal",
+      "kind": "extended",
+      "index": 7,
+      "label": "extended-07",
+      "fileBase": "zen-kaku-gothic-new-400-extended-07",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-400-extended-07.9079413ba0b3.woff2"
+    },
+    {
+      "fontId": "zen-kaku-400",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "400",
+      "style": "normal",
+      "kind": "extended",
+      "index": 8,
+      "label": "extended-08",
+      "fileBase": "zen-kaku-gothic-new-400-extended-08",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-400-extended-08.78d2ce4a39c5.woff2"
+    },
+    {
+      "fontId": "zen-kaku-400",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "400",
+      "style": "normal",
+      "kind": "extended",
+      "index": 9,
+      "label": "extended-09",
+      "fileBase": "zen-kaku-gothic-new-400-extended-09",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-400-extended-09.1102a635083c.woff2"
+    },
+    {
+      "fontId": "zen-kaku-400",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "400",
+      "style": "normal",
+      "kind": "extended",
+      "index": 10,
+      "label": "extended-10",
+      "fileBase": "zen-kaku-gothic-new-400-extended-10",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-400-extended-10.41472781897a.woff2"
+    },
+    {
+      "fontId": "zen-kaku-400",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "400",
+      "style": "normal",
+      "kind": "extended",
+      "index": 11,
+      "label": "extended-11",
+      "fileBase": "zen-kaku-gothic-new-400-extended-11",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-400-extended-11.cd9d85dc74d2.woff2"
+    },
+    {
+      "fontId": "zen-kaku-400",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "400",
+      "style": "normal",
+      "kind": "extended",
+      "index": 12,
+      "label": "extended-12",
+      "fileBase": "zen-kaku-gothic-new-400-extended-12",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-400-extended-12.722ca2b868c1.woff2"
+    },
+    {
+      "fontId": "zen-kaku-400",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "400",
+      "style": "normal",
+      "kind": "extended",
+      "index": 13,
+      "label": "extended-13",
+      "fileBase": "zen-kaku-gothic-new-400-extended-13",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-400-extended-13.b6146f8b0418.woff2"
+    },
+    {
+      "fontId": "zen-kaku-400",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "400",
+      "style": "normal",
+      "kind": "extended",
+      "index": 14,
+      "label": "extended-14",
+      "fileBase": "zen-kaku-gothic-new-400-extended-14",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-400-extended-14.63b12cbbf3a6.woff2"
+    },
+    {
+      "fontId": "zen-kaku-400",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "400",
+      "style": "normal",
+      "kind": "extended",
+      "index": 15,
+      "label": "extended-15",
+      "fileBase": "zen-kaku-gothic-new-400-extended-15",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-400-extended-15.cae23ea793ee.woff2"
+    },
+    {
+      "fontId": "zen-kaku-400",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "400",
+      "style": "normal",
+      "kind": "extended",
+      "index": 16,
+      "label": "extended-16",
+      "fileBase": "zen-kaku-gothic-new-400-extended-16",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-400-extended-16.f553d93d8c3a.woff2"
+    },
+    {
+      "fontId": "zen-kaku-400",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "400",
+      "style": "normal",
+      "kind": "extended",
+      "index": 17,
+      "label": "extended-17",
+      "fileBase": "zen-kaku-gothic-new-400-extended-17",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-400-extended-17.8959f675dcf0.woff2"
+    },
+    {
+      "fontId": "zen-kaku-400",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "400",
+      "style": "normal",
+      "kind": "extended",
+      "index": 18,
+      "label": "extended-18",
+      "fileBase": "zen-kaku-gothic-new-400-extended-18",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-400-extended-18.bb176a2a29d4.woff2"
+    },
+    {
+      "fontId": "zen-kaku-400",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "400",
+      "style": "normal",
+      "kind": "extended",
+      "index": 19,
+      "label": "extended-19",
+      "fileBase": "zen-kaku-gothic-new-400-extended-19",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-400-extended-19.6785ed6a913b.woff2"
+    },
+    {
+      "fontId": "zen-kaku-400",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "400",
+      "style": "normal",
+      "kind": "extended",
+      "index": 20,
+      "label": "extended-20",
+      "fileBase": "zen-kaku-gothic-new-400-extended-20",
+      "codePointCount": 78,
+      "asset": "zen-kaku-gothic-new-400-extended-20.0ec74e88d523.woff2"
+    },
+    {
+      "fontId": "zen-kaku-500",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "500",
+      "style": "normal",
+      "kind": "common",
+      "index": 0,
+      "label": "common",
+      "fileBase": "zen-kaku-gothic-new-500-common",
+      "codePointCount": 2795,
+      "asset": "zen-kaku-gothic-new-500-common.16a4db370e40.woff2"
+    },
+    {
+      "fontId": "zen-kaku-500",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "500",
+      "style": "normal",
+      "kind": "extended",
+      "index": 1,
+      "label": "extended-01",
+      "fileBase": "zen-kaku-gothic-new-500-extended-01",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-500-extended-01.708e5872257a.woff2"
+    },
+    {
+      "fontId": "zen-kaku-500",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "500",
+      "style": "normal",
+      "kind": "extended",
+      "index": 2,
+      "label": "extended-02",
+      "fileBase": "zen-kaku-gothic-new-500-extended-02",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-500-extended-02.37f52b152d55.woff2"
+    },
+    {
+      "fontId": "zen-kaku-500",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "500",
+      "style": "normal",
+      "kind": "extended",
+      "index": 3,
+      "label": "extended-03",
+      "fileBase": "zen-kaku-gothic-new-500-extended-03",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-500-extended-03.158cba858177.woff2"
+    },
+    {
+      "fontId": "zen-kaku-500",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "500",
+      "style": "normal",
+      "kind": "extended",
+      "index": 4,
+      "label": "extended-04",
+      "fileBase": "zen-kaku-gothic-new-500-extended-04",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-500-extended-04.ce12c859d1d3.woff2"
+    },
+    {
+      "fontId": "zen-kaku-500",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "500",
+      "style": "normal",
+      "kind": "extended",
+      "index": 5,
+      "label": "extended-05",
+      "fileBase": "zen-kaku-gothic-new-500-extended-05",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-500-extended-05.2c6f3867433b.woff2"
+    },
+    {
+      "fontId": "zen-kaku-500",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "500",
+      "style": "normal",
+      "kind": "extended",
+      "index": 6,
+      "label": "extended-06",
+      "fileBase": "zen-kaku-gothic-new-500-extended-06",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-500-extended-06.02e170cb9934.woff2"
+    },
+    {
+      "fontId": "zen-kaku-500",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "500",
+      "style": "normal",
+      "kind": "extended",
+      "index": 7,
+      "label": "extended-07",
+      "fileBase": "zen-kaku-gothic-new-500-extended-07",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-500-extended-07.47ab8ca2b157.woff2"
+    },
+    {
+      "fontId": "zen-kaku-500",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "500",
+      "style": "normal",
+      "kind": "extended",
+      "index": 8,
+      "label": "extended-08",
+      "fileBase": "zen-kaku-gothic-new-500-extended-08",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-500-extended-08.59edc94c200a.woff2"
+    },
+    {
+      "fontId": "zen-kaku-500",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "500",
+      "style": "normal",
+      "kind": "extended",
+      "index": 9,
+      "label": "extended-09",
+      "fileBase": "zen-kaku-gothic-new-500-extended-09",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-500-extended-09.94251e231cd8.woff2"
+    },
+    {
+      "fontId": "zen-kaku-500",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "500",
+      "style": "normal",
+      "kind": "extended",
+      "index": 10,
+      "label": "extended-10",
+      "fileBase": "zen-kaku-gothic-new-500-extended-10",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-500-extended-10.7c0992e0bba5.woff2"
+    },
+    {
+      "fontId": "zen-kaku-500",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "500",
+      "style": "normal",
+      "kind": "extended",
+      "index": 11,
+      "label": "extended-11",
+      "fileBase": "zen-kaku-gothic-new-500-extended-11",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-500-extended-11.6f4928c2f5a0.woff2"
+    },
+    {
+      "fontId": "zen-kaku-500",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "500",
+      "style": "normal",
+      "kind": "extended",
+      "index": 12,
+      "label": "extended-12",
+      "fileBase": "zen-kaku-gothic-new-500-extended-12",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-500-extended-12.893f785b0d3e.woff2"
+    },
+    {
+      "fontId": "zen-kaku-500",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "500",
+      "style": "normal",
+      "kind": "extended",
+      "index": 13,
+      "label": "extended-13",
+      "fileBase": "zen-kaku-gothic-new-500-extended-13",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-500-extended-13.011976ecc5a9.woff2"
+    },
+    {
+      "fontId": "zen-kaku-500",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "500",
+      "style": "normal",
+      "kind": "extended",
+      "index": 14,
+      "label": "extended-14",
+      "fileBase": "zen-kaku-gothic-new-500-extended-14",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-500-extended-14.f171ec07d433.woff2"
+    },
+    {
+      "fontId": "zen-kaku-500",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "500",
+      "style": "normal",
+      "kind": "extended",
+      "index": 15,
+      "label": "extended-15",
+      "fileBase": "zen-kaku-gothic-new-500-extended-15",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-500-extended-15.64d51a946577.woff2"
+    },
+    {
+      "fontId": "zen-kaku-500",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "500",
+      "style": "normal",
+      "kind": "extended",
+      "index": 16,
+      "label": "extended-16",
+      "fileBase": "zen-kaku-gothic-new-500-extended-16",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-500-extended-16.1998bc668588.woff2"
+    },
+    {
+      "fontId": "zen-kaku-500",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "500",
+      "style": "normal",
+      "kind": "extended",
+      "index": 17,
+      "label": "extended-17",
+      "fileBase": "zen-kaku-gothic-new-500-extended-17",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-500-extended-17.b1375020a798.woff2"
+    },
+    {
+      "fontId": "zen-kaku-500",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "500",
+      "style": "normal",
+      "kind": "extended",
+      "index": 18,
+      "label": "extended-18",
+      "fileBase": "zen-kaku-gothic-new-500-extended-18",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-500-extended-18.60a2a51195aa.woff2"
+    },
+    {
+      "fontId": "zen-kaku-500",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "500",
+      "style": "normal",
+      "kind": "extended",
+      "index": 19,
+      "label": "extended-19",
+      "fileBase": "zen-kaku-gothic-new-500-extended-19",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-500-extended-19.a4b9679699cf.woff2"
+    },
+    {
+      "fontId": "zen-kaku-500",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "500",
+      "style": "normal",
+      "kind": "extended",
+      "index": 20,
+      "label": "extended-20",
+      "fileBase": "zen-kaku-gothic-new-500-extended-20",
+      "codePointCount": 78,
+      "asset": "zen-kaku-gothic-new-500-extended-20.ef7c25236a4a.woff2"
+    },
+    {
+      "fontId": "zen-kaku-700",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "700",
+      "style": "normal",
+      "kind": "common",
+      "index": 0,
+      "label": "common",
+      "fileBase": "zen-kaku-gothic-new-700-common",
+      "codePointCount": 2795,
+      "asset": "zen-kaku-gothic-new-700-common.77d2580a8500.woff2"
+    },
+    {
+      "fontId": "zen-kaku-700",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "700",
+      "style": "normal",
+      "kind": "extended",
+      "index": 1,
+      "label": "extended-01",
+      "fileBase": "zen-kaku-gothic-new-700-extended-01",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-700-extended-01.49ee910ad912.woff2"
+    },
+    {
+      "fontId": "zen-kaku-700",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "700",
+      "style": "normal",
+      "kind": "extended",
+      "index": 2,
+      "label": "extended-02",
+      "fileBase": "zen-kaku-gothic-new-700-extended-02",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-700-extended-02.2c1642e7215a.woff2"
+    },
+    {
+      "fontId": "zen-kaku-700",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "700",
+      "style": "normal",
+      "kind": "extended",
+      "index": 3,
+      "label": "extended-03",
+      "fileBase": "zen-kaku-gothic-new-700-extended-03",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-700-extended-03.b850a5c74dc5.woff2"
+    },
+    {
+      "fontId": "zen-kaku-700",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "700",
+      "style": "normal",
+      "kind": "extended",
+      "index": 4,
+      "label": "extended-04",
+      "fileBase": "zen-kaku-gothic-new-700-extended-04",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-700-extended-04.459440bd3139.woff2"
+    },
+    {
+      "fontId": "zen-kaku-700",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "700",
+      "style": "normal",
+      "kind": "extended",
+      "index": 5,
+      "label": "extended-05",
+      "fileBase": "zen-kaku-gothic-new-700-extended-05",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-700-extended-05.8810d11b995c.woff2"
+    },
+    {
+      "fontId": "zen-kaku-700",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "700",
+      "style": "normal",
+      "kind": "extended",
+      "index": 6,
+      "label": "extended-06",
+      "fileBase": "zen-kaku-gothic-new-700-extended-06",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-700-extended-06.c4e957fe58ed.woff2"
+    },
+    {
+      "fontId": "zen-kaku-700",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "700",
+      "style": "normal",
+      "kind": "extended",
+      "index": 7,
+      "label": "extended-07",
+      "fileBase": "zen-kaku-gothic-new-700-extended-07",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-700-extended-07.1990be171ee8.woff2"
+    },
+    {
+      "fontId": "zen-kaku-700",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "700",
+      "style": "normal",
+      "kind": "extended",
+      "index": 8,
+      "label": "extended-08",
+      "fileBase": "zen-kaku-gothic-new-700-extended-08",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-700-extended-08.0d74201e30d9.woff2"
+    },
+    {
+      "fontId": "zen-kaku-700",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "700",
+      "style": "normal",
+      "kind": "extended",
+      "index": 9,
+      "label": "extended-09",
+      "fileBase": "zen-kaku-gothic-new-700-extended-09",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-700-extended-09.3892dc95e4d2.woff2"
+    },
+    {
+      "fontId": "zen-kaku-700",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "700",
+      "style": "normal",
+      "kind": "extended",
+      "index": 10,
+      "label": "extended-10",
+      "fileBase": "zen-kaku-gothic-new-700-extended-10",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-700-extended-10.059b70cd03da.woff2"
+    },
+    {
+      "fontId": "zen-kaku-700",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "700",
+      "style": "normal",
+      "kind": "extended",
+      "index": 11,
+      "label": "extended-11",
+      "fileBase": "zen-kaku-gothic-new-700-extended-11",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-700-extended-11.a497d7dc348d.woff2"
+    },
+    {
+      "fontId": "zen-kaku-700",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "700",
+      "style": "normal",
+      "kind": "extended",
+      "index": 12,
+      "label": "extended-12",
+      "fileBase": "zen-kaku-gothic-new-700-extended-12",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-700-extended-12.f64d1f6e2ae7.woff2"
+    },
+    {
+      "fontId": "zen-kaku-700",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "700",
+      "style": "normal",
+      "kind": "extended",
+      "index": 13,
+      "label": "extended-13",
+      "fileBase": "zen-kaku-gothic-new-700-extended-13",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-700-extended-13.aac432bac52f.woff2"
+    },
+    {
+      "fontId": "zen-kaku-700",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "700",
+      "style": "normal",
+      "kind": "extended",
+      "index": 14,
+      "label": "extended-14",
+      "fileBase": "zen-kaku-gothic-new-700-extended-14",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-700-extended-14.5fcdaa431877.woff2"
+    },
+    {
+      "fontId": "zen-kaku-700",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "700",
+      "style": "normal",
+      "kind": "extended",
+      "index": 15,
+      "label": "extended-15",
+      "fileBase": "zen-kaku-gothic-new-700-extended-15",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-700-extended-15.f8b6f9e0e68d.woff2"
+    },
+    {
+      "fontId": "zen-kaku-700",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "700",
+      "style": "normal",
+      "kind": "extended",
+      "index": 16,
+      "label": "extended-16",
+      "fileBase": "zen-kaku-gothic-new-700-extended-16",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-700-extended-16.2337181e2b65.woff2"
+    },
+    {
+      "fontId": "zen-kaku-700",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "700",
+      "style": "normal",
+      "kind": "extended",
+      "index": 17,
+      "label": "extended-17",
+      "fileBase": "zen-kaku-gothic-new-700-extended-17",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-700-extended-17.da7233613c1c.woff2"
+    },
+    {
+      "fontId": "zen-kaku-700",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "700",
+      "style": "normal",
+      "kind": "extended",
+      "index": 18,
+      "label": "extended-18",
+      "fileBase": "zen-kaku-gothic-new-700-extended-18",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-700-extended-18.2b793eb73395.woff2"
+    },
+    {
+      "fontId": "zen-kaku-700",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "700",
+      "style": "normal",
+      "kind": "extended",
+      "index": 19,
+      "label": "extended-19",
+      "fileBase": "zen-kaku-gothic-new-700-extended-19",
+      "codePointCount": 256,
+      "asset": "zen-kaku-gothic-new-700-extended-19.c2033521bbad.woff2"
+    },
+    {
+      "fontId": "zen-kaku-700",
+      "family": "Zen Kaku Gothic New 45th",
+      "weight": "700",
+      "style": "normal",
+      "kind": "extended",
+      "index": 20,
+      "label": "extended-20",
+      "fileBase": "zen-kaku-gothic-new-700-extended-20",
+      "codePointCount": 78,
+      "asset": "zen-kaku-gothic-new-700-extended-20.86c021e8cbd9.woff2"
+    }
+  ],
+  "files": [
+    {
+      "path": "public/font/generated/kaisotai-next-common.b54fc4a2da47.woff2",
+      "bytes": 41344,
+      "sha256": "b54fc4a2da47d12530c06f00ad4e7f28711af36017fc51dbd15a188fd16c6b9a"
+    },
+    {
+      "path": "public/font/generated/kaisotai-next-extended-01.4213f8117972.woff2",
+      "bytes": 14480,
+      "sha256": "4213f8117972095c250d3ebe88f89590bed7c2d9e4b8beec2e218bfe500d36c0"
+    },
+    {
+      "path": "public/font/generated/kaisotai-next-extended-02.2f7003b2d369.woff2",
+      "bytes": 21456,
+      "sha256": "2f7003b2d369574262398a67ae410b3bd02bbc2ad933590e7780892421996b1a"
+    },
+    {
+      "path": "public/font/generated/kaisotai-next-extended-03.b09e62262227.woff2",
+      "bytes": 35468,
+      "sha256": "b09e62262227962d2ab4bbfc2ca6208ff8cffedf3e3a57f0ed464e969d06f500"
+    },
+    {
+      "path": "public/font/generated/kaisotai-next-extended-04.2571094e3228.woff2",
+      "bytes": 48524,
+      "sha256": "2571094e3228aa0a1b03da813463d64d1e080ea83a4769e77df6915b05d7a472"
+    },
+    {
+      "path": "public/font/generated/kaisotai-next-extended-05.f1e6a9b1e20d.woff2",
+      "bytes": 44900,
+      "sha256": "f1e6a9b1e20d000b2ac59a94a9d230c72f92f5c10a6f0e7afd8c2a994ab23e66"
+    },
+    {
+      "path": "public/font/generated/kaisotai-next-extended-06.5b6eb4530b4d.woff2",
+      "bytes": 46632,
+      "sha256": "5b6eb4530b4dc6631fe3d2eb1bd9423356f89bd883e0bec1246a1cce295849b4"
+    },
+    {
+      "path": "public/font/generated/kaisotai-next-extended-07.b11252a85a4a.woff2",
+      "bytes": 68128,
+      "sha256": "b11252a85a4ae87271c2fb2c06d48739a36423d15079939f60d14ff9ddaf4788"
+    },
+    {
+      "path": "public/font/generated/kaisotai-next-extended-08.9fe829e4db49.woff2",
+      "bytes": 50256,
+      "sha256": "9fe829e4db49ae44bc2e03fc9a16e28326cbf050487af4e4258fcb347c7cd25a"
+    },
+    {
+      "path": "public/font/generated/kaisotai-next-extended-09.7e30173acd11.woff2",
+      "bytes": 51204,
+      "sha256": "7e30173acd11fc01bd0167eced7f98a89f599b19ede2c77b0ec548b53f0fa6c0"
+    },
+    {
+      "path": "public/font/generated/kaisotai-next-extended-10.a61802b67c26.woff2",
+      "bytes": 55560,
+      "sha256": "a61802b67c266dbc58f0cff9db4ef3a9ca8771eb3d4961116b863c0f3b8eee8c"
+    },
+    {
+      "path": "public/font/generated/kaisotai-next-extended-11.e32c280cdf56.woff2",
+      "bytes": 53052,
+      "sha256": "e32c280cdf56661754c9594d78853a5fd880cde3a1adaa5fd6eaab0726b48d5d"
+    },
+    {
+      "path": "public/font/generated/kaisotai-next-extended-12.503c96e715cb.woff2",
+      "bytes": 60192,
+      "sha256": "503c96e715cbcb0a540e2e34f5c75f6994373e3efea08c0ccfe4b56d8da08954"
+    },
+    {
+      "path": "public/font/generated/kaisotai-next-extended-13.5ca1d8148cdb.woff2",
+      "bytes": 65988,
+      "sha256": "5ca1d8148cdb64d3d16b49c97377dcbeb0a55df3f392217ef35e6b9421e2b841"
+    },
+    {
+      "path": "public/font/generated/kaisotai-next-extended-14.120349ff7fd4.woff2",
+      "bytes": 67452,
+      "sha256": "120349ff7fd4239b28d5fcf8b633bdbe806c6303eee128cdcae7a155c9fe6264"
+    },
+    {
+      "path": "public/font/generated/kaisotai-next-extended-15.90d0b3125a94.woff2",
+      "bytes": 57952,
+      "sha256": "90d0b3125a945935217101eea2db2595897358f580fcdac4d4ddb5f2fc0bc5f3"
+    },
+    {
+      "path": "public/font/generated/kaisotai-next-extended-16.b7edb4d6c911.woff2",
+      "bytes": 61072,
+      "sha256": "b7edb4d6c91127d2db2c6397566f902658d765c1547322973fa21b299caca312"
+    },
+    {
+      "path": "public/font/generated/kaisotai-next-extended-17.76e858da3074.woff2",
+      "bytes": 69596,
+      "sha256": "76e858da30740594aedac313536618bb7d2ca20d65347de6a6e783909413a932"
+    },
+    {
+      "path": "public/font/generated/kaisotai-next-extended-18.6bb3ecfd17f9.woff2",
+      "bytes": 52988,
+      "sha256": "6bb3ecfd17f967a2020dca55a19ef88a8de3ae2675db1f1453cc8e260af38b29"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-400-common.509868dd2a3a.woff2",
+      "bytes": 335864,
+      "sha256": "509868dd2a3a729ca19b894d727070c7d50de7d4e94b8a30599c23f350a79272"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-400-extended-01.c39d802d8c0b.woff2",
+      "bytes": 14712,
+      "sha256": "c39d802d8c0b3e8d0ce68b3b9f42a4a13626df2e91f66f43022d903dfecbae7c"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-400-extended-02.f9d35df9f1f5.woff2",
+      "bytes": 35848,
+      "sha256": "f9d35df9f1f5290ee709449989a2e21e2238cea6845eb13c1270953cc44267bc"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-400-extended-03.2f2908f17163.woff2",
+      "bytes": 33552,
+      "sha256": "2f2908f171639f6a79c5f916d0b677e60145dd8634296c035196aabe83681a4f"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-400-extended-04.cec3322d7a52.woff2",
+      "bytes": 39920,
+      "sha256": "cec3322d7a5227ec889b27699debe442fc6be21232d141a3cd7beb402a3f5f87"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-400-extended-05.100e8e40dcd5.woff2",
+      "bytes": 39044,
+      "sha256": "100e8e40dcd5e4b85c7c6145ffa11681e42c9db0827d19b6c69f57d075f31cd6"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-400-extended-06.c164457417ed.woff2",
+      "bytes": 42216,
+      "sha256": "c164457417ed142b45bfe87aedcd59de219ee16130ea9864663bdc0daa047860"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-400-extended-07.9079413ba0b3.woff2",
+      "bytes": 40916,
+      "sha256": "9079413ba0b339f79f37637cf8539639ff8f7bae842c4f0c09b9d1342ae939cb"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-400-extended-08.78d2ce4a39c5.woff2",
+      "bytes": 41768,
+      "sha256": "78d2ce4a39c51d1e3c9dcad6166c6946c8123b61690e187c0f8252a1214c8536"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-400-extended-09.1102a635083c.woff2",
+      "bytes": 43056,
+      "sha256": "1102a635083c7e021653d35f83cc11630b74a92c96258530b15e56ded60d0c82"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-400-extended-10.41472781897a.woff2",
+      "bytes": 48108,
+      "sha256": "41472781897a362ae012cdc66014918ca7dce6d3174d94f5784dac3f06a44b29"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-400-extended-11.cd9d85dc74d2.woff2",
+      "bytes": 42048,
+      "sha256": "cd9d85dc74d21f056be22bcf2a48a6f661da2301f59709bc0e6a94a71d385561"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-400-extended-12.722ca2b868c1.woff2",
+      "bytes": 47236,
+      "sha256": "722ca2b868c17e863b43ffd964fc9e4375fc30da6a90d1f95954b845173170ef"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-400-extended-13.b6146f8b0418.woff2",
+      "bytes": 48800,
+      "sha256": "b6146f8b0418defd889f67d8aa286882471faaeed457621d963b866da5078260"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-400-extended-14.63b12cbbf3a6.woff2",
+      "bytes": 41904,
+      "sha256": "63b12cbbf3a6ba915d6dea3c93406c4aa7f4de528ebf1751cb58ee8b1bcdb38d"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-400-extended-15.cae23ea793ee.woff2",
+      "bytes": 44624,
+      "sha256": "cae23ea793eed935dce90123209e80e9c9c206cd3ca32f66b10003536e3498c9"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-400-extended-16.f553d93d8c3a.woff2",
+      "bytes": 46432,
+      "sha256": "f553d93d8c3abf6eb6881e188b57672473a8cbea3b44ed26becb5bf5da19b1b6"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-400-extended-17.8959f675dcf0.woff2",
+      "bytes": 49496,
+      "sha256": "8959f675dcf0eadcf4fa9df4618fc216afcfdd04a725f74682fb140972266f6b"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-400-extended-18.bb176a2a29d4.woff2",
+      "bytes": 46964,
+      "sha256": "bb176a2a29d40b6e6227b5c887e949f46b5ccad9ba31764a499f4b3162af31e1"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-400-extended-19.6785ed6a913b.woff2",
+      "bytes": 54640,
+      "sha256": "6785ed6a913bba1a32385dc47d1b9996bee6bef6c1e1b1b0aa61bbe6a8f054aa"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-400-extended-20.0ec74e88d523.woff2",
+      "bytes": 11828,
+      "sha256": "0ec74e88d52354404823ac10d2511da412be1569f35f38c38b427c20b4bf2907"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-500-common.16a4db370e40.woff2",
+      "bytes": 339764,
+      "sha256": "16a4db370e40207871dcbbb49c328c6dabbb517d090cffc6efec328f33af49d6"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-500-extended-01.708e5872257a.woff2",
+      "bytes": 14660,
+      "sha256": "708e5872257a4bcfb1b6f74389234f1e86fa30d7ef01060ea9e899560d79d613"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-500-extended-02.37f52b152d55.woff2",
+      "bytes": 35816,
+      "sha256": "37f52b152d55e29727878dbff949d26cfb471c25e71f92c21ce04db58cef035c"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-500-extended-03.158cba858177.woff2",
+      "bytes": 33576,
+      "sha256": "158cba858177dd0c4e1d009d6c2414126cb1c81fd39e863f2efb8ce8f22395e9"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-500-extended-04.ce12c859d1d3.woff2",
+      "bytes": 40164,
+      "sha256": "ce12c859d1d3e0f396020b204261033fcfb5af1c2ac37863c35eeda38c842661"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-500-extended-05.2c6f3867433b.woff2",
+      "bytes": 39012,
+      "sha256": "2c6f3867433b777e6b7e75cb290031ac5ddc14e15b09c1dbc42ae33f082f3b54"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-500-extended-06.02e170cb9934.woff2",
+      "bytes": 42380,
+      "sha256": "02e170cb993487ebe9d8ebb27986e0449d68791a4ef68e3c94acce809fa11004"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-500-extended-07.47ab8ca2b157.woff2",
+      "bytes": 41076,
+      "sha256": "47ab8ca2b15793797388068cfa10ada10de99399b89e2ca9c61065233695bf52"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-500-extended-08.59edc94c200a.woff2",
+      "bytes": 42464,
+      "sha256": "59edc94c200ab58aaaebc07737568e2efe8a21effe42c4276d20a01bd4073b8f"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-500-extended-09.94251e231cd8.woff2",
+      "bytes": 43464,
+      "sha256": "94251e231cd86e82d5a0b8efd5938c5eb630a18c7b0e926d5c8ed1033bbe35c3"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-500-extended-10.7c0992e0bba5.woff2",
+      "bytes": 48668,
+      "sha256": "7c0992e0bba53b48969889d9b48d44681571076ceffb53246f60320e7695cf2c"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-500-extended-11.6f4928c2f5a0.woff2",
+      "bytes": 41980,
+      "sha256": "6f4928c2f5a0dfb91d25f96105d41a47bfef3ddb76719fe8b709bcdd75c64c4c"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-500-extended-12.893f785b0d3e.woff2",
+      "bytes": 48552,
+      "sha256": "893f785b0d3e6e240625dfd3c3ba5053925a7bfbd7fd130f38760008c6e2d7d9"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-500-extended-13.011976ecc5a9.woff2",
+      "bytes": 48904,
+      "sha256": "011976ecc5a93ba863be39196ae0ccfbcee6964610fb2f494612d6534c98c2ff"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-500-extended-14.f171ec07d433.woff2",
+      "bytes": 42024,
+      "sha256": "f171ec07d4334784f75dd5ad2789f3a0ce96432fd6ed6144c0595ea503b43aff"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-500-extended-15.64d51a946577.woff2",
+      "bytes": 44892,
+      "sha256": "64d51a946577e56959be3d45e9d78be810b06c58c4c1cc76455f9c1f90b225de"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-500-extended-16.1998bc668588.woff2",
+      "bytes": 46672,
+      "sha256": "1998bc668588f0e851f9176c29bd345371fb17a7806ce381aee622e94c6d418e"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-500-extended-17.b1375020a798.woff2",
+      "bytes": 48832,
+      "sha256": "b1375020a798f052ca728559b5f385ace3b733e03c9cf14e297536849c3a3364"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-500-extended-18.60a2a51195aa.woff2",
+      "bytes": 47252,
+      "sha256": "60a2a51195aa994609d868a636490f4ec0f2806493f03a53e45af508525b079f"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-500-extended-19.a4b9679699cf.woff2",
+      "bytes": 55224,
+      "sha256": "a4b9679699cf743af987210e1e55081c6958c93a229e811c237e7afab9638668"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-500-extended-20.ef7c25236a4a.woff2",
+      "bytes": 11816,
+      "sha256": "ef7c25236a4ac24c8932f981f9afd5ce77d774d8996a64b36259239e76f16be8"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-700-common.77d2580a8500.woff2",
+      "bytes": 342916,
+      "sha256": "77d2580a850091344de06b65d238cf218b587e160e5dab0b673f31be08eab937"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-700-extended-01.49ee910ad912.woff2",
+      "bytes": 14660,
+      "sha256": "49ee910ad912450d6c14b511bdbab87f134e589513e3e14e7b8db441ad42d545"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-700-extended-02.2c1642e7215a.woff2",
+      "bytes": 36032,
+      "sha256": "2c1642e7215aa29a8d148c233d4da04c8646a50e6ac3b190e11fceae78ee54d5"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-700-extended-03.b850a5c74dc5.woff2",
+      "bytes": 33936,
+      "sha256": "b850a5c74dc57106013c486111ad2487698816609940e468994cc41e7ed18dd3"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-700-extended-04.459440bd3139.woff2",
+      "bytes": 40348,
+      "sha256": "459440bd3139d311badf1c4560ef85026175d7d327d3550a87b663f6540cb205"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-700-extended-05.8810d11b995c.woff2",
+      "bytes": 39408,
+      "sha256": "8810d11b995cb27a936d023e6fd2f35fe0cc1d998d68d004975609d643d1ad4d"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-700-extended-06.c4e957fe58ed.woff2",
+      "bytes": 42736,
+      "sha256": "c4e957fe58ed723cb289e3c00bbc156202081f7a0961cbc629a233473814de24"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-700-extended-07.1990be171ee8.woff2",
+      "bytes": 41616,
+      "sha256": "1990be171ee831a5f5c957831a0b93a25ac5c35fc31bacfda3207cc0226dd703"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-700-extended-08.0d74201e30d9.woff2",
+      "bytes": 42900,
+      "sha256": "0d74201e30d98f716a0ed61c501fd5eaf96d1eb2fd9dfa5a90f7943ae7f57afd"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-700-extended-09.3892dc95e4d2.woff2",
+      "bytes": 44052,
+      "sha256": "3892dc95e4d278aef2b368272c4c03a91ca543e98b0a75b886f84a2dba42b72c"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-700-extended-10.059b70cd03da.woff2",
+      "bytes": 48980,
+      "sha256": "059b70cd03daab439e0eea48ca7fd702c835ddfbed6a1e6766d5129a8ee93c46"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-700-extended-11.a497d7dc348d.woff2",
+      "bytes": 42168,
+      "sha256": "a497d7dc348d373de423bed9676eddad3c2c050ae3f8fde91a1b8db7405fd2b8"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-700-extended-12.f64d1f6e2ae7.woff2",
+      "bytes": 49388,
+      "sha256": "f64d1f6e2ae74631d8366257a30e9b4fee3e91649de91ca7e93a7265bf8486ac"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-700-extended-13.aac432bac52f.woff2",
+      "bytes": 49532,
+      "sha256": "aac432bac52f100070a82d93eb1168fc0c4efb5ed5e186aa6f8cd26082668588"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-700-extended-14.5fcdaa431877.woff2",
+      "bytes": 42764,
+      "sha256": "5fcdaa4318771673af050e068199157e3530d4b23d2fcbf79bc8845e690a22a9"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-700-extended-15.f8b6f9e0e68d.woff2",
+      "bytes": 45208,
+      "sha256": "f8b6f9e0e68d6f6eb0b70c1c0f0cc1ae19da04d99b1c9ec1ccd659f873ef99f7"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-700-extended-16.2337181e2b65.woff2",
+      "bytes": 46896,
+      "sha256": "2337181e2b658742418c4a6bb686e8fa643644df62788aa21c7bd772db672cfc"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-700-extended-17.da7233613c1c.woff2",
+      "bytes": 51680,
+      "sha256": "da7233613c1cd2bc289bd9e18e7de1d9bc71e69068ffcd33fdc26a2019360195"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-700-extended-18.2b793eb73395.woff2",
+      "bytes": 47860,
+      "sha256": "2b793eb73395c6e46020dc8028c66c5acc284e11b2cc25af3d4466d68035400c"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-700-extended-19.c2033521bbad.woff2",
+      "bytes": 56696,
+      "sha256": "c2033521bbad8655ec844db366fba1b05889b38504d1bc821e609e3f198a9f2b"
+    },
+    {
+      "path": "public/font/generated/zen-kaku-gothic-new-700-extended-20.86c021e8cbd9.woff2",
+      "bytes": 11772,
+      "sha256": "86c021e8cbd965194302c1421a48bfcddb3aa19f9156e0638ce35671acd22f27"
+    },
+    {
+      "path": "src/app/(frontend)/fonts/generated/fonts.generated.css",
+      "bytes": 192673,
+      "sha256": "ebeb7ee30963b067cd49f0c602f56d4999511435cb3caa93ab8ed36a4c55dec1"
+    }
+  ]
+}

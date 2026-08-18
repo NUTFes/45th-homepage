@@ -6,7 +6,7 @@ import config from "@/payload.config";
 
 import type { SchedulePageDTO } from "../types";
 import { filterProgramsForWeather, isWeather } from "../utils";
-import { getPrograms } from "./getPrograms";
+import { queryPrograms } from "./getPrograms";
 
 export async function getSchedulePageData(): Promise<SchedulePageDTO> {
   "use cache";
@@ -20,7 +20,7 @@ export async function getSchedulePageData(): Promise<SchedulePageDTO> {
       depth: 0,
       overrideAccess: true,
     }),
-    getPrograms(),
+    queryPrograms(),
   ]);
   const weather = isWeather(runtimeSettings.weather) ? runtimeSettings.weather : "sunny";
 

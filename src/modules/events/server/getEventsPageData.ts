@@ -10,9 +10,9 @@ import {
 import { normalizeProgramOrderIds, relationshipIdKey } from "@/lib/events/validation";
 import config from "@/payload.config";
 
-import type { EventProgramDTO, EventProgramTagDTO, EventsPageDTO } from "../types";
-import { isWeather, toEventProgramTagDTO } from "../utils";
-import { getPrograms } from "./getPrograms";
+import type { EventProgramDTO, EventsPageDTO } from "../types";
+import { filterProgramsForWeather, isWeather } from "../utils";
+import { queryPrograms } from "./getPrograms";
 
 export async function getEventsPageData(): Promise<EventsPageDTO> {
   "use cache";
@@ -31,10 +31,14 @@ export async function getEventsPageData(): Promise<EventsPageDTO> {
       depth: 0,
       overrideAccess: true,
     }),
-    getPrograms(),
+    queryPrograms(),
   ]);
 
-  const programsById = new Map(programs.map((program) => [relationshipIdKey(program.id), program]));
+  const weather = isWeather(runtimeSettings.weather) ? runtimeSettings.weather : "sunny";
+  const visiblePrograms = filterProgramsForWeather(programs, weather);
+  const programsById = new Map(
+    visiblePrograms.map((program) => [relationshipIdKey(program.id), program]),
+  );
 
   const categories = PROGRAM_CATEGORIES.map((category) => {
     const field = PROGRAM_CATEGORY_ITEM_FIELDS[category.value];
@@ -49,13 +53,8 @@ export async function getEventsPageData(): Promise<EventsPageDTO> {
     };
   });
 
-  const visibleTags = (eventsPage.visibleTags ?? [])
-    .map(toEventProgramTagDTO)
-    .filter((tag): tag is EventProgramTagDTO => tag !== null);
-
   return {
     categories,
-    visibleTags,
-    weather: isWeather(runtimeSettings.weather) ? runtimeSettings.weather : "sunny",
+    weather,
   };
 }

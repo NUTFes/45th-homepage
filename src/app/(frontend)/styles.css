@@ -32,9 +32,10 @@ html {
   --color-required-bg: #fff0f3;
   --color-placeholder: #c7c5c5;
 
-  --font-kaisotai: var(--font-kaisotai-next), sans-serif;
+  --font-kaisotai: "Kaisotai Next 45th", sans-serif;
+
   --font-sans:
-    var(--font-zen-kaku-gothic-new), "Hiragino Sans", "Hiragino Kaku Gothic ProN", "BIZ UDPGothic",
+    "Zen Kaku Gothic New 45th", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "BIZ UDPGothic",
     "Yu Gothic", "Meiryo", system-ui, sans-serif;
   --default-font-family: var(--font-sans);
 
@@ -49,7 +50,7 @@ html {
 
   --text-text: 16px;
   --text-text--line-height: 22px;
-  --text-text--font-weight: 300;
+  --text-text--font-weight: 400;
   --text-textb: 16px;
   --text-textb--line-height: 22px;
   --text-textb--font-weight: 500;

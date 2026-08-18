@@ -98,6 +98,25 @@ export const SponsorsPage: GlobalConfig = {
             },
           },
         },
+        {
+          name: "href",
+          label: {
+            ja: "リンクURL",
+            en: "Link URL",
+          },
+          type: "text",
+          required: false,
+          admin: {
+            placeholder: {
+              ja: "例: /news または https://example.com",
+              en: "e.g. /news or https://example.com",
+            },
+            description: {
+              ja: "未入力の場合、広告画像はリンクされません。",
+              en: "If empty, the advertisement image will not be clickable.",
+            },
+          },
+        },
       ],
     },
   ],

@@ -4,16 +4,9 @@ import { useState } from "react";
 import { Minus, Plus } from "lucide-react";
 import { Button, Disclosure, DisclosurePanel } from "react-aria-components";
 import { twMerge } from "tailwind-merge";
+import { defaultMapMenuSections, type MapMenuEntry, type MapMenuSection } from "./mapMenuData";
 
-export type MapMenuEntry = {
-  id: string;
-  label: string;
-  disabled?: boolean;
-};
-
-export type MapMenuSection = MapMenuEntry & {
-  items?: MapMenuEntry[];
-};
+export type { MapMenuEntry, MapMenuSection };
 
 export type MapMenuProps = {
   sections?: MapMenuSection[];
@@ -24,43 +17,6 @@ export type MapMenuProps = {
   onSelect?: (id: string) => void;
   className?: string;
 };
-
-export const defaultMapMenuSections = [
-  {
-    id: "overall",
-    label: "全体",
-  },
-  {
-    id: "lecture-building",
-    label: "講義棟内",
-    items: [
-      { id: "lecture-building-1f", label: "1 F" },
-      { id: "lecture-building-2f", label: "2 F" },
-      { id: "lecture-building-3f", label: "3 F" },
-    ],
-  },
-  {
-    id: "outdoor-area",
-    label: "屋外エリア",
-    items: [
-      { id: "outdoor-overall", label: "屋外エリア全体" },
-      { id: "office-area", label: "事務棟エリア" },
-      { id: "library-area", label: "図書館エリア" },
-      { id: "electrical-area", label: "電気棟エリア" },
-      { id: "outdoor-stage-area", label: "屋外ステージエリア" },
-      { id: "mechanical-civil-area", label: "機械建設棟エリア" },
-      { id: "kitchen-car-area", label: "キッチンカーエリア" },
-    ],
-  },
-  {
-    id: "stamp-rally",
-    label: "スタンプラリー",
-  },
-  {
-    id: "mystery-solving",
-    label: "謎解き",
-  },
-] satisfies MapMenuSection[];
 
 type MapMenuSectionWithItems = MapMenuSection & {
   items: MapMenuEntry[];

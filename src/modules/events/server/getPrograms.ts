@@ -7,11 +7,7 @@ import config from "@/payload.config";
 import type { EventProgramDTO } from "../types";
 import { toEventProgramDTO } from "../utils";
 
-export async function getPrograms(): Promise<EventProgramDTO[]> {
-  "use cache";
-  cacheTag(CACHE_TAGS.events);
-  cacheLife("minutes");
-
+export async function queryPrograms(): Promise<EventProgramDTO[]> {
   const payload = await getPayload({ config });
   const result = await payload.find({
     collection: "programs",
@@ -43,4 +39,12 @@ export async function getPrograms(): Promise<EventProgramDTO[]> {
   return result.docs
     .map(toEventProgramDTO)
     .filter((program): program is EventProgramDTO => program !== null);
+}
+
+export async function getPrograms(): Promise<EventProgramDTO[]> {
+  "use cache";
+  cacheTag(CACHE_TAGS.events);
+  cacheLife("minutes");
+
+  return queryPrograms();
 }

@@ -12,11 +12,11 @@ type EventSectionProps = {
   title: string;
   viewAllHref: string;
   id: string;
-  events: EventSectionEvent[];
+  events: readonly EventSectionEvent[];
 };
 
 export type EventSectionEvent = EventFrameProps & {
-  id: string;
+  id: string | number;
 };
 
 export default function EventSection({ title, viewAllHref, id, events }: EventSectionProps) {

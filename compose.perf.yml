@@ -2,19 +2,19 @@
 # Docker Compose — Production-like Lighthouse performance test
 # ============================================================
 # Run:
-#   docker compose --env-file .env.production -f compose.perf.yml up --build --abort-on-container-exit --exit-code-from lighthouse
+#   mise run prod:perf
 #
 # Optional:
-#   LIGHTHOUSE_URLS="http://payload:3000/ http://payload:3000/news" docker compose --env-file .env.production -f compose.perf.yml up --build --abort-on-container-exit --exit-code-from lighthouse
+#   LIGHTHOUSE_URLS="http://payload:3000/ http://payload:3000/news" mise run prod:perf
 # ============================================================
+
+name: 45th-homepage-perf
 
 services:
   postgres:
     image: postgres:18-alpine
     restart: unless-stopped
     command: ["postgres", "-c", "shared_buffers=256MB", "-c", "max_connections=200"]
-    env_file:
-      - .env.production
     environment:
       POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER is required}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
@@ -32,81 +32,18 @@ services:
     networks:
       - perf-internal
 
-  seaweedfs-master:
-    image: chrislusf/seaweedfs:4.29
-    restart: unless-stopped
-    command: master -ip=seaweedfs-master -volumeSizeLimitMB=1024 -ip.bind=0.0.0.0
-    volumes:
-      - perf-seaweedfs-master-data:/data
-    expose:
-      - "9333"
-      - "19333"
-    healthcheck:
-      test:
-        ["CMD-SHELL", "wget -qO- http://127.0.0.1:9333/cluster/status > /dev/null 2>&1 || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
-    networks:
-      - perf-internal
-
-  seaweedfs-volume:
-    image: chrislusf/seaweedfs:4.29
-    restart: unless-stopped
-    command: volume -mserver=seaweedfs-master:9333 -ip=seaweedfs-volume -port=8080 -max=0 -preStopSeconds=1 -ip.bind=0.0.0.0
-    volumes:
-      - perf-seaweedfs-volume-data:/data
-    depends_on:
-      seaweedfs-master:
-        condition: service_healthy
-    expose:
-      - "8080"
-      - "18080"
-    healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8080/status > /dev/null 2>&1 || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
-    networks:
-      - perf-internal
-
-  seaweedfs-filer:
-    image: chrislusf/seaweedfs:4.29
-    restart: unless-stopped
-    command: filer -master=seaweedfs-master:9333 -ip=seaweedfs-filer -ip.bind=0.0.0.0
-    volumes:
-      - perf-seaweedfs-filer-data:/data
-    depends_on:
-      seaweedfs-master:
-        condition: service_healthy
-      seaweedfs-volume:
-        condition: service_healthy
-    expose:
-      - "8888"
-      - "18888"
-    healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8888/ > /dev/null 2>&1 || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
-    networks:
-      - perf-internal
-
   seaweedfs-s3:
     image: chrislusf/seaweedfs:4.29
     restart: unless-stopped
-    command: "s3 -filer=seaweedfs-filer:8888 -ip.bind=0.0.0.0"
-    depends_on:
-      seaweedfs-filer:
-        condition: service_healthy
+    command: ["mini", "-dir=/data"]
     expose:
       - "8333"
     environment:
       AWS_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID:?S3_ACCESS_KEY_ID is required}
       AWS_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY:?S3_SECRET_ACCESS_KEY is required}
+      S3_BUCKET: ${S3_BUCKET:?S3_BUCKET is required}
+    volumes:
+      - perf-seaweedfs-mini-data:/data
     healthcheck:
       test:
         [
@@ -115,8 +52,29 @@ services:
         ]
       interval: 10s
       timeout: 5s
-      retries: 3
-      start_period: 10s
+      retries: 5
+      start_period: 20s
+    networks:
+      - perf-internal
+
+  payload-migrate:
+    image: ${PAYLOAD_IMAGE:-45th-homepage:local}
+    profiles:
+      - tools
+    command: ["node", "node_modules/payload/bin.js", "migrate"]
+    environment:
+      NODE_ENV: production
+      PAYLOAD_SECRET: ${PAYLOAD_SECRET:?PAYLOAD_SECRET is required}
+      DATABASE_URL: ${DATABASE_URL:?DATABASE_URL is required}
+      S3_BUCKET: ${S3_BUCKET:?S3_BUCKET is required}
+      S3_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID:?S3_ACCESS_KEY_ID is required}
+      S3_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY:?S3_SECRET_ACCESS_KEY is required}
+      S3_REGION: ${S3_REGION:-us-east-1}
+      PAYLOAD_CONFIG_PATH: /app/src/payload.config.ts
+      S3_ENDPOINT: http://seaweedfs-s3:8333
+    depends_on:
+      postgres:
+        condition: service_healthy
     networks:
       - perf-internal
 
@@ -129,10 +87,15 @@ services:
     stop_grace_period: 30s
     expose:
       - "3000"
-    env_file:
-      - .env.production
     environment:
       NODE_ENV: production
+      PAYLOAD_SECRET: ${PAYLOAD_SECRET:?PAYLOAD_SECRET is required}
+      DATABASE_URL: ${DATABASE_URL:?DATABASE_URL is required}
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:?NEXT_PUBLIC_SITE_URL is required}
+      S3_BUCKET: ${S3_BUCKET:?S3_BUCKET is required}
+      S3_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID:?S3_ACCESS_KEY_ID is required}
+      S3_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY:?S3_SECRET_ACCESS_KEY is required}
+      S3_REGION: ${S3_REGION:-us-east-1}
       S3_ENDPOINT: http://seaweedfs-s3:8333
       HEALTH_CHECK_KEY: ${HEALTH_CHECK_KEY:?HEALTH_CHECK_KEY is required}
     depends_on:
@@ -195,9 +158,7 @@ services:
 
 volumes:
   perf-pgdata:
-  perf-seaweedfs-master-data:
-  perf-seaweedfs-volume-data:
-  perf-seaweedfs-filer-data:
+  perf-seaweedfs-mini-data:
 
 networks:
   perf-internal:

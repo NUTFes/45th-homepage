@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { connection } from "next/server";
 
 import SectionTitle from "@/components/ui/SectionTitle";
@@ -59,9 +60,18 @@ function SponsorNameList({
             className="flex min-w-0 items-center justify-start gap-2.5 text-font-main md:justify-center"
           >
             <span className="size-4 shrink-0 rounded-full bg-secondary" aria-hidden="true" />
-            <span className="min-w-0 text-text-large wrap-break-word md:text-Ptext-large">
-              {sponsor.companyName}
-            </span>
+            {sponsor.href ? (
+              <Link
+                className="min-w-0 text-text-large wrap-break-word transition-opacity hover:opacity-70 focus-visible:opacity-70 md:text-Ptext-large"
+                href={sponsor.href}
+              >
+                {sponsor.companyName}
+              </Link>
+            ) : (
+              <span className="min-w-0 text-text-large wrap-break-word md:text-Ptext-large">
+                {sponsor.companyName}
+              </span>
+            )}
           </li>
         ))}
       </ul>

@@ -20,11 +20,7 @@ export const normalizeProgramId = (id: string | number) => {
   return Number.isSafeInteger(numericId) ? numericId : null;
 };
 
-export async function getProgram(id: string | number): Promise<EventProgramDTO | null> {
-  "use cache";
-  cacheTag(CACHE_TAGS.events);
-  cacheLife("minutes");
-
+export async function queryProgram(id: string | number): Promise<EventProgramDTO | null> {
   const programId = normalizeProgramId(id);
   if (programId === null) {
     return null;
@@ -69,4 +65,12 @@ export async function getProgram(id: string | number): Promise<EventProgramDTO |
 
   const program = result.docs[0];
   return program ? toEventProgramDTO(program) : null;
+}
+
+export async function getProgram(id: string | number): Promise<EventProgramDTO | null> {
+  "use cache";
+  cacheTag(CACHE_TAGS.events);
+  cacheLife("minutes");
+
+  return queryProgram(id);
 }

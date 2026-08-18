@@ -84,7 +84,7 @@ alias = ["migrate:status", "ms"]
 run = "docker compose exec payload pnpm payload migrate:status"
 
 [tasks."32:migrate"]
-description = "保留中のマイグレーションを手動で実行する (通常は起動時に自動実行されます)"
+description = "保留中のマイグレーションを開発用コンテナで手動実行する"
 alias = ["migrate", "m"]
 run = "docker compose exec payload pnpm payload migrate"
 
@@ -92,44 +92,163 @@ run = "docker compose exec payload pnpm payload migrate"
 # 90s: 本番環境の運用操作 (Production Operations)
 # ============================================================
 
-[tasks."90:prod:up"]
-description = "本番用コンテナをビルドして起動する (.env.productionを使用)"
-alias = "prod:up"
-run = "docker compose --env-file .env.production -f compose.prod.yml up -d --build --remove-orphans"
+[tasks."90:prod:ps"]
+description = "本番用コンテナの状態を表示する"
+alias = "prod:ps"
+run = "docker compose --env-file .env.production --env-file .env.release -f compose.prod.yml ps"
 
-[tasks."91:prod:down"]
-description = "本番用コンテナを停止して削除する"
-alias = "prod:down"
-run = "docker compose --env-file .env.production -f compose.prod.yml down"
-
-[tasks."92:prod:logs"]
+[tasks."91:prod:logs"]
 description = "本番用コンテナのログを表示する"
 alias = "prod:logs"
-run = "docker compose --env-file .env.production -f compose.prod.yml logs -f"
+run = "docker compose --env-file .env.production --env-file .env.release -f compose.prod.yml logs -f"
 
-[tasks."93:prod:ps"]
-description = "本番用コンテナのステータスを表示する"
-alias = "prod:ps"
-run = "docker compose --env-file .env.production -f compose.prod.yml ps"
+[tasks."92:prod:stop"]
+description = "Cloudflare TunnelとPayloadを停止する"
+alias = "prod:stop"
+run = "docker compose --env-file .env.production --env-file .env.release -f compose.prod.yml stop cloudflared payload"
 
-[tasks."94:prod:deploy"]
-description = "本番環境にゼロダウンタイムデプロイする (docker rollout)"
-alias = "prod:deploy"
+[tasks."93:prod:backup"]
+description = "停止中のPayloadに対してPostgreSQLとmediaをbackupする"
+alias = "prod:backup"
+run = "scripts/prod/backup.sh"
+
+[tasks."94:prod:migrate"]
+description = "停止中の本番環境へPayload DBスキーママイグレーションを明示実行する"
+alias = "prod:migrate"
 run = '''
 #!/usr/bin/env bash
 set -euo pipefail
 
-git pull origin "$(git branch --show-current)"
-docker compose --env-file .env.production -f compose.prod.yml build payload
-docker rollout --env-file .env.production -f compose.prod.yml --timeout 120 payload
+compose=(docker compose --env-file .env.production --env-file .env.release -f compose.prod.yml)
+
+inspect_value() {
+  local field="$1"
+  local object="$2"
+  docker inspect "$object" |
+    INSPECT_FIELD="$field" node -e '
+      const fs = require("node:fs");
+      const [document] = JSON.parse(fs.readFileSync(0, "utf8"));
+      const value = process.env.INSPECT_FIELD
+        .split(".")
+        .reduce((current, key) => current?.[key], document);
+      if (typeof value !== "string" || value.length === 0) process.exit(1);
+      process.stdout.write(value);
+    '
+}
+
+for service in payload cloudflared; do
+  container_id="$("${compose[@]}" ps -a -q "$service")"
+  if [[ -z "$container_id" ]]; then
+    continue
+  fi
+
+  state="$(inspect_value State.Status "$container_id")"
+  if [[ "$state" != "exited" && "$state" != "created" ]]; then
+    echo "Stop payload and cloudflared before migration: mise run prod:stop" >&2
+    exit 1
+  fi
+done
+
+for service in postgres seaweedfs-s3; do
+  container_id="$("${compose[@]}" ps --status running -q "$service")"
+  if [[ -z "$container_id" ]]; then
+    echo "$service must already be running" >&2
+    exit 1
+  fi
+
+  health="$(inspect_value State.Health.Status "$container_id")"
+  if [[ "$health" != "healthy" ]]; then
+    echo "$service is not healthy: $health" >&2
+    exit 1
+  fi
+done
+
+"${compose[@]}" --profile tools run --rm --no-deps payload-migrate
 '''
 
-[tasks."95:prod:perf"]
+[tasks."95:prod:start-app"]
+description = "現在のrelease imageで単一のPayloadを起動する"
+alias = "prod:start-app"
+run = "docker compose --env-file .env.production --env-file .env.release -f compose.prod.yml up -d --no-deps --wait --wait-timeout 120 payload"
+
+[tasks."96:prod:start-tunnel"]
+description = "記録済みのhealthyなPayloadに対してTunnelを起動する"
+alias = "prod:start-tunnel"
+run = '''
+#!/usr/bin/env bash
+set -euo pipefail
+
+compose=(docker compose --env-file .env.production --env-file .env.release -f compose.prod.yml)
+
+inspect_value() {
+  local field="$1"
+  local object="$2"
+  docker inspect "$object" |
+    INSPECT_FIELD="$field" node -e '
+      const fs = require("node:fs");
+      const [document] = JSON.parse(fs.readFileSync(0, "utf8"));
+      const value = process.env.INSPECT_FIELD
+        .split(".")
+        .reduce((current, key) => current?.[key], document);
+      if (typeof value !== "string" || value.length === 0) process.exit(1);
+      process.stdout.write(value);
+    '
+}
+payload_id="$("${compose[@]}" ps --status running -q payload)"
+if [[ -z "$payload_id" ]]; then
+  echo "The recorded Payload release must already be running" >&2
+  exit 1
+fi
+
+health="$(inspect_value State.Health.Status "$payload_id")"
+if [[ "$health" != "healthy" ]]; then
+  echo "Payload is not healthy: $health" >&2
+  exit 1
+fi
+
+recorded_image="$(
+  "${compose[@]}" config --format json --no-env-resolution |
+    node -e '
+      const fs = require("node:fs");
+      const config = JSON.parse(fs.readFileSync(0, "utf8"));
+      process.stdout.write(config.services.payload.image ?? "");
+    '
+)"
+if [[ -z "$recorded_image" ]]; then
+  echo "Cannot resolve the recorded Payload image" >&2
+  exit 1
+fi
+
+recorded_image_id="$(inspect_value Id "$recorded_image")"
+running_image_id="$(inspect_value Image "$payload_id")"
+if [[ "$recorded_image_id" != "$running_image_id" ]]; then
+  echo "Running Payload does not match .env.release: $recorded_image" >&2
+  exit 1
+fi
+
+"${compose[@]}" up -d --no-deps cloudflared
+'''
+
+[tasks."97:prod:deploy"]
+description = "checkout済みのmainを本番環境へ停止を伴って直列デプロイする"
+alias = "prod:deploy"
+run = "scripts/prod/deploy.sh"
+
+[tasks."98:prod:perf"]
 description = "本番相当のDocker環境でLighthouseを実行する (.env.productionを使用)"
 alias = "prod:perf"
-run = "docker compose --env-file .env.production -f compose.perf.yml up --build --abort-on-container-exit --exit-code-from lighthouse"
+run = '''
+#!/usr/bin/env bash
+set -euo pipefail
 
-[tasks."96:prod:perf:down"]
+compose=(docker compose --env-file .env.production -f compose.perf.yml)
+"${compose[@]}" build payload lighthouse
+"${compose[@]}" up -d --wait postgres seaweedfs-s3
+"${compose[@]}" --profile tools run --rm --no-deps payload-migrate
+"${compose[@]}" up --abort-on-container-exit --exit-code-from lighthouse payload lighthouse
+'''
+
+[tasks."99:prod:perf:down"]
 description = "Lighthouse性能試験用コンテナを停止して削除する"
 alias = "prod:perf:down"
 run = "docker compose --env-file .env.production -f compose.perf.yml down"

@@ -1,47 +1,11 @@
 import React from "react";
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 
+import "./fonts/generated/fonts.generated.css";
 import "./styles.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import BottomNavigation from "@/components/layout/BottomNav";
-
-const kaisotai = localFont({
-  src: "../../../public/font/Kaisotai-Next-UP-B.subset.woff2",
-  variable: "--font-kaisotai-next",
-  display: "swap",
-  preload: false,
-});
-
-const zenKakuGothicNew = localFont({
-  src: [
-    {
-      path: "../../../public/font/ZenKakuGothicNew-Regular.subset.woff2",
-      weight: "400",
-    },
-    {
-      path: "../../../public/font/ZenKakuGothicNew-Medium.subset.woff2",
-      weight: "500",
-    },
-    {
-      path: "../../../public/font/ZenKakuGothicNew-Bold.subset.woff2",
-      weight: "700",
-    },
-  ],
-  variable: "--font-zen-kaku-gothic-new",
-  display: "swap",
-  preload: false,
-  fallback: [
-    "Hiragino Sans",
-    "Hiragino Kaku Gothic ProN",
-    "BIZ UDPGothic",
-    "Yu Gothic",
-    "Meiryo",
-    "system-ui",
-    "sans-serif",
-  ],
-});
 
 const siteName = "45th NUTFES";
 const siteDescription =
@@ -94,7 +58,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props;
 
   return (
-    <html lang="ja" className={`${zenKakuGothicNew.variable} ${kaisotai.variable}`}>
+    <html lang="ja">
       <body className="pb-(--bottom-nav-offset) md:pb-0">
         <Header />
         <main>{children}</main>

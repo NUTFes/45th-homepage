@@ -9,8 +9,7 @@ const revalidateEventPages = (payload: { logger: { info: (message: string) => vo
   revalidateTag(CACHE_TAGS.eventsPage, "max");
   revalidateTag(CACHE_TAGS.weatherSettings, "max");
   revalidatePath("/");
-  revalidatePath("/events");
-  revalidatePath("/events/programs");
+  revalidatePath("/event", "layout");
 };
 
 export const revalidateProgramsAfterChange: CollectionAfterChangeHook = ({
@@ -29,28 +28,6 @@ export const revalidateProgramsAfterChange: CollectionAfterChangeHook = ({
 };
 
 export const revalidateProgramsAfterDelete: CollectionAfterDeleteHook = ({
-  doc,
-  req: { context, payload },
-}) => {
-  if (!context.disableRevalidate) {
-    revalidateEventPages(payload);
-  }
-
-  return doc;
-};
-
-export const revalidateProgramTagsAfterChange: CollectionAfterChangeHook = ({
-  doc,
-  req: { context, payload },
-}) => {
-  if (!context.disableRevalidate) {
-    revalidateEventPages(payload);
-  }
-
-  return doc;
-};
-
-export const revalidateProgramTagsAfterDelete: CollectionAfterDeleteHook = ({
   doc,
   req: { context, payload },
 }) => {

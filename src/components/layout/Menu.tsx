@@ -14,6 +14,7 @@ import {
   Building2,
   UserStar,
   Info,
+  Puzzle,
 } from "lucide-react";
 
 type SubMenuItem = {
@@ -27,6 +28,7 @@ type MenuLeafItem = {
   icon: LucideIcon;
   href?: string;
   disabled?: boolean;
+  mobileOnly?: boolean;
 };
 
 type MenuParentItem = {
@@ -34,6 +36,7 @@ type MenuParentItem = {
   icon: LucideIcon;
   children: SubMenuItem[];
   disabled?: boolean;
+  mobileOnly?: boolean;
 };
 
 type MenuItem = MenuLeafItem | MenuParentItem;
@@ -47,11 +50,14 @@ const menuItems: MenuItem[] = [
   {
     label: "イベント・販売",
     icon: CalendarDays,
-    disabled: true,
     children: [
       {
+        label: "すべてのイベント・販売",
+        href: "/event",
+      },
+      {
         label: "ゲスト",
-        disabled: true,
+        href: "/event/guest",
       },
       {
         label: "コラボ",
@@ -59,23 +65,23 @@ const menuItems: MenuItem[] = [
       },
       {
         label: "企画",
-        disabled: true,
+        href: "/event/programs/category/program",
       },
       {
         label: "展示・体験",
-        disabled: true,
+        href: "/event/programs/category/exhibition",
       },
       {
         label: "食品販売",
-        disabled: true,
+        href: "/event/programs/category/food",
       },
       {
         label: "物品販売",
-        disabled: true,
+        href: "/event/programs/category/goods",
       },
       {
         label: "企業ブース",
-        disabled: true,
+        href: "/event/programs/category/corporate",
       },
     ],
   },
@@ -117,6 +123,13 @@ const menuItems: MenuItem[] = [
     icon: Building2,
     href: "/sponsors",
   },
+  {
+    label: "謎解きヒント",
+    icon: Puzzle,
+    mobileOnly: true,
+    href: "/riddle",
+    disabled: true,
+  },
 ];
 
 type MenuItemProps = {
@@ -143,7 +156,7 @@ function MenuItem({ item }: MenuItemProps) {
   const disabled = item.disabled === true;
 
   return (
-    <li className="border-b border-font-gray">
+    <li className={`border-b border-font-gray ${item.mobileOnly ? "md:hidden" : ""}`}>
       {isLeaf ? (
         !disabled ? (
           <Link href={item.href ?? "/"} className={enabledItemClassName}>
