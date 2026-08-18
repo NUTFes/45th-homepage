@@ -19,7 +19,7 @@ export default function MobileTimetable({
   if (!laneName) {
     return (
       <section className="flex min-h-96 items-center justify-center px-l py-4l text-center text-text text-font-main">
-        タイスケ会場が登録されるとタイムスケジュールを表示します
+        会場が登録されるとタイムスケジュールを表示します
       </section>
     );
   }

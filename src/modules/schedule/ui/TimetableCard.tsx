@@ -21,8 +21,8 @@ export default function TimetableCard({
   return (
     <Link
       aria-label={`${title}、${startTime}から${endTime}`}
-      className={`flex h-full min-h-0 items-center gap-1 overflow-hidden rounded border-2 border-main px-1 text-font-main transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary ${
-        isHighlighted ? "bg-secondary text-base-dark" : "bg-base-dark hover:bg-base-dark/90"
+      className={`flex h-full min-h-0 items-center gap-1 overflow-hidden rounded border-2 border-main px-1 text-base-dark transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary ${
+        isHighlighted ? "bg-main" : "bg-secondary hover:bg-secondary/90"
       }`}
       href={href}
     >

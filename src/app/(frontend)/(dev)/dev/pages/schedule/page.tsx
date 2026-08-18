@@ -12,7 +12,7 @@ export default function DevSchedulePage() {
   return (
     <DevPageContainer
       title="Schedule Page"
-      description="CMSデータを使わず、タイスケ区分・会場、15分グリッド、空状態を確認"
+      description="CMSデータを使わず、会場グループ・会場、15分グリッド、空状態を確認"
     >
       <DevSection title="Timetable foundation">
         <div className="mx-auto w-full max-w-107.5 overflow-clip">
