@@ -228,7 +228,7 @@ export const buildProgramAdminLabel = (program: LabelableProgram) => {
       ? PROGRAM_AREA_LABELS[program.area as ProgramArea]
       : "エリア未設定";
   const locationName = program.locationName?.trim() || "場所未設定";
-  const status = program._status ?? "draft";
+  const status = program._status === "published" ? "公開中" : "下書き";
 
   return `${title} / ${categoryLabel} / ${areaLabel} / ${locationName} / ${status}`;
 };

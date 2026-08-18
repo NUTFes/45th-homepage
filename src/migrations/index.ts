@@ -7,6 +7,7 @@ import * as migration_20260617_133059_add_sponsors_page from './20260617_133059_
 import * as migration_20260723_161524_news_body_rich_text from './20260723_161524_news_body_rich_text';
 import * as migration_20260731_011747_connect_event_cms from './20260731_011747_connect_event_cms';
 import * as migration_20260813_073023_add_sponsor_href from './20260813_073023_add_sponsor_href';
+import * as migration_20260818_093306_add_timetable_listings from './20260818_093306_add_timetable_listings';
 
 export const migrations = [
   {
@@ -52,6 +53,11 @@ export const migrations = [
   {
     up: migration_20260813_073023_add_sponsor_href.up,
     down: migration_20260813_073023_add_sponsor_href.down,
-    name: '20260813_073023_add_sponsor_href'
+    name: '20260813_073023_add_sponsor_href',
+  },
+  {
+    up: migration_20260818_093306_add_timetable_listings.up,
+    down: migration_20260818_093306_add_timetable_listings.down,
+    name: '20260818_093306_add_timetable_listings'
   },
 ];

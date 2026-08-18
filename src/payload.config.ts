@@ -12,6 +12,9 @@ import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
 import { News } from "./collections/News";
 import { Programs } from "./collections/Programs";
+import { TimetableGroups } from "./collections/TimetableGroups";
+import { TimetableLanes } from "./collections/TimetableLanes";
+import { TimetableListings } from "./collections/TimetableListings";
 import { EventsPage } from "./globals/EventsPage";
 import { SponsorsPage } from "./globals/SponsorsPage";
 import { TopPage } from "./globals/TopPage";
@@ -78,7 +81,7 @@ export default buildConfig({
       },
     },
   },
-  collections: [Users, Media, News, Programs],
+  collections: [Users, Media, News, TimetableGroups, TimetableLanes, Programs, TimetableListings],
   globals: [TopPage, EventsPage, SponsorsPage, WeatherSettings],
   editor: lexicalEditor(),
   secret: env.PAYLOAD_SECRET,

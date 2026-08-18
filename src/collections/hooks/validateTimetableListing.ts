@@ -1,0 +1,195 @@
+import { APIError, type CollectionBeforeChangeHook, type Where } from "payload";
+
+import {
+  PROGRAM_SCHEDULE_WEATHER_LABELS,
+  PROGRAM_SCHEDULE_WEATHERS,
+  type ProgramScheduleWeather,
+} from "@/lib/events/constants";
+import { normalizeRelationshipId, relationshipIdKey } from "@/lib/events/validation";
+
+type ListingInput = {
+  id?: number | string | null;
+  timetableGroup?: unknown;
+  timetableLane?: unknown;
+  day?: string | null;
+  weather?: string | null;
+  startTime?: string | null;
+  endTime?: string | null;
+};
+
+const toRecord = (value: unknown): Record<string, unknown> =>
+  typeof value === "object" && value !== null && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : {};
+
+const validationError = (message: string) => new APIError(message, 400, null, true);
+
+const weatherValuesThatOverlap = (weather: ProgramScheduleWeather) =>
+  weather === "both" ? PROGRAM_SCHEDULE_WEATHERS.map(({ value }) => value) : ["both", weather];
+
+export const validateTimetableListingBeforeChange: CollectionBeforeChangeHook = async ({
+  data,
+  originalDoc,
+  req,
+}) => {
+  if (req.context.syncTimetableListingSource) {
+    return data;
+  }
+
+  const listing: ListingInput = {
+    ...toRecord(originalDoc),
+    ...toRecord(data),
+  };
+  const timetableGroupId = normalizeRelationshipId(listing.timetableGroup);
+  const timetableLaneId = normalizeRelationshipId(listing.timetableLane);
+
+  if (timetableLaneId !== null && timetableGroupId === null) {
+    throw validationError("先に「会場グループ」を選んでから、「会場」を選択してください。");
+  }
+  if (timetableGroupId === null || timetableLaneId === null) {
+    return {
+      ...data,
+      configurationStatus: "0_unconfigured",
+    };
+  }
+
+  const [groupResult, laneResult] = await Promise.all([
+    req.payload.find({
+      collection: "timetable-groups",
+      depth: 0,
+      limit: 1,
+      overrideAccess: true,
+      pagination: false,
+      req,
+      select: {
+        id: true,
+        isActive: true,
+      },
+      where: {
+        id: {
+          equals: timetableGroupId,
+        },
+      },
+    }),
+    req.payload.find({
+      collection: "timetable-lanes",
+      depth: 0,
+      limit: 1,
+      overrideAccess: true,
+      pagination: false,
+      req,
+      select: {
+        id: true,
+        isActive: true,
+        timetableGroup: true,
+      },
+      where: {
+        id: {
+          equals: timetableLaneId,
+        },
+      },
+    }),
+  ]);
+  const group = groupResult.docs[0];
+  const lane = laneResult.docs[0];
+
+  if (!group?.isActive) {
+    throw validationError(
+      "この会場グループは現在使用できません。「会場グループ」で使用する項目を選び直してください。",
+    );
+  }
+  if (!lane?.isActive) {
+    throw validationError(
+      "この会場は現在使用できません。「会場」で使用する項目を選び直してください。",
+    );
+  }
+
+  const laneGroupId = normalizeRelationshipId(lane.timetableGroup);
+  if (
+    laneGroupId === null ||
+    relationshipIdKey(laneGroupId) !== relationshipIdKey(timetableGroupId)
+  ) {
+    throw validationError("選んだ会場グループに含まれる会場を選び直してください。");
+  }
+
+  const weather = listing.weather as ProgramScheduleWeather | null | undefined;
+  if (!listing.day || !weather || !listing.startTime || !listing.endTime) {
+    throw validationError(
+      "開催日時を確認できません。企画画面で開催日時を確認してから、もう一度保存してください。",
+    );
+  }
+
+  const clauses: Where[] = [
+    {
+      configurationStatus: {
+        equals: "1_configured",
+      },
+    },
+    {
+      timetableLane: {
+        equals: timetableLaneId,
+      },
+    },
+    {
+      day: {
+        equals: listing.day,
+      },
+    },
+    {
+      weather: {
+        in: weatherValuesThatOverlap(weather),
+      },
+    },
+    {
+      startTime: {
+        less_than: listing.endTime,
+      },
+    },
+    {
+      endTime: {
+        greater_than: listing.startTime,
+      },
+    },
+  ];
+  const currentId = normalizeRelationshipId(listing.id ?? originalDoc?.id);
+  if (currentId !== null) {
+    clauses.push({
+      id: {
+        not_equals: currentId,
+      },
+    });
+  }
+
+  const conflict = await req.payload.find({
+    collection: "timetable-listings",
+    depth: 0,
+    limit: 1,
+    overrideAccess: true,
+    pagination: false,
+    req,
+    select: {
+      startTime: true,
+      endTime: true,
+      weather: true,
+    },
+    where: {
+      and: clauses,
+    },
+  });
+
+  if (conflict.docs.length > 0) {
+    const existing = conflict.docs[0];
+    const weatherLabel =
+      existing.weather && existing.weather in PROGRAM_SCHEDULE_WEATHER_LABELS
+        ? PROGRAM_SCHEDULE_WEATHER_LABELS[existing.weather as ProgramScheduleWeather]
+        : "天候未設定";
+    throw validationError(
+      `同じ会場の ${existing.startTime ?? "開始未設定"}-${existing.endTime ?? "終了未設定"}（${weatherLabel}）と重なっています。どちらかの会場または開催日時を変更してください。`,
+    );
+  }
+
+  return {
+    ...data,
+    configurationStatus: "1_configured",
+  };
+};
