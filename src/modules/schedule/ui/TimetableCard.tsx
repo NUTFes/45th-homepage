@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 export type TimetableCardProps = {
+  desktop?: boolean;
   endTime: string;
   href: string;
   isHighlighted?: boolean;
@@ -12,6 +13,7 @@ export type TimetableCardProps = {
  * 本デザインへ差し替えるための最小境界。グリッド上の位置と大きさは親が管理する。
  */
 export default function TimetableCard({
+  desktop = false,
   endTime,
   href,
   isHighlighted = false,
@@ -21,15 +23,23 @@ export default function TimetableCard({
   return (
     <Link
       aria-label={`${title}、${startTime}から${endTime}`}
-      className={`flex h-full min-h-0 items-center gap-1 overflow-hidden rounded border-2 border-main px-1 text-base-dark transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary ${
-        isHighlighted ? "bg-main" : "bg-secondary hover:bg-secondary/90"
+      className={`flex h-full min-h-0 flex-col items-start overflow-hidden rounded border-2 px-xs py-ss transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary ${
+        desktop ? "border-secondary/60 bg-base-dark" : "border-main bg-base-dark"
+      } ${
+        isHighlighted
+          ? "border-main bg-secondary text-base-dark"
+          : "text-font-main hover:bg-base-dark/80"
       }`}
       href={href}
     >
-      <span className="shrink-0 text-[10px] leading-4">
+      <span className={`shrink-0 ${desktop ? "text-textb" : "text-text-small"}`}>
         {startTime}–{endTime}
       </span>
-      <span className="truncate text-xs leading-4 font-bold">{title}</span>
+      <span
+        className={`max-w-full font-bold wrap-break-word ${desktop ? "text-Ptext" : "text-textb"}`}
+      >
+        {title}
+      </span>
     </Link>
   );
 }

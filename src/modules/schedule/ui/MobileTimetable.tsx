@@ -3,7 +3,7 @@ import type { CSSProperties } from "react";
 import type { TimetableModel } from "../model";
 import TimetableCard from "./TimetableCard";
 
-const SLOT_HEIGHT_PX = 32;
+const SLOT_HEIGHT_PX = 25;
 
 type MobileTimetableProps = {
   highlightedItemId?: string;
@@ -18,7 +18,7 @@ export default function MobileTimetable({
 }: MobileTimetableProps) {
   if (!laneName) {
     return (
-      <section className="flex min-h-96 items-center justify-center px-l py-4l text-center text-text text-font-main">
+      <section className="flex min-h-96 items-center justify-center px-l py-4l text-center text-text text-font-main md:hidden">
         会場が登録されるとタイムスケジュールを表示します
       </section>
     );
@@ -30,7 +30,7 @@ export default function MobileTimetable({
   } as CSSProperties;
 
   return (
-    <section aria-labelledby="timetable-heading" className="bg-base px-m pt-l pb-4l">
+    <section aria-labelledby="timetable-heading" className="bg-base px-m pt-4l pb-4l md:hidden">
       <h2 id="timetable-heading" className="sr-only">
         {laneName}のタイムスケジュール
       </h2>
@@ -48,7 +48,7 @@ export default function MobileTimetable({
             style={{ top: `calc(${tick.offsetSlots} * var(--timetable-slot-height))` }}
           >
             <time
-              className={`w-14 shrink-0 text-right text-text-small text-font-main ${
+              className={`w-14 shrink-0 text-right text-text-large text-font-main ${
                 tick.isFirst
                   ? "translate-y-0"
                   : tick.isLast
@@ -63,7 +63,7 @@ export default function MobileTimetable({
         ))}
 
         <div
-          className="absolute top-0 right-0 bottom-0 left-16 grid border-x border-main/70"
+          className="absolute top-0 right-0 bottom-0 left-16 grid border-x border-main/70 bg-base-dark/20"
           style={{
             gridTemplateRows: `repeat(${model.slotCount}, var(--timetable-slot-height))`,
           }}

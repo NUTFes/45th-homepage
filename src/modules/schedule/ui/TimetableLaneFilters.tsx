@@ -18,11 +18,11 @@ export default function TimetableLaneFilters({
   const lanes = selectedGroup?.lanes ?? [];
 
   return (
-    <div className="bg-base">
+    <div className="bg-base md:hidden">
       {groups.length > 0 ? (
-        <fieldset className="[scrollbar-width:thin] overflow-x-auto px-xs pt-ss">
+        <fieldset className="[scrollbar-width:thin] overflow-x-auto px-xs pt-4l">
           <legend className="sr-only">会場グループ</legend>
-          <div className="flex min-w-max items-end gap-1">
+          <div className="flex min-w-max items-end">
             {groups.map((group) => (
               <label key={group.id} className="cursor-pointer">
                 <input
@@ -33,7 +33,7 @@ export default function TimetableLaneFilters({
                   type="radio"
                   value={group.id}
                 />
-                <span className="flex h-14 w-25 items-center justify-center rounded-t-lg border-2 border-main px-ss text-center text-textb text-font-main transition-colors peer-checked:bg-secondary peer-checked:text-base-dark peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-main">
+                <span className="flex h-14 w-25 items-center justify-center rounded-t-lg border-2 border-main px-ss text-center text-textb font-bold text-font-main transition-colors peer-checked:bg-secondary peer-checked:text-base-dark peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-main">
                   {group.name}
                 </span>
               </label>

@@ -15,12 +15,12 @@ export default function DevSchedulePage() {
       description="CMSデータを使わず、日付・天候・会場グループ・会場と15分グリッドを確認"
     >
       <DevSection title="Day and weather filters">
-        <div className="mx-auto w-full max-w-107.5 overflow-clip">
+        <div className="mx-auto w-full max-w-107.5 overflow-clip md:max-w-none">
           <SchedulePageView data={schedulePreviewFixture} />
         </div>
       </DevSection>
       <DevSection title="No timetable groups">
-        <div className="mx-auto w-full max-w-107.5 overflow-clip">
+        <div className="mx-auto w-full max-w-107.5 overflow-clip md:max-w-none">
           <SchedulePageView data={emptySchedulePreviewFixture} />
         </div>
       </DevSection>

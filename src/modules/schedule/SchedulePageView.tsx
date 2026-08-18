@@ -6,6 +6,8 @@ import type { FestivalDay, Weather } from "@/lib/events/constants";
 
 import { buildTimetableModel, filterScheduleItemsForDisplay, getScheduleSpotlight } from "./model";
 import type { SchedulePageDTO } from "./types";
+import DesktopGroupSelect from "./ui/DesktopGroupSelect";
+import DesktopTimetable, { type DesktopLaneModel } from "./ui/DesktopTimetable";
 import MobileTimetable from "./ui/MobileTimetable";
 import ScheduleFilters from "./ui/ScheduleFilters";
 import ScheduleSpotlight from "./ui/ScheduleSpotlight";
@@ -50,6 +52,20 @@ export default function SchedulePageView({ data }: { data: SchedulePageDTO }) {
       ),
     [data.range, selectedLane, visibleItems],
   );
+  const desktopLaneModels = useMemo<DesktopLaneModel[]>(
+    () =>
+      (selectedGroup?.lanes ?? []).map((lane) => ({
+        lane,
+        model: buildTimetableModel(
+          {
+            items: visibleItems,
+            range: data.range,
+          },
+          lane.id,
+        ),
+      })),
+    [data.range, selectedGroup, visibleItems],
+  );
   const spotlight = getScheduleSpotlight(model.items, now);
 
   const handleGroupChange = (groupId: string) => {
@@ -60,7 +76,8 @@ export default function SchedulePageView({ data }: { data: SchedulePageDTO }) {
 
   return (
     <div className="min-h-screen bg-base">
-      <div className="mx-auto w-full max-w-107.5 bg-base shadow-[0_0_12px_var(--color-base-shadow)]">
+      <h1 className="sr-only">タイムスケジュール</h1>
+      <div className="mx-auto w-full bg-base md:max-w-none">
         <ScheduleFilters
           days={data.days}
           selectedDay={selectedDay}
@@ -68,7 +85,7 @@ export default function SchedulePageView({ data }: { data: SchedulePageDTO }) {
           onDayChange={setSelectedDay}
           onWeatherChange={setSelectedWeather}
         />
-        <div className="sticky top-0 z-90">
+        <div className="sticky top-0 z-90 md:hidden">
           <TimetableLaneFilters
             selectedLane={selectedLane}
             selectedGroup={selectedGroup}
@@ -78,6 +95,16 @@ export default function SchedulePageView({ data }: { data: SchedulePageDTO }) {
           />
           {selectedLane ? <ScheduleSpotlight spotlight={spotlight} /> : null}
         </div>
+        <div className="hidden px-pm pt-4l md:block">
+          <div className="mx-auto max-w-260">
+            <DesktopGroupSelect
+              groups={data.groups}
+              onGroupChange={handleGroupChange}
+              selectedGroup={selectedGroup}
+            />
+          </div>
+        </div>
+        <DesktopTimetable groupName={selectedGroup?.name} laneModels={desktopLaneModels} />
         <MobileTimetable
           highlightedItemId={
             spotlight.kind === "current" || spotlight.kind === "next"

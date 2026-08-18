@@ -7,7 +7,7 @@ export default function ScheduleSpotlight({ spotlight }: { spotlight: ScheduleSp
     <section
       aria-label="現在・次の企画"
       aria-live="polite"
-      className="border-b-2 border-main bg-base-dark px-3l py-m text-font-main shadow-[0_2px_6px_0_var(--color-base-shadow)]"
+      className="border-b-2 border-main bg-base-dark px-3l py-m text-font-main shadow-[0_2px_6px_0_var(--color-base-shadow)] md:hidden"
     >
       {spotlight.kind === "checking" ? (
         <p className="text-text">現在の企画を確認しています</p>
@@ -16,7 +16,8 @@ export default function ScheduleSpotlight({ spotlight }: { spotlight: ScheduleSp
       ) : (
         <div className="flex flex-col gap-0.5">
           <p className="text-text">
-            {spotlight.kind === "current" ? "現在開催中" : "次の企画"}　{spotlight.item.startTime}～
+            {spotlight.kind === "current" ? "現在開催中" : "まもなく開始"}　
+            {spotlight.item.startTime}～
           </p>
           <Link
             className="w-fit rounded-sm text-textb underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main"
