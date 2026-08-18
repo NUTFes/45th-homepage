@@ -21,7 +21,7 @@ export default function TimetableLaneFilters({
     <div className="bg-base">
       {groups.length > 0 ? (
         <fieldset className="[scrollbar-width:thin] overflow-x-auto px-xs pt-ss">
-          <legend className="sr-only">タイスケ区分</legend>
+          <legend className="sr-only">会場グループ</legend>
           <div className="flex min-w-max items-end gap-1">
             {groups.map((group) => (
               <label key={group.id} className="cursor-pointer">
@@ -65,8 +65,8 @@ export default function TimetableLaneFilters({
         ) : (
           <p className="text-center text-text text-font-main">
             {selectedGroup
-              ? "このタイスケ区分には有効な会場がありません"
-              : "タイスケ区分を準備中です"}
+              ? "この会場グループには使用中の会場がありません"
+              : "会場グループを準備中です"}
           </p>
         )}
       </div>
