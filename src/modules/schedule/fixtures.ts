@@ -1,54 +1,48 @@
-import type { SchedulePreviewDTO, SchedulePreviewGroup, SchedulePreviewLane } from "./types";
+import type { ScheduleGroupDTO, ScheduleLaneDTO, SchedulePageDTO } from "./types";
 
-const outdoorStage: SchedulePreviewLane = {
+const outdoorStage: ScheduleLaneDTO = {
   id: "outdoor-stage",
   groupId: "outdoor",
   name: "メインステージ",
-  shortName: "メイン",
   sortOrder: 10,
 };
 
-const lectureLaneA: SchedulePreviewLane = {
+const lectureLaneA: ScheduleLaneDTO = {
   id: "lecture-a",
   groupId: "lecture",
   name: "講義棟 A会場",
-  shortName: "A会場",
   sortOrder: 10,
 };
 
-const lectureLaneB: SchedulePreviewLane = {
+const lectureLaneB: ScheduleLaneDTO = {
   id: "lecture-b",
   groupId: "lecture",
   name: "講義棟 B会場",
-  shortName: "B会場",
   sortOrder: 20,
 };
 
-const groups: SchedulePreviewGroup[] = [
+const groups: ScheduleGroupDTO[] = [
   {
     id: "outdoor",
     name: "屋外",
-    shortName: "屋外",
     sortOrder: 10,
     lanes: [outdoorStage],
   },
   {
     id: "lecture",
     name: "講義棟",
-    shortName: "講義棟",
     sortOrder: 20,
     lanes: [lectureLaneA, lectureLaneB],
   },
   {
     id: "martial-arts-hall",
     name: "武道場",
-    shortName: "武道場",
     sortOrder: 30,
     lanes: [],
   },
 ];
 
-export const schedulePreviewFixture: SchedulePreviewDTO = {
+export const schedulePreviewFixture: SchedulePageDTO = {
   days: [
     { value: "day1", label: "19日（土）", date: "2026-09-19" },
     { value: "day2", label: "20日（日）", date: "2026-09-20" },
@@ -152,7 +146,7 @@ export const schedulePreviewFixture: SchedulePreviewDTO = {
   weather: "sunny",
 };
 
-export const emptySchedulePreviewFixture: SchedulePreviewDTO = {
+export const emptySchedulePreviewFixture: SchedulePageDTO = {
   ...schedulePreviewFixture,
   groups: [],
   items: [],

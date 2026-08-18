@@ -12,6 +12,10 @@ import {
 } from "@/lib/events/validation";
 
 import { validateTimetableListingBeforeChange } from "./hooks/validateTimetableListing";
+import {
+  revalidateTimetableAfterChange,
+  revalidateTimetableAfterDelete,
+} from "./hooks/revalidateTimetable";
 
 const sourceFieldAccess = {
   update: () => false,
@@ -65,6 +69,8 @@ export const TimetableListings: CollectionConfig = {
     },
   },
   hooks: {
+    afterChange: [revalidateTimetableAfterChange],
+    afterDelete: [revalidateTimetableAfterDelete],
     beforeChange: [validateTimetableListingBeforeChange],
   },
   fields: [

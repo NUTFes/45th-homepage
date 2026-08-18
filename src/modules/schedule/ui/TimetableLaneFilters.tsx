@@ -1,9 +1,9 @@
-import type { SchedulePreviewGroup, SchedulePreviewLane } from "../types";
+import type { ScheduleGroupDTO, ScheduleLaneDTO } from "../types";
 
 type TimetableLaneFiltersProps = {
-  selectedLane?: SchedulePreviewLane;
-  selectedGroup?: SchedulePreviewGroup;
-  groups: readonly SchedulePreviewGroup[];
+  selectedLane?: ScheduleLaneDTO;
+  selectedGroup?: ScheduleGroupDTO;
+  groups: readonly ScheduleGroupDTO[];
   onLaneChange: (laneId: string) => void;
   onGroupChange: (groupId: string) => void;
 };
@@ -34,7 +34,7 @@ export default function TimetableLaneFilters({
                   value={group.id}
                 />
                 <span className="flex h-14 w-25 items-center justify-center rounded-t-lg border-2 border-main px-ss text-center text-textb text-font-main transition-colors peer-checked:bg-secondary peer-checked:text-base-dark peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-main">
-                  {group.shortName ?? group.name}
+                  {group.name}
                 </span>
               </label>
             ))}

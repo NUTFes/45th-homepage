@@ -1,28 +1,26 @@
 import type { FestivalDay, ProgramScheduleWeather, Weather } from "@/lib/events/constants";
 
-export type SchedulePreviewDay = {
+export type ScheduleDayDTO = {
   value: FestivalDay;
   label: string;
   date: string;
 };
 
-export type SchedulePreviewGroup = {
+export type ScheduleGroupDTO = {
   id: string;
   name: string;
-  shortName?: string;
   sortOrder: number;
-  lanes: SchedulePreviewLane[];
+  lanes: ScheduleLaneDTO[];
 };
 
-export type SchedulePreviewLane = {
+export type ScheduleLaneDTO = {
   id: string;
   groupId: string;
   name: string;
-  shortName?: string;
   sortOrder: number;
 };
 
-export type SchedulePreviewItem = {
+export type ScheduleItemDTO = {
   id: string;
   programId: string;
   title: string;
@@ -34,18 +32,15 @@ export type SchedulePreviewItem = {
   laneId: string;
 };
 
-/**
- * 開発用タイスケ表示の入力契約。
- * Payloadの生成型や取得処理から独立させ、公開時は別のadapterで変換する。
- */
-export type SchedulePreviewDTO = {
-  days: SchedulePreviewDay[];
+/** Payloadの生成型をUIへ直接渡さないためのタイムスケジュール表示契約。 */
+export type SchedulePageDTO = {
+  days: ScheduleDayDTO[];
   range: {
     startTime: string;
     endTime: string;
     slotMinutes: number;
   };
-  groups: SchedulePreviewGroup[];
-  items: SchedulePreviewItem[];
+  groups: ScheduleGroupDTO[];
+  items: ScheduleItemDTO[];
   weather: Weather;
 };

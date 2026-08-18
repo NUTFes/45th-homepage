@@ -5,13 +5,13 @@ import { useEffect, useMemo, useState } from "react";
 import type { FestivalDay, Weather } from "@/lib/events/constants";
 
 import { buildTimetableModel, filterScheduleItemsForDisplay, getScheduleSpotlight } from "./model";
-import type { SchedulePreviewDTO } from "./types";
+import type { SchedulePageDTO } from "./types";
 import MobileTimetable from "./ui/MobileTimetable";
 import ScheduleFilters from "./ui/ScheduleFilters";
 import ScheduleSpotlight from "./ui/ScheduleSpotlight";
 import TimetableLaneFilters from "./ui/TimetableLaneFilters";
 
-export default function SchedulePageView({ data }: { data: SchedulePreviewDTO }) {
+export default function SchedulePageView({ data }: { data: SchedulePageDTO }) {
   const [selectedDay, setSelectedDay] = useState<FestivalDay>(data.days[0]?.value ?? "day1");
   const [selectedWeather, setSelectedWeather] = useState<Weather>(data.weather);
   const [selectedGroupId, setSelectedGroupId] = useState<string | null>(data.groups[0]?.id ?? null);
@@ -61,7 +61,6 @@ export default function SchedulePageView({ data }: { data: SchedulePreviewDTO })
   return (
     <div className="min-h-screen bg-base">
       <div className="mx-auto w-full max-w-107.5 bg-base shadow-[0_0_12px_var(--color-base-shadow)]">
-        <h1 className="sr-only">タイムスケジュール開発プレビュー</h1>
         <ScheduleFilters
           days={data.days}
           selectedDay={selectedDay}

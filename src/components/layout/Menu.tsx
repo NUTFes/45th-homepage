@@ -88,7 +88,7 @@ const menuItems: MenuItem[] = [
   {
     label: "タイムスケジュール",
     icon: Clock,
-    disabled: true,
+    href: "/schedule",
   },
   {
     label: "マップ",

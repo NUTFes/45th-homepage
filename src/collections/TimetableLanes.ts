@@ -4,6 +4,10 @@ import {
   preventReferencedTimetableLaneGroupChange,
   preventTimetableLaneDeleteWhenReferenced,
 } from "./hooks/preventReferencedDelete";
+import {
+  revalidateTimetableAfterChange,
+  revalidateTimetableAfterDelete,
+} from "./hooks/revalidateTimetable";
 
 export const TimetableLanes: CollectionConfig = {
   slug: "timetable-lanes",
@@ -44,6 +48,8 @@ export const TimetableLanes: CollectionConfig = {
     },
   },
   hooks: {
+    afterChange: [revalidateTimetableAfterChange],
+    afterDelete: [revalidateTimetableAfterDelete],
     beforeChange: [preventReferencedTimetableLaneGroupChange],
     beforeDelete: [preventTimetableLaneDeleteWhenReferenced],
   },

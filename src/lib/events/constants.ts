@@ -10,12 +10,14 @@ export const FESTIVAL_DAYS = {
   day1: {
     value: "day1",
     label: "1日目",
+    scheduleLabel: "19日（土）",
     adminLabel: "1日目（9/19 土）",
     date: "2026-09-19",
   },
   day2: {
     value: "day2",
     label: "2日目",
+    scheduleLabel: "20日（日）",
     adminLabel: "2日目（9/20 日）",
     date: "2026-09-20",
   },

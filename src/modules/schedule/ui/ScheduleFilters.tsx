@@ -2,10 +2,10 @@ import { useId } from "react";
 
 import type { FestivalDay, Weather } from "@/lib/events/constants";
 
-import type { SchedulePreviewDay } from "../types";
+import type { ScheduleDayDTO } from "../types";
 
 type ScheduleFiltersProps = {
-  days: readonly SchedulePreviewDay[];
+  days: readonly ScheduleDayDTO[];
   selectedDay: FestivalDay;
   selectedWeather: Weather;
   onDayChange: (day: FestivalDay) => void;

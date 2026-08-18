@@ -1,7 +1,7 @@
 import { FESTIVAL_DAYS, type FestivalDay, type Weather } from "@/lib/events/constants";
 import { timeToMinutes } from "@/lib/events/validation";
 
-import type { SchedulePreviewDTO, SchedulePreviewItem } from "./types";
+import type { ScheduleItemDTO, SchedulePageDTO } from "./types";
 
 export type TimetableTick = {
   label: string;
@@ -10,7 +10,7 @@ export type TimetableTick = {
   isLast: boolean;
 };
 
-export type PositionedScheduleItem = SchedulePreviewItem & {
+export type PositionedScheduleItem = ScheduleItemDTO & {
   rowSpan: number;
   startRow: number;
 };
@@ -37,7 +37,7 @@ const formatTime = (minutes: number) => {
   return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
 };
 
-function getRangeMinutes(range: SchedulePreviewDTO["range"]) {
+function getRangeMinutes(range: SchedulePageDTO["range"]) {
   const start = timeToMinutes(range.startTime);
   const end = timeToMinutes(range.endTime);
 
@@ -73,9 +73,9 @@ function buildTicks(start: number, end: number, slotMinutes: number): TimetableT
 }
 
 export function filterScheduleItemsForDisplay(
-  items: readonly SchedulePreviewItem[],
+  items: readonly ScheduleItemDTO[],
   selection: ScheduleDisplaySelection,
-): SchedulePreviewItem[] {
+): ScheduleItemDTO[] {
   return items.filter(
     (item) =>
       item.day === selection.day && (item.weather === "both" || item.weather === selection.weather),
@@ -83,7 +83,7 @@ export function filterScheduleItemsForDisplay(
 }
 
 export function buildTimetableModel(
-  data: Pick<SchedulePreviewDTO, "items" | "range">,
+  data: Pick<SchedulePageDTO, "items" | "range">,
   laneId: string | null,
 ): TimetableModel {
   const range = getRangeMinutes(data.range);

@@ -1,6 +1,10 @@
 import type { CollectionConfig } from "payload";
 
 import { preventTimetableGroupDeleteWhenReferenced } from "./hooks/preventReferencedDelete";
+import {
+  revalidateTimetableAfterChange,
+  revalidateTimetableAfterDelete,
+} from "./hooks/revalidateTimetable";
 
 export const TimetableGroups: CollectionConfig = {
   slug: "timetable-groups",
@@ -38,6 +42,8 @@ export const TimetableGroups: CollectionConfig = {
     },
   },
   hooks: {
+    afterChange: [revalidateTimetableAfterChange],
+    afterDelete: [revalidateTimetableAfterDelete],
     beforeDelete: [preventTimetableGroupDeleteWhenReferenced],
   },
   fields: [
