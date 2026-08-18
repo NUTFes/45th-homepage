@@ -1,4 +1,4 @@
-import { FESTIVAL_DAYS, type FestivalDay } from "@/lib/events/constants";
+import { FESTIVAL_DAYS, type FestivalDay, type Weather } from "@/lib/events/constants";
 import { timeToMinutes } from "@/lib/events/validation";
 
 import type { SchedulePreviewDTO, SchedulePreviewItem } from "./types";
@@ -25,6 +25,11 @@ export type ScheduleSpotlight =
   | { kind: "checking" }
   | { kind: "current" | "next"; item: PositionedScheduleItem }
   | { kind: "none" };
+
+export type ScheduleDisplaySelection = {
+  day: FestivalDay;
+  weather: Weather;
+};
 
 const formatTime = (minutes: number) => {
   const hour = Math.floor(minutes / 60);
@@ -65,6 +70,16 @@ function buildTicks(start: number, end: number, slotMinutes: number): TimetableT
     isFirst: index === 0,
     isLast: index === tickMinutes.length - 1,
   }));
+}
+
+export function filterScheduleItemsForDisplay(
+  items: readonly SchedulePreviewItem[],
+  selection: ScheduleDisplaySelection,
+): SchedulePreviewItem[] {
+  return items.filter(
+    (item) =>
+      item.day === selection.day && (item.weather === "both" || item.weather === selection.weather),
+  );
 }
 
 export function buildTimetableModel(

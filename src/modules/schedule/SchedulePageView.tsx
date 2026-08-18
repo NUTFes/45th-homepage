@@ -2,13 +2,18 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import { buildTimetableModel, getScheduleSpotlight } from "./model";
+import type { FestivalDay, Weather } from "@/lib/events/constants";
+
+import { buildTimetableModel, filterScheduleItemsForDisplay, getScheduleSpotlight } from "./model";
 import type { SchedulePreviewDTO } from "./types";
 import MobileTimetable from "./ui/MobileTimetable";
+import ScheduleFilters from "./ui/ScheduleFilters";
 import ScheduleSpotlight from "./ui/ScheduleSpotlight";
 import TimetableLaneFilters from "./ui/TimetableLaneFilters";
 
 export default function SchedulePageView({ data }: { data: SchedulePreviewDTO }) {
+  const [selectedDay, setSelectedDay] = useState<FestivalDay>(data.days[0]?.value ?? "day1");
+  const [selectedWeather, setSelectedWeather] = useState<Weather>(data.weather);
   const [selectedGroupId, setSelectedGroupId] = useState<string | null>(data.groups[0]?.id ?? null);
   const [selectedLaneId, setSelectedLaneId] = useState<string | null>(
     data.groups[0]?.lanes[0]?.id ?? null,
@@ -26,9 +31,24 @@ export default function SchedulePageView({ data }: { data: SchedulePreviewDTO })
     return () => window.clearInterval(intervalId);
   }, []);
 
+  const visibleItems = useMemo(
+    () =>
+      filterScheduleItemsForDisplay(data.items, {
+        day: selectedDay,
+        weather: selectedWeather,
+      }),
+    [data.items, selectedDay, selectedWeather],
+  );
   const model = useMemo(
-    () => buildTimetableModel(data, selectedLane?.id ?? null),
-    [data, selectedLane],
+    () =>
+      buildTimetableModel(
+        {
+          items: visibleItems,
+          range: data.range,
+        },
+        selectedLane?.id ?? null,
+      ),
+    [data.range, selectedLane, visibleItems],
   );
   const spotlight = getScheduleSpotlight(model.items, now);
 
@@ -42,6 +62,13 @@ export default function SchedulePageView({ data }: { data: SchedulePreviewDTO })
     <div className="min-h-screen bg-base">
       <div className="mx-auto w-full max-w-107.5 bg-base shadow-[0_0_12px_var(--color-base-shadow)]">
         <h1 className="sr-only">タイムスケジュール開発プレビュー</h1>
+        <ScheduleFilters
+          days={data.days}
+          selectedDay={selectedDay}
+          selectedWeather={selectedWeather}
+          onDayChange={setSelectedDay}
+          onWeatherChange={setSelectedWeather}
+        />
         <div className="sticky top-0 z-90">
           <TimetableLaneFilters
             selectedLane={selectedLane}

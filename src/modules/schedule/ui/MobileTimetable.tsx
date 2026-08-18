@@ -36,7 +36,7 @@ export default function MobileTimetable({
       </h2>
       {model.items.length === 0 ? (
         <p className="mb-m border border-main bg-base-dark px-s py-xs text-center text-text text-font-main">
-          この会場で開催する企画はありません
+          この日付・天候・会場で開催する企画はありません
         </p>
       ) : null}
 

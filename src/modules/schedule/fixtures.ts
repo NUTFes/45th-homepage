@@ -49,6 +49,10 @@ const groups: SchedulePreviewGroup[] = [
 ];
 
 export const schedulePreviewFixture: SchedulePreviewDTO = {
+  days: [
+    { value: "day1", label: "19日（土）", date: "2026-09-19" },
+    { value: "day2", label: "20日（日）", date: "2026-09-20" },
+  ],
   range: {
     startTime: "10:00",
     endTime: "20:30",
@@ -72,10 +76,21 @@ export const schedulePreviewFixture: SchedulePreviewDTO = {
       programId: "102",
       title: "悠久太鼓愛好会 つるかめ会",
       href: "/event/programs/102",
-      weather: "both",
+      weather: "sunny",
       day: "day1",
       startTime: "10:30",
       endTime: "11:00",
+      laneId: outdoorStage.id,
+    },
+    {
+      id: "rainy-stage",
+      programId: "106",
+      title: "雨天時ステージ企画",
+      href: "/event/programs/106",
+      weather: "rainy",
+      day: "day1",
+      startTime: "10:30",
+      endTime: "11:30",
       laneId: outdoorStage.id,
     },
     {
@@ -111,7 +126,30 @@ export const schedulePreviewFixture: SchedulePreviewDTO = {
       endTime: "14:00",
       laneId: lectureLaneB.id,
     },
+    {
+      id: "day-two-stage",
+      programId: "107",
+      title: "二日目ステージ企画",
+      href: "/event/programs/107",
+      weather: "both",
+      day: "day2",
+      startTime: "12:15",
+      endTime: "14:00",
+      laneId: outdoorStage.id,
+    },
+    {
+      id: "day-two-lecture",
+      programId: "108",
+      title: "二日目の講義棟企画",
+      href: "/event/programs/108",
+      weather: "both",
+      day: "day2",
+      startTime: "14:00",
+      endTime: "15:00",
+      laneId: lectureLaneB.id,
+    },
   ],
+  weather: "sunny",
 };
 
 export const emptySchedulePreviewFixture: SchedulePreviewDTO = {

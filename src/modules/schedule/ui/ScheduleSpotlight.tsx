@@ -12,7 +12,7 @@ export default function ScheduleSpotlight({ spotlight }: { spotlight: ScheduleSp
       {spotlight.kind === "checking" ? (
         <p className="text-text">現在の企画を確認しています</p>
       ) : spotlight.kind === "none" ? (
-        <p className="text-text">この会場で次に始まる企画はありません</p>
+        <p className="text-text">この条件で次に始まる企画はありません</p>
       ) : (
         <div className="flex flex-col gap-0.5">
           <p className="text-text">

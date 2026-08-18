@@ -1,4 +1,10 @@
-import type { FestivalDay, ProgramScheduleWeather } from "@/lib/events/constants";
+import type { FestivalDay, ProgramScheduleWeather, Weather } from "@/lib/events/constants";
+
+export type SchedulePreviewDay = {
+  value: FestivalDay;
+  label: string;
+  date: string;
+};
 
 export type SchedulePreviewGroup = {
   id: string;
@@ -33,6 +39,7 @@ export type SchedulePreviewItem = {
  * Payloadの生成型や取得処理から独立させ、公開時は別のadapterで変換する。
  */
 export type SchedulePreviewDTO = {
+  days: SchedulePreviewDay[];
   range: {
     startTime: string;
     endTime: string;
@@ -40,4 +47,5 @@ export type SchedulePreviewDTO = {
   };
   groups: SchedulePreviewGroup[];
   items: SchedulePreviewItem[];
+  weather: Weather;
 };
