@@ -11,35 +11,33 @@ import {
   SelectValue,
 } from "react-aria-components";
 
-import type { ScheduleGroupDTO } from "../types";
+import type { ScheduleLaneDTO } from "../types";
 
-type DesktopGroupSelectProps = {
-  groups: readonly ScheduleGroupDTO[];
-  selectedGroup?: ScheduleGroupDTO;
-  onGroupChange: (groupId: string) => void;
+type DesktopLaneSelectProps = {
+  groupName: string;
+  lanes: readonly ScheduleLaneDTO[];
+  selectedLane: ScheduleLaneDTO;
+  onLaneChange: (laneId: string) => void;
 };
 
-export default function DesktopGroupSelect({
-  groups,
-  selectedGroup,
-  onGroupChange,
-}: DesktopGroupSelectProps) {
-  if (groups.length === 0) {
-    return null;
-  }
-
+export default function DesktopLaneSelect({
+  groupName,
+  lanes,
+  selectedLane,
+  onLaneChange,
+}: DesktopLaneSelectProps) {
   return (
     <Select
-      className="group relative w-69.75"
+      className="group relative h-full w-full"
       onSelectionChange={(key) => {
         if (key !== null) {
-          onGroupChange(String(key));
+          onLaneChange(String(key));
         }
       }}
-      selectedKey={selectedGroup?.id ?? null}
+      selectedKey={selectedLane.id}
     >
-      <Label className="sr-only">会場グループ</Label>
-      <Button className="flex min-h-14.5 w-full cursor-pointer items-center justify-between gap-s rounded-t-lg border-2 border-main bg-secondary px-m py-s text-left text-Pbutton text-base-dark shadow-[0_0_6px_var(--color-base-shadow)] outline-hidden transition-colors hover:bg-secondary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main pressed:bg-secondary/80">
+      <Label className="sr-only">{groupName}の会場</Label>
+      <Button className="flex h-full w-full cursor-pointer items-center justify-between gap-s border-y-2 border-main bg-secondary px-m text-left text-Pbutton text-base-dark outline-hidden transition-colors hover:bg-secondary/90 focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-main pressed:bg-secondary/80">
         <SelectValue className="min-w-0 flex-1 truncate" />
         <ChevronDown
           aria-hidden="true"
@@ -52,14 +50,14 @@ export default function DesktopGroupSelect({
         placement="bottom start"
       >
         <ListBox className="max-h-80 overflow-y-auto p-1 outline-hidden">
-          {groups.map((group) => (
+          {lanes.map((lane) => (
             <ListBoxItem
-              id={group.id}
-              key={group.id}
-              textValue={group.name}
               className="cursor-pointer rounded-md px-m py-s text-Ptext outline-hidden transition-colors hover:bg-main/20 focus:bg-main focus:text-base-dark selected:font-bold"
+              id={lane.id}
+              key={lane.id}
+              textValue={lane.name}
             >
-              {group.name}
+              {lane.name}
             </ListBoxItem>
           ))}
         </ListBox>

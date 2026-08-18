@@ -100,6 +100,7 @@ export async function getSchedulePageData(): Promise<SchedulePageDTO> {
           .sort(bySortOrderThenName),
       };
     })
+    .filter((group) => group.lanes.length > 0)
     .sort(bySortOrderThenName);
 
   const items = listingResult.docs.flatMap((listing): ScheduleItemDTO[] => {

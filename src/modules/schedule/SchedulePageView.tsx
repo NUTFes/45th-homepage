@@ -6,8 +6,7 @@ import type { FestivalDay, Weather } from "@/lib/events/constants";
 
 import { buildTimetableModel, filterScheduleItemsForDisplay, getScheduleSpotlight } from "./model";
 import type { SchedulePageDTO } from "./types";
-import DesktopGroupSelect from "./ui/DesktopGroupSelect";
-import DesktopTimetable, { type DesktopLaneModel } from "./ui/DesktopTimetable";
+import DesktopTimetable, { type DesktopGroupModel } from "./ui/DesktopTimetable";
 import MobileTimetable from "./ui/MobileTimetable";
 import ScheduleFilters from "./ui/ScheduleFilters";
 import ScheduleSpotlight from "./ui/ScheduleSpotlight";
@@ -16,15 +15,31 @@ import TimetableLaneFilters from "./ui/TimetableLaneFilters";
 export default function SchedulePageView({ data }: { data: SchedulePageDTO }) {
   const [selectedDay, setSelectedDay] = useState<FestivalDay>(data.days[0]?.value ?? "day1");
   const [selectedWeather, setSelectedWeather] = useState<Weather>(data.weather);
-  const [selectedGroupId, setSelectedGroupId] = useState<string | null>(data.groups[0]?.id ?? null);
-  const [selectedLaneId, setSelectedLaneId] = useState<string | null>(
-    data.groups[0]?.lanes[0]?.id ?? null,
+  const visibleGroups = useMemo(
+    () =>
+      [...data.groups]
+        .filter((group) => group.lanes.length > 0)
+        .sort((left, right) => left.sortOrder - right.sortOrder)
+        .map((group) => ({
+          ...group,
+          lanes: [...group.lanes].sort((left, right) => left.sortOrder - right.sortOrder),
+        })),
+    [data.groups],
+  );
+  const lanes = useMemo(() => visibleGroups.flatMap((group) => group.lanes), [visibleGroups]);
+  const [selectedMobileLaneId, setSelectedMobileLaneId] = useState<string | null>(
+    lanes[0]?.id ?? null,
+  );
+  const [selectedDesktopLaneIds, setSelectedDesktopLaneIds] = useState<Record<string, string>>(() =>
+    Object.fromEntries(
+      visibleGroups.flatMap((group) =>
+        group.lanes[0] ? [[group.id, group.lanes[0].id] as const] : [],
+      ),
+    ),
   );
   const [now, setNow] = useState<Date | null>(null);
 
-  const selectedGroup = data.groups.find((group) => group.id === selectedGroupId) ?? data.groups[0];
-  const selectedLane =
-    selectedGroup?.lanes.find((lane) => lane.id === selectedLaneId) ?? selectedGroup?.lanes[0];
+  const selectedMobileLane = lanes.find((lane) => lane.id === selectedMobileLaneId) ?? lanes[0];
 
   useEffect(() => {
     const updateNow = () => setNow(new Date());
@@ -48,30 +63,35 @@ export default function SchedulePageView({ data }: { data: SchedulePageDTO }) {
           items: visibleItems,
           range: data.range,
         },
-        selectedLane?.id ?? null,
+        selectedMobileLane?.id ?? null,
       ),
-    [data.range, selectedLane, visibleItems],
+    [data.range, selectedMobileLane, visibleItems],
   );
-  const desktopLaneModels = useMemo<DesktopLaneModel[]>(
+  const desktopGroupModels = useMemo<DesktopGroupModel[]>(
     () =>
-      (selectedGroup?.lanes ?? []).map((lane) => ({
-        lane,
-        model: buildTimetableModel(
-          {
-            items: visibleItems,
-            range: data.range,
-          },
-          lane.id,
-        ),
-      })),
-    [data.range, selectedGroup, visibleItems],
+      visibleGroups.map((group) => {
+        const selectedLane =
+          group.lanes.find((lane) => lane.id === selectedDesktopLaneIds[group.id]) ??
+          group.lanes[0]!;
+
+        return {
+          group,
+          selectedLane,
+          model: buildTimetableModel(
+            {
+              items: visibleItems,
+              range: data.range,
+            },
+            selectedLane.id,
+          ),
+        };
+      }),
+    [data.range, selectedDesktopLaneIds, visibleGroups, visibleItems],
   );
   const spotlight = getScheduleSpotlight(model.items, now);
 
-  const handleGroupChange = (groupId: string) => {
-    const group = data.groups.find((item) => item.id === groupId);
-    setSelectedGroupId(groupId);
-    setSelectedLaneId(group?.lanes[0]?.id ?? null);
+  const handleDesktopLaneChange = (groupId: string, laneId: string) => {
+    setSelectedDesktopLaneIds((current) => ({ ...current, [groupId]: laneId }));
   };
 
   return (
@@ -87,24 +107,13 @@ export default function SchedulePageView({ data }: { data: SchedulePageDTO }) {
         />
         <div className="sticky top-0 z-90 md:hidden">
           <TimetableLaneFilters
-            selectedLane={selectedLane}
-            selectedGroup={selectedGroup}
-            groups={data.groups}
-            onLaneChange={setSelectedLaneId}
-            onGroupChange={handleGroupChange}
+            lanes={lanes}
+            onLaneChange={setSelectedMobileLaneId}
+            selectedLane={selectedMobileLane}
           />
-          {selectedLane ? <ScheduleSpotlight spotlight={spotlight} /> : null}
+          {selectedMobileLane ? <ScheduleSpotlight spotlight={spotlight} /> : null}
         </div>
-        <div className="hidden px-pm pt-4l md:block">
-          <div className="mx-auto max-w-260">
-            <DesktopGroupSelect
-              groups={data.groups}
-              onGroupChange={handleGroupChange}
-              selectedGroup={selectedGroup}
-            />
-          </div>
-        </div>
-        <DesktopTimetable groupName={selectedGroup?.name} laneModels={desktopLaneModels} />
+        <DesktopTimetable groupModels={desktopGroupModels} onLaneChange={handleDesktopLaneChange} />
         <MobileTimetable
           highlightedItemId={
             spotlight.kind === "current" || spotlight.kind === "next"
@@ -112,7 +121,7 @@ export default function SchedulePageView({ data }: { data: SchedulePageDTO }) {
               : undefined
           }
           model={model}
-          laneName={selectedLane?.name}
+          laneName={selectedMobileLane?.name}
         />
       </div>
     </div>
