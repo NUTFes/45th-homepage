@@ -50,7 +50,7 @@ const FONT_CONFIGS = [
   },
   {
     id: "goldman",
-    family: "Goldman",
+    family: "Goldman New 45th",
     source: "assets/fonts/goldman/Goldman-Bold.ttf",
     outputPrefix: "goldman-700",
     commonProfile: "display",

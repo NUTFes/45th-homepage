@@ -2,6 +2,10 @@
   "schemaVersion": 2,
   "inputs": [
     {
+      "path": "assets/fonts/goldman/Goldman-Bold.ttf",
+      "sha256": "afb5309dd5bdbaa79fa8326e9be44161ac49f53bda52a38736a08f66cd7079b0"
+    },
+    {
       "path": "assets/fonts/joyo-kanji.txt",
       "sha256": "1e12b1c00c4bef2bf1bf2881428c42d9da9dc1f6016f7e61be2ee78003c0ea28"
     },
@@ -23,7 +27,7 @@
     },
     {
       "path": "scripts/font-assets.cjs",
-      "sha256": "02fd076ad288c3b90361dd10061cc26e09061d2b6a134210c49cb0bb1e1af62e"
+      "sha256": "af1075ed8f8888be6da35e720ac5c377965ee38c6d762e3c0fcf4c084558a941"
     }
   ],
   "fonts": [
@@ -35,6 +39,16 @@
       "codePointCount": 5007,
       "commonProfile": "display",
       "weight": null,
+      "style": "normal"
+    },
+    {
+      "id": "goldman",
+      "family": "Goldman New 45th",
+      "source": "assets/fonts/goldman/Goldman-Bold.ttf",
+      "sha256": "afb5309dd5bdbaa79fa8326e9be44161ac49f53bda52a38736a08f66cd7079b0",
+      "codePointCount": 593,
+      "commonProfile": "display",
+      "weight": "700",
       "style": "normal"
     },
     {
@@ -296,6 +310,42 @@
       "fileBase": "kaisotai-next-extended-18",
       "codePointCount": 195,
       "asset": "kaisotai-next-extended-18.6bb3ecfd17f9.woff2"
+    },
+    {
+      "fontId": "goldman",
+      "family": "Goldman New 45th",
+      "weight": "700",
+      "style": "normal",
+      "kind": "common",
+      "index": 0,
+      "label": "common",
+      "fileBase": "goldman-700-common",
+      "codePointCount": 95,
+      "asset": "goldman-700-common.73b4fc0d6fa3.woff2"
+    },
+    {
+      "fontId": "goldman",
+      "family": "Goldman New 45th",
+      "weight": "700",
+      "style": "normal",
+      "kind": "extended",
+      "index": 1,
+      "label": "extended-01",
+      "fileBase": "goldman-700-extended-01",
+      "codePointCount": 256,
+      "asset": "goldman-700-extended-01.784b65609126.woff2"
+    },
+    {
+      "fontId": "goldman",
+      "family": "Goldman New 45th",
+      "weight": "700",
+      "style": "normal",
+      "kind": "extended",
+      "index": 2,
+      "label": "extended-02",
+      "fileBase": "goldman-700-extended-02",
+      "codePointCount": 242,
+      "asset": "goldman-700-extended-02.4ecfafd70ae5.woff2"
     },
     {
       "fontId": "zen-kaku-400",
@@ -1056,6 +1106,21 @@
   ],
   "files": [
     {
+      "path": "public/font/generated/goldman-700-common.73b4fc0d6fa3.woff2",
+      "bytes": 11848,
+      "sha256": "73b4fc0d6fa3952395decf1147bb1d7ae2b62b95b6fdc1d1e871f7b14c2bf613"
+    },
+    {
+      "path": "public/font/generated/goldman-700-extended-01.784b65609126.woff2",
+      "bytes": 13748,
+      "sha256": "784b65609126afac69acb8f985683589acf0b5911b25bc9d5f023dda436f8289"
+    },
+    {
+      "path": "public/font/generated/goldman-700-extended-02.4ecfafd70ae5.woff2",
+      "bytes": 17612,
+      "sha256": "4ecfafd70ae58e0a444ead51d9d27b649e290c540d573b4ab7d769df397d14fb"
+    },
+    {
       "path": "public/font/generated/kaisotai-next-common.b54fc4a2da47.woff2",
       "bytes": 41344,
       "sha256": "b54fc4a2da47d12530c06f00ad4e7f28711af36017fc51dbd15a188fd16c6b9a"
@@ -1467,8 +1532,8 @@
     },
     {
       "path": "src/app/(frontend)/fonts/generated/fonts.generated.css",
-      "bytes": 192673,
-      "sha256": "ebeb7ee30963b067cd49f0c602f56d4999511435cb3caa93ab8ed36a4c55dec1"
+      "bytes": 194141,
+      "sha256": "9f26dd99719f629d4d2c82222891d32827d558e0ad6257113666f64863001b6c"
     }
   ]
 }
