@@ -66,21 +66,23 @@ export default function MapPageView() {
             aria-hidden="true"
             width={287}
             height={333}
-            className="pointer-events-none absolute top-0 left-[42%] z-0 h-auto w-71.75"
+            className="pointer-events-none absolute top-0 right-118 z-0 h-auto w-71.75"
           />
-          <Image
-            src="/image/PageBack2.svg"
-            alt=""
-            aria-hidden="true"
-            width={243}
-            height={644}
-            className="pointer-events-none absolute bottom-0 left-0 z-0 h-auto w-60.75"
-          />
-          <div className="relative z-10 flex min-w-0 flex-1 flex-col items-center gap-3l py-5l">
-            <div className="w-full">
-              <SectionTitle title="マップ" />
+          <div className="relative z-10 flex min-w-0 flex-1 flex-col py-5l">
+            <Image
+              src="/image/PageBack2.svg"
+              alt=""
+              aria-hidden="true"
+              width={243}
+              height={644}
+              className="pointer-events-none absolute top-full -left-5l z-0 h-auto w-60.75 -translate-y-1/4 lg:-left-pm"
+            />
+            <div className="relative z-10 flex w-full flex-col items-center gap-3l">
+              <div className="w-full">
+                <SectionTitle title="マップ" />
+              </div>
+              <MapDisplay label="全体" />
             </div>
-            <MapDisplay label="全体" />
           </div>
           <MapMenu />
         </section>
