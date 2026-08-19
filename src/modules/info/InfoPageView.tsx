@@ -152,7 +152,7 @@ export default function InfoPageView({ sponsorAds }: { sponsorAds?: ReactNode })
           <div className="flex flex-col gap-ll lg:hidden">
             {HELP_ITEMS.map((item) => (
               <div key={item.image.alt} className="flex flex-col gap-s">
-                <p className="px-ll text-text text-white">{item.description}</p>
+                <p className="px-ll text-text text-white md:text-Ptext">{item.description}</p>
                 <div className="px-3l">
                   <InfoImage {...item.image} />
                 </div>
