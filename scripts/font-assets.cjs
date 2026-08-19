@@ -49,7 +49,7 @@ const FONT_CONFIGS = [
     style: "normal",
   },
   {
-    id: "goldman-700",
+    id: "goldman",
     family: "Goldman",
     source: "assets/fonts/goldman/Goldman-Bold.ttf",
     outputPrefix: "goldman-700",
