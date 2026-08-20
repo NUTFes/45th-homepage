@@ -5,7 +5,7 @@ import { CACHE_TAGS } from "@/lib/cacheTags";
 import {
   FESTIVAL_DAYS,
   PROGRAM_TIME_SLOT_MINUTES,
-  TIMETABLE_END_TIME,
+  TIMETABLE_DISPLAY_END_TIME,
   TIMETABLE_START_TIME,
 } from "@/lib/events/constants";
 import { normalizeRelationshipId } from "@/lib/events/validation";
@@ -152,7 +152,7 @@ export async function getSchedulePageData(): Promise<SchedulePageDTO> {
     ],
     range: {
       startTime: TIMETABLE_START_TIME,
-      endTime: TIMETABLE_END_TIME,
+      endTime: TIMETABLE_DISPLAY_END_TIME,
       slotMinutes: PROGRAM_TIME_SLOT_MINUTES,
     },
     groups,

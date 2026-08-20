@@ -1,6 +1,7 @@
 "use client";
 
 import { type CSSProperties, useRef, useState } from "react";
+import Image from "next/image";
 
 import type { TimetableModel } from "../model";
 import type { ScheduleGroupDTO, ScheduleLaneDTO } from "../types";
@@ -10,7 +11,7 @@ import TimetableTabs from "./TimetableTabs";
 
 const SLOT_HEIGHT_PX = 38;
 const LANE_HEADER_HEIGHT_PX = 58;
-const LANE_WIDTH_PX = 263;
+const LANE_WIDTH_PX = 279;
 const TIME_GUTTER_WIDTH_PX = 72;
 
 export type DesktopGroupModel = {
@@ -73,7 +74,7 @@ export default function DesktopTimetable({ groupModels, onLaneChange }: DesktopT
   };
 
   return (
-    <div className="hidden md:block">
+    <div className="hidden pb-pm md:block">
       <TimetableTabs
         ariaLabel="会場グループ"
         controlName="schedule-desktop-group"
@@ -83,8 +84,16 @@ export default function DesktopTimetable({ groupModels, onLaneChange }: DesktopT
       />
       <section
         aria-label="会場グループ別タイムスケジュール"
-        className="border-b-2 border-main bg-base/60 px-pm pt-4l pb-4l"
+        className="relative border-b-2 border-main bg-base-dark/40 px-pm pt-4l pb-4l"
       >
+        <Image
+          src="/image/PageBack2.svg"
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute top-1/2 left-[15px] z-0 h-[644px] w-[243px] -translate-y-1/2"
+          width={243}
+          height={644}
+        />
         {groupModels.every(({ model }) => model.items.length === 0) ? (
           <p className="mb-l border border-main bg-base-dark px-l py-s text-center text-Ptext text-font-main">
             この日付・天候で開催する企画はありません
@@ -92,7 +101,7 @@ export default function DesktopTimetable({ groupModels, onLaneChange }: DesktopT
         ) : null}
 
         <div
-          className="w-full [scrollbar-color:var(--color-main)_var(--color-base-dark)] overflow-x-auto"
+          className="relative z-10 w-full [scrollbar-color:var(--color-main)_var(--color-base-dark)] overflow-x-auto"
           ref={scrollContainerRef}
         >
           <div className="grid w-max" style={timetableStyle}>
@@ -125,7 +134,7 @@ export default function DesktopTimetable({ groupModels, onLaneChange }: DesktopT
             {groupModels.map(({ group, selectedLane, model, currentItemId }, groupIndex) => (
               <article
                 aria-label={`${group.name}・${selectedLane.name}の予定`}
-                className={groupIndex % 2 === 0 ? "bg-base-dark/40" : "bg-base/40"}
+                className={groupIndex % 2 === 0 ? "bg-transparent" : "bg-timetable-dark/60"}
                 key={group.id}
                 ref={(node) => {
                   if (node) {
@@ -138,7 +147,11 @@ export default function DesktopTimetable({ groupModels, onLaneChange }: DesktopT
                 <h2 className="sr-only">{group.name}</h2>
                 <div className="h-14.5">
                   {group.lanes.length === 1 ? (
-                    <div className="flex h-full items-center justify-center border-y-2 border-main bg-base-dark px-m text-center text-Pbutton text-font-main">
+                    <div
+                      className={`flex h-full items-center justify-center border-y-2 border-main px-m text-center text-Pbutton text-font-main ${
+                        groupIndex % 2 === 0 ? "bg-base-dark" : "bg-timetable-dark"
+                      }`}
+                    >
                       {selectedLane.name}
                     </div>
                   ) : (
@@ -161,7 +174,7 @@ export default function DesktopTimetable({ groupModels, onLaneChange }: DesktopT
                   ))}
                   {model.items.map((item) => (
                     <div
-                      className="absolute inset-x-0 z-10"
+                      className="absolute inset-x-2 z-10"
                       key={item.id}
                       style={{
                         height: `${item.displayRowSpan * SLOT_HEIGHT_PX}px`,

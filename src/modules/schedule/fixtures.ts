@@ -1,3 +1,5 @@
+import { TIMETABLE_DISPLAY_END_TIME } from "@/lib/events/constants";
+
 import type { ScheduleGroupDTO, ScheduleLaneDTO, SchedulePageDTO } from "./types";
 
 const outdoorStage: ScheduleLaneDTO = {
@@ -49,7 +51,7 @@ export const schedulePreviewFixture: SchedulePageDTO = {
   ],
   range: {
     startTime: "10:00",
-    endTime: "20:30",
+    endTime: TIMETABLE_DISPLAY_END_TIME,
     slotMinutes: 15,
   },
   groups,

@@ -119,11 +119,11 @@ export default function MobileTimetable({
               {model.ticks.map((tick) => (
                 <div
                   key={`${lane.id}-${tick.label}-${tick.offsetSlots}`}
-                  className="pointer-events-none absolute right-0 left-0 z-0 flex items-center gap-xs"
+                  className="pointer-events-none absolute right-0 left-0 z-0 flex items-start"
                   style={{ top: `calc(${tick.offsetSlots} * var(--timetable-slot-height))` }}
                 >
                   <time
-                    className={`w-14 shrink-0 text-right text-text-large text-font-main ${
+                    className={`w-17 shrink-0 pr-xs text-right text-text-large text-font-main ${
                       tick.isFirst
                         ? "translate-y-0"
                         : tick.isLast
@@ -141,7 +141,7 @@ export default function MobileTimetable({
               ))}
 
               <div
-                className="absolute top-0 right-0 bottom-0 left-16 grid border-x border-main/70 bg-base-dark/20"
+                className="absolute top-0 right-0 bottom-0 left-17 grid bg-transparent"
                 style={{
                   gridTemplateRows: `repeat(${displaySlotCount}, var(--timetable-slot-height))`,
                 }}
@@ -149,7 +149,7 @@ export default function MobileTimetable({
                 {model.items.map((item) => (
                   <div
                     key={item.id}
-                    className="relative z-10 mx-0.5 min-h-0"
+                    className="relative z-10 min-h-0"
                     style={{ gridRow: `${item.startRow} / span ${item.displayRowSpan}` }}
                   >
                     <ScheduleCard

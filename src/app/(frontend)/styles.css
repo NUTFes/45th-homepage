@@ -17,7 +17,9 @@ html {
 
 @theme {
   --color-base: #1b339b;
-  --color-base-dark: #192085;
+  --color-base-dark: #181e76;
+  --color-timetable-dark: #14185b;
+  --color-timetable-border: #889ae9;
   --color-main: #3ce0e8;
   --color-secondary: #f6f8ff;
   --color-button-line: #3ce0e8;

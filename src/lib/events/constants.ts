@@ -56,6 +56,7 @@ export const PROGRAM_TIME_SLOT_MINUTES = 15;
 
 export const TIMETABLE_START_TIME = "10:00";
 export const TIMETABLE_END_TIME = "20:30";
+export const TIMETABLE_DISPLAY_END_TIME = "21:00";
 
 export const TOP_PROGRAM_LIMIT_PER_CATEGORY = 5;
 
