@@ -7,8 +7,8 @@ import type { FestivalDay, Weather } from "@/lib/events/constants";
 import { buildTimetableModel, filterScheduleItemsForDisplay, getScheduleSpotlight } from "./model";
 import type { SchedulePageDTO } from "./types";
 import DesktopTimetable, { type DesktopGroupModel } from "./ui/DesktopTimetable";
-import MobileTimetable from "./ui/MobileTimetable";
-import ScheduleFilters from "./ui/ScheduleFilters";
+import MobileTimetable, { type MobileLaneModel } from "./ui/MobileTimetable";
+import ScheduleSwitchSection from "./ui/ScheduleSwitchSection";
 import ScheduleSpotlight from "./ui/ScheduleSpotlight";
 import TimetableLaneFilters from "./ui/TimetableLaneFilters";
 
@@ -56,18 +56,39 @@ export default function SchedulePageView({ data }: { data: SchedulePageDTO }) {
       }),
     [data.items, selectedDay, selectedWeather],
   );
-  const model = useMemo(
+
+  const mobileLaneModelsBase = useMemo(
     () =>
-      buildTimetableModel(
-        {
-          items: visibleItems,
-          range: data.range,
-        },
-        selectedMobileLane?.id ?? null,
-      ),
-    [data.range, selectedMobileLane, visibleItems],
+      lanes.map((lane) => ({
+        lane,
+        model: buildTimetableModel(
+          {
+            items: visibleItems,
+            range: data.range,
+          },
+          lane.id,
+        ),
+      })),
+    [data.range, lanes, visibleItems],
   );
-  const desktopGroupModels = useMemo<DesktopGroupModel[]>(
+  const mobileLaneModels = useMemo<MobileLaneModel[]>(
+    () =>
+      mobileLaneModelsBase.map(({ lane, model }) => {
+        const laneSpotlight = getScheduleSpotlight(model.items, now);
+        return {
+          lane,
+          model,
+          currentItemId:
+            laneSpotlight.kind === "ready" ? (laneSpotlight.current?.id ?? undefined) : undefined,
+        };
+      }),
+    [mobileLaneModelsBase, now],
+  );
+  const selectedMobileModel =
+    mobileLaneModelsBase.find(({ lane }) => lane.id === selectedMobileLane?.id)?.model ?? null;
+  const spotlight = getScheduleSpotlight(selectedMobileModel?.items ?? [], now);
+
+  const desktopGroupModelsBase = useMemo(
     () =>
       visibleGroups.map((group) => {
         const selectedLane =
@@ -88,7 +109,20 @@ export default function SchedulePageView({ data }: { data: SchedulePageDTO }) {
       }),
     [data.range, selectedDesktopLaneIds, visibleGroups, visibleItems],
   );
-  const spotlight = getScheduleSpotlight(model.items, now);
+  const desktopGroupModels = useMemo<DesktopGroupModel[]>(
+    () =>
+      desktopGroupModelsBase.map(({ group, selectedLane, model }) => {
+        const laneSpotlight = getScheduleSpotlight(model.items, now);
+        return {
+          group,
+          selectedLane,
+          model,
+          currentItemId:
+            laneSpotlight.kind === "ready" ? (laneSpotlight.current?.id ?? undefined) : undefined,
+        };
+      }),
+    [desktopGroupModelsBase, now],
+  );
 
   const handleDesktopLaneChange = (groupId: string, laneId: string) => {
     setSelectedDesktopLaneIds((current) => ({ ...current, [groupId]: laneId }));
@@ -98,14 +132,15 @@ export default function SchedulePageView({ data }: { data: SchedulePageDTO }) {
     <div className="min-h-screen bg-base">
       <h1 className="sr-only">タイムスケジュール</h1>
       <div className="mx-auto w-full bg-base md:max-w-none">
-        <ScheduleFilters
+        <ScheduleSwitchSection
+          currentWeather={data.weather}
           days={data.days}
           selectedDay={selectedDay}
           selectedWeather={selectedWeather}
           onDayChange={setSelectedDay}
           onWeatherChange={setSelectedWeather}
         />
-        <div className="sticky top-0 z-90 md:hidden">
+        <div className="sticky top-[var(--header-height,72px)] z-90 md:hidden">
           <TimetableLaneFilters
             lanes={lanes}
             onLaneChange={setSelectedMobileLaneId}
@@ -115,13 +150,9 @@ export default function SchedulePageView({ data }: { data: SchedulePageDTO }) {
         </div>
         <DesktopTimetable groupModels={desktopGroupModels} onLaneChange={handleDesktopLaneChange} />
         <MobileTimetable
-          highlightedItemId={
-            spotlight.kind === "current" || spotlight.kind === "next"
-              ? spotlight.item.id
-              : undefined
-          }
-          model={model}
-          laneName={selectedMobileLane?.name}
+          laneModels={mobileLaneModels}
+          onLaneChange={setSelectedMobileLaneId}
+          selectedLaneId={selectedMobileLane?.id ?? null}
         />
       </div>
     </div>

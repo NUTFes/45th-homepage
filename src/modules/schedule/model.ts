@@ -11,11 +11,13 @@ export type TimetableTick = {
 };
 
 export type PositionedScheduleItem = ScheduleItemDTO & {
-  rowSpan: number;
+  displayRowSpan: number;
+  durationSlots: number;
   startRow: number;
 };
 
 export type TimetableModel = {
+  displaySlotCount: number;
   items: PositionedScheduleItem[];
   slotCount: number;
   ticks: TimetableTick[];
@@ -23,8 +25,11 @@ export type TimetableModel = {
 
 export type ScheduleSpotlight =
   | { kind: "checking" }
-  | { kind: "current" | "next"; item: PositionedScheduleItem }
-  | { kind: "none" };
+  | {
+      kind: "ready";
+      current: PositionedScheduleItem | null;
+      next: PositionedScheduleItem | null;
+    };
 
 export type ScheduleDisplaySelection = {
   day: FestivalDay;
@@ -88,7 +93,7 @@ export function buildTimetableModel(
 ): TimetableModel {
   const range = getRangeMinutes(data.range);
   if (!range) {
-    return { items: [], slotCount: 0, ticks: [] };
+    return { displaySlotCount: 0, items: [], slotCount: 0, ticks: [] };
   }
 
   const slotCount = (range.end - range.start) / data.range.slotMinutes;
@@ -112,11 +117,15 @@ export function buildTimetableModel(
           return [];
         }
 
+        const durationSlots = (end - start) / data.range.slotMinutes;
+        const minimumDisplaySlots = Math.ceil(30 / data.range.slotMinutes);
+
         return [
           {
             ...item,
             startRow: (start - range.start) / data.range.slotMinutes + 1,
-            rowSpan: (end - start) / data.range.slotMinutes,
+            durationSlots,
+            displayRowSpan: Math.max(durationSlots, minimumDisplaySlots),
           },
         ];
       })
@@ -125,11 +134,17 @@ export function buildTimetableModel(
   items.sort(
     (left, right) =>
       left.startRow - right.startRow ||
-      left.rowSpan - right.rowSpan ||
+      left.durationSlots - right.durationSlots ||
       left.title.localeCompare(right.title, "ja"),
   );
 
+  const displaySlotCount = Math.max(
+    slotCount,
+    ...items.map((item) => item.startRow - 1 + item.displayRowSpan),
+  );
+
   return {
+    displaySlotCount,
     items,
     slotCount,
     ticks: buildTicks(range.start, range.end, data.range.slotMinutes),
@@ -149,18 +164,16 @@ export function getScheduleSpotlight(
 
   const nowTime = now.getTime();
   if (!Number.isFinite(nowTime)) {
-    return { kind: "none" };
+    return { kind: "ready", current: null, next: null };
   }
 
-  const current = items.find((item) => {
-    const startsAt = toFestivalDateTime(item.day, item.startTime);
-    const endsAt = toFestivalDateTime(item.day, item.endTime);
-    return startsAt <= nowTime && nowTime < endsAt;
-  });
-  if (current) {
-    return { kind: "current", item: current };
-  }
+  const current =
+    items.find((item) => {
+      const startsAt = toFestivalDateTime(item.day, item.startTime);
+      const endsAt = toFestivalDateTime(item.day, item.endTime);
+      return startsAt <= nowTime && nowTime < endsAt;
+    }) ?? null;
+  const next = items.find((item) => toFestivalDateTime(item.day, item.startTime) > nowTime) ?? null;
 
-  const next = items.find((item) => toFestivalDateTime(item.day, item.startTime) > nowTime);
-  return next ? { kind: "next", item: next } : { kind: "none" };
+  return { kind: "ready", current, next };
 }
