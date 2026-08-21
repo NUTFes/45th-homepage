@@ -43,14 +43,16 @@ const getScheduleItems = (value: unknown): ScheduleItem[] =>
       )
     : [];
 
-const isSyncableScheduleItem = (item: ScheduleItem) =>
-  Boolean(
-    item.day &&
-    item.day in FESTIVAL_DAY_ADMIN_LABELS &&
-    item.weather &&
-    item.weather in PROGRAM_SCHEDULE_WEATHER_LABELS &&
-    validateScheduleItems([item]) === true,
-  );
+const areScheduleItemsSyncable = (scheduleItems: ScheduleItem[]) =>
+  scheduleItems.length > 0 &&
+  scheduleItems.every(
+    (item) =>
+      item.day &&
+      item.day in FESTIVAL_DAY_ADMIN_LABELS &&
+      item.weather &&
+      item.weather in PROGRAM_SCHEDULE_WEATHER_LABELS,
+  ) &&
+  validateScheduleItems(scheduleItems) === true;
 
 export const syncTimetableListingsAfterProgramChange: CollectionAfterChangeHook = async ({
   doc,
@@ -92,6 +94,9 @@ export const syncTimetableListingsAfterProgramChange: CollectionAfterChangeHook 
     itemIds.add(item.id);
   }
 
+  const syncableScheduleItems = areScheduleItemsSyncable(scheduleItems) ? scheduleItems : [];
+  const syncableItemIds = new Set(syncableScheduleItems.map((item) => item.id as string));
+
   const existingResult = await req.payload.find({
     collection: "timetable-listings",
     depth: 0,
@@ -118,11 +123,7 @@ export const syncTimetableListingsAfterProgramChange: CollectionAfterChangeHook 
   const programTitle =
     typeof doc.title === "string" && doc.title.trim() !== "" ? doc.title : "企画名未設定";
 
-  for (const item of scheduleItems) {
-    if (!isSyncableScheduleItem(item)) {
-      continue;
-    }
-
+  for (const item of syncableScheduleItems) {
     const scheduleItemId = item.id as string;
     const sourceData = {
       adminLabel: buildListingLabel(programTitle, item),
@@ -171,7 +172,7 @@ export const syncTimetableListingsAfterProgramChange: CollectionAfterChangeHook 
   }
 
   for (const listing of existingListings) {
-    if (listing.scheduleItemId && itemIds.has(listing.scheduleItemId)) {
+    if (listing.scheduleItemId && syncableItemIds.has(listing.scheduleItemId)) {
       continue;
     }
 
