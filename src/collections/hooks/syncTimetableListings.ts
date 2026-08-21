@@ -6,6 +6,7 @@ import {
   type FestivalDay,
   type ProgramScheduleWeather,
 } from "@/lib/events/constants";
+import { validateScheduleItems } from "@/lib/events/validation";
 import type { Program, TimetableListing } from "@/payload-types";
 
 type ScheduleItem = Program["scheduleItems"][number];
@@ -41,6 +42,15 @@ const getScheduleItems = (value: unknown): ScheduleItem[] =>
           typeof item === "object" && item !== null && !Array.isArray(item),
       )
     : [];
+
+const isSyncableScheduleItem = (item: ScheduleItem) =>
+  Boolean(
+    item.day &&
+    item.day in FESTIVAL_DAY_ADMIN_LABELS &&
+    item.weather &&
+    item.weather in PROGRAM_SCHEDULE_WEATHER_LABELS &&
+    validateScheduleItems([item]) === true,
+  );
 
 export const syncTimetableListingsAfterProgramChange: CollectionAfterChangeHook = async ({
   doc,
@@ -109,6 +119,10 @@ export const syncTimetableListingsAfterProgramChange: CollectionAfterChangeHook 
     typeof doc.title === "string" && doc.title.trim() !== "" ? doc.title : "企画名未設定";
 
   for (const item of scheduleItems) {
+    if (!isSyncableScheduleItem(item)) {
+      continue;
+    }
+
     const scheduleItemId = item.id as string;
     const sourceData = {
       adminLabel: buildListingLabel(programTitle, item),
