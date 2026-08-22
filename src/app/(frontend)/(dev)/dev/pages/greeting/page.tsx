@@ -1,4 +1,5 @@
 import GreetingSection from "@/modules/greeting/ui/GreetingSection";
+import UniversitySection from "@/modules/greeting/ui/UniversitySection";
 
 import { DevPageContainer } from "../../_components/DevPageContainer";
 import { DevPanel } from "../../_components/DevPanel";
@@ -32,6 +33,14 @@ export default function DevGreetingPageModulesPage() {
                 "今日まで日々準備に奔走してきた学生たちの生き生きとした姿をぜひご覧いただき、その奮闘ぶりに温かいご声援をいただけますと幸いです。\n今後とも本学へのご支援をどうぞよろしくお願いします。"
               }
             />
+          </div>
+        </DevPanel>
+      </DevSection>
+
+      <DevSection title="UniversitySection">
+        <DevPanel title="UniversitySection (src/modules/greeting/ui)" fullWidth>
+          <div className="bg-base py-4l md:py-5l">
+            <UniversitySection />
           </div>
         </DevPanel>
       </DevSection>
