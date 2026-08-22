@@ -66,6 +66,9 @@ export default function DevPageModulesIndexPage() {
             <p className="text-text text-base-dark/80">
               src/modules/greeting/ui のコンポーネント確認
             </p>
+            <p className="text-text-small text-base-dark underline">Open →</p>
+          </Link>
+          <Link
             href="/dev/pages/info"
             className="space-y-xs rounded-lg border border-base/10 p-m transition-colors hover:bg-secondary"
           >
