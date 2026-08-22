@@ -49,7 +49,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "timetable_lanes" ADD CONSTRAINT "timetable_lanes_timetable_group_id_timetable_groups_id_fk" FOREIGN KEY ("timetable_group_id") REFERENCES "public"."timetable_groups"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "timetable_listings" ADD CONSTRAINT "timetable_listings_program_id_programs_id_fk" FOREIGN KEY ("program_id") REFERENCES "public"."programs"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "timetable_listings" ADD CONSTRAINT "timetable_listings_timetable_group_id_timetable_groups_id_fk" FOREIGN KEY ("timetable_group_id") REFERENCES "public"."timetable_groups"("id") ON DELETE set null ON UPDATE no action;
-  ALTER TABLE "timetable_listings" ADD CONSTRAINT "timetable_listings_timetable_lane_id_timetable_lanes_id_fk" FOREIGN KEY ("timetable_lane_id") REFERENCES "public"."timetable_lanes"("id") ON DELETE set null ON UPDATE no action;
+  ALTER TABLE "timetable_listings" ADD CONSTRAINT "timetable_listings_timetable_lane_id_timetable_lanes_id_fk" FOREIGN KEY ("timetable_lane_id") REFERENCES "public"."timetable_lanes"("id") ON DELETE restrict ON UPDATE no action;
   CREATE INDEX "timetable_groups_sort_order_idx" ON "timetable_groups" USING btree ("sort_order");
   CREATE INDEX "timetable_groups_is_active_idx" ON "timetable_groups" USING btree ("is_active");
   CREATE INDEX "timetable_groups_updated_at_idx" ON "timetable_groups" USING btree ("updated_at");

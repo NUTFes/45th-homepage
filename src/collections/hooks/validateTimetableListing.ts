@@ -1,11 +1,21 @@
-import { APIError, type CollectionBeforeChangeHook, type Where } from "payload";
+import { sql, type PostgresAdapter } from "@payloadcms/db-postgres";
+import {
+  APIError,
+  type CollectionBeforeChangeHook,
+  type PayloadRequest,
+  type Where,
+} from "payload";
 
 import {
   PROGRAM_SCHEDULE_WEATHER_LABELS,
   PROGRAM_SCHEDULE_WEATHERS,
   type ProgramScheduleWeather,
 } from "@/lib/events/constants";
-import { normalizeRelationshipId, relationshipIdKey } from "@/lib/events/validation";
+import {
+  normalizeRelationshipId,
+  relationshipIdKey,
+  type RelationshipId,
+} from "@/lib/events/validation";
 
 type ListingInput = {
   id?: number | string | null;
@@ -23,6 +33,27 @@ const toRecord = (value: unknown): Record<string, unknown> =>
     : {};
 
 const validationError = (message: string) => new APIError(message, 400, null, true);
+
+const TIMETABLE_LISTING_LOCK_NAMESPACE = 45_000_002;
+
+const lockTimetableLaneDay = async (
+  req: PayloadRequest,
+  timetableLaneId: RelationshipId,
+  day: string,
+) => {
+  const transactionID = await req.transactionID;
+  const adapter = req.payload.db as unknown as PostgresAdapter;
+  const transaction = transactionID ? adapter.sessions[transactionID]?.db : undefined;
+
+  if (!transaction) {
+    throw new Error("Timetable listing validation requires an active PostgreSQL transaction.");
+  }
+
+  const lockKey = `${relationshipIdKey(timetableLaneId)}:${day}`;
+  await transaction.execute(
+    sql`SELECT pg_advisory_xact_lock(${TIMETABLE_LISTING_LOCK_NAMESPACE}, hashtext(${lockKey}))`,
+  );
+};
 
 const weatherValuesThatOverlap = (weather: ProgramScheduleWeather) =>
   weather === "both" ? PROGRAM_SCHEDULE_WEATHERS.map(({ value }) => value) : ["both", weather];
@@ -118,6 +149,8 @@ export const validateTimetableListingBeforeChange: CollectionBeforeChangeHook = 
       "開催日時を確認できません。企画画面で開催日時を確認してから、もう一度保存してください。",
     );
   }
+
+  await lockTimetableLaneDay(req, timetableLaneId, listing.day);
 
   const clauses: Where[] = [
     {

@@ -2,25 +2,28 @@ import { MigrateDownArgs, MigrateUpArgs, sql } from '@payloadcms/db-postgres'
 
 export async function up({ db }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
-    WITH "valid_program_versions" AS (
+    WITH "valid_published_programs" AS (
       SELECT
-        v."id",
-        v."parent_id",
-        v."version_title"
-      FROM "_programs_v" v
+        p."id",
+        p."title"
+      FROM "programs" p
       WHERE
-        v."latest" IS TRUE
-        AND v."parent_id" IS NOT NULL
-        AND v."version_title" IS NOT NULL
-        AND BTRIM(v."version_title") <> ''
+        p."_status" = 'published'
+        AND p."title" IS NOT NULL
+        AND BTRIM(p."title") <> ''
+        AND EXISTS (
+          SELECT 1
+          FROM "programs_schedule_items" item
+          WHERE item."_parent_id" = p."id"
+        )
         AND NOT EXISTS (
           SELECT 1
-          FROM "_programs_v_version_schedule_items" invalid_item
+          FROM "programs_schedule_items" invalid_item
           WHERE
-            invalid_item."_parent_id" = v."id"
+            invalid_item."_parent_id" = p."id"
             AND (
-              invalid_item."_uuid" IS NULL
-              OR BTRIM(invalid_item."_uuid") = ''
+              invalid_item."id" IS NULL
+              OR BTRIM(invalid_item."id") = ''
               OR invalid_item."day" IS NULL
               OR invalid_item."weather" IS NULL
               OR invalid_item."start_time" IS NULL
@@ -30,22 +33,12 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
         )
         AND NOT EXISTS (
           SELECT 1
-          FROM "_programs_v_version_schedule_items" current_item
-          INNER JOIN "_programs_v_version_schedule_items" next_item
+          FROM "programs_schedule_items" current_item
+          INNER JOIN "programs_schedule_items" next_item
             ON next_item."_parent_id" = current_item."_parent_id"
-            AND next_item."id" > current_item."id"
+            AND next_item."_order" > current_item."_order"
           WHERE
-            current_item."_parent_id" = v."id"
-            AND current_item."_uuid" = next_item."_uuid"
-        )
-        AND NOT EXISTS (
-          SELECT 1
-          FROM "_programs_v_version_schedule_items" current_item
-          INNER JOIN "_programs_v_version_schedule_items" next_item
-            ON next_item."_parent_id" = current_item."_parent_id"
-            AND next_item."id" > current_item."id"
-          WHERE
-            current_item."_parent_id" = v."id"
+            current_item."_parent_id" = p."id"
             AND current_item."day" = next_item."day"
             AND current_item."start_time"::text::time < next_item."end_time"::text::time
             AND next_item."start_time"::text::time < current_item."end_time"::text::time
@@ -71,7 +64,7 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
     )
     SELECT
       CONCAT(
-        v."version_title",
+        p."title",
         ' / ',
         CASE s."day"::text
           WHEN 'day1' THEN '1日目（9/19 土）'
@@ -88,9 +81,9 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
           WHEN 'rainy' THEN '雨のみ'
         END
       ),
-      v."parent_id",
-      v."version_title",
-      s."_uuid",
+      p."id",
+      p."title",
+      s."id",
       s."day"::text::"enum_timetable_listings_day",
       s."weather"::text::"enum_timetable_listings_weather",
       s."start_time"::text::"enum_timetable_listings_start_time",
@@ -98,9 +91,9 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
       '0_unconfigured',
       now(),
       now()
-    FROM "valid_program_versions" v
-    INNER JOIN "_programs_v_version_schedule_items" s
-      ON s."_parent_id" = v."id"
+    FROM "valid_published_programs" p
+    INNER JOIN "programs_schedule_items" s
+      ON s."_parent_id" = p."id"
     ON CONFLICT ("program_id", "schedule_item_id") DO NOTHING;
   `)
 }

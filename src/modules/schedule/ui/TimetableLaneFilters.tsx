@@ -21,6 +21,7 @@ export default function TimetableLaneFilters({
       <TimetableTabs
         ariaLabel="会場"
         controlName="schedule-mobile-lane"
+        controlsIdPrefix="timetable-panel"
         items={lanes}
         onChange={onLaneChange}
         selectedItemId={selectedLane?.id}

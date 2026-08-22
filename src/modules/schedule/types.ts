@@ -15,14 +15,12 @@ export type ScheduleGroupDTO = {
 
 export type ScheduleLaneDTO = {
   id: string;
-  groupId: string;
   name: string;
   sortOrder: number;
 };
 
 export type ScheduleItemDTO = {
   id: string;
-  programId: string;
   title: string;
   href: string;
   weather: ProgramScheduleWeather;
@@ -33,7 +31,7 @@ export type ScheduleItemDTO = {
 };
 
 /** Payloadの生成型をUIへ直接渡さないためのタイムスケジュール表示契約。 */
-export type SchedulePageDTO = {
+export type TimetablePageDTO = {
   days: ScheduleDayDTO[];
   range: {
     startTime: string;

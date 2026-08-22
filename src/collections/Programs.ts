@@ -49,7 +49,7 @@ const updateProgramAdminLabelBeforeValidate: CollectionBeforeValidateHook = ({
 
 const addProgramAdminLabelAfterRead: CollectionAfterReadHook = ({ doc }) => ({
   ...doc,
-  adminLabel: doc.adminLabel || buildProgramAdminLabel(doc),
+  adminLabel: buildProgramAdminLabel(doc),
 });
 
 export const Programs: CollectionConfig = {

@@ -56,3 +56,8 @@ export type EventsPageDTO = {
 export type GuestPageDTO = {
   ticketDistributionStatusText: string;
 };
+
+export type SchedulePageDTO = {
+  programs: EventProgramDTO[];
+  weather: Weather;
+};

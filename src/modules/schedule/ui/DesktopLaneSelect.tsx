@@ -37,7 +37,7 @@ export default function DesktopLaneSelect({
       selectedKey={selectedLane.id}
     >
       <Label className="sr-only">{groupName}の会場</Label>
-      <Button className="relative flex h-full w-full cursor-pointer items-center justify-center border-y-2 border-main bg-secondary px-m text-center text-Pbutton text-base-dark outline-hidden transition-colors hover:bg-secondary/90 focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-main pressed:bg-secondary/80">
+      <Button className="relative flex h-full w-full cursor-pointer items-center justify-center border-y-2 border-main bg-secondary px-m text-center text-Pbutton text-timetable-base-dark outline-hidden transition-colors hover:bg-secondary/90 focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-main pressed:bg-secondary/80">
         <SelectValue className="max-w-full min-w-0 truncate text-center" />
         <ChevronDown
           aria-hidden="true"
@@ -45,14 +45,14 @@ export default function DesktopLaneSelect({
         />
       </Button>
       <Popover
-        className="z-200 w-(--trigger-width) rounded-b-lg bg-secondary text-base-dark shadow-[0_2px_12px_var(--color-base-shadow)] outline-hidden"
+        className="z-250 w-(--trigger-width) rounded-b-lg bg-secondary text-timetable-base-dark shadow-[0_2px_12px_var(--color-base-shadow)] outline-hidden"
         offset={0}
         placement="bottom start"
       >
         <ListBox className="max-h-80 overflow-y-auto p-1 outline-hidden">
           {lanes.map((lane) => (
             <ListBoxItem
-              className="cursor-pointer rounded-md px-m py-s text-center text-Ptext outline-hidden transition-colors hover:bg-main/20 focus:bg-main focus:text-base-dark selected:font-bold"
+              className="cursor-pointer rounded-md px-m py-s text-center text-Ptext outline-hidden transition-colors hover:bg-main/20 focus:bg-main focus:text-timetable-base-dark selected:font-bold"
               id={lane.id}
               key={lane.id}
               textValue={lane.name}

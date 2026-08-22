@@ -1,24 +1,21 @@
 import { TIMETABLE_DISPLAY_END_TIME } from "@/lib/events/constants";
 
-import type { ScheduleGroupDTO, ScheduleLaneDTO, SchedulePageDTO } from "./types";
+import type { ScheduleGroupDTO, ScheduleLaneDTO, TimetablePageDTO } from "./types";
 
 const outdoorStage: ScheduleLaneDTO = {
   id: "outdoor-stage",
-  groupId: "outdoor",
   name: "メインステージ",
   sortOrder: 10,
 };
 
 const lectureLaneA: ScheduleLaneDTO = {
   id: "lecture-a",
-  groupId: "lecture",
   name: "講義棟 A会場",
   sortOrder: 10,
 };
 
 const lectureLaneB: ScheduleLaneDTO = {
   id: "lecture-b",
-  groupId: "lecture",
   name: "講義棟 B会場",
   sortOrder: 20,
 };
@@ -44,7 +41,7 @@ const groups: ScheduleGroupDTO[] = [
   },
 ];
 
-export const schedulePreviewFixture: SchedulePageDTO = {
+export const schedulePreviewFixture: TimetablePageDTO = {
   days: [
     { value: "day1", label: "19日（土）", date: "2026-09-19" },
     { value: "day2", label: "20日（日）", date: "2026-09-20" },
@@ -58,7 +55,6 @@ export const schedulePreviewFixture: SchedulePageDTO = {
   items: [
     {
       id: "opening",
-      programId: "101",
       title: "開会式・オープニング企画",
       href: "/event/programs/101",
       weather: "both",
@@ -69,7 +65,6 @@ export const schedulePreviewFixture: SchedulePageDTO = {
     },
     {
       id: "drums",
-      programId: "102",
       title: "悠久太鼓愛好会 つるかめ会",
       href: "/event/programs/102",
       weather: "sunny",
@@ -80,7 +75,6 @@ export const schedulePreviewFixture: SchedulePageDTO = {
     },
     {
       id: "rainy-stage",
-      programId: "106",
       title: "雨天時ステージ企画",
       href: "/event/programs/106",
       weather: "rainy",
@@ -91,7 +85,6 @@ export const schedulePreviewFixture: SchedulePageDTO = {
     },
     {
       id: "long-title",
-      programId: "103",
       title: "長い企画名でも最小カードの配置が崩れないことを確認する企画",
       href: "/event/programs/103",
       weather: "both",
@@ -102,7 +95,6 @@ export const schedulePreviewFixture: SchedulePageDTO = {
     },
     {
       id: "closing",
-      programId: "104",
       title: "一日目クロージング",
       href: "/event/programs/104",
       weather: "both",
@@ -113,7 +105,6 @@ export const schedulePreviewFixture: SchedulePageDTO = {
     },
     {
       id: "lecture-program",
-      programId: "105",
       title: "講義棟企画",
       href: "/event/programs/105",
       weather: "both",
@@ -124,7 +115,6 @@ export const schedulePreviewFixture: SchedulePageDTO = {
     },
     {
       id: "day-two-stage",
-      programId: "107",
       title: "二日目ステージ企画",
       href: "/event/programs/107",
       weather: "both",
@@ -135,7 +125,6 @@ export const schedulePreviewFixture: SchedulePageDTO = {
     },
     {
       id: "day-two-lecture",
-      programId: "108",
       title: "二日目の講義棟企画",
       href: "/event/programs/108",
       weather: "both",
@@ -148,7 +137,7 @@ export const schedulePreviewFixture: SchedulePageDTO = {
   weather: "sunny",
 };
 
-export const emptySchedulePreviewFixture: SchedulePageDTO = {
+export const emptySchedulePreviewFixture: TimetablePageDTO = {
   ...schedulePreviewFixture,
   groups: [],
   items: [],

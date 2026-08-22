@@ -58,7 +58,7 @@ export const syncTimetableListingsAfterProgramChange: CollectionAfterChangeHook 
   doc,
   req,
 }) => {
-  if (req.context.syncTimetableListingSource) {
+  if (req.context.syncTimetableListingSource || doc._status !== "published") {
     return doc;
   }
 
@@ -73,6 +73,10 @@ export const syncTimetableListingsAfterProgramChange: CollectionAfterChangeHook 
   }
 
   const scheduleItems = getScheduleItems(doc.scheduleItems);
+  if (!areScheduleItemsSyncable(scheduleItems)) {
+    return doc;
+  }
+
   const itemIds = new Set<string>();
   for (const item of scheduleItems) {
     if (typeof item.id !== "string" || item.id.trim() === "") {
@@ -94,95 +98,98 @@ export const syncTimetableListingsAfterProgramChange: CollectionAfterChangeHook 
     itemIds.add(item.id);
   }
 
-  const syncableScheduleItems = areScheduleItemsSyncable(scheduleItems) ? scheduleItems : [];
-  const syncableItemIds = new Set(syncableScheduleItems.map((item) => item.id as string));
-
-  const existingResult = await req.payload.find({
-    collection: "timetable-listings",
-    depth: 0,
-    limit: 1000,
-    overrideAccess: true,
-    pagination: false,
-    req,
-    where: {
-      program: {
-        equals: programId,
-      },
-    },
-  });
-  const existingListings = existingResult.docs as TimetableListingSource[];
-  const listingByItemId = new Map(
-    existingListings.flatMap((listing) =>
-      listing.scheduleItemId ? [[listing.scheduleItemId, listing] as const] : [],
-    ),
-  );
+  const originalContext = req.context;
   const context = {
-    ...req.context,
+    ...originalContext,
     syncTimetableListingSource: true,
   };
-  const programTitle =
-    typeof doc.title === "string" && doc.title.trim() !== "" ? doc.title : "企画名未設定";
 
-  for (const item of syncableScheduleItems) {
-    const scheduleItemId = item.id as string;
-    const sourceData = {
-      adminLabel: buildListingLabel(programTitle, item),
-      program: programId,
-      programTitle,
-      scheduleItemId,
-      day: item.day,
-      weather: item.weather,
-      startTime: item.startTime,
-      endTime: item.endTime,
-    };
-    const existing = listingByItemId.get(scheduleItemId);
+  try {
+    const existingResult = await req.payload.find({
+      collection: "timetable-listings",
+      depth: 0,
+      limit: 1000,
+      overrideAccess: true,
+      pagination: false,
+      req,
+      where: {
+        program: {
+          equals: programId,
+        },
+      },
+    });
+    const existingListings = existingResult.docs as TimetableListingSource[];
+    const listingByItemId = new Map(
+      existingListings.flatMap((listing) =>
+        listing.scheduleItemId ? [[listing.scheduleItemId, listing] as const] : [],
+      ),
+    );
+    const programTitle =
+      typeof doc.title === "string" && doc.title.trim() !== "" ? doc.title : "企画名未設定";
 
-    if (!existing) {
-      await req.payload.create({
+    for (const item of scheduleItems) {
+      const scheduleItemId = item.id as string;
+      const sourceData = {
+        adminLabel: buildListingLabel(programTitle, item),
+        program: programId,
+        programTitle,
+        scheduleItemId,
+        day: item.day,
+        weather: item.weather,
+        startTime: item.startTime,
+        endTime: item.endTime,
+      };
+      const existing = listingByItemId.get(scheduleItemId);
+
+      if (!existing) {
+        await req.payload.create({
+          collection: "timetable-listings",
+          context,
+          data: {
+            ...sourceData,
+            configurationStatus: "0_unconfigured",
+          },
+          overrideAccess: true,
+          req,
+        });
+        continue;
+      }
+
+      const changed = sourceFieldsChanged(existing, item);
+      await req.payload.update({
         collection: "timetable-listings",
         context,
         data: {
           ...sourceData,
-          configurationStatus: "0_unconfigured",
+          ...(changed
+            ? {
+                timetableGroup: null,
+                timetableLane: null,
+                configurationStatus: "0_unconfigured",
+              }
+            : {}),
         },
+        id: existing.id,
         overrideAccess: true,
         req,
       });
-      continue;
     }
 
-    const changed = sourceFieldsChanged(existing, item);
-    await req.payload.update({
-      collection: "timetable-listings",
-      context,
-      data: {
-        ...sourceData,
-        ...(changed
-          ? {
-              timetableGroup: null,
-              timetableLane: null,
-              configurationStatus: "0_unconfigured",
-            }
-          : {}),
-      },
-      id: existing.id,
-      overrideAccess: true,
-      req,
-    });
-  }
+    for (const listing of existingListings) {
+      if (listing.scheduleItemId && itemIds.has(listing.scheduleItemId)) {
+        continue;
+      }
 
-  for (const listing of existingListings) {
-    if (listing.scheduleItemId && syncableItemIds.has(listing.scheduleItemId)) {
-      continue;
+      await req.payload.delete({
+        collection: "timetable-listings",
+        context,
+        id: listing.id,
+        overrideAccess: true,
+        req,
+      });
     }
-
-    await req.payload.delete({
-      collection: "timetable-listings",
-      context,
-      id: listing.id,
-      overrideAccess: true,
-      req,
-    });
+  } finally {
+    req.context = originalContext;
   }
 
   return doc;
@@ -192,18 +199,24 @@ export const deleteTimetableListingsBeforeProgramDelete: CollectionBeforeDeleteH
   id,
   req,
 }) => {
-  await req.payload.delete({
-    collection: "timetable-listings",
-    context: {
-      ...req.context,
-      syncTimetableListingSource: true,
-    },
-    overrideAccess: true,
-    req,
-    where: {
-      program: {
-        equals: id,
+  const originalContext = req.context;
+
+  try {
+    await req.payload.delete({
+      collection: "timetable-listings",
+      context: {
+        ...originalContext,
+        syncTimetableListingSource: true,
       },
-    },
-  });
+      overrideAccess: true,
+      req,
+      where: {
+        program: {
+          equals: id,
+        },
+      },
+    });
+  } finally {
+    req.context = originalContext;
+  }
 };

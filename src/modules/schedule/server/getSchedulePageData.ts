@@ -12,7 +12,7 @@ import { normalizeRelationshipId } from "@/lib/events/validation";
 import { isWeather } from "@/modules/events/utils";
 import config from "@/payload.config";
 
-import type { ScheduleGroupDTO, ScheduleItemDTO, SchedulePageDTO } from "../types";
+import type { ScheduleGroupDTO, ScheduleItemDTO, TimetablePageDTO } from "../types";
 
 const bySortOrderThenName = (
   left: { name: string; sortOrder: number },
@@ -24,7 +24,7 @@ const relationshipKey = (value: unknown) => {
   return id === null ? null : String(id);
 };
 
-export async function getSchedulePageData(): Promise<SchedulePageDTO> {
+export async function getSchedulePageData(): Promise<TimetablePageDTO> {
   "use cache";
   cacheTag(CACHE_TAGS.timetable, CACHE_TAGS.weatherSettings);
   cacheLife("minutes");
@@ -43,6 +43,11 @@ export async function getSchedulePageData(): Promise<SchedulePageDTO> {
         limit: 1000,
         overrideAccess: true,
         pagination: false,
+        select: {
+          id: true,
+          name: true,
+          sortOrder: true,
+        },
         where: { isActive: { equals: true } },
       }),
       payload.find({
@@ -51,6 +56,12 @@ export async function getSchedulePageData(): Promise<SchedulePageDTO> {
         limit: 1000,
         overrideAccess: true,
         pagination: false,
+        select: {
+          id: true,
+          timetableGroup: true,
+          name: true,
+          sortOrder: true,
+        },
         where: { isActive: { equals: true } },
       }),
       payload.find({
@@ -59,6 +70,16 @@ export async function getSchedulePageData(): Promise<SchedulePageDTO> {
         limit: 1000,
         overrideAccess: true,
         pagination: false,
+        select: {
+          id: true,
+          program: true,
+          timetableGroup: true,
+          timetableLane: true,
+          weather: true,
+          day: true,
+          startTime: true,
+          endTime: true,
+        },
         where: { configurationStatus: { equals: "1_configured" } },
       }),
       payload.find({
@@ -67,7 +88,7 @@ export async function getSchedulePageData(): Promise<SchedulePageDTO> {
         limit: 1000,
         overrideAccess: true,
         pagination: false,
-        select: { id: true, title: true, _status: true },
+        select: { id: true, title: true },
         where: { _status: { equals: "published" } },
       }),
     ]);
@@ -93,7 +114,6 @@ export async function getSchedulePageData(): Promise<SchedulePageDTO> {
           .filter((lane) => relationshipKey(lane.timetableGroup) === groupId)
           .map((lane) => ({
             id: String(lane.id),
-            groupId,
             name: lane.name,
             sortOrder: lane.sortOrder,
           }))
@@ -125,7 +145,6 @@ export async function getSchedulePageData(): Promise<SchedulePageDTO> {
     return [
       {
         id: String(listing.id),
-        programId,
         title,
         href: `/event/programs/${programId}`,
         weather: listing.weather,

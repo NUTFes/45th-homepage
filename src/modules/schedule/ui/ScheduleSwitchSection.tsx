@@ -1,6 +1,6 @@
 import { useId } from "react";
 
-import type { FestivalDay, Weather } from "@/lib/events/constants";
+import { WEATHER_OPTIONS, type FestivalDay, type Weather } from "@/lib/events/constants";
 
 import type { ScheduleDayDTO } from "../types";
 
@@ -12,11 +12,6 @@ export type ScheduleSwitchSectionProps = {
   onDayChange: (day: FestivalDay) => void;
   onWeatherChange: (weather: Weather) => void;
 };
-
-const weatherOptions = [
-  { value: "sunny", label: "晴れ" },
-  { value: "rainy", label: "雨" },
-] as const satisfies readonly { value: Weather; label: string }[];
 
 type DayOptionsProps = Pick<ScheduleSwitchSectionProps, "days" | "selectedDay" | "onDayChange"> & {
   controlId: string;
@@ -57,14 +52,16 @@ export default function ScheduleSwitchSection({
   onWeatherChange,
 }: ScheduleSwitchSectionProps) {
   const controlId = useId();
+  const currentWeatherLabel =
+    WEATHER_OPTIONS.find(({ value }) => value === currentWeather)?.label ?? currentWeather;
 
   return (
     <div className="bg-base">
-      <div className="border-y-2 border-main bg-base-dark px-3l py-l text-font-main md:px-pm md:py-3l">
+      <div className="border-y-2 border-main bg-timetable-base-dark px-3l py-l text-font-main md:px-pm md:py-3l">
         <div className="mx-auto flex max-w-260 flex-col items-center gap-xs md:items-start md:gap-s">
           <p className="text-center text-title-small font-bold md:text-Ptitle-small">
             現在は
-            <span className="text-accent">{currentWeather === "sunny" ? "晴れ" : "雨"}</span>
+            <span className="text-accent">{currentWeatherLabel}</span>
             スケジュールです
           </p>
           <p className="text-center text-text-small md:hidden">天気を選択してください。</p>
@@ -80,7 +77,7 @@ export default function ScheduleSwitchSection({
             </div>
             <fieldset className="flex justify-center gap-s">
               <legend className="sr-only">天気</legend>
-              {weatherOptions.map((option) => (
+              {WEATHER_OPTIONS.map((option) => (
                 <label key={option.value} className="cursor-pointer">
                   <input
                     checked={selectedWeather === option.value}

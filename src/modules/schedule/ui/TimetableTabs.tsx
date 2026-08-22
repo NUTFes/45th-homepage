@@ -10,6 +10,7 @@ type TimetableTabItem = {
 type TimetableTabsProps = {
   ariaLabel: string;
   controlName: string;
+  controlsIdPrefix?: string;
   items: readonly TimetableTabItem[];
   onChange: (itemId: string) => void;
   selectedItemId?: string | null;
@@ -18,6 +19,7 @@ type TimetableTabsProps = {
 export default function TimetableTabs({
   ariaLabel,
   controlName,
+  controlsIdPrefix,
   items,
   onChange,
   selectedItemId,
@@ -80,6 +82,7 @@ export default function TimetableTabs({
               }}
             >
               <input
+                aria-controls={controlsIdPrefix ? `${controlsIdPrefix}-${item.id}` : undefined}
                 checked={selectedItemId === item.id}
                 className="peer sr-only"
                 name={controlName}
@@ -87,7 +90,7 @@ export default function TimetableTabs({
                 type="radio"
                 value={item.id}
               />
-              <span className="flex h-14 w-25 items-center justify-center rounded-t-lg border-2 border-b-0 border-main px-ss text-center text-textb font-bold text-font-main transition-colors peer-checked:bg-secondary peer-checked:text-base-dark peer-checked:shadow-[0_0_6px_var(--color-base-shadow)] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-main md:h-17 md:w-30 md:px-s md:text-Pbutton">
+              <span className="flex h-14 w-25 items-center justify-center rounded-t-lg border-2 border-b-0 border-main px-ss text-center text-textb font-bold text-font-main transition-colors peer-checked:bg-secondary peer-checked:text-timetable-base-dark peer-checked:shadow-[0_0_6px_var(--color-base-shadow)] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-main md:h-17 md:w-30 md:px-s md:text-Pbutton">
                 {item.name}
               </span>
             </label>

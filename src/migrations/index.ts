@@ -9,6 +9,7 @@ import * as migration_20260731_011747_connect_event_cms from './20260731_011747_
 import * as migration_20260813_073023_add_sponsor_href from './20260813_073023_add_sponsor_href';
 import * as migration_20260818_093306_add_timetable_listings from './20260818_093306_add_timetable_listings';
 import * as migration_20260821_155552_backfill_timetable_listings from './20260821_155552_backfill_timetable_listings';
+import * as migration_20260821_190500_enforce_timetable_invariants from './20260821_190500_enforce_timetable_invariants';
 
 export const migrations = [
   {
@@ -65,5 +66,10 @@ export const migrations = [
     up: migration_20260821_155552_backfill_timetable_listings.up,
     down: migration_20260821_155552_backfill_timetable_listings.down,
     name: '20260821_155552_backfill_timetable_listings'
+  },
+  {
+    up: migration_20260821_190500_enforce_timetable_invariants.up,
+    down: migration_20260821_190500_enforce_timetable_invariants.down,
+    name: '20260821_190500_enforce_timetable_invariants'
   },
 ];

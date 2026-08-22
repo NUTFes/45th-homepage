@@ -5,14 +5,14 @@ import { useEffect, useMemo, useState } from "react";
 import type { FestivalDay, Weather } from "@/lib/events/constants";
 
 import { buildTimetableModel, filterScheduleItemsForDisplay, getScheduleSpotlight } from "./model";
-import type { SchedulePageDTO } from "./types";
+import type { TimetablePageDTO } from "./types";
 import DesktopTimetable, { type DesktopGroupModel } from "./ui/DesktopTimetable";
 import MobileTimetable, { type MobileLaneModel } from "./ui/MobileTimetable";
 import ScheduleSwitchSection from "./ui/ScheduleSwitchSection";
 import ScheduleSpotlight from "./ui/ScheduleSpotlight";
 import TimetableLaneFilters from "./ui/TimetableLaneFilters";
 
-export default function SchedulePageView({ data }: { data: SchedulePageDTO }) {
+export default function SchedulePageView({ data }: { data: TimetablePageDTO }) {
   const [selectedDay, setSelectedDay] = useState<FestivalDay>(data.days[0]?.value ?? "day1");
   const [selectedWeather, setSelectedWeather] = useState<Weather>(data.weather);
   const visibleGroups = useMemo(
@@ -57,19 +57,32 @@ export default function SchedulePageView({ data }: { data: SchedulePageDTO }) {
     [data.items, selectedDay, selectedWeather],
   );
 
+  const laneModelById = useMemo(
+    () =>
+      new Map(
+        lanes.map(
+          (lane) =>
+            [
+              lane.id,
+              buildTimetableModel(
+                {
+                  items: visibleItems,
+                  range: data.range,
+                },
+                lane.id,
+              ),
+            ] as const,
+        ),
+      ),
+    [data.range, lanes, visibleItems],
+  );
   const mobileLaneModelsBase = useMemo(
     () =>
-      lanes.map((lane) => ({
-        lane,
-        model: buildTimetableModel(
-          {
-            items: visibleItems,
-            range: data.range,
-          },
-          lane.id,
-        ),
-      })),
-    [data.range, lanes, visibleItems],
+      lanes.flatMap((lane) => {
+        const model = laneModelById.get(lane.id);
+        return model ? [{ lane, model }] : [];
+      }),
+    [laneModelById, lanes],
   );
   const mobileLaneModels = useMemo<MobileLaneModel[]>(
     () =>
@@ -84,30 +97,29 @@ export default function SchedulePageView({ data }: { data: SchedulePageDTO }) {
       }),
     [mobileLaneModelsBase, now],
   );
-  const selectedMobileModel =
-    mobileLaneModelsBase.find(({ lane }) => lane.id === selectedMobileLane?.id)?.model ?? null;
+  const selectedMobileModel = selectedMobileLane
+    ? (laneModelById.get(selectedMobileLane.id) ?? null)
+    : null;
   const spotlight = getScheduleSpotlight(selectedMobileModel?.items ?? [], now);
 
   const desktopGroupModelsBase = useMemo(
     () =>
-      visibleGroups.map((group) => {
+      visibleGroups.flatMap((group) => {
         const selectedLane =
           group.lanes.find((lane) => lane.id === selectedDesktopLaneIds[group.id]) ??
-          group.lanes[0]!;
+          group.lanes[0];
+        if (!selectedLane) {
+          return [];
+        }
 
-        return {
-          group,
-          selectedLane,
-          model: buildTimetableModel(
-            {
-              items: visibleItems,
-              range: data.range,
-            },
-            selectedLane.id,
-          ),
-        };
+        const model = laneModelById.get(selectedLane.id);
+        if (!model) {
+          return [];
+        }
+
+        return [{ group, selectedLane, model }];
       }),
-    [data.range, selectedDesktopLaneIds, visibleGroups, visibleItems],
+    [laneModelById, selectedDesktopLaneIds, visibleGroups],
   );
   const desktopGroupModels = useMemo<DesktopGroupModel[]>(
     () =>

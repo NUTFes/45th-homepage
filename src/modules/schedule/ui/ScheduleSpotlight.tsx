@@ -28,7 +28,7 @@ export default function ScheduleSpotlight({ spotlight }: { spotlight: ScheduleSp
     <section
       aria-label="現在・次の企画"
       aria-live="polite"
-      className="border-y-2 border-main bg-base-dark px-3l py-m text-font-main shadow-[0_2px_6px_0_var(--color-base-shadow)] md:hidden"
+      className="border-y-2 border-main bg-timetable-base-dark px-3l py-m text-font-main shadow-[0_2px_6px_0_var(--color-base-shadow)] md:hidden"
     >
       {spotlight.kind === "checking" ? (
         <p className="text-text">現在の企画を確認しています</p>

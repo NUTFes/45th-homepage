@@ -1,7 +1,7 @@
 import { FESTIVAL_DAYS, type FestivalDay, type Weather } from "@/lib/events/constants";
 import { timeToMinutes } from "@/lib/events/validation";
 
-import type { ScheduleItemDTO, SchedulePageDTO } from "./types";
+import type { ScheduleItemDTO, TimetablePageDTO } from "./types";
 
 export type TimetableTick = {
   label: string;
@@ -42,7 +42,7 @@ const formatTime = (minutes: number) => {
   return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
 };
 
-function getRangeMinutes(range: SchedulePageDTO["range"]) {
+function getRangeMinutes(range: TimetablePageDTO["range"]) {
   const start = timeToMinutes(range.startTime);
   const end = timeToMinutes(range.endTime);
 
@@ -88,7 +88,7 @@ export function filterScheduleItemsForDisplay(
 }
 
 export function buildTimetableModel(
-  data: Pick<SchedulePageDTO, "items" | "range">,
+  data: Pick<TimetablePageDTO, "items" | "range">,
   laneId: string | null,
 ): TimetableModel {
   const range = getRangeMinutes(data.range);
@@ -138,14 +138,30 @@ export function buildTimetableModel(
       left.title.localeCompare(right.title, "ja"),
   );
 
+  const positionedItems = items.map((item, index) => {
+    const nextItem = items[index + 1];
+    if (!nextItem) {
+      return item;
+    }
+
+    const slotsUntilNextItem = nextItem.startRow - item.startRow;
+    return {
+      ...item,
+      displayRowSpan: Math.max(
+        item.durationSlots,
+        Math.min(item.displayRowSpan, slotsUntilNextItem),
+      ),
+    };
+  });
+
   const displaySlotCount = Math.max(
     slotCount,
-    ...items.map((item) => item.startRow - 1 + item.displayRowSpan),
+    ...positionedItems.map((item) => item.startRow - 1 + item.displayRowSpan),
   );
 
   return {
     displaySlotCount,
-    items,
+    items: positionedItems,
     slotCount,
     ticks: buildTicks(range.start, range.end, data.range.slotMinutes),
   };

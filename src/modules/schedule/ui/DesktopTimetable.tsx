@@ -84,7 +84,7 @@ export default function DesktopTimetable({ groupModels, onLaneChange }: DesktopT
       />
       <section
         aria-label="会場グループ別タイムスケジュール"
-        className="relative border-b-2 border-main bg-base-dark/40 px-pm pt-4l pb-4l"
+        className="relative border-b-2 border-main bg-timetable-base-dark/40 px-pm pt-4l pb-4l"
       >
         <Image
           src="/image/PageBack2.svg"
@@ -95,13 +95,13 @@ export default function DesktopTimetable({ groupModels, onLaneChange }: DesktopT
           height={644}
         />
         {groupModels.every(({ model }) => model.items.length === 0) ? (
-          <p className="mb-l border border-main bg-base-dark px-l py-s text-center text-Ptext text-font-main">
+          <p className="mb-l border border-main bg-timetable-base-dark px-l py-s text-center text-Ptext text-font-main">
             この日付・天候で開催する企画はありません
           </p>
         ) : null}
 
         <div
-          className="relative z-10 w-full [scrollbar-color:var(--color-main)_var(--color-base-dark)] overflow-x-auto"
+          className="relative z-10 w-full [scrollbar-color:var(--color-main)_var(--color-timetable-base-dark)] overflow-x-auto"
           ref={scrollContainerRef}
         >
           <div className="grid w-max" style={timetableStyle}>
@@ -149,7 +149,7 @@ export default function DesktopTimetable({ groupModels, onLaneChange }: DesktopT
                   {group.lanes.length === 1 ? (
                     <div
                       className={`flex h-full items-center justify-center border-y-2 border-main px-m text-center text-Pbutton text-font-main ${
-                        groupIndex % 2 === 0 ? "bg-base-dark" : "bg-timetable-dark"
+                        groupIndex % 2 === 0 ? "bg-timetable-base-dark" : "bg-timetable-dark"
                       }`}
                     >
                       {selectedLane.name}

@@ -27,8 +27,8 @@ export default function ScheduleCard({
     variant === "desktop-odd"
       ? "border-timetable-border bg-timetable-dark hover:bg-timetable-dark/90"
       : variant === "desktop-even"
-        ? "border-main bg-base-dark hover:bg-base-dark/90"
-        : "border-main bg-base-dark hover:bg-base-dark/80";
+        ? "border-main bg-timetable-base-dark hover:bg-timetable-base-dark/90"
+        : "border-main bg-timetable-base-dark hover:bg-timetable-base-dark/80";
 
   return (
     <Link
@@ -37,7 +37,7 @@ export default function ScheduleCard({
         isDesktop ? "px-s py-xs" : "px-xs py-ss"
       } ${
         isHighlighted
-          ? "border-main bg-secondary text-base-dark"
+          ? "border-main bg-secondary text-timetable-base-dark"
           : `${normalClasses} text-font-main`
       }`}
       href={href}

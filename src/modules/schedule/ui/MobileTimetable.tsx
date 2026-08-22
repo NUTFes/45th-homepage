@@ -94,6 +94,7 @@ export default function MobileTimetable({
     >
       {laneModels.map(({ lane, model, currentItemId }) => {
         const displaySlotCount = model.displaySlotCount;
+        const isSelected = lane.id === selectedLaneId;
         const timetableStyle = {
           "--timetable-slot-height": `${SLOT_HEIGHT_PX}px`,
           height: `${displaySlotCount * SLOT_HEIGHT_PX}px`,
@@ -101,8 +102,11 @@ export default function MobileTimetable({
 
         return (
           <section
+            aria-hidden={isSelected ? undefined : true}
             aria-labelledby={`timetable-heading-${lane.id}`}
             className="w-full shrink-0 snap-start bg-base px-m pt-4l pb-4l"
+            id={`timetable-panel-${lane.id}`}
+            inert={!isSelected}
             key={lane.id}
             ref={(node) => {
               if (node) {
