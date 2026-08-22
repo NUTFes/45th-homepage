@@ -16,10 +16,10 @@ import {
   relationshipIdKey,
   type RelationshipId,
 } from "@/lib/events/validation";
+import { availableTimetableLaneWhere } from "../TimetableLanes";
 
 type ListingInput = {
   id?: number | string | null;
-  timetableGroup?: unknown;
   timetableLane?: unknown;
   day?: string | null;
   weather?: string | null;
@@ -71,76 +71,39 @@ export const validateTimetableListingBeforeChange: CollectionBeforeChangeHook = 
     ...toRecord(originalDoc),
     ...toRecord(data),
   };
-  const timetableGroupId = normalizeRelationshipId(listing.timetableGroup);
   const timetableLaneId = normalizeRelationshipId(listing.timetableLane);
 
-  if (timetableLaneId !== null && timetableGroupId === null) {
-    throw validationError("先に「会場グループ」を選んでから、「会場」を選択してください。");
-  }
-  if (timetableGroupId === null || timetableLaneId === null) {
+  if (timetableLaneId === null) {
     return {
       ...data,
       configurationStatus: "0_unconfigured",
     };
   }
 
-  const [groupResult, laneResult] = await Promise.all([
-    req.payload.find({
-      collection: "timetable-groups",
-      depth: 0,
-      limit: 1,
-      overrideAccess: true,
-      pagination: false,
-      req,
-      select: {
-        id: true,
-        isActive: true,
-      },
-      where: {
-        id: {
-          equals: timetableGroupId,
+  const laneResult = await req.payload.find({
+    collection: "timetable-lanes",
+    depth: 0,
+    limit: 1,
+    overrideAccess: true,
+    pagination: false,
+    req,
+    where: {
+      and: [
+        {
+          id: {
+            equals: timetableLaneId,
+          },
         },
-      },
-    }),
-    req.payload.find({
-      collection: "timetable-lanes",
-      depth: 0,
-      limit: 1,
-      overrideAccess: true,
-      pagination: false,
-      req,
-      select: {
-        id: true,
-        isActive: true,
-        timetableGroup: true,
-      },
-      where: {
-        id: {
-          equals: timetableLaneId,
-        },
-      },
-    }),
-  ]);
-  const group = groupResult.docs[0];
+        availableTimetableLaneWhere,
+      ],
+    },
+  });
   const lane = laneResult.docs[0];
 
-  if (!group?.isActive) {
-    throw validationError(
-      "この会場グループは現在使用できません。「会場グループ」で使用する項目を選び直してください。",
-    );
-  }
-  if (!lane?.isActive) {
+  if (!lane) {
     throw validationError(
       "この会場は現在使用できません。「会場」で使用する項目を選び直してください。",
     );
-  }
-
-  const laneGroupId = normalizeRelationshipId(lane.timetableGroup);
-  if (
-    laneGroupId === null ||
-    relationshipIdKey(laneGroupId) !== relationshipIdKey(timetableGroupId)
-  ) {
-    throw validationError("選んだ会場グループに含まれる会場を選び直してください。");
   }
 
   const weather = listing.weather as ProgramScheduleWeather | null | undefined;

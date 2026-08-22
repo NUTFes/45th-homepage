@@ -52,7 +52,7 @@ export const PROGRAM_TAGS = [
   { value: "nagaoka-ut-goods", label: "技大グッズ" },
 ] as const;
 
-export const PROGRAM_TIME_SLOT_MINUTES = 15;
+export const TIMETABLE_GRID_SLOT_MINUTES = 15;
 
 export const TIMETABLE_START_TIME = "10:00";
 export const TIMETABLE_END_TIME = "20:30";

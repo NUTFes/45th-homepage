@@ -1,13 +1,34 @@
-import type { CollectionConfig } from "payload";
+import type { CollectionConfig, Where } from "payload";
 
-import {
-  preventReferencedTimetableLaneGroupChange,
-  preventTimetableLaneDeleteWhenReferenced,
-} from "./hooks/preventReferencedDelete";
+import { preventTimetableLaneDeleteWhenReferenced } from "./hooks/preventReferencedDelete";
 import {
   revalidateTimetableAfterChange,
   revalidateTimetableAfterDelete,
 } from "./hooks/revalidateTimetable";
+
+export const availableTimetableLaneWhere: Where = {
+  and: [
+    {
+      isActive: {
+        equals: true,
+      },
+    },
+    {
+      or: [
+        {
+          timetableGroup: {
+            exists: false,
+          },
+        },
+        {
+          "timetableGroup.isActive": {
+            equals: true,
+          },
+        },
+      ],
+    },
+  ],
+};
 
 export const TimetableLanes: CollectionConfig = {
   slug: "timetable-lanes",
@@ -22,17 +43,7 @@ export const TimetableLanes: CollectionConfig = {
     },
   },
   access: {
-    read: ({ req: { user } }) =>
-      user
-        ? true
-        : {
-            isActive: {
-              equals: true,
-            },
-            "timetableGroup.isActive": {
-              equals: true,
-            },
-          },
+    read: ({ req: { user } }) => (user ? true : availableTimetableLaneWhere),
   },
   defaultSort: "sortOrder",
   admin: {
@@ -43,26 +54,24 @@ export const TimetableLanes: CollectionConfig = {
       en: "Timetable",
     },
     description: {
-      ja: "【手順2】タイムスケジュールに表示する会場です。先に会場グループを登録してください。例：メインステージ、講義棟A会場。",
-      en: "Manage locations that act as timetable selectors or columns.",
+      ja: "【手順1】タイムスケジュールに表示する会場です。複数会場を1つの表示枠で切り替える場合だけ、会場グループを選択します。",
+      en: "Step 1: Create a timetable venue. Select a group only when multiple venues share one timetable column.",
     },
   },
   hooks: {
     afterChange: [revalidateTimetableAfterChange],
     afterDelete: [revalidateTimetableAfterDelete],
-    beforeChange: [preventReferencedTimetableLaneGroupChange],
     beforeDelete: [preventTimetableLaneDeleteWhenReferenced],
   },
   fields: [
     {
       name: "timetableGroup",
       label: {
-        ja: "会場グループ",
-        en: "Timetable Group",
+        ja: "会場グループ（任意）",
+        en: "Timetable Group (optional)",
       },
       type: "relationship",
       relationTo: "timetable-groups",
-      required: true,
       maxDepth: 1,
       filterOptions: {
         isActive: {
@@ -73,8 +82,8 @@ export const TimetableLanes: CollectionConfig = {
         allowCreate: false,
         sortOptions: "sortOrder",
         description: {
-          ja: "この会場をまとめる会場グループを選びます。",
-          en: "Select the group that contains this venue.",
+          ja: "複数会場を同じ表示枠で切り替える場合だけ選択します。単独会場は未選択のまま保存してください。",
+          en: "Select a group only when multiple venues share one timetable column. Leave this blank for a standalone venue.",
         },
       },
     },
@@ -103,8 +112,8 @@ export const TimetableLanes: CollectionConfig = {
         position: "sidebar",
         step: 1,
         description: {
-          ja: "数字が小さいものから順に表示します。後から間へ追加しやすいよう、10、20、30のように入力してください。",
-          en: "Smaller numbers appear first. Using 10, 20, 30 leaves room for later additions.",
+          ja: "数字が小さいものから順に表示します。会場グループ内では会場候補の順、グループ未設定では表示枠の順になります。後から間へ追加しやすいよう、10、20、30のように入力してください。",
+          en: "Smaller numbers appear first. This orders venue options within a group, or timetable columns for standalone venues. Use 10, 20, 30 to leave room for later additions.",
         },
       },
     },

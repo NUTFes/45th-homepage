@@ -163,7 +163,6 @@ export const syncTimetableListingsAfterProgramChange: CollectionAfterChangeHook 
           ...sourceData,
           ...(changed
             ? {
-                timetableGroup: null,
                 timetableLane: null,
                 configurationStatus: "0_unconfigured",
               }

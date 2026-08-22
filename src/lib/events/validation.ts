@@ -3,7 +3,6 @@ import {
   PROGRAM_AREA_LABELS,
   PROGRAM_CATEGORY_LABELS,
   PROGRAM_SCHEDULE_WEATHER_LABELS,
-  PROGRAM_TIME_SLOT_MINUTES,
   TIMETABLE_END_TIME,
   TIMETABLE_START_TIME,
   type FestivalDay,
@@ -48,40 +47,18 @@ export const timeToMinutes = (time: string): number | null => {
   return hour * 60 + minute;
 };
 
-const formatMinutes = (minutes: number) => {
-  const hour = Math.floor(minutes / 60);
-  const minute = minutes % 60;
-  return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
-};
-
-export const PROGRAM_TIME_OPTIONS = (() => {
-  const start = timeToMinutes(TIMETABLE_START_TIME);
-  const end = timeToMinutes(TIMETABLE_END_TIME);
-
-  if (start === null || end === null) {
-    return [];
-  }
-
-  const options: { label: string; value: string }[] = [];
-  for (let minutes = start; minutes <= end; minutes += PROGRAM_TIME_SLOT_MINUTES) {
-    const value = formatMinutes(minutes);
-    options.push({ label: value, value });
-  }
-
-  return options;
-})();
-
-const validTimeValues = new Set(PROGRAM_TIME_OPTIONS.map(({ value }) => value));
-
 export const isValidProgramTime = (value: unknown): value is string =>
-  typeof value === "string" && validTimeValues.has(value);
+  typeof value === "string" &&
+  timeToMinutes(value) !== null &&
+  value >= TIMETABLE_START_TIME &&
+  value <= TIMETABLE_END_TIME;
 
 export const validateProgramTimeValue = (value: unknown) => {
   if (isValidProgramTime(value)) {
     return true;
   }
 
-  return `時刻は ${TIMETABLE_START_TIME} から ${TIMETABLE_END_TIME} までの ${PROGRAM_TIME_SLOT_MINUTES}分刻みで選択してください。`;
+  return `時刻は ${TIMETABLE_START_TIME} から ${TIMETABLE_END_TIME} までの HH:mm 形式で1分単位で入力してください。`;
 };
 
 const scheduleItemLabel = (item: ScheduleItemInput) => {

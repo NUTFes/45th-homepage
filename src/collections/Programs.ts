@@ -13,7 +13,6 @@ import {
   toPayloadSelectOptions,
 } from "@/lib/events/constants";
 import {
-  PROGRAM_TIME_OPTIONS,
   buildProgramAdminLabel,
   validateProgramTimeValue,
   validateScheduleItems,
@@ -295,10 +294,20 @@ export const Programs: CollectionConfig = {
             ja: "開始時刻",
             en: "Start Time",
           },
-          type: "select",
+          type: "text",
           required: true,
-          options: PROGRAM_TIME_OPTIONS,
+          minLength: 5,
+          maxLength: 5,
           validate: validateProgramTimeValue,
+          admin: {
+            components: {
+              Field: "/components/admin/TimeField#TimeField",
+            },
+            description: {
+              ja: "10:00から20:30までの時刻を1分単位で入力してください。",
+              en: "Enter a time from 10:00 to 20:30 in one-minute increments.",
+            },
+          },
         },
         {
           name: "endTime",
@@ -306,14 +315,18 @@ export const Programs: CollectionConfig = {
             ja: "終了時刻",
             en: "End Time",
           },
-          type: "select",
+          type: "text",
           required: true,
-          options: PROGRAM_TIME_OPTIONS,
+          minLength: 5,
+          maxLength: 5,
           validate: validateProgramTimeValue,
           admin: {
+            components: {
+              Field: "/components/admin/TimeField#TimeField",
+            },
             description: {
-              ja: "終了時刻は企画が終了する時刻を選択してください。開始時刻より後の時刻を選ぶ必要があります。",
-              en: "Select when the program ends. It must be later than the start time.",
+              ja: "10:00から20:30までの時刻を1分単位で入力し、開始時刻より後にしてください。",
+              en: "Enter a time from 10:00 to 20:30 in one-minute increments, after the start time.",
             },
           },
         },

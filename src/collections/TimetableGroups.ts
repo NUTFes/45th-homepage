@@ -37,8 +37,8 @@ export const TimetableGroups: CollectionConfig = {
       en: "Timetable",
     },
     description: {
-      ja: "【手順1】タイムスケジュールで会場をまとめる単位です。例：屋外、講義棟。マップのエリアとは別に登録します。",
-      en: "Manage timetable-only groups independently from map classifications.",
+      ja: "【必要な場合のみ】複数会場を1つの表示枠で切り替えるための単位です。単独会場では登録不要です。マップのエリアとは別に管理します。",
+      en: "Optional: create a group only when multiple venues share one timetable column. Standalone venues do not need one. This is separate from map classifications.",
     },
   },
   hooks: {

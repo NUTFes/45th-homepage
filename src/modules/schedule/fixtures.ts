@@ -1,4 +1,4 @@
-import { TIMETABLE_DISPLAY_END_TIME } from "@/lib/events/constants";
+import { TIMETABLE_DISPLAY_END_TIME, TIMETABLE_GRID_SLOT_MINUTES } from "@/lib/events/constants";
 
 import type { ScheduleGroupDTO, ScheduleLaneDTO, TimetablePageDTO } from "./types";
 
@@ -22,9 +22,9 @@ const lectureLaneB: ScheduleLaneDTO = {
 
 const groups: ScheduleGroupDTO[] = [
   {
-    id: "outdoor",
-    name: "屋外",
-    sortOrder: 10,
+    id: `ungrouped-lane:${outdoorStage.id}`,
+    name: outdoorStage.name,
+    sortOrder: outdoorStage.sortOrder,
     lanes: [outdoorStage],
   },
   {
@@ -49,7 +49,7 @@ export const schedulePreviewFixture: TimetablePageDTO = {
   range: {
     startTime: "10:00",
     endTime: TIMETABLE_DISPLAY_END_TIME,
-    slotMinutes: 15,
+    slotMinutes: TIMETABLE_GRID_SLOT_MINUTES,
   },
   groups,
   items: [
@@ -102,6 +102,26 @@ export const schedulePreviewFixture: TimetablePageDTO = {
       startTime: "20:15",
       endTime: "20:30",
       laneId: outdoorStage.id,
+    },
+    {
+      id: "arbitrary-minute-45",
+      title: "任意分刻み 45分企画",
+      href: "/event/programs/109",
+      weather: "both",
+      day: "day1",
+      startTime: "10:07",
+      endTime: "10:52",
+      laneId: lectureLaneA.id,
+    },
+    {
+      id: "arbitrary-minute-11",
+      title: "任意分刻み 11分企画",
+      href: "/event/programs/110",
+      weather: "both",
+      day: "day1",
+      startTime: "10:52",
+      endTime: "11:03",
+      laneId: lectureLaneA.id,
     },
     {
       id: "lecture-program",

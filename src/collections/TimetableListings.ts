@@ -5,12 +5,9 @@ import {
   PROGRAM_SCHEDULE_WEATHERS,
   toPayloadSelectOptions,
 } from "@/lib/events/constants";
-import {
-  PROGRAM_TIME_OPTIONS,
-  normalizeRelationshipId,
-  validateProgramTimeValue,
-} from "@/lib/events/validation";
+import { validateProgramTimeValue } from "@/lib/events/validation";
 
+import { availableTimetableLaneWhere } from "./TimetableLanes";
 import { validateTimetableListingBeforeChange } from "./hooks/validateTimetableListing";
 import {
   revalidateTimetableAfterChange,
@@ -64,8 +61,8 @@ export const TimetableListings: CollectionConfig = {
       en: "Timetable",
     },
     description: {
-      ja: "【手順3】「会場未設定」の企画を開き、会場グループ、会場の順に選択してください。開催日時は企画画面で変更します。",
-      en: "Open an unconfigured program, then select its timetable group and venue. Edit dates and times on the program.",
+      ja: "【手順2】「会場未設定」の企画を開き、会場を選択してください。開催日時は企画画面で変更します。",
+      en: "Step 2: Open a program marked Venue not configured and select its venue. Edit dates and times on the program.",
     },
   },
   hooks: {
@@ -166,9 +163,10 @@ export const TimetableListings: CollectionConfig = {
         ja: "開始時刻",
         en: "Start Time",
       },
-      type: "select",
+      type: "text",
       required: true,
-      options: PROGRAM_TIME_OPTIONS,
+      minLength: 5,
+      maxLength: 5,
       validate: validateProgramTimeValue,
       access: sourceFieldAccess,
       admin: {
@@ -181,37 +179,14 @@ export const TimetableListings: CollectionConfig = {
         ja: "終了時刻",
         en: "End Time",
       },
-      type: "select",
+      type: "text",
       required: true,
-      options: PROGRAM_TIME_OPTIONS,
+      minLength: 5,
+      maxLength: 5,
       validate: validateProgramTimeValue,
       access: sourceFieldAccess,
       admin: {
         readOnly: true,
-      },
-    },
-    {
-      name: "timetableGroup",
-      label: {
-        ja: "会場グループ",
-        en: "Timetable Group",
-      },
-      type: "relationship",
-      relationTo: "timetable-groups",
-      required: false,
-      maxDepth: 1,
-      filterOptions: {
-        isActive: {
-          equals: true,
-        },
-      },
-      admin: {
-        allowCreate: false,
-        sortOptions: "sortOrder",
-        description: {
-          ja: "先に会場グループを選ぶと、次の「会場」に候補が表示されます。",
-          en: "Select a group first to filter the venue choices.",
-        },
       },
     },
     {
@@ -224,29 +199,13 @@ export const TimetableListings: CollectionConfig = {
       relationTo: "timetable-lanes",
       required: false,
       maxDepth: 1,
-      filterOptions: ({ siblingData }) => {
-        const timetableGroupId = normalizeRelationshipId(
-          (siblingData as { timetableGroup?: unknown } | undefined)?.timetableGroup,
-        );
-        if (timetableGroupId === null) {
-          return false;
-        }
-
-        return {
-          timetableGroup: {
-            equals: timetableGroupId,
-          },
-          isActive: {
-            equals: true,
-          },
-        };
-      },
+      filterOptions: availableTimetableLaneWhere,
       admin: {
         allowCreate: false,
         sortOptions: "sortOrder",
         description: {
-          ja: "選んだ会場グループで使用中の会場だけが表示されます。",
-          en: "Only active venues in the selected group are shown.",
+          ja: "使用中の単独会場、または使用中の会場グループに属する会場だけが表示されます。",
+          en: "Only active standalone venues and active venues in an active timetable group are shown.",
         },
       },
     },
@@ -281,8 +240,8 @@ export const TimetableListings: CollectionConfig = {
         readOnly: true,
         position: "sidebar",
         description: {
-          ja: "会場グループと会場を保存すると、自動で「会場設定済み」になります。",
-          en: "Changes automatically after both group and venue are saved.",
+          ja: "会場を保存すると、自動で「会場設定済み」になります。",
+          en: "Changes automatically to Venue configured after a venue is saved.",
         },
       },
     },

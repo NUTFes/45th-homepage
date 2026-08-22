@@ -1,18 +1,24 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { getPayload } from "payload";
 
+import { availableTimetableLaneWhere } from "@/collections/TimetableLanes";
 import { CACHE_TAGS } from "@/lib/cacheTags";
 import {
   FESTIVAL_DAYS,
-  PROGRAM_TIME_SLOT_MINUTES,
   TIMETABLE_DISPLAY_END_TIME,
+  TIMETABLE_GRID_SLOT_MINUTES,
   TIMETABLE_START_TIME,
 } from "@/lib/events/constants";
 import { normalizeRelationshipId } from "@/lib/events/validation";
 import { isWeather } from "@/modules/events/utils";
 import config from "@/payload.config";
 
-import type { ScheduleGroupDTO, ScheduleItemDTO, TimetablePageDTO } from "../types";
+import type {
+  ScheduleGroupDTO,
+  ScheduleItemDTO,
+  ScheduleLaneDTO,
+  TimetablePageDTO,
+} from "../types";
 
 const bySortOrderThenName = (
   left: { name: string; sortOrder: number },
@@ -62,7 +68,7 @@ export async function getSchedulePageData(): Promise<TimetablePageDTO> {
           name: true,
           sortOrder: true,
         },
-        where: { isActive: { equals: true } },
+        where: availableTimetableLaneWhere,
       }),
       payload.find({
         collection: "timetable-listings",
@@ -73,7 +79,6 @@ export async function getSchedulePageData(): Promise<TimetablePageDTO> {
         select: {
           id: true,
           program: true,
-          timetableGroup: true,
           timetableLane: true,
           weather: true,
           day: true,
@@ -93,52 +98,67 @@ export async function getSchedulePageData(): Promise<TimetablePageDTO> {
       }),
     ]);
 
-  const activeGroupIds = new Set(groupResult.docs.map((group) => String(group.id)));
-  const activeLanes = laneResult.docs.filter((lane) => {
+  const groupById = new Map<string, ScheduleGroupDTO>(
+    groupResult.docs.map((group) => [
+      String(group.id),
+      {
+        id: String(group.id),
+        name: group.name,
+        sortOrder: group.sortOrder,
+        lanes: [],
+      },
+    ]),
+  );
+  const standaloneGroups: ScheduleGroupDTO[] = [];
+  const visibleLaneIds = new Set<string>();
+
+  for (const lane of laneResult.docs) {
+    const laneId = String(lane.id);
+    const laneDTO: ScheduleLaneDTO = {
+      id: laneId,
+      name: lane.name,
+      sortOrder: lane.sortOrder,
+    };
     const groupId = relationshipKey(lane.timetableGroup);
-    return groupId !== null && activeGroupIds.has(groupId);
-  });
-  const laneById = new Map(activeLanes.map((lane) => [String(lane.id), lane]));
+
+    if (groupId === null) {
+      standaloneGroups.push({
+        id: `ungrouped-lane:${laneId}`,
+        name: lane.name,
+        sortOrder: lane.sortOrder,
+        lanes: [laneDTO],
+      });
+      visibleLaneIds.add(laneId);
+      continue;
+    }
+
+    const group = groupById.get(groupId);
+    if (group) {
+      group.lanes.push(laneDTO);
+      visibleLaneIds.add(laneId);
+    }
+  }
+
+  const groups = [
+    ...Array.from(groupById.values(), (group) => ({
+      ...group,
+      lanes: group.lanes.sort(bySortOrderThenName),
+    })).filter((group) => group.lanes.length > 0),
+    ...standaloneGroups,
+  ].sort(bySortOrderThenName);
   const publishedProgramTitles = new Map(
     programResult.docs.map((program) => [String(program.id), program.title]),
   );
 
-  const groups: ScheduleGroupDTO[] = groupResult.docs
-    .map((group) => {
-      const groupId = String(group.id);
-      return {
-        id: groupId,
-        name: group.name,
-        sortOrder: group.sortOrder,
-        lanes: activeLanes
-          .filter((lane) => relationshipKey(lane.timetableGroup) === groupId)
-          .map((lane) => ({
-            id: String(lane.id),
-            name: lane.name,
-            sortOrder: lane.sortOrder,
-          }))
-          .sort(bySortOrderThenName),
-      };
-    })
-    .filter((group) => group.lanes.length > 0)
-    .sort(bySortOrderThenName);
-
   const items = listingResult.docs.flatMap((listing): ScheduleItemDTO[] => {
     const programId = relationshipKey(listing.program);
-    const groupId = relationshipKey(listing.timetableGroup);
     const laneId = relationshipKey(listing.timetableLane);
-    if (programId === null || groupId === null || laneId === null) {
+    if (programId === null || laneId === null) {
       return [];
     }
 
-    const lane = laneById.get(laneId);
     const title = publishedProgramTitles.get(programId);
-    if (
-      !lane ||
-      !title ||
-      relationshipKey(lane.timetableGroup) !== groupId ||
-      !activeGroupIds.has(groupId)
-    ) {
+    if (!visibleLaneIds.has(laneId) || title === undefined) {
       return [];
     }
 
@@ -172,7 +192,7 @@ export async function getSchedulePageData(): Promise<TimetablePageDTO> {
     range: {
       startTime: TIMETABLE_START_TIME,
       endTime: TIMETABLE_DISPLAY_END_TIME,
-      slotMinutes: PROGRAM_TIME_SLOT_MINUTES,
+      slotMinutes: TIMETABLE_GRID_SLOT_MINUTES,
     },
     groups,
     items,

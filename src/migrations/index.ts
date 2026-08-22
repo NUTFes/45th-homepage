@@ -10,6 +10,8 @@ import * as migration_20260813_073023_add_sponsor_href from './20260813_073023_a
 import * as migration_20260818_093306_add_timetable_listings from './20260818_093306_add_timetable_listings';
 import * as migration_20260821_155552_backfill_timetable_listings from './20260821_155552_backfill_timetable_listings';
 import * as migration_20260821_190500_enforce_timetable_invariants from './20260821_190500_enforce_timetable_invariants';
+import * as migration_20260822_143401_normalize_timetable_venues from './20260822_143401_normalize_timetable_venues';
+import * as migration_20260822_155059_allow_arbitrary_program_times from './20260822_155059_allow_arbitrary_program_times';
 
 export const migrations = [
   {
@@ -60,16 +62,26 @@ export const migrations = [
   {
     up: migration_20260818_093306_add_timetable_listings.up,
     down: migration_20260818_093306_add_timetable_listings.down,
-    name: '20260818_093306_add_timetable_listings'
+    name: '20260818_093306_add_timetable_listings',
   },
   {
     up: migration_20260821_155552_backfill_timetable_listings.up,
     down: migration_20260821_155552_backfill_timetable_listings.down,
-    name: '20260821_155552_backfill_timetable_listings'
+    name: '20260821_155552_backfill_timetable_listings',
   },
   {
     up: migration_20260821_190500_enforce_timetable_invariants.up,
     down: migration_20260821_190500_enforce_timetable_invariants.down,
-    name: '20260821_190500_enforce_timetable_invariants'
+    name: '20260821_190500_enforce_timetable_invariants',
+  },
+  {
+    up: migration_20260822_143401_normalize_timetable_venues.up,
+    down: migration_20260822_143401_normalize_timetable_venues.down,
+    name: '20260822_143401_normalize_timetable_venues',
+  },
+  {
+    up: migration_20260822_155059_allow_arbitrary_program_times.up,
+    down: migration_20260822_155059_allow_arbitrary_program_times.down,
+    name: '20260822_155059_allow_arbitrary_program_times'
   },
 ];

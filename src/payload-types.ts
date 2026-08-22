@@ -232,7 +232,7 @@ export interface News {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * Manage timetable-only groups independently from map classifications.
+ * Optional: create a group only when multiple venues share one timetable column. Standalone venues do not need one. This is separate from map classifications.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "timetable-groups".
@@ -252,7 +252,7 @@ export interface TimetableGroup {
   createdAt: string;
 }
 /**
- * Manage locations that act as timetable selectors or columns.
+ * Step 1: Create a timetable venue. Select a group only when multiple venues share one timetable column.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "timetable-lanes".
@@ -260,12 +260,12 @@ export interface TimetableGroup {
 export interface TimetableLane {
   id: number;
   /**
-   * Select the group that contains this venue.
+   * Select a group only when multiple venues share one timetable column. Leave this blank for a standalone venue.
    */
-  timetableGroup: number | TimetableGroup;
+  timetableGroup?: (number | null) | TimetableGroup;
   name: string;
   /**
-   * Smaller numbers appear first. Using 10, 20, 30 leaves room for later additions.
+   * Smaller numbers appear first. This orders venue options within a group, or timetable columns for standalone venues. Use 10, 20, 30 to leave room for later additions.
    */
   sortOrder: number;
   /**
@@ -334,97 +334,14 @@ export interface Program {
      */
     weather: 'both' | 'sunny' | 'rainy';
     day: 'day1' | 'day2';
-    startTime:
-      | '10:00'
-      | '10:15'
-      | '10:30'
-      | '10:45'
-      | '11:00'
-      | '11:15'
-      | '11:30'
-      | '11:45'
-      | '12:00'
-      | '12:15'
-      | '12:30'
-      | '12:45'
-      | '13:00'
-      | '13:15'
-      | '13:30'
-      | '13:45'
-      | '14:00'
-      | '14:15'
-      | '14:30'
-      | '14:45'
-      | '15:00'
-      | '15:15'
-      | '15:30'
-      | '15:45'
-      | '16:00'
-      | '16:15'
-      | '16:30'
-      | '16:45'
-      | '17:00'
-      | '17:15'
-      | '17:30'
-      | '17:45'
-      | '18:00'
-      | '18:15'
-      | '18:30'
-      | '18:45'
-      | '19:00'
-      | '19:15'
-      | '19:30'
-      | '19:45'
-      | '20:00'
-      | '20:15'
-      | '20:30';
     /**
-     * Select when the program ends. It must be later than the start time.
+     * Enter a time from 10:00 to 20:30 in one-minute increments.
      */
-    endTime:
-      | '10:00'
-      | '10:15'
-      | '10:30'
-      | '10:45'
-      | '11:00'
-      | '11:15'
-      | '11:30'
-      | '11:45'
-      | '12:00'
-      | '12:15'
-      | '12:30'
-      | '12:45'
-      | '13:00'
-      | '13:15'
-      | '13:30'
-      | '13:45'
-      | '14:00'
-      | '14:15'
-      | '14:30'
-      | '14:45'
-      | '15:00'
-      | '15:15'
-      | '15:30'
-      | '15:45'
-      | '16:00'
-      | '16:15'
-      | '16:30'
-      | '16:45'
-      | '17:00'
-      | '17:15'
-      | '17:30'
-      | '17:45'
-      | '18:00'
-      | '18:15'
-      | '18:30'
-      | '18:45'
-      | '19:00'
-      | '19:15'
-      | '19:30'
-      | '19:45'
-      | '20:00'
-      | '20:15'
-      | '20:30';
+    startTime: string;
+    /**
+     * Enter a time from 10:00 to 20:30 in one-minute increments, after the start time.
+     */
+    endTime: string;
     id?: string | null;
   }[];
   updatedAt: string;
@@ -432,7 +349,7 @@ export interface Program {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * Open an unconfigured program, then select its timetable group and venue. Edit dates and times on the program.
+ * Step 2: Open a program marked Venue not configured and select its venue. Edit dates and times on the program.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "timetable-listings".
@@ -448,104 +365,14 @@ export interface TimetableListing {
   scheduleItemId: string;
   day: 'day1' | 'day2';
   weather: 'both' | 'sunny' | 'rainy';
-  startTime:
-    | '10:00'
-    | '10:15'
-    | '10:30'
-    | '10:45'
-    | '11:00'
-    | '11:15'
-    | '11:30'
-    | '11:45'
-    | '12:00'
-    | '12:15'
-    | '12:30'
-    | '12:45'
-    | '13:00'
-    | '13:15'
-    | '13:30'
-    | '13:45'
-    | '14:00'
-    | '14:15'
-    | '14:30'
-    | '14:45'
-    | '15:00'
-    | '15:15'
-    | '15:30'
-    | '15:45'
-    | '16:00'
-    | '16:15'
-    | '16:30'
-    | '16:45'
-    | '17:00'
-    | '17:15'
-    | '17:30'
-    | '17:45'
-    | '18:00'
-    | '18:15'
-    | '18:30'
-    | '18:45'
-    | '19:00'
-    | '19:15'
-    | '19:30'
-    | '19:45'
-    | '20:00'
-    | '20:15'
-    | '20:30';
-  endTime:
-    | '10:00'
-    | '10:15'
-    | '10:30'
-    | '10:45'
-    | '11:00'
-    | '11:15'
-    | '11:30'
-    | '11:45'
-    | '12:00'
-    | '12:15'
-    | '12:30'
-    | '12:45'
-    | '13:00'
-    | '13:15'
-    | '13:30'
-    | '13:45'
-    | '14:00'
-    | '14:15'
-    | '14:30'
-    | '14:45'
-    | '15:00'
-    | '15:15'
-    | '15:30'
-    | '15:45'
-    | '16:00'
-    | '16:15'
-    | '16:30'
-    | '16:45'
-    | '17:00'
-    | '17:15'
-    | '17:30'
-    | '17:45'
-    | '18:00'
-    | '18:15'
-    | '18:30'
-    | '18:45'
-    | '19:00'
-    | '19:15'
-    | '19:30'
-    | '19:45'
-    | '20:00'
-    | '20:15'
-    | '20:30';
+  startTime: string;
+  endTime: string;
   /**
-   * Select a group first to filter the venue choices.
-   */
-  timetableGroup?: (number | null) | TimetableGroup;
-  /**
-   * Only active venues in the selected group are shown.
+   * Only active standalone venues and active venues in an active timetable group are shown.
    */
   timetableLane?: (number | null) | TimetableLane;
   /**
-   * Changes automatically after both group and venue are saved.
+   * Changes automatically to Venue configured after a venue is saved.
    */
   configurationStatus: '0_unconfigured' | '1_configured';
   updatedAt: string;
@@ -776,7 +603,6 @@ export interface TimetableListingsSelect<T extends boolean = true> {
   weather?: T;
   startTime?: T;
   endTime?: T;
-  timetableGroup?: T;
   timetableLane?: T;
   configurationStatus?: T;
   updatedAt?: T;

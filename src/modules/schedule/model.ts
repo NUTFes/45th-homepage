@@ -11,13 +11,11 @@ export type TimetableTick = {
 };
 
 export type PositionedScheduleItem = ScheduleItemDTO & {
-  displayRowSpan: number;
   durationSlots: number;
-  startRow: number;
+  startOffsetSlots: number;
 };
 
 export type TimetableModel = {
-  displaySlotCount: number;
   items: PositionedScheduleItem[];
   slotCount: number;
   ticks: TimetableTick[];
@@ -93,7 +91,7 @@ export function buildTimetableModel(
 ): TimetableModel {
   const range = getRangeMinutes(data.range);
   if (!range) {
-    return { displaySlotCount: 0, items: [], slotCount: 0, ticks: [] };
+    return { items: [], slotCount: 0, ticks: [] };
   }
 
   const slotCount = (range.end - range.start) / data.range.slotMinutes;
@@ -110,22 +108,16 @@ export function buildTimetableModel(
           end === null ||
           start < range.start ||
           end > range.end ||
-          start >= end ||
-          (start - range.start) % data.range.slotMinutes !== 0 ||
-          (end - start) % data.range.slotMinutes !== 0
+          start >= end
         ) {
           return [];
         }
 
-        const durationSlots = (end - start) / data.range.slotMinutes;
-        const minimumDisplaySlots = Math.ceil(30 / data.range.slotMinutes);
-
         return [
           {
             ...item,
-            startRow: (start - range.start) / data.range.slotMinutes + 1,
-            durationSlots,
-            displayRowSpan: Math.max(durationSlots, minimumDisplaySlots),
+            startOffsetSlots: (start - range.start) / data.range.slotMinutes,
+            durationSlots: (end - start) / data.range.slotMinutes,
           },
         ];
       })
@@ -133,35 +125,13 @@ export function buildTimetableModel(
 
   items.sort(
     (left, right) =>
-      left.startRow - right.startRow ||
+      left.startOffsetSlots - right.startOffsetSlots ||
       left.durationSlots - right.durationSlots ||
       left.title.localeCompare(right.title, "ja"),
   );
 
-  const positionedItems = items.map((item, index) => {
-    const nextItem = items[index + 1];
-    if (!nextItem) {
-      return item;
-    }
-
-    const slotsUntilNextItem = nextItem.startRow - item.startRow;
-    return {
-      ...item,
-      displayRowSpan: Math.max(
-        item.durationSlots,
-        Math.min(item.displayRowSpan, slotsUntilNextItem),
-      ),
-    };
-  });
-
-  const displaySlotCount = Math.max(
-    slotCount,
-    ...positionedItems.map((item) => item.startRow - 1 + item.displayRowSpan),
-  );
-
   return {
-    displaySlotCount,
-    items: positionedItems,
+    items,
     slotCount,
     ticks: buildTicks(range.start, range.end, data.range.slotMinutes),
   };

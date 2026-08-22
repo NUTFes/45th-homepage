@@ -9,7 +9,7 @@ import DesktopLaneSelect from "./DesktopLaneSelect";
 import ScheduleCard from "./ScheduleCard";
 import TimetableTabs from "./TimetableTabs";
 
-const SLOT_HEIGHT_PX = 38;
+const GRID_SLOT_HEIGHT_PX = 38;
 const LANE_HEADER_HEIGHT_PX = 58;
 const LANE_WIDTH_PX = 279;
 const TIME_GUTTER_WIDTH_PX = 72;
@@ -42,8 +42,7 @@ export default function DesktopTimetable({ groupModels, onLaneChange }: DesktopT
   }
 
   const referenceModel = groupModels[0].model;
-  const gridHeight =
-    Math.max(...groupModels.map(({ model }) => model.displaySlotCount)) * SLOT_HEIGHT_PX;
+  const gridHeight = referenceModel.slotCount * GRID_SLOT_HEIGHT_PX;
   const timetableWidth = TIME_GUTTER_WIDTH_PX + groupModels.length * LANE_WIDTH_PX;
   const timetableStyle = {
     "--desktop-grid-height": `${gridHeight}px`,
@@ -123,7 +122,7 @@ export default function DesktopTimetable({ groupModels, onLaneChange }: DesktopT
                   }`}
                   key={`${tick.label}-${tick.offsetSlots}`}
                   style={{
-                    top: `calc(var(--desktop-header-height) + ${tick.offsetSlots * SLOT_HEIGHT_PX}px)`,
+                    top: `calc(var(--desktop-header-height) + ${tick.offsetSlots * GRID_SLOT_HEIGHT_PX}px)`,
                   }}
                 >
                   {tick.label}
@@ -169,7 +168,7 @@ export default function DesktopTimetable({ groupModels, onLaneChange }: DesktopT
                       aria-hidden="true"
                       className="pointer-events-none absolute right-0 left-0 h-px bg-secondary/50"
                       key={`${group.id}-${tick.label}-${tick.offsetSlots}`}
-                      style={{ top: `${tick.offsetSlots * SLOT_HEIGHT_PX}px` }}
+                      style={{ top: `${tick.offsetSlots * GRID_SLOT_HEIGHT_PX}px` }}
                     />
                   ))}
                   {model.items.map((item) => (
@@ -177,8 +176,8 @@ export default function DesktopTimetable({ groupModels, onLaneChange }: DesktopT
                       className="absolute inset-x-2 z-10"
                       key={item.id}
                       style={{
-                        height: `${item.displayRowSpan * SLOT_HEIGHT_PX}px`,
-                        top: `${(item.startRow - 1) * SLOT_HEIGHT_PX}px`,
+                        height: `${item.durationSlots * GRID_SLOT_HEIGHT_PX}px`,
+                        top: `${item.startOffsetSlots * GRID_SLOT_HEIGHT_PX}px`,
                       }}
                     >
                       <ScheduleCard

@@ -6,7 +6,7 @@ import type { TimetableModel } from "../model";
 import type { ScheduleLaneDTO } from "../types";
 import ScheduleCard from "./ScheduleCard";
 
-const SLOT_HEIGHT_PX = 30.5;
+const GRID_SLOT_HEIGHT_PX = 30.5;
 
 export type MobileLaneModel = {
   lane: ScheduleLaneDTO;
@@ -93,11 +93,10 @@ export default function MobileTimetable({
       ref={scrollContainerRef}
     >
       {laneModels.map(({ lane, model, currentItemId }) => {
-        const displaySlotCount = model.displaySlotCount;
         const isSelected = lane.id === selectedLaneId;
         const timetableStyle = {
-          "--timetable-slot-height": `${SLOT_HEIGHT_PX}px`,
-          height: `${displaySlotCount * SLOT_HEIGHT_PX}px`,
+          "--timetable-slot-height": `${GRID_SLOT_HEIGHT_PX}px`,
+          height: `${model.slotCount * GRID_SLOT_HEIGHT_PX}px`,
         } as CSSProperties;
 
         return (
@@ -144,17 +143,15 @@ export default function MobileTimetable({
                 </div>
               ))}
 
-              <div
-                className="absolute top-0 right-0 bottom-0 left-17 grid bg-transparent"
-                style={{
-                  gridTemplateRows: `repeat(${displaySlotCount}, var(--timetable-slot-height))`,
-                }}
-              >
+              <div className="absolute top-0 right-0 bottom-0 left-17 bg-transparent">
                 {model.items.map((item) => (
                   <div
                     key={item.id}
-                    className="relative z-10 min-h-0"
-                    style={{ gridRow: `${item.startRow} / span ${item.displayRowSpan}` }}
+                    className="absolute inset-x-0 z-10 min-h-0"
+                    style={{
+                      height: `${item.durationSlots * GRID_SLOT_HEIGHT_PX}px`,
+                      top: `${item.startOffsetSlots * GRID_SLOT_HEIGHT_PX}px`,
+                    }}
                   >
                     <ScheduleCard
                       endTime={item.endTime}
