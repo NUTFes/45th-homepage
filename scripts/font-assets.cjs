@@ -49,6 +49,15 @@ const FONT_CONFIGS = [
     style: "normal",
   },
   {
+    id: "goldman",
+    family: "Goldman New 45th",
+    source: "assets/fonts/goldman/Goldman-Bold.ttf",
+    outputPrefix: "goldman-700",
+    commonProfile: "display",
+    weight: "700",
+    style: "normal",
+  },
+  {
     id: "zen-kaku-400",
     family: "Zen Kaku Gothic New 45th",
     source: "assets/fonts/zen-kaku-gothic-new/ZenKakuGothicNew-Regular.ttf",

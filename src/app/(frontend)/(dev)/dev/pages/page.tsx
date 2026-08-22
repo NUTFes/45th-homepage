@@ -66,6 +66,11 @@ export default function DevPageModulesIndexPage() {
             <p className="text-text text-base-dark/80">
               src/modules/greeting/ui のコンポーネント確認
             </p>
+            href="/dev/pages/info"
+            className="space-y-xs rounded-lg border border-base/10 p-m transition-colors hover:bg-secondary"
+          >
+            <h3 className="text-title-small text-base-dark">Info Page</h3>
+            <p className="text-text text-base-dark/80">src/modules/info のコンポーネント確認</p>
             <p className="text-text-small text-base-dark underline">Open →</p>
           </Link>
         </div>
