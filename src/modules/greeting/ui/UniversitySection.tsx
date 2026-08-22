@@ -29,7 +29,7 @@ export default function UniversitySection() {
       <div className="flex flex-col items-center gap-3l md:gap-ll">
         <div className="w-full px-ll md:mx-auto md:max-w-[880px] md:px-0">
           <div className="text-text text-font-main md:text-Ptext">
-            <p className="text-textb md:font-bold">
+            <p className="text-textb md:text-Ptext md:font-bold">
               長岡技術科学大学は、令和8（2026）年10月1日に開学50周年を迎えます。
             </p>
             <p className="mt-[22px] md:mt-7">
