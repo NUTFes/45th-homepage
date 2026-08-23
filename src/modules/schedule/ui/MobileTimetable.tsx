@@ -149,7 +149,7 @@ export default function MobileTimetable({
                     key={item.id}
                     className="absolute inset-x-0 z-10 min-h-0"
                     style={{
-                      height: `${item.durationSlots * GRID_SLOT_HEIGHT_PX}px`,
+                      height: `${item.displayDurationSlots * GRID_SLOT_HEIGHT_PX}px`,
                       top: `${item.startOffsetSlots * GRID_SLOT_HEIGHT_PX}px`,
                     }}
                   >

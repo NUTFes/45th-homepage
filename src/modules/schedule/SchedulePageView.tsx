@@ -87,7 +87,7 @@ export default function SchedulePageView({ data }: { data: TimetablePageDTO }) {
   const mobileLaneModels = useMemo<MobileLaneModel[]>(
     () =>
       mobileLaneModelsBase.map(({ lane, model }) => {
-        const laneSpotlight = getScheduleSpotlight(model.items, now);
+        const laneSpotlight = getScheduleSpotlight(model.items, now, selectedDay);
         return {
           lane,
           model,
@@ -95,12 +95,12 @@ export default function SchedulePageView({ data }: { data: TimetablePageDTO }) {
             laneSpotlight.kind === "ready" ? (laneSpotlight.current?.id ?? undefined) : undefined,
         };
       }),
-    [mobileLaneModelsBase, now],
+    [mobileLaneModelsBase, now, selectedDay],
   );
   const selectedMobileModel = selectedMobileLane
     ? (laneModelById.get(selectedMobileLane.id) ?? null)
     : null;
-  const spotlight = getScheduleSpotlight(selectedMobileModel?.items ?? [], now);
+  const spotlight = getScheduleSpotlight(selectedMobileModel?.items ?? [], now, selectedDay);
 
   const desktopGroupModelsBase = useMemo(
     () =>
@@ -124,7 +124,7 @@ export default function SchedulePageView({ data }: { data: TimetablePageDTO }) {
   const desktopGroupModels = useMemo<DesktopGroupModel[]>(
     () =>
       desktopGroupModelsBase.map(({ group, selectedLane, model }) => {
-        const laneSpotlight = getScheduleSpotlight(model.items, now);
+        const laneSpotlight = getScheduleSpotlight(model.items, now, selectedDay);
         return {
           group,
           selectedLane,
@@ -133,7 +133,7 @@ export default function SchedulePageView({ data }: { data: TimetablePageDTO }) {
             laneSpotlight.kind === "ready" ? (laneSpotlight.current?.id ?? undefined) : undefined,
         };
       }),
-    [desktopGroupModelsBase, now],
+    [desktopGroupModelsBase, now, selectedDay],
   );
 
   const handleDesktopLaneChange = (groupId: string, laneId: string) => {

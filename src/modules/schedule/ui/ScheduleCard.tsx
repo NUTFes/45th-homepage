@@ -34,7 +34,7 @@ export default function ScheduleCard({
     <Link
       aria-label={`${title}、${startTime}から${endTime}`}
       className={`flex h-full min-h-0 flex-col items-start overflow-hidden rounded border-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary ${
-        isDesktop ? "px-s py-xs" : "px-xs py-ss"
+        isDesktop ? "px-3.5 py-2.5" : "px-3.5 py-1.5"
       } ${
         isHighlighted
           ? "border-main bg-secondary text-timetable-base-dark"
@@ -42,7 +42,7 @@ export default function ScheduleCard({
       }`}
       href={href}
     >
-      <span className={`shrink-0 ${isDesktop ? "text-textb" : "text-text-small"}`}>
+      <span className={`shrink-0 ${isDesktop ? "text-textb" : "text-text"}`}>
         {startTime}–{endTime}
       </span>
       <span

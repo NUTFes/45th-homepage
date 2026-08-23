@@ -69,32 +69,41 @@ export default function TimetableTabs({
       >
         <legend className="sr-only">{ariaLabel}</legend>
         <div className="flex min-w-max items-end px-xs md:px-pm">
-          {items.map((item) => (
-            <label
-              key={item.id}
-              className="cursor-pointer"
-              ref={(node) => {
-                if (node) {
-                  tabRefs.current.set(item.id, node);
-                } else {
-                  tabRefs.current.delete(item.id);
-                }
-              }}
-            >
-              <input
-                aria-controls={controlsIdPrefix ? `${controlsIdPrefix}-${item.id}` : undefined}
-                checked={selectedItemId === item.id}
-                className="peer sr-only"
-                name={controlName}
-                onChange={() => onChange(item.id)}
-                type="radio"
-                value={item.id}
-              />
-              <span className="flex h-14 w-25 items-center justify-center rounded-t-lg border-2 border-b-0 border-main px-ss text-center text-textb font-bold text-font-main transition-colors peer-checked:bg-secondary peer-checked:text-timetable-base-dark peer-checked:shadow-[0_0_6px_var(--color-base-shadow)] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-main md:h-17 md:w-30 md:px-s md:text-Pbutton">
-                {item.name}
-              </span>
-            </label>
-          ))}
+          {items.map((item) => {
+            const mobileTextClasses =
+              item.name.length > 8
+                ? "text-[14px] leading-[16px] font-medium"
+                : "text-textb font-medium peer-checked:font-bold";
+
+            return (
+              <label
+                key={item.id}
+                className="cursor-pointer"
+                ref={(node) => {
+                  if (node) {
+                    tabRefs.current.set(item.id, node);
+                  } else {
+                    tabRefs.current.delete(item.id);
+                  }
+                }}
+              >
+                <input
+                  aria-controls={controlsIdPrefix ? `${controlsIdPrefix}-${item.id}` : undefined}
+                  checked={selectedItemId === item.id}
+                  className="peer sr-only"
+                  name={controlName}
+                  onChange={() => onChange(item.id)}
+                  type="radio"
+                  value={item.id}
+                />
+                <span
+                  className={`flex h-14 w-25 items-center justify-center rounded-t-lg border-2 border-b-0 border-main px-s text-center wrap-break-word text-font-main transition-colors peer-checked:bg-secondary peer-checked:text-timetable-base-dark peer-checked:shadow-[0_0_6px_var(--color-base-shadow)] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-main md:h-17 md:w-30 md:px-s md:text-[16px] md:leading-4.5 md:font-bold ${mobileTextClasses}`}
+                >
+                  {item.name}
+                </span>
+              </label>
+            );
+          })}
         </div>
       </fieldset>
       <div className="hidden h-0.5 bg-main md:block" aria-hidden="true" />
