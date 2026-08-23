@@ -1,5 +1,6 @@
 import SectionTitle from "@/components/ui/SectionTitle";
 import InfoFrame from "@/components/ui/InfoFrame";
+import Image from "next/image";
 //import AdCarousel from "@/components/ui/AdCarousel"; ←まだない
 
 export default function AccessPageView() {
@@ -37,8 +38,14 @@ export default function AccessPageView() {
 <p>乗り場周辺には、技大祭Tシャツを着たスタッフがおりますので、場所がわからない場合はお気軽にお声がけください。</p>
             </div>
             <div className="gap-y-ss text-center justify-center">
-                <div className="mb:text-Ptitle-small text-button ">シャトルバス　長岡駅-技大前</div>
-                <div>画像</div>
+                <Image
+                    src="/image/access/shuttle_mb.png"
+                    alt="シャトルバスの時刻表"
+                    width={495}
+                    height={337}
+                    sizes="100vw"
+                    className="h-auto w-full  px-3l md:hidden"
+                />
             </div>
             <div className="bg-base-dark flex flex-col gap-y-m py-l">
                 <div className=" w-full px-ll flex flex-col gap-y-xs">
@@ -72,10 +79,16 @@ export default function AccessPageView() {
 
                 <span>お困りの際はお近くの実行委員にお尋ねください。</span>
              </div>
+                 <Image
+                     src="/image/access/rosen_mb.png"
+                     alt="路線バスの時刻表"
+                     width={337}
+                     height={495}
+                     sizes="100vw"
+                     className="h-auto w-full px-3l md:hidden"
+                 />
 
             <div className="text-text flex flex-col px-ll text-center justify-center gap-y-ss">
-                <div className="mb:text-Ptitle-small text-button ">路線バス時刻表</div>
-                    <div>画像</div>
                 <div className="text-text-small">
                     時刻表は令和8年4月1日に改正された「越後交通バス時刻表 長岡駅=大手大橋=希望が丘=技大=ニュータウン・県立歴史博物館線」を基に作成されています。
                 </div>
