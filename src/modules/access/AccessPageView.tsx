@@ -11,7 +11,7 @@ function AccessPageMobile() {
         <div className="gap-y-s">
              <SectionTitle title="アクセス" /> 
              <div className="w-full text-center text-button">大学Googleマップ</div>
-            <div className="flex justify-center mb:px-pll px-8 py-s">
+            <div className="flex justify-center px-8 py-s">
                 <iframe
                 className="aspect-4/3 w-full max-w-4xl border-2 border-main"
                 src="https://www.google.com/maps?q=%E9%95%B7%E5%B2%A1%E6%8A%80%E8%A1%93%E7%A7%91%E5%AD%A6%E5%A4%A7%E5%AD%A6%20%E6%96%B0%E6%BD%9F%E7%9C%8C%E9%95%B7%E5%B2%A1%E5%B8%82%E4%B8%8A%E5%AF%8C%E5%B2%A1%E7%94%BA1603-1&output=embed"
@@ -22,7 +22,7 @@ function AccessPageMobile() {
             </div>  
             <div className="w-full text-center text-text">「技大前」バス停からすぐ</div>
         </div>
-        <InfoFrame className="flex w-full flex-col text-center gap-y-s mb:px-pll px-8">
+        <InfoFrame className="flex w-full flex-col text-center gap-y-s px-8">
             <div className="pb-s">
              <SectionTitle title="開催日" />   
             </div>
@@ -138,38 +138,37 @@ function AccessPageMobile() {
 
 function AccessPageDesktop() {
     return (
-        <div className="hidden min-h-screen flex-col gap-y-pm bg-base py-4l text-white md:flex">
-            <div className="flex flex-col gap-y-4l">
-                <div className="px-pll">
-                    <SectionTitle title="アクセス" />
-                </div>
+        <div className="flex flex-col gap-y-pm bg-base py-4l text-white">
+            <div className="px-pl">
+                          <SectionTitle title="アクセス" />   
+                    </div>    
+            <div className="mx-auto flex flex-col w-full max-w-200 justify-center gap-y-4l">    
                 <div className="flex flex-col gap-y-s">
-                    <div className="w-full text-center text-Ptext">大学Googleマップ</div>
-                <div className="flex justify-center px-pll py-s">
-                    <iframe
-                        className="aspect-4/3 w-full max-w-200 border-2 border-main"
-                        src="https://www.google.com/maps?q=%E9%95%B7%E5%B2%A1%E6%8A%80%E8%A1%93%E7%A7%91%E5%AD%A6%E5%A4%A7%E5%AD%A6%20%E6%96%B0%E6%BD%9F%E7%9C%8C%E9%95%B7%E5%B2%A1%E5%B8%82%E4%B8%8A%E5%AF%8C%E5%B2%A1%E7%94%BA1603-1&output=embed"
-                        title="長岡技術科学大学の Google マップ"
-                        loading="lazy"
-                        referrerPolicy="no-referrer-when-downgrade"
-                    />
+                        <div className="w-full text-center text-Ptext">大学Googleマップ</div>
+                    <div className="flex justify-center">
+                        <iframe
+                            className="aspect-4/3 w-full border-2 border-main"
+                            src="https://www.google.com/maps?q=%E9%95%B7%E5%B2%A1%E6%8A%80%E8%A1%93%E7%A7%91%E5%AD%A6%E5%A4%A7%E5%AD%A6%20%E6%96%B0%E6%BD%9F%E7%9C%8C%E9%95%B7%E5%B2%A1%E5%B8%82%E4%B8%8A%E5%AF%8C%E5%B2%A1%E7%94%BA1603-1&output=embed"
+                            title="長岡技術科学大学の Google マップ"
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                        />
 
-                </div>
-                <div className="w-full text-center text-text">「技大前」バス停からすぐ</div>
+                    </div>
+                    <div className="w-full text-center text-text">「技大前」バス停からすぐ</div>
+                 <InfoFrame className="flex flex-col text-center gap-y-s px-4l ">
+                    <div className="pb-s">
+                    <SectionTitle title="開催日" />   
+                    </div>
+                    <div className="text-button">9月19日（土）　10：00～20：00 </div>
+                    <div className="text-button">9月20日（日）　10：00～18：30 </div>
+                    <div className="text-text">※1日目の出店は17：00まで、2日目の出店は16：00までです</div>
+                </InfoFrame>
                 </div>
                 
+               
             </div>
 
-            <InfoFrame className="mx-auto flex w-max-200  flex-col gap-y-s px-pll text-center">
-                <div className="pb-s max-w-200">
-                    <div className="px-pll ">
-                        <SectionTitle title="開催日" />
-                    </div>
-                </div>
-                <div className="text-Ptitle-small">9月19日（土）　10：00～20：00</div>
-                <div className="text-Ptitle-small">9月20日（日）　10：00～18：30</div>
-                <div className="text-textb">※1日目の出店は17：00まで、2日目の出店は16：00までです</div>
-            </InfoFrame>
 
             <div className="flex flex-col gap-y-m">
                 <div className="px-pl">
@@ -190,13 +189,13 @@ function AccessPageDesktop() {
                 />
                 
             </div>
-<div className="bg-base-dark flex flex-col gap-y-m py-l">
+                <div className="bg-base-dark flex flex-col gap-y-m py-l">
                     <div className="flex w-full flex-col gap-y-xs px-pll">
-                        <div className="underline underline-secondary text-title-small">シャトルバス実施日</div>
+                        <div className="underline underline-secondary text-Ptitle-small">シャトルバス実施日</div>
                         <div className="text-Ptext-large">2026年9月19日（土）・20日（日）</div>
                     </div>
                     <div className="flex w-full flex-col gap-y-xs px-pll">
-                        <div className="underline underline-secondary text-title-small">乗り場</div>
+                        <div className="underline underline-secondary text-Ptitle-small">乗り場</div>
                         <div className="text-Ptext-large">長岡駅<span className="text-accent">東口</span>（台町Bバス乗り場）<p className="text-text-small">※ 通常の路線バス乗り場とは異なります</p></div>
                         <div className="flex flex-col gap-y-m lg:flex-row lg:justify-center lg:gap-x-m">
                             <Image src="/image/access/map_noriba1_mb.png" alt="乗り場説明1" width={312} height={234} sizes="50vw" className="h-auto w-full min-w-95 max-w-95 self-center lg:aspect-4/3 lg:w-1/2 lg:object-contain xl:max-w-125" />
