@@ -20,9 +20,9 @@ type DayOptionsProps = Pick<ScheduleSwitchSectionProps, "days" | "selectedDay" |
 
 function DayOptions({ controlId, days, selectedDay, onDayChange, desktop }: DayOptionsProps) {
   return (
-    <fieldset className={desktop ? "w-75" : "w-full px-s py-ss"}>
+    <fieldset className={desktop ? "w-80" : "w-full px-s py-ss"}>
       <legend className="sr-only">開催日</legend>
-      <div className="flex h-10 divide-x-2 divide-secondary">
+      <div className="flex h-10 divide-x-2 divide-secondary md:h-12">
         {days.map((day) => (
           <label key={day.value} className="flex flex-1 cursor-pointer justify-center px-s">
             <input
@@ -33,7 +33,7 @@ function DayOptions({ controlId, days, selectedDay, onDayChange, desktop }: DayO
               type="radio"
               value={day.value}
             />
-            <span className="flex w-full items-center justify-center border-b-2 border-transparent text-title-small text-font-main transition-colors peer-checked:border-main peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-main md:text-Ptext-large">
+            <span className="flex w-full items-center justify-center border-b-2 border-transparent text-title-small text-font-main transition-colors peer-checked:border-main peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-main md:text-Ptitle-small">
               {day.label}
             </span>
           </label>
@@ -57,15 +57,15 @@ export default function ScheduleSwitchSection({
 
   return (
     <div className="bg-base">
-      <div className="border-y-2 border-main bg-timetable-base-dark px-3l py-l text-font-main md:px-pm md:py-3l">
-        <div className="mx-auto flex max-w-260 flex-col items-center gap-xs md:items-start md:gap-s">
-          <p className="text-center text-title-small font-bold md:text-Ptitle-small">
+      <div className="border-y-2 border-main bg-timetable-base-dark px-3l py-l text-font-main md:px-pm md:py-4l">
+        <div className="flex max-w-260 flex-col items-center gap-xs md:items-start md:gap-m">
+          <p className="text-center text-title-small font-bold md:text-title">
             現在は
             <span className="text-accent">{currentWeatherLabel}</span>
             スケジュールです
           </p>
           <p className="text-center text-text-small md:hidden">天気を選択してください。</p>
-          <div className="flex items-center gap-3l">
+          <div className="flex items-center gap-3l md:gap-4l">
             <div className="hidden md:block">
               <DayOptions
                 controlId={controlId}
@@ -75,7 +75,7 @@ export default function ScheduleSwitchSection({
                 selectedDay={selectedDay}
               />
             </div>
-            <fieldset className="flex justify-center gap-s">
+            <fieldset className="flex justify-center gap-s md:gap-l">
               <legend className="sr-only">天気</legend>
               {WEATHER_OPTIONS.map((option) => (
                 <label key={option.value} className="cursor-pointer">
@@ -88,7 +88,7 @@ export default function ScheduleSwitchSection({
                     value={option.value}
                   />
                   <span
-                    className={`flex h-9 min-w-21 items-center justify-center rounded-full border-2 border-main px-xs text-button text-font-main transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-main md:h-10.5 md:text-Pbutton ${
+                    className={`flex h-9 min-w-21 items-center justify-center rounded-full border-2 border-main px-xs text-button text-font-main transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-main md:h-12 md:w-25 md:px-m md:text-Ptitle-small ${
                       selectedWeather === option.value ? "button-gradient" : "bg-transparent"
                     }`}
                   >

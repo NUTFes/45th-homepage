@@ -74,6 +74,10 @@ export default function TimetableTabs({
               item.name.length > 8
                 ? "text-[14px] leading-[16px] font-medium"
                 : "text-textb font-medium peer-checked:font-bold";
+            const desktopTextClasses =
+              item.name.length > 8
+                ? "md:text-[18px] md:leading-[22px] md:font-bold"
+                : "md:text-Ptitle-small md:leading-normal md:font-bold";
 
             return (
               <label
@@ -97,7 +101,7 @@ export default function TimetableTabs({
                   value={item.id}
                 />
                 <span
-                  className={`flex h-14 w-25 items-center justify-center rounded-t-lg border-2 border-b-0 border-main px-s text-center wrap-break-word text-font-main transition-colors peer-checked:bg-secondary peer-checked:text-timetable-base-dark peer-checked:shadow-[0_0_6px_var(--color-base-shadow)] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-main md:h-17 md:w-30 md:px-s md:text-[16px] md:leading-4.5 md:font-bold ${mobileTextClasses}`}
+                  className={`flex h-14 w-25 items-center justify-center rounded-t-lg border-2 border-b-0 border-main px-s text-center wrap-break-word text-font-main transition-colors peer-checked:bg-secondary peer-checked:text-timetable-base-dark peer-checked:shadow-[0_0_6px_var(--color-base-shadow)] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-main md:h-20 md:w-35 md:px-m ${mobileTextClasses} ${desktopTextClasses}`}
                 >
                   {item.name}
                 </span>
