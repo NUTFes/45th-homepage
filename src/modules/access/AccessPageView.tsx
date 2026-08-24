@@ -144,16 +144,25 @@ function AccessPageMobile() {
 
 function AccessPageDesktop() {
   return (
-    <div className="flex flex-col gap-y-pm bg-base py-4l text-white">
+    <div className="relative overflow-hidden bg-base">
+      <Image
+        src="/image/PageBack1.svg"
+        alt=""
+        aria-hidden="true"
+        width={287}
+        height={333}
+        className="pointer-events-none absolute top-0 right-0 z-0 hidden md:block"
+      />
+      <div className="relative z-10 flex flex-col gap-y-pm py-4l text-white">
       <div className="px-pl">
         <SectionTitle title="アクセス" />
       </div>
-      <div className="mx-auto flex w-full max-w-200 flex-col justify-center gap-y-4l">
+      <div className="mx-auto flex w-full max-w-200 flex-col justify-center gap-y-4l z-10">
         <div className="flex flex-col gap-y-s">
           <div className="w-full text-center text-Ptext">大学Googleマップ</div>
           <div className="flex justify-center">
             <iframe
-              className="aspect-4/3 w-full border-2 border-main"
+              className="aspect-4/3 w-full border-2 border-main z-10"
               src="https://www.google.com/maps?q=%E9%95%B7%E5%B2%A1%E6%8A%80%E8%A1%93%E7%A7%91%E5%AD%A6%E5%A4%A7%E5%AD%A6%20%E6%96%B0%E6%BD%9F%E7%9C%8C%E9%95%B7%E5%B2%A1%E5%B8%82%E4%B8%8A%E5%AF%8C%E5%B2%A1%E7%94%BA1603-1&output=embed"
               title="長岡技術科学大学の Google マップ"
               loading="lazy"
@@ -161,14 +170,24 @@ function AccessPageDesktop() {
             />
           </div>
           <div className="w-full text-center text-text">「技大前」バス停からすぐ</div>
-          <InfoFrame className="flex flex-col gap-y-s px-4l text-center">
-            <div className="pb-s">
-              <SectionTitle title="開催日" />
-            </div>
-            <div className="text-button">9月19日（土）　10：00～20：00 </div>
-            <div className="text-button">9月20日（日）　10：00～18：30 </div>
-            <div className="text-text">※1日目の出店は17：00まで、2日目の出店は16：00までです</div>
-          </InfoFrame>
+          <div className="relative">
+            <Image
+              src="/image/PageBack2.svg"
+              alt=""
+              aria-hidden="true"
+              width={243}
+              height={644}
+              className="pointer-events-none absolute -top-pl left-[calc((100vw-100%)/-2)] z-0 hidden md:block"
+            />
+            <InfoFrame className="relative z-10 flex flex-col gap-y-s px-4l text-center">
+              <div className="pb-s">
+                <SectionTitle title="開催日" />
+              </div>
+              <div className="text-button">9月19日（土）　10：00～20：00 </div>
+              <div className="text-button">9月20日（日）　10：00～18：30 </div>
+              <div className="text-text">※1日目の出店は17：00まで、2日目の出店は16：00までです</div>
+            </InfoFrame>
+          </div>
         </div>
       </div>
 
@@ -243,10 +262,10 @@ function AccessPageDesktop() {
           <SectionTitle title="路線バス時刻表" />
         </div>
         <div className="flex flex-col px-pll text-Ptext">
-          <span>長岡駅-技大前間の通常の路線バスです。</span>
-          <span>乗り場は通常の路線バス乗り場となります。</span>
-          <span className="text-accent">乗車には運賃430円が必要です。</span>
-          <span>お困りの際はお近くの実行委員にお尋ねください。</span>
+          <p>長岡駅-技大前間の通常の路線バスです。</p>
+          <p>乗り場は通常の路線バス乗り場となります。
+          <span className="text-accent">乗車には運賃430円が必要です。</span></p>
+          <p>お困りの際はお近くの実行委員にお尋ねください。</p>
         </div>
         <Image
           src="/image/access/rosen_pc.png"
@@ -268,18 +287,33 @@ function AccessPageDesktop() {
         <div className="px-pl">
           <SectionTitle title="駐車場について" />
         </div>
-        <div className="flex flex-col justify-center gap-y-ss px-pll text-center text-Ptext">
-          <MapFrame />
-          <div>
+        <div className=" flex flex-col justify-center gap-y-m px-pll text-center text-Ptext">
+                    <div className="flex flex-col text-start">
             <b>駐車場には限りがございます。</b>
             当日は大変な混雑が予想されますので、できるだけ公共交通機関をご利用くださいますようお願いいたします。
             また、近隣住民の皆様のご迷惑となりますので、
             <span className="text-accent">路上駐車はご遠慮ください。</span>
             ご協力をお願いいたします。
           </div>
+          <div className="flex flex-col text-start gap-y-m">
+
+          <div>
+            また、近隣住民の皆様のご迷惑となりますので、
+            <span className="text-accent">路上駐車はご遠慮ください。</span>
+            ご協力をお願いいたします。
+          </div>
+          </div>
+          
+          <div className="relative mx-auto w-full max-w-200">
+            <div className="text-Ptitle-small">駐車場マップ</div>
+          <MapFrame />
+          </div>
+          
+
         </div>
       </div>
-    </div>
+      </div>
+      </div>
   );
 }
 
