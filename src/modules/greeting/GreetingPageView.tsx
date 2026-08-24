@@ -68,7 +68,7 @@ export function GreetingPagePCView() {
 
 
         </div>
-        <div className="px-pl pt-5l">
+        <div className="px-pl pt-5l pb-m border-b-2 border-main">
           <UniversitySection />
         </div>
         </div>
@@ -120,7 +120,7 @@ export function GreetingPageMobileView() {
 
 
 
-        <div className="pt-5l">
+        <div className="pt-5l pb-m border-b-2 border-main">
           <UniversitySection />
         </div>
         </div>
