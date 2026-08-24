@@ -7,6 +7,7 @@ import { UnderlineFeatureClient as UnderlineFeatureClient_e70f5e05f09f93e00b997e
 import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ParagraphFeatureClient as ParagraphFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { TimeField as TimeField_aee11c7403bceb4ec618466b171ffa52 } from '../../../components/admin/TimeField'
 import { ProgramOrderField as ProgramOrderField_5f85b05d92b94fb41a20b7eef96582d8 } from '../../../components/admin/ProgramOrderField'
 import { SponsorRowLabel as SponsorRowLabel_a33275a278860e136de5e5e7b2895087 } from '../../../components/admin/SponsorRowLabel'
 import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
@@ -23,6 +24,7 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#BoldFeatureClient": BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ParagraphFeatureClient": ParagraphFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
+  "/components/admin/TimeField#TimeField": TimeField_aee11c7403bceb4ec618466b171ffa52,
   "/components/admin/ProgramOrderField#ProgramOrderField": ProgramOrderField_5f85b05d92b94fb41a20b7eef96582d8,
   "/components/admin/SponsorRowLabel#SponsorRowLabel": SponsorRowLabel_a33275a278860e136de5e5e7b2895087,
   "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24,

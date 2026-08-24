@@ -1,0 +1,201 @@
+import { cacheLife, cacheTag } from "next/cache";
+import { getPayload } from "payload";
+
+import { availableTimetableLaneWhere } from "@/collections/TimetableLanes";
+import { CACHE_TAGS } from "@/lib/cacheTags";
+import {
+  FESTIVAL_DAYS,
+  TIMETABLE_DISPLAY_END_TIME,
+  TIMETABLE_GRID_SLOT_MINUTES,
+  TIMETABLE_START_TIME,
+} from "@/lib/events/constants";
+import { normalizeRelationshipId } from "@/lib/events/validation";
+import { isWeather } from "@/modules/events/utils";
+import config from "@/payload.config";
+
+import type {
+  ScheduleGroupDTO,
+  ScheduleItemDTO,
+  ScheduleLaneDTO,
+  TimetablePageDTO,
+} from "../types";
+
+const bySortOrderThenName = (
+  left: { name: string; sortOrder: number },
+  right: { name: string; sortOrder: number },
+) => left.sortOrder - right.sortOrder || left.name.localeCompare(right.name, "ja");
+
+const relationshipKey = (value: unknown) => {
+  const id = normalizeRelationshipId(value);
+  return id === null ? null : String(id);
+};
+
+export async function getSchedulePageData(): Promise<TimetablePageDTO> {
+  "use cache";
+  cacheTag(CACHE_TAGS.timetable, CACHE_TAGS.weatherSettings);
+  cacheLife("minutes");
+
+  const payload = await getPayload({ config });
+  const [runtimeSettings, groupResult, laneResult, listingResult, programResult] =
+    await Promise.all([
+      payload.findGlobal({
+        slug: "weather-settings",
+        depth: 0,
+        overrideAccess: true,
+      }),
+      payload.find({
+        collection: "timetable-groups",
+        depth: 0,
+        limit: 1000,
+        overrideAccess: true,
+        pagination: false,
+        select: {
+          id: true,
+          name: true,
+          sortOrder: true,
+        },
+        where: { isActive: { equals: true } },
+      }),
+      payload.find({
+        collection: "timetable-lanes",
+        depth: 0,
+        limit: 1000,
+        overrideAccess: true,
+        pagination: false,
+        select: {
+          id: true,
+          timetableGroup: true,
+          name: true,
+          sortOrder: true,
+        },
+        where: availableTimetableLaneWhere,
+      }),
+      payload.find({
+        collection: "timetable-listings",
+        depth: 0,
+        limit: 1000,
+        overrideAccess: true,
+        pagination: false,
+        select: {
+          id: true,
+          program: true,
+          timetableLane: true,
+          weather: true,
+          day: true,
+          startTime: true,
+          endTime: true,
+        },
+        where: { configurationStatus: { equals: "1_configured" } },
+      }),
+      payload.find({
+        collection: "programs",
+        depth: 0,
+        limit: 1000,
+        overrideAccess: true,
+        pagination: false,
+        select: { id: true, title: true },
+        where: { _status: { equals: "published" } },
+      }),
+    ]);
+
+  const groupById = new Map<string, ScheduleGroupDTO>(
+    groupResult.docs.map((group) => [
+      String(group.id),
+      {
+        id: String(group.id),
+        name: group.name,
+        sortOrder: group.sortOrder,
+        lanes: [],
+      },
+    ]),
+  );
+  const standaloneGroups: ScheduleGroupDTO[] = [];
+  const visibleLaneIds = new Set<string>();
+
+  for (const lane of laneResult.docs) {
+    const laneId = String(lane.id);
+    const laneDTO: ScheduleLaneDTO = {
+      id: laneId,
+      name: lane.name,
+      sortOrder: lane.sortOrder,
+    };
+    const groupId = relationshipKey(lane.timetableGroup);
+
+    if (groupId === null) {
+      standaloneGroups.push({
+        id: `ungrouped-lane:${laneId}`,
+        name: lane.name,
+        sortOrder: lane.sortOrder,
+        lanes: [laneDTO],
+      });
+      visibleLaneIds.add(laneId);
+      continue;
+    }
+
+    const group = groupById.get(groupId);
+    if (group) {
+      group.lanes.push(laneDTO);
+      visibleLaneIds.add(laneId);
+    }
+  }
+
+  const groups = [
+    ...Array.from(groupById.values(), (group) => ({
+      ...group,
+      lanes: group.lanes.sort(bySortOrderThenName),
+    })).filter((group) => group.lanes.length > 0),
+    ...standaloneGroups,
+  ].sort(bySortOrderThenName);
+  const publishedProgramTitles = new Map(
+    programResult.docs.map((program) => [String(program.id), program.title]),
+  );
+
+  const items = listingResult.docs.flatMap((listing): ScheduleItemDTO[] => {
+    const programId = relationshipKey(listing.program);
+    const laneId = relationshipKey(listing.timetableLane);
+    if (programId === null || laneId === null) {
+      return [];
+    }
+
+    const title = publishedProgramTitles.get(programId);
+    if (!visibleLaneIds.has(laneId) || title === undefined) {
+      return [];
+    }
+
+    return [
+      {
+        id: String(listing.id),
+        title,
+        href: `/event/programs/${programId}`,
+        weather: listing.weather,
+        day: listing.day,
+        startTime: listing.startTime,
+        endTime: listing.endTime,
+        laneId,
+      },
+    ];
+  });
+
+  return {
+    days: [
+      {
+        value: FESTIVAL_DAYS.day1.value,
+        label: FESTIVAL_DAYS.day1.scheduleLabel,
+        date: FESTIVAL_DAYS.day1.date,
+      },
+      {
+        value: FESTIVAL_DAYS.day2.value,
+        label: FESTIVAL_DAYS.day2.scheduleLabel,
+        date: FESTIVAL_DAYS.day2.date,
+      },
+    ],
+    range: {
+      startTime: TIMETABLE_START_TIME,
+      endTime: TIMETABLE_DISPLAY_END_TIME,
+      slotMinutes: TIMETABLE_GRID_SLOT_MINUTES,
+    },
+    groups,
+    items,
+    weather: isWeather(runtimeSettings.weather) ? runtimeSettings.weather : "sunny",
+  };
+}

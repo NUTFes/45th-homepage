@@ -10,12 +10,14 @@ export const FESTIVAL_DAYS = {
   day1: {
     value: "day1",
     label: "1日目",
+    scheduleLabel: "19日（土）",
     adminLabel: "1日目（9/19 土）",
     date: "2026-09-19",
   },
   day2: {
     value: "day2",
     label: "2日目",
+    scheduleLabel: "20日（日）",
     adminLabel: "2日目（9/20 日）",
     date: "2026-09-20",
   },
@@ -50,10 +52,11 @@ export const PROGRAM_TAGS = [
   { value: "nagaoka-ut-goods", label: "技大グッズ" },
 ] as const;
 
-export const PROGRAM_TIME_SLOT_MINUTES = 15;
+export const TIMETABLE_GRID_SLOT_MINUTES = 15;
 
 export const TIMETABLE_START_TIME = "10:00";
 export const TIMETABLE_END_TIME = "20:30";
+export const TIMETABLE_DISPLAY_END_TIME = "21:00";
 
 export const TOP_PROGRAM_LIMIT_PER_CATEGORY = 5;
 

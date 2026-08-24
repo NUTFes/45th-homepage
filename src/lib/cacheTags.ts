@@ -4,5 +4,6 @@ export const CACHE_TAGS = {
   weatherSettings: "weather-settings",
   news: "news",
   sponsorsPage: "sponsors-page",
+  timetable: "timetable",
   topPage: "top-page",
 } as const;

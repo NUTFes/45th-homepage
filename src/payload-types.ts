@@ -70,7 +70,10 @@ export interface Config {
     users: User;
     media: Media;
     news: News;
+    'timetable-groups': TimetableGroup;
+    'timetable-lanes': TimetableLane;
     programs: Program;
+    'timetable-listings': TimetableListing;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -81,7 +84,10 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     news: NewsSelect<false> | NewsSelect<true>;
+    'timetable-groups': TimetableGroupsSelect<false> | TimetableGroupsSelect<true>;
+    'timetable-lanes': TimetableLanesSelect<false> | TimetableLanesSelect<true>;
     programs: ProgramsSelect<false> | ProgramsSelect<true>;
+    'timetable-listings': TimetableListingsSelect<false> | TimetableListingsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -226,7 +232,51 @@ export interface News {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * Manage program information used on event list and detail pages. Publish or unpublish each program to control its site visibility.
+ * Optional: create a group only when multiple venues share one timetable column. Standalone venues do not need one. This is separate from map classifications.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "timetable-groups".
+ */
+export interface TimetableGroup {
+  id: number;
+  name: string;
+  /**
+   * Smaller numbers appear first. Using 10, 20, 30 leaves room for later additions.
+   */
+  sortOrder: number;
+  /**
+   * Turn off instead of deleting. Inactive groups cannot be selected and are excluded from future timetables.
+   */
+  isActive: boolean;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Step 1: Create a timetable venue. Select a group only when multiple venues share one timetable column.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "timetable-lanes".
+ */
+export interface TimetableLane {
+  id: number;
+  /**
+   * Select a group only when multiple venues share one timetable column. Leave this blank for a standalone venue.
+   */
+  timetableGroup?: (number | null) | TimetableGroup;
+  name: string;
+  /**
+   * Smaller numbers appear first. This orders venue options within a group, or timetable columns for standalone venues. Use 10, 20, 30 to leave room for later additions.
+   */
+  sortOrder: number;
+  /**
+   * Turn off instead of deleting. Inactive venues cannot be selected and are excluded from future timetables.
+   */
+  isActive: boolean;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Register program content, map location, and schedule. Timetable listings are created automatically after saving.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "programs".
@@ -236,7 +286,13 @@ export interface Program {
   adminLabel?: string | null;
   title: string;
   category: 'program' | 'exhibition' | 'food' | 'goods' | 'corporate';
+  /**
+   * Area used to find the program on the map. This is separate from timetable groups.
+   */
   area: 'lecture' | 'gym' | 'outdoor' | 'kitchen_car' | 'other';
+  /**
+   * Enter the visitor-facing location shown on the map and program details.
+   */
   locationName: string;
   image?: (number | null) | Media;
   mapImage?: (number | null) | Media;
@@ -270,7 +326,7 @@ export interface Program {
    */
   description: string;
   /**
-   * Register schedule rows. Add separate rows when sunny and rainy schedules differ.
+   * Register each occurrence. Saving creates its timetable listing; changing its day, weather, or time clears the timetable venue for review.
    */
   scheduleItems: {
     /**
@@ -278,102 +334,49 @@ export interface Program {
      */
     weather: 'both' | 'sunny' | 'rainy';
     day: 'day1' | 'day2';
-    startTime:
-      | '10:00'
-      | '10:15'
-      | '10:30'
-      | '10:45'
-      | '11:00'
-      | '11:15'
-      | '11:30'
-      | '11:45'
-      | '12:00'
-      | '12:15'
-      | '12:30'
-      | '12:45'
-      | '13:00'
-      | '13:15'
-      | '13:30'
-      | '13:45'
-      | '14:00'
-      | '14:15'
-      | '14:30'
-      | '14:45'
-      | '15:00'
-      | '15:15'
-      | '15:30'
-      | '15:45'
-      | '16:00'
-      | '16:15'
-      | '16:30'
-      | '16:45'
-      | '17:00'
-      | '17:15'
-      | '17:30'
-      | '17:45'
-      | '18:00'
-      | '18:15'
-      | '18:30'
-      | '18:45'
-      | '19:00'
-      | '19:15'
-      | '19:30'
-      | '19:45'
-      | '20:00'
-      | '20:15'
-      | '20:30';
     /**
-     * Select when the program ends. It must be later than the start time.
+     * Enter a time from 10:00 to 20:30 in one-minute increments.
      */
-    endTime:
-      | '10:00'
-      | '10:15'
-      | '10:30'
-      | '10:45'
-      | '11:00'
-      | '11:15'
-      | '11:30'
-      | '11:45'
-      | '12:00'
-      | '12:15'
-      | '12:30'
-      | '12:45'
-      | '13:00'
-      | '13:15'
-      | '13:30'
-      | '13:45'
-      | '14:00'
-      | '14:15'
-      | '14:30'
-      | '14:45'
-      | '15:00'
-      | '15:15'
-      | '15:30'
-      | '15:45'
-      | '16:00'
-      | '16:15'
-      | '16:30'
-      | '16:45'
-      | '17:00'
-      | '17:15'
-      | '17:30'
-      | '17:45'
-      | '18:00'
-      | '18:15'
-      | '18:30'
-      | '18:45'
-      | '19:00'
-      | '19:15'
-      | '19:30'
-      | '19:45'
-      | '20:00'
-      | '20:15'
-      | '20:30';
+    startTime: string;
+    /**
+     * Enter a time from 10:00 to 20:30 in one-minute increments, after the start time.
+     */
+    endTime: string;
     id?: string | null;
   }[];
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * Step 2: Open a program marked Venue not configured and select its venue. Edit dates and times on the program.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "timetable-listings".
+ */
+export interface TimetableListing {
+  id: number;
+  adminLabel?: string | null;
+  /**
+   * This comes from the program. Edit the program to change it.
+   */
+  program: number | Program;
+  programTitle: string;
+  scheduleItemId: string;
+  day: 'day1' | 'day2';
+  weather: 'both' | 'sunny' | 'rainy';
+  startTime: string;
+  endTime: string;
+  /**
+   * Only active standalone venues and active venues in an active timetable group are shown.
+   */
+  timetableLane?: (number | null) | TimetableLane;
+  /**
+   * Changes automatically to Venue configured after a venue is saved.
+   */
+  configurationStatus: '0_unconfigured' | '1_configured';
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -412,8 +415,20 @@ export interface PayloadLockedDocument {
         value: number | News;
       } | null)
     | ({
+        relationTo: 'timetable-groups';
+        value: number | TimetableGroup;
+      } | null)
+    | ({
+        relationTo: 'timetable-lanes';
+        value: number | TimetableLane;
+      } | null)
+    | ({
         relationTo: 'programs';
         value: number | Program;
+      } | null)
+    | ({
+        relationTo: 'timetable-listings';
+        value: number | TimetableListing;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -526,6 +541,29 @@ export interface NewsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "timetable-groups_select".
+ */
+export interface TimetableGroupsSelect<T extends boolean = true> {
+  name?: T;
+  sortOrder?: T;
+  isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "timetable-lanes_select".
+ */
+export interface TimetableLanesSelect<T extends boolean = true> {
+  timetableGroup?: T;
+  name?: T;
+  sortOrder?: T;
+  isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "programs_select".
  */
 export interface ProgramsSelect<T extends boolean = true> {
@@ -551,6 +589,24 @@ export interface ProgramsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "timetable-listings_select".
+ */
+export interface TimetableListingsSelect<T extends boolean = true> {
+  adminLabel?: T;
+  program?: T;
+  programTitle?: T;
+  scheduleItemId?: T;
+  day?: T;
+  weather?: T;
+  startTime?: T;
+  endTime?: T;
+  timetableLane?: T;
+  configurationStatus?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

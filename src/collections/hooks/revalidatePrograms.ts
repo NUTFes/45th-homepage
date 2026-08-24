@@ -7,9 +7,11 @@ const revalidateEventPages = (payload: { logger: { info: (message: string) => vo
   payload.logger.info("Revalidating event pages");
   revalidateTag(CACHE_TAGS.events, "max");
   revalidateTag(CACHE_TAGS.eventsPage, "max");
+  revalidateTag(CACHE_TAGS.timetable, "max");
   revalidateTag(CACHE_TAGS.weatherSettings, "max");
   revalidatePath("/");
   revalidatePath("/event", "layout");
+  revalidatePath("/schedule");
 };
 
 export const revalidateProgramsAfterChange: CollectionAfterChangeHook = ({

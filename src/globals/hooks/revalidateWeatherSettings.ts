@@ -11,9 +11,11 @@ export const revalidateWeatherSettingsAfterChange: GlobalAfterChangeHook = ({
   if (!context.disableRevalidate) {
     payload.logger.info("Revalidating weather settings");
     revalidateTag(CACHE_TAGS.events, "max");
+    revalidateTag(CACHE_TAGS.timetable, "max");
     revalidateTag(CACHE_TAGS.weatherSettings, "max");
     revalidatePath("/");
     revalidatePath("/event", "layout");
+    revalidatePath("/schedule");
   }
 
   return doc;

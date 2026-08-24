@@ -33,6 +33,14 @@ export default function DevPageModulesIndexPage() {
             <p className="text-text-small text-base-dark underline">Open →</p>
           </Link>
           <Link
+            href="/dev/pages/schedule"
+            className="space-y-xs rounded-lg border border-base/10 p-m transition-colors hover:bg-secondary"
+          >
+            <h3 className="text-title-small text-base-dark">Schedule Page</h3>
+            <p className="text-text text-base-dark/80">固定DTOによるタイスケ表示基盤の確認</p>
+            <p className="text-text-small text-base-dark underline">Open →</p>
+          </Link>
+          <Link
             href="/dev/pages/map"
             className="space-y-xs rounded-lg border border-base/10 p-m transition-colors hover:bg-secondary"
           >

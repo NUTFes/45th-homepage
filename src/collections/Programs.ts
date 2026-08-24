@@ -13,7 +13,6 @@ import {
   toPayloadSelectOptions,
 } from "@/lib/events/constants";
 import {
-  PROGRAM_TIME_OPTIONS,
   buildProgramAdminLabel,
   validateProgramTimeValue,
   validateScheduleItems,
@@ -23,6 +22,10 @@ import {
   revalidateProgramsAfterChange,
   revalidateProgramsAfterDelete,
 } from "./hooks/revalidatePrograms";
+import {
+  deleteTimetableListingsBeforeProgramDelete,
+  syncTimetableListingsAfterProgramChange,
+} from "./hooks/syncTimetableListings";
 import {
   syncProgramWithEventsPageAfterChange,
   syncProgramWithEventsPageAfterDelete,
@@ -45,7 +48,7 @@ const updateProgramAdminLabelBeforeValidate: CollectionBeforeValidateHook = ({
 
 const addProgramAdminLabelAfterRead: CollectionAfterReadHook = ({ doc }) => ({
   ...doc,
-  adminLabel: doc.adminLabel || buildProgramAdminLabel(doc),
+  adminLabel: buildProgramAdminLabel(doc),
 });
 
 export const Programs: CollectionConfig = {
@@ -79,8 +82,8 @@ export const Programs: CollectionConfig = {
       en: "Content",
     },
     description: {
-      ja: "企画一覧・企画詳細で使用する企画情報を管理します。サイトへの表示・非表示は、各企画の公開・非公開で切り替えてください。",
-      en: "Manage program information used on event list and detail pages. Publish or unpublish each program to control its site visibility.",
+      ja: "企画内容、マップのエリア・場所、開催日時を登録します。保存後、タイムスケジュールの掲載設定が自動作成されます。",
+      en: "Register program content, map location, and schedule. Timetable listings are created automatically after saving.",
     },
   },
   versions: {
@@ -88,8 +91,13 @@ export const Programs: CollectionConfig = {
   },
   hooks: {
     beforeValidate: [updateProgramAdminLabelBeforeValidate],
+    beforeDelete: [deleteTimetableListingsBeforeProgramDelete],
     afterRead: [addProgramAdminLabelAfterRead],
-    afterChange: [syncProgramWithEventsPageAfterChange, revalidateProgramsAfterChange],
+    afterChange: [
+      syncTimetableListingsAfterProgramChange,
+      syncProgramWithEventsPageAfterChange,
+      revalidateProgramsAfterChange,
+    ],
     afterDelete: [syncProgramWithEventsPageAfterDelete, revalidateProgramsAfterDelete],
   },
   fields: [
@@ -127,7 +135,7 @@ export const Programs: CollectionConfig = {
     {
       name: "area",
       label: {
-        ja: "開催エリア",
+        ja: "マップのエリア",
         en: "Area",
       },
       type: "select",
@@ -135,12 +143,16 @@ export const Programs: CollectionConfig = {
       options: toPayloadSelectOptions(PROGRAM_AREAS),
       admin: {
         position: "sidebar",
+        description: {
+          ja: "来場者がマップで場所を探すためのエリアです。タイムスケジュールの会場グループとは別に選びます。",
+          en: "Area used to find the program on the map. This is separate from timetable groups.",
+        },
       },
     },
     {
       name: "locationName",
       label: {
-        ja: "詳細な場所",
+        ja: "マップに表示する場所",
         en: "Location",
       },
       type: "text",
@@ -150,6 +162,10 @@ export const Programs: CollectionConfig = {
         placeholder: {
           ja: "例: 講義棟 1F 101講義室",
           en: "e.g. Lecture Building 1F Room 101",
+        },
+        description: {
+          ja: "来場者向けのマップや企画詳細に表示する場所を入力します。例：講義棟 1F 101講義室",
+          en: "Enter the visitor-facing location shown on the map and program details.",
         },
       },
     },
@@ -228,10 +244,11 @@ export const Programs: CollectionConfig = {
       minRows: 1,
       validate: validateScheduleItems,
       admin: {
+        className: "program-schedule-items",
         initCollapsed: false,
         description: {
-          ja: "開催日時を登録します。晴れ・雨で時間が異なる場合は、天候別に行を追加してください。",
-          en: "Register schedule rows. Add separate rows when sunny and rainy schedules differ.",
+          ja: "企画を開催する日・天候・時間を1行ずつ登録します。保存すると各行の「掲載設定」が自動作成されます。日・天候・時間を変更した行は会場設定が解除されるため、掲載設定で会場を選び直してください。",
+          en: "Register each occurrence. Saving creates its timetable listing; changing its day, weather, or time clears the timetable venue for review.",
         },
       },
       labels: {
@@ -277,10 +294,20 @@ export const Programs: CollectionConfig = {
             ja: "開始時刻",
             en: "Start Time",
           },
-          type: "select",
+          type: "text",
           required: true,
-          options: PROGRAM_TIME_OPTIONS,
+          minLength: 5,
+          maxLength: 5,
           validate: validateProgramTimeValue,
+          admin: {
+            components: {
+              Field: "/components/admin/TimeField#TimeField",
+            },
+            description: {
+              ja: "10:00から20:30までの時刻を1分単位で入力してください。",
+              en: "Enter a time from 10:00 to 20:30 in one-minute increments.",
+            },
+          },
         },
         {
           name: "endTime",
@@ -288,14 +315,18 @@ export const Programs: CollectionConfig = {
             ja: "終了時刻",
             en: "End Time",
           },
-          type: "select",
+          type: "text",
           required: true,
-          options: PROGRAM_TIME_OPTIONS,
+          minLength: 5,
+          maxLength: 5,
           validate: validateProgramTimeValue,
           admin: {
+            components: {
+              Field: "/components/admin/TimeField#TimeField",
+            },
             description: {
-              ja: "終了時刻は企画が終了する時刻を選択してください。開始時刻より後の時刻を選ぶ必要があります。",
-              en: "Select when the program ends. It must be later than the start time.",
+              ja: "10:00から20:30までの時刻を1分単位で入力し、開始時刻より後にしてください。",
+              en: "Enter a time from 10:00 to 20:30 in one-minute increments, after the start time.",
             },
           },
         },

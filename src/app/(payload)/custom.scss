@@ -55,3 +55,18 @@
     overflow-wrap: anywhere;
   }
 }
+
+// Payload's array label is rendered inside an h3 and, unlike regular field labels,
+// does not receive the standard body text or required-marker styles.
+.program-schedule-items {
+  .array-field__title {
+    font-size: var(--theme-baseline-body-size);
+    line-height: var(--theme-baseline);
+    font-weight: normal;
+  }
+
+  .field-label .required {
+    margin-inline-start: calc(var(--base) / 4);
+    color: var(--theme-error-500);
+  }
+}
