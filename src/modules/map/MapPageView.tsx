@@ -66,7 +66,7 @@ export default function MapPageView() {
             aria-hidden="true"
             width={287}
             height={333}
-            className="pointer-events-none absolute top-0 right-118 z-0 h-auto w-71.75"
+            className="pointer-events-none absolute -top-5l right-118 z-0 h-auto w-71.75"
           />
           <div className="relative z-10 flex min-w-0 flex-1 flex-col py-5l">
             <Image
