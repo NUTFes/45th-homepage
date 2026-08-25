@@ -61,7 +61,6 @@ export default function ContactPageView({ siteKey }: ContactPageViewProps) {
   const [turnstileError, setTurnstileError] = useState(false);
   const [submissionState, setSubmissionState] = useState<SubmissionState>(null);
   const turnstileRef = useRef<TurnstileWidgetHandle>(null);
-  const submitAttemptedRef = useRef(false);
 
   const submitContact = useCallback(
     async (values: ContactFormValues) => {
@@ -69,23 +68,25 @@ export default function ContactPageView({ siteKey }: ContactPageViewProps) {
         throw new Error("認証を完了してください");
       }
 
-      submitAttemptedRef.current = true;
-
-      let response: Response;
       try {
-        response = await fetch("/api/contact", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ values, turnstileToken }),
-        });
-      } catch {
-        throw new Error(CONTACT_SEND_FAILURE_MESSAGE);
-      }
+        let response: Response;
+        try {
+          response = await fetch("/api/contact", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ values, turnstileToken }),
+          });
+        } catch {
+          throw new Error(CONTACT_SEND_FAILURE_MESSAGE);
+        }
 
-      if (!response.ok) {
-        throw new Error(await readApiErrorMessage(response));
+        if (!response.ok) {
+          throw new Error(await readApiErrorMessage(response));
+        }
+      } finally {
+        turnstileRef.current?.reset();
       }
     },
     [turnstileToken],
@@ -106,14 +107,9 @@ export default function ContactPageView({ siteKey }: ContactPageViewProps) {
 
   const handleFormSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
-      submitAttemptedRef.current = false;
       setSubmissionState(null);
 
       const result = await handleSubmit(event);
-
-      if (submitAttemptedRef.current) {
-        turnstileRef.current?.reset();
-      }
 
       if (result.ok) {
         reset();
