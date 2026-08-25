@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-// import ContactPageView from "@/modules/contact/ContactPageView";
-import { notFound } from "next/navigation";
+import { connection } from "next/server";
+import ContactPageView from "@/modules/contact/ContactPageView";
 
 export const metadata: Metadata = {
   title: "お問い合わせ",
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Page() {
-  // return <ContactPageView />;
-  return notFound();
+export default async function Page() {
+  await connection();
+  return <ContactPageView siteKey={process.env.TURNSTILE_SITE_KEY} />;
 }

@@ -23,10 +23,11 @@ Slack投稿が成功したときだけ利用者へ完了表示を出す。Slack�
 - [x] (2026-08-25 22:44+08:00) オーバーエンジニアリングを避ける再レビューを行い、独自body stream parser、server fieldErrorsの往復、Turnstile site keyのbuild-time注入、専用hostname envを初回scopeから外した。
 - [x] (2026-08-25 23:51+09:00) `feat/contact-slack-notification` ブランチを作成し、共通の選択肢・最大長定数、runtime request parser、共有validation、UIの `maxLength`、pure testを追加した。Milestone 1のtestは10件すべてpassした。
 - [x] (2026-08-25 23:51+09:00) Turnstile response判定・server verification、Slack `plain_text` payload生成・Incoming Webhook投稿をserver-only境界として追加した。Milestone 1/2のpure testは17件すべてpassし、`fmt:check` と `typecheck` もpassした。
-- [ ] `POST /api/contact` を追加し、HTTP境界からruntime validation、Turnstile、Slackを順番に接続する。
-- [ ] Turnstile widgetと既存フォームをAPIへ接続し、成功・失敗・resetを扱う。
-- [ ] production runtime環境変数とCI用dummy値を追加する。Dockerfileやbuild argは変更しない。
-- [ ] pure functionの自動テスト、`pnpm run quality:check`、テストSlackチャンネルでの正常系・異常系確認を完了する。
+- [x] (2026-08-25 23:51+09:00) `POST /api/contact` を追加し、Content-Type、既知Content-Length、JSON parse、runtime/domain validation、Turnstile、Slackの順に接続した。ローカルcurlで非JSON 415、invalid JSON/shape/missing token/oversized token 400、既知16 KiB超過 413を確認した。
+- [x] (2026-08-25 23:51+09:00) Turnstile widgetと既存フォームをAPIへ接続し、token取得前disabled、API試行後token reset、成功時だけフォームreset、成功/失敗のインライン表示を実装した。`/contact` は200でフォームを表示する。
+- [x] (2026-08-25 23:51+09:00) production runtime環境変数とCI用dummy値を追加した。Dockerfile/build argは変更せず、dummy環境値で `docker compose -f compose.prod.yml config -q` が成功した。
+- [x] (2026-08-25 23:51+09:00) pure function test 17件と `pnpm run quality:check` を完了した。quality checkは成功し、今回の差分外である `src/app/(frontend)/greeting/page.tsx` の既存unused import warning 1件だけが残る。
+- [ ] テスト用Turnstile site/secret keyとSlack Incoming Webhookを設定し、ブラウザで正常送信・Slack受信・Slack失敗時のフォーム保持を確認する。
 - [ ] Slack private channelの閲覧権限とretention、Cloudflare rate limitを確認し、`/contact` 有効化を含む変更をproductionへdeploy/mergeできる状態にする。
 
 ## Surprises & Discoveries
@@ -63,6 +64,9 @@ Slack投稿が成功したときだけ利用者へ完了表示を出す。Slack�
 
 - Observation: Next.js 16の `server-only` importは追加dependencyなしでこのリポジトリのtypecheckを通過した。
   Evidence: `verifyTurnstile.ts` と `postContactToSlack.ts` に `import "server-only";` を追加した状態で `docker compose exec -T payload pnpm run typecheck` が成功したため、計画どおり `pnpm add server-only` は不要だった。
+
+- Observation: `pnpm run quality:check` は今回の問い合わせ差分についてerrorなく完了するが、既存のgreeting pageにunused import warningが1件ある。
+  Evidence: oxlintは `src/app/(frontend)/greeting/page.tsx:1` の `notFound` を未使用として警告する。問い合わせ実装ではこのファイルを変更していないためscope外とした。
 
 ## Decision Log
 
@@ -144,17 +148,17 @@ Slack投稿が成功したときだけ利用者へ完了表示を出す。Slack�
 
 ## Outcomes & Retrospective
 
-Milestone 2まで実装済みである。`feat/contact-slack-notification` ブランチ上で、UIとserverが共有する選択肢・最大長定数、runtime parser、domain validation、UIの `maxLength` に加え、Turnstile Siteverify response判定・5秒timeout付きserver verification、Slack Block Kitの `plain_text` payload生成、5秒timeout付きIncoming Webhook投稿を追加した。pure testは17件すべてpassし、`fmt:check` と `typecheck` も成功している。
+アプリケーションコードとproduction runtime設定まで実装済みである。`feat/contact-slack-notification` ブランチ上で、runtime parser、domain validation、Turnstile server verification、Slack `plain_text` payload/Incoming Webhook投稿、`POST /api/contact`、Turnstile Client widget、フォーム送信・reset・状態表示、`/contact` 有効化、production/CIの3環境変数追加まで完了した。
 
-secretを読む `verifyTurnstile.ts` と `postContactToSlack.ts` は `server-only` でClient importを防ぎ、実値や利用者入力をlogへ出さない。中心方針は `POST /api/contact`、runtime validation、Turnstileのserver verification、Slack Incoming Webhook、Cloudflare rate limitingを維持している。次はMilestone 3としてRoute Handlerと既存フォームを接続する。
+pure testは17件すべてpassし、`pnpm run quality:check` も成功した。ローカル実サーバーでは `/contact` 200、APIの415/400/413を確認し、production Composeもdummy値でvalidation済みである。残るのは実際のテストTurnstile keyとSlack test webhookを使った正常送信E2E、および本番private channel権限・retention・Cloudflare rate limitという外部運用確認である。これらが完了するまでproductionへdeploy/mergeしない。
 
 ## Context and Orientation
 
-`src/app/(frontend)/contact/page.tsx` が公開ページの入口である。現在は `notFound()` を返している。実装ブランチ上ではブラウザE2E確認の段階で `ContactPageView` を返すよう変更するが、Slack private channel、Turnstile本番設定、Cloudflare rate limitなどの運用条件が揃うまでproductionへdeploy/mergeしない。このServer Componentは `async` にし、`next/server` の `connection()` をawaitした後で `process.env.TURNSTILE_SITE_KEY` を読み、Client Componentである `ContactPageView` へpropとして渡す。site keyはブラウザから見えてよい値だが、runtimeで差し替えられるよう `NEXT_PUBLIC_` は使わない。
+`src/app/(frontend)/contact/page.tsx` が公開ページの入口である。現在の実装ブランチでは `notFound()` を外し、`await connection()` 後にruntimeの `process.env.TURNSTILE_SITE_KEY` を読み、Client Componentである `ContactPageView` へpropとして渡す。site keyはブラウザから見えてよい値だが、runtimeで差し替えられるよう `NEXT_PUBLIC_` は使わない。Slack private channel、Turnstile本番設定、Cloudflare rate limitなどの運用条件が揃うまでproductionへdeploy/mergeしない。
 
-`src/modules/contact/ContactPageView.tsx` は問い合わせフォーム本体で、React Client Componentである。氏名、ふりがな、性別、年齢、地域、メールアドレス、電話番号、お問い合わせ種別、本文の9項目を表示する。現在は `validateOnlySubmit` が空処理なので、ここを `/api/contact` へのfetchへ置き換える。
+`src/modules/contact/ContactPageView.tsx` は問い合わせフォーム本体で、React Client Componentである。現在は9項目の入力に加えてTurnstile widgetを表示し、有効tokenがあるときだけ送信可能にする。`/api/contact` へJSON POSTし、APIを実際に試行した後はTurnstileをresetする。成功時だけフォームを初期化してstatusを表示し、失敗時は入力を保持してalertを表示する。
 
-`src/modules/contact/useContactForm.ts` は入力値、field error、送信中状態を管理するClient Hookである。既存の `ContactFormSubmitter` と `handleSubmit()` の契約は維持する。成功時にvalues、errors、touchedを初期状態へ戻す `reset()` だけ追加する。
+`src/modules/contact/useContactForm.ts` は入力値、field error、送信中状態を管理するClient Hookである。既存の `ContactFormSubmitter` と `handleSubmit()` の契約は維持したまま、成功後にvalues、errors、touchedを初期状態へ戻す `reset()` を追加済みである。
 
 `src/modules/contact/types.ts` はフォーム値とfield error等の型を定義する。`ContactFormValues` はTypeScript上のshapeであり、HTTP入力の安全性を保証しない。Route Handlerが受け取ったJSONへ直接型assertionしてはならない。
 
@@ -499,3 +503,5 @@ Revision note (2026-08-25): オーバーエンジニアリングを避ける再�
 Revision note (2026-08-25): 実装開始。`feat/contact-slack-notification` ブランチを作成しMilestone 1を完了した。共有定数、runtime parser、最大長・allowlist validation、UI `maxLength`、pure testを追加し、10件passを確認した。raw文字列の最大長判定とtrim後形式判定の差もtestで確認し、Surprises & Discoveriesへ記録した。
 
 Revision note (2026-08-25): Milestone 2を完了した。Turnstile response判定とserver verification、Slack `plain_text` payload生成とIncoming Webhook投稿を追加し、pure test 17件、`fmt:check`、`typecheck` の成功を確認した。`server-only` は追加dependencyなしで解決できたため、その発見も記録した。
+
+Revision note (2026-08-25): Milestone 3とMilestone 4のコード・設定作業を完了した。`POST /api/contact`、Turnstile widget、フォーム連携、`/contact` 有効化、production/CI runtime envを追加した。pure test 17件、`quality:check`、API異常系curl、`/contact` 200、production Compose validationを確認済み。外部test webhook/keyを使う正常系E2Eと本番運用条件確認だけを未完了として残した。

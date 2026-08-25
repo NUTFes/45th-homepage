@@ -1,11 +1,14 @@
 "use client";
 
 import Image from "next/image";
+import { type FormEvent, useCallback, useRef, useState } from "react";
 import { Button } from "@/components/aria/Button";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { CONTACT_FIELD_MAX_LENGTHS, GENDER_OPTIONS, INQUIRY_TYPE_OPTIONS } from "./constants";
 import ContactAccordionSection from "./ui/ContactAccordionSection";
 import ContactSection from "./ui/ContactSection";
+import TurnstileWidget, { type TurnstileWidgetHandle } from "./ui/TurnstileWidget";
+import type { ContactFormValues } from "./types";
 import { useContactForm } from "./useContactForm";
 import { validateContactForm } from "./validation";
 
@@ -21,14 +24,109 @@ const DEFAULT_VALUES = {
   inquiry: "",
 } as const;
 
-const validateOnlySubmit = () => undefined;
+const CONTACT_SEND_FAILURE_MESSAGE = "送信に失敗しました。時間をおいて再度お試しください。";
+const CONTACT_UNAVAILABLE_MESSAGE =
+  "現在お問い合わせを送信できません。時間をおいて再度お試しください。";
+const CONTACT_SUCCESS_MESSAGE = "お問い合わせを送信しました。";
 
-export default function ContactPageView() {
-  const { errors, handleSubmit, isSubmitting, register } = useContactForm({
+type ContactPageViewProps = {
+  siteKey?: string;
+};
+
+type SubmissionState =
+  | { kind: "success"; message: string }
+  | { kind: "error"; message: string }
+  | null;
+
+const readApiErrorMessage = async (response: Response): Promise<string> => {
+  try {
+    const body: unknown = await response.json();
+    if (
+      typeof body === "object" &&
+      body !== null &&
+      "message" in body &&
+      typeof body.message === "string"
+    ) {
+      return body.message;
+    }
+  } catch {
+    // Fall back to the fixed message below when the response is not JSON.
+  }
+
+  return CONTACT_SEND_FAILURE_MESSAGE;
+};
+
+export default function ContactPageView({ siteKey }: ContactPageViewProps) {
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileError, setTurnstileError] = useState(false);
+  const [submissionState, setSubmissionState] = useState<SubmissionState>(null);
+  const turnstileRef = useRef<TurnstileWidgetHandle>(null);
+  const submitAttemptedRef = useRef(false);
+
+  const submitContact = useCallback(
+    async (values: ContactFormValues) => {
+      if (!turnstileToken) {
+        throw new Error("認証を完了してください");
+      }
+
+      submitAttemptedRef.current = true;
+
+      let response: Response;
+      try {
+        response = await fetch("/api/contact", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ values, turnstileToken }),
+        });
+      } catch {
+        throw new Error(CONTACT_SEND_FAILURE_MESSAGE);
+      }
+
+      if (!response.ok) {
+        throw new Error(await readApiErrorMessage(response));
+      }
+    },
+    [turnstileToken],
+  );
+
+  const { errors, handleSubmit, isSubmitting, register, reset } = useContactForm({
     defaultValues: DEFAULT_VALUES,
     validate: validateContactForm,
-    onSubmit: validateOnlySubmit,
+    onSubmit: submitContact,
   });
+
+  const handleTokenChange = useCallback((token: string | null) => {
+    setTurnstileToken(token);
+    if (token) {
+      setTurnstileError(false);
+    }
+  }, []);
+
+  const handleFormSubmit = useCallback(
+    async (event: FormEvent<HTMLFormElement>) => {
+      submitAttemptedRef.current = false;
+      setSubmissionState(null);
+
+      const result = await handleSubmit(event);
+
+      if (submitAttemptedRef.current) {
+        turnstileRef.current?.reset();
+      }
+
+      if (result.ok) {
+        reset();
+        setSubmissionState({ kind: "success", message: CONTACT_SUCCESS_MESSAGE });
+        return;
+      }
+
+      setSubmissionState({ kind: "error", message: result.error });
+    },
+    [handleSubmit, reset],
+  );
+
+  const turnstileUnavailable = !siteKey || turnstileError;
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-base">
@@ -65,7 +163,7 @@ export default function ContactPageView() {
 
         <form
           noValidate
-          onSubmit={handleSubmit}
+          onSubmit={handleFormSubmit}
           className="flex w-full flex-col gap-l md:mx-auto md:max-w-200 md:gap-3l"
         >
           <ContactSection
@@ -161,8 +259,41 @@ export default function ContactPageView() {
             {...register("inquiry")}
           />
 
-          <div className="flex justify-center pt-ss md:pt-0">
-            <Button type="submit" variant="cta" isPending={isSubmitting}>
+          <div className="flex flex-col items-center gap-s pt-ss md:pt-0">
+            {siteKey && (
+              <TurnstileWidget
+                ref={turnstileRef}
+                siteKey={siteKey}
+                onTokenChange={handleTokenChange}
+                onError={() => setTurnstileError(true)}
+              />
+            )}
+
+            {turnstileUnavailable && (
+              <p role="alert" className="px-ll text-center text-button text-required">
+                {CONTACT_UNAVAILABLE_MESSAGE}
+              </p>
+            )}
+
+            {submissionState && (
+              <p
+                role={submissionState.kind === "error" ? "alert" : "status"}
+                className={
+                  submissionState.kind === "error"
+                    ? "px-ll text-center text-button text-required"
+                    : "px-ll text-center text-button text-base-dark"
+                }
+              >
+                {submissionState.message}
+              </p>
+            )}
+
+            <Button
+              type="submit"
+              variant="cta"
+              isPending={isSubmitting}
+              isDisabled={turnstileUnavailable || !turnstileToken}
+            >
               送信
             </Button>
           </div>
