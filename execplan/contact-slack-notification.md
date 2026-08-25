@@ -22,7 +22,8 @@ Slack投稿が成功したときだけ利用者へ完了表示を出す。Slack�
 - [x] (2026-08-25 21:53+08:00) 既存のClient `onSubmit` 構造とCloudflare運用に合わせ、送信入口をServer Actionではなく `POST /api/contact` Route Handlerとした。
 - [x] (2026-08-25 22:44+08:00) オーバーエンジニアリングを避ける再レビューを行い、独自body stream parser、server fieldErrorsの往復、Turnstile site keyのbuild-time注入、専用hostname envを初回scopeから外した。
 - [x] (2026-08-25 23:51+09:00) `feat/contact-slack-notification` ブランチを作成し、共通の選択肢・最大長定数、runtime request parser、共有validation、UIの `maxLength`、pure testを追加した。Milestone 1のtestは10件すべてpassした。
-- [ ] Turnstile検証、Slack payload生成、Slack投稿、`POST /api/contact` を実装する。
+- [x] (2026-08-25 23:51+09:00) Turnstile response判定・server verification、Slack `plain_text` payload生成・Incoming Webhook投稿をserver-only境界として追加した。Milestone 1/2のpure testは17件すべてpassし、`fmt:check` と `typecheck` もpassした。
+- [ ] `POST /api/contact` を追加し、HTTP境界からruntime validation、Turnstile、Slackを順番に接続する。
 - [ ] Turnstile widgetと既存フォームをAPIへ接続し、成功・失敗・resetを扱う。
 - [ ] production runtime環境変数とCI用dummy値を追加する。Dockerfileやbuild argは変更しない。
 - [ ] pure functionの自動テスト、`pnpm run quality:check`、テストSlackチャンネルでの正常系・異常系確認を完了する。
@@ -59,6 +60,9 @@ Slack投稿が成功したときだけ利用者へ完了表示を出す。Slack�
 
 - Observation: 最大長はraw文字列へ適用し、形式判定だけtrim後の値へ適用するため、年齢 `" 20 "` は数字形式としては有効でもraw 4文字で3文字上限を超える。
   Evidence: Milestone 1の初回testでこのケースが最大長エラーとなり、ExecPlanの「最大長はraw文字列へ適用する」という既存Decisionどおりの挙動であることを確認した。test fixtureはraw 3文字の `"20 "` に修正し、10件すべてpassした。
+
+- Observation: Next.js 16の `server-only` importは追加dependencyなしでこのリポジトリのtypecheckを通過した。
+  Evidence: `verifyTurnstile.ts` と `postContactToSlack.ts` に `import "server-only";` を追加した状態で `docker compose exec -T payload pnpm run typecheck` が成功したため、計画どおり `pnpm add server-only` は不要だった。
 
 ## Decision Log
 
@@ -140,9 +144,9 @@ Slack投稿が成功したときだけ利用者へ完了表示を出す。Slack�
 
 ## Outcomes & Retrospective
 
-Milestone 1まで実装済みである。`feat/contact-slack-notification` ブランチ上で、UIとserverが共有する選択肢・最大長定数、`unknown` から9つのstring fieldとTurnstile tokenだけを取り出すruntime parser、最大長とallowlistを含むdomain validation、UIの `maxLength` を追加した。pure testは10件すべてpassし、外部通信前にHTTP入力を安全な `ContactFormValues` へ変換できる境界ができた。
+Milestone 2まで実装済みである。`feat/contact-slack-notification` ブランチ上で、UIとserverが共有する選択肢・最大長定数、runtime parser、domain validation、UIの `maxLength` に加え、Turnstile Siteverify response判定・5秒timeout付きserver verification、Slack Block Kitの `plain_text` payload生成、5秒timeout付きIncoming Webhook投稿を追加した。pure testは17件すべてpassし、`fmt:check` と `typecheck` も成功している。
 
-中心方針は `POST /api/contact`、runtime validation、Turnstileのserver verification、Slack Incoming Webhook、Cloudflare rate limitingを維持している。初回要件に対して複雑さが先行していた独自16 KiB stream parser、server fieldErrorsをform hookへ戻す送信契約、`NEXT_PUBLIC_TURNSTILE_SITE_KEY` のDocker build-time注入、専用 `TURNSTILE_EXPECTED_HOSTNAME`、`server-only` dependencyの先行追加は引き続きscope外とする。次はMilestone 2としてTurnstile判定とSlack payload/投稿のserver-only境界を実装する。
+secretを読む `verifyTurnstile.ts` と `postContactToSlack.ts` は `server-only` でClient importを防ぎ、実値や利用者入力をlogへ出さない。中心方針は `POST /api/contact`、runtime validation、Turnstileのserver verification、Slack Incoming Webhook、Cloudflare rate limitingを維持している。次はMilestone 3としてRoute Handlerと既存フォームを接続する。
 
 ## Context and Orientation
 
@@ -493,3 +497,5 @@ Revision note (2026-08-25): 公開入力のruntime validation、allowlist、Turn
 Revision note (2026-08-25): オーバーエンジニアリングを避ける再レビューを反映。独自16 KiB stream parserとそのchunk/UTF-8テスト、server fieldErrorsを `useContactForm` へ戻す新しい送信契約、`NEXT_PUBLIC_TURNSTILE_SITE_KEY` のDocker build-time注入、専用 `TURNSTILE_EXPECTED_HOSTNAME`、`server-only` dependencyの先行追加を初回scopeから外した。Turnstile site keyはServer Componentがruntimeで読みClientへpropで渡し、production hostnameは既存 `NEXT_PUBLIC_SITE_URL` から導出する。初回実装は固定9項目のruntime validation、Turnstile、Slack Incoming Webhook、Cloudflare rate limitingへ集中する。
 
 Revision note (2026-08-25): 実装開始。`feat/contact-slack-notification` ブランチを作成しMilestone 1を完了した。共有定数、runtime parser、最大長・allowlist validation、UI `maxLength`、pure testを追加し、10件passを確認した。raw文字列の最大長判定とtrim後形式判定の差もtestで確認し、Surprises & Discoveriesへ記録した。
+
+Revision note (2026-08-25): Milestone 2を完了した。Turnstile response判定とserver verification、Slack `plain_text` payload生成とIncoming Webhook投稿を追加し、pure test 17件、`fmt:check`、`typecheck` の成功を確認した。`server-only` は追加dependencyなしで解決できたため、その発見も記録した。
