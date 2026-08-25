@@ -20,17 +20,20 @@ export async function POST(request: Request): Promise<Response> {
     return Response.json(INVALID_INPUT_RESPONSE, { status: 415 });
   }
 
-  const contentLengthHeader = request.headers.get("content-length");
-  if (contentLengthHeader) {
-    const contentLength = Number(contentLengthHeader);
-    if (Number.isFinite(contentLength) && contentLength > CONTACT_REQUEST_MAX_BYTES) {
-      return Response.json(INVALID_INPUT_RESPONSE, { status: 413 });
-    }
+  let body: string;
+  try {
+    body = await request.text();
+  } catch {
+    return Response.json(INVALID_INPUT_RESPONSE, { status: 400 });
+  }
+
+  if (new TextEncoder().encode(body).byteLength > CONTACT_REQUEST_MAX_BYTES) {
+    return Response.json(INVALID_INPUT_RESPONSE, { status: 413 });
   }
 
   let input: unknown;
   try {
-    input = await request.json();
+    input = JSON.parse(body);
   } catch {
     return Response.json(INVALID_INPUT_RESPONSE, { status: 400 });
   }

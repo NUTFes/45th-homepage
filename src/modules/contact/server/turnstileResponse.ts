@@ -7,18 +7,18 @@ const isRecord = (value: unknown): value is UnknownRecord =>
 
 type TurnstileResponseValidationOptions = {
   expectedHostname?: string;
-  allowMissingAction?: boolean;
+  allowTestAction?: boolean;
 };
 
 export function isValidTurnstileResponse(
   input: unknown,
-  { expectedHostname, allowMissingAction = false }: TurnstileResponseValidationOptions = {},
+  { expectedHostname, allowTestAction = false }: TurnstileResponseValidationOptions = {},
 ): boolean {
   if (!isRecord(input) || input.success !== true) {
     return false;
   }
 
-  if (input.action !== TURNSTILE_ACTION && !(allowMissingAction && input.action === undefined)) {
+  if (input.action !== TURNSTILE_ACTION && !(allowTestAction && input.action === "test")) {
     return false;
   }
 

@@ -25,14 +25,14 @@ test("requires the expected hostname when one is provided", () => {
   );
 });
 
-test("allows a missing action only when explicitly enabled", () => {
-  assert.equal(isValidTurnstileResponse({ success: true }), false);
-  assert.equal(isValidTurnstileResponse({ success: true }, { allowMissingAction: true }), true);
+test("allows Cloudflare's test action only when explicitly enabled", () => {
+  assert.equal(isValidTurnstileResponse({ success: true, action: "test" }), false);
   assert.equal(
-    isValidTurnstileResponse(
-      { success: true, action: "other_action" },
-      { allowMissingAction: true },
-    ),
+    isValidTurnstileResponse({ success: true, action: "test" }, { allowTestAction: true }),
+    true,
+  );
+  assert.equal(
+    isValidTurnstileResponse({ success: true, action: "other_action" }, { allowTestAction: true }),
     false,
   );
 });
