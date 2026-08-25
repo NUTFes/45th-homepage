@@ -10,6 +10,9 @@ const TURNSTILE_SCRIPT_URL =
 type TurnstileRenderOptions = {
   sitekey: string;
   action: string;
+  appearance: "interaction-only";
+  theme: "auto";
+  language: "ja";
   callback: (token: string) => void;
   "expired-callback": () => void;
   "error-callback": () => void;
@@ -60,6 +63,9 @@ const TurnstileWidget = forwardRef<TurnstileWidgetHandle, TurnstileWidgetProps>(
       widgetIdRef.current = window.turnstile.render(containerRef.current, {
         sitekey: siteKey,
         action: TURNSTILE_ACTION,
+        appearance: "interaction-only",
+        theme: "auto",
+        language: "ja",
         callback: (token) => onTokenChange(token),
         "expired-callback": clearToken,
         "error-callback": reportError,

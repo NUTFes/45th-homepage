@@ -281,7 +281,7 @@ export default function ContactPageView({ siteKey }: ContactPageViewProps) {
                 className={
                   submissionState.kind === "error"
                     ? "px-ll text-center text-button text-required"
-                    : "px-ll text-center text-button text-base-dark"
+                    : "px-ll text-center text-button text-white"
                 }
               >
                 {submissionState.message}
