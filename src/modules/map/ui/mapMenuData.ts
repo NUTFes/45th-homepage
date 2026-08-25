@@ -1,6 +1,7 @@
 export type MapMenuEntry = {
   id: string;
   label: string;
+  displayLabel?: string;
   disabled?: boolean;
   type?: "short" | "long";
 };
@@ -18,9 +19,9 @@ export const defaultMapMenuSections: MapMenuSection[] = [
     id: "lecture-building",
     label: "講義棟内",
     items: [
-      { id: "lecture-building-1f", label: "1F", type: "short" },
-      { id: "lecture-building-2f", label: "2F", type: "short" },
-      { id: "lecture-building-3f", label: "3F", type: "short" },
+      { id: "lecture-building-1f", label: "1F", displayLabel: "講義棟　1F", type: "short" },
+      { id: "lecture-building-2f", label: "2F", displayLabel: "講義棟　2F", type: "short" },
+      { id: "lecture-building-3f", label: "3F", displayLabel: "講義棟　3F", type: "short" },
     ],
   },
   {
@@ -45,3 +46,26 @@ export const defaultMapMenuSections: MapMenuSection[] = [
     label: "謎解き",
   },
 ];
+
+export function getMapDisplayLabel(
+  id: string | undefined,
+  sections: MapMenuSection[] = defaultMapMenuSections,
+): string {
+  if (id === undefined) {
+    return "";
+  }
+
+  for (const section of sections) {
+    if (section.id === id) {
+      return section.displayLabel ?? section.label;
+    }
+
+    const item = section.items?.find((entry) => entry.id === id);
+
+    if (item !== undefined) {
+      return item.displayLabel ?? item.label;
+    }
+  }
+
+  return "";
+}
