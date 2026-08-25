@@ -4,6 +4,8 @@ import { isValidTurnstileResponse } from "./turnstileResponse";
 
 const TURNSTILE_SITEVERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 const TURNSTILE_TIMEOUT_MS = 5_000;
+const TURNSTILE_ALWAYS_PASS_TEST_SITE_KEY = "1x00000000000000000000AA";
+const TURNSTILE_ALWAYS_PASS_TEST_SECRET_KEY = "1x0000000000000000000000000000000AA";
 
 const getExpectedHostname = (): string | undefined => {
   if (process.env.NODE_ENV !== "production") {
@@ -48,7 +50,12 @@ export async function verifyTurnstile(token: string): Promise<boolean> {
     }
 
     const body: unknown = await response.json();
-    return isValidTurnstileResponse(body, expectedHostname);
+    const allowMissingAction =
+      process.env.NODE_ENV !== "production" &&
+      process.env.TURNSTILE_SITE_KEY === TURNSTILE_ALWAYS_PASS_TEST_SITE_KEY &&
+      secret === TURNSTILE_ALWAYS_PASS_TEST_SECRET_KEY;
+
+    return isValidTurnstileResponse(body, { expectedHostname, allowMissingAction });
   } catch {
     return false;
   }

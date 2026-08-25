@@ -5,8 +5,20 @@ type UnknownRecord = Record<string, unknown>;
 const isRecord = (value: unknown): value is UnknownRecord =>
   typeof value === "object" && value !== null && !Array.isArray(value);
 
-export function isValidTurnstileResponse(input: unknown, expectedHostname?: string): boolean {
-  if (!isRecord(input) || input.success !== true || input.action !== TURNSTILE_ACTION) {
+type TurnstileResponseValidationOptions = {
+  expectedHostname?: string;
+  allowMissingAction?: boolean;
+};
+
+export function isValidTurnstileResponse(
+  input: unknown,
+  { expectedHostname, allowMissingAction = false }: TurnstileResponseValidationOptions = {},
+): boolean {
+  if (!isRecord(input) || input.success !== true) {
+    return false;
+  }
+
+  if (input.action !== TURNSTILE_ACTION && !(allowMissingAction && input.action === undefined)) {
     return false;
   }
 

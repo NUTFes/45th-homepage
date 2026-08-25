@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { connection } from "next/server";
+import { Suspense } from "react";
 import ContactPageView from "@/modules/contact/ContactPageView";
 
 export const metadata: Metadata = {
@@ -10,7 +11,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Page() {
+async function ContactPageRuntime() {
   await connection();
   return <ContactPageView siteKey={process.env.TURNSTILE_SITE_KEY} />;
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={null}>
+      <ContactPageRuntime />
+    </Suspense>
+  );
 }

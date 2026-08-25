@@ -15,8 +15,26 @@ test("accepts a successful response with the expected action", () => {
 });
 
 test("requires the expected hostname when one is provided", () => {
-  assert.equal(isValidTurnstileResponse(validResponse(), "example.com"), true);
-  assert.equal(isValidTurnstileResponse(validResponse(), "other.example.com"), false);
+  assert.equal(
+    isValidTurnstileResponse(validResponse(), { expectedHostname: "example.com" }),
+    true,
+  );
+  assert.equal(
+    isValidTurnstileResponse(validResponse(), { expectedHostname: "other.example.com" }),
+    false,
+  );
+});
+
+test("allows a missing action only when explicitly enabled", () => {
+  assert.equal(isValidTurnstileResponse({ success: true }), false);
+  assert.equal(isValidTurnstileResponse({ success: true }, { allowMissingAction: true }), true);
+  assert.equal(
+    isValidTurnstileResponse(
+      { success: true, action: "other_action" },
+      { allowMissingAction: true },
+    ),
+    false,
+  );
 });
 
 test("rejects unsuccessful and mismatched action responses", () => {

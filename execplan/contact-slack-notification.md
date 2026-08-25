@@ -27,7 +27,8 @@ Slack投稿が成功したときだけ利用者へ完了表示を出す。Slack�
 - [x] (2026-08-25 23:51+09:00) Turnstile widgetと既存フォームをAPIへ接続し、token取得前disabled、API試行後token reset、成功時だけフォームreset、成功/失敗のインライン表示を実装した。`/contact` は200でフォームを表示する。
 - [x] (2026-08-25 23:51+09:00) production runtime環境変数とCI用dummy値を追加した。Dockerfile/build argは変更せず、dummy環境値で `docker compose -f compose.prod.yml config -q` が成功した。
 - [x] (2026-08-25 23:51+09:00) pure function test 17件と `pnpm run quality:check` を完了した。quality checkは成功し、今回の差分外である `src/app/(frontend)/greeting/page.tsx` の既存unused import warning 1件だけが残る。
-- [ ] テスト用Turnstile site/secret keyとSlack Incoming Webhookを設定し、ブラウザで正常送信・Slack受信・Slack失敗時のフォーム保持を確認する。
+- [x] (2026-08-26 00:49+09:00) Cloudflare公式always-pass test keyと設定済みSlack Incoming Webhookを使い、`agent-browser` で正常系E2Eを実施した。`http://localhost:3000/contact` でTurnstile token取得、`POST /api/contact` 200、成功表示、フォームreset、Turnstile resetを確認し、Slack Incoming Webhookも2xxで受理された。公式test keyのSiteverify responseに `action` が無いことを検出し、developmentかつ既知の公式test key pairの場合だけmissing actionを許容する修正を追加した。pure testは18件passした。
+- [ ] Slack Webhook障害時のフォーム保持をブラウザで確認する。
 - [ ] Slack private channelの閲覧権限とretention、Cloudflare rate limitを確認し、`/contact` 有効化を含む変更をproductionへdeploy/mergeできる状態にする。
 
 ## Surprises & Discoveries
@@ -67,6 +68,12 @@ Slack投稿が成功したときだけ利用者へ完了表示を出す。Slack�
 
 - Observation: `pnpm run quality:check` は今回の問い合わせ差分についてerrorなく完了するが、既存のgreeting pageにunused import warningが1件ある。
   Evidence: oxlintは `src/app/(frontend)/greeting/page.tsx:1` の `notFound` を未使用として警告する。問い合わせ実装ではこのファイルを変更していないためscope外とした。
+
+- Observation: Cloudflare公式のalways-pass Turnstile test key pairはSiteverifyで `success: true` と `hostname: "example.com"` を返すが、widgetへ設定した `action` をresponseへ含めない。
+  Evidence: `agent-browser` で取得したtest tokenを設定済みtest secretでSiteverifyしたところ、secret/token自体は出力せず `{ "success": true, "hostname": "example.com", "errorCodes": [] }` を確認した。従来のaction必須判定ではローカルE2Eが必ず400になった。
+
+- Observation: `cacheComponents: true` のNext.js 16では `connection()` をページ直下でawaitするとdevelopmentのblocking-route診断が出るため、request-time処理を`Suspense`境界内へ置く必要がある。
+  Evidence: `agent-browser` の初回E2Eで `/contact` にblocking-route console errorを確認した。同梱Next.js docsのCache Components例どおり `ContactPageRuntime` を `<Suspense>` で囲んだ後、新規browser sessionではbrowser error/console errorとも0件になった。
 
 ## Decision Log
 
@@ -114,6 +121,14 @@ Slack投稿が成功したときだけ利用者へ完了表示を出す。Slack�
   Rationale: 現在のproduction公開hostnameは `NEXT_PUBLIC_SITE_URL` ですでに構成管理されており、同じ値を別envで二重管理する必要がない。将来Turnstileだけ別hostnameを許可する要件が出た場合に独立envへ分ける。
   Date/Author: 2026-08-25 / ChatGPT
 
+- Decision: development環境でCloudflare公式always-pass site key `1x00000000000000000000AA` と対応secretを同時に使う場合だけ、Siteverify responseのmissing `action` を許容する。productionまたはcustom keyでは従来どおり `action === "contact_submit"` を必須にする。
+  Rationale: Cloudflare公式test pairは正常判定でもactionを返さないため、strict action validationのままでは公式推奨のローカルE2Eが成立しない。許容条件を `NODE_ENV !== "production"` と既知のtest pair完全一致へ限定すれば、本番のaction検証を緩めずにテスト可能性を確保できる。actionが存在して別値の場合はdevelopment test pairでも拒否する。
+  Date/Author: 2026-08-26 / ChatGPT
+
+- Decision: runtime `TURNSTILE_SITE_KEY` を読む `connection()` は `ContactPageRuntime` 内へ置き、ページから `<Suspense>` で囲む。
+  Rationale: このリポジトリは `cacheComponents: true` であり、Next.js 16はrequest-time処理をSuspense境界なしでページ全体へ伝播させるとblocking-route診断を出す。同梱docsの推奨構造へ合わせ、runtime env読み取りを維持しつつdevelopment errorを解消する。
+  Date/Author: 2026-08-26 / ChatGPT
+
 - Decision: Slackへは現行フォームUIの9項目を入力された範囲で転送し、利用者入力はBlock Kitの `plain_text` として扱う。
   Rationale: 氏名、ふりがな、性別、年齢、地域、メール、電話、お問い合わせ種別、本文を担当者が確認できるようにする。任意項目が空ならそのsectionだけ省略する。利用者入力を `mrkdwn` へ直接埋め込まず、意図しないメンションやリンク記法の解釈を避ける。
   Date/Author: 2026-08-25 / ChatGPT
@@ -150,11 +165,13 @@ Slack投稿が成功したときだけ利用者へ完了表示を出す。Slack�
 
 アプリケーションコードとproduction runtime設定まで実装済みである。`feat/contact-slack-notification` ブランチ上で、runtime parser、domain validation、Turnstile server verification、Slack `plain_text` payload/Incoming Webhook投稿、`POST /api/contact`、Turnstile Client widget、フォーム送信・reset・状態表示、`/contact` 有効化、production/CIの3環境変数追加まで完了した。
 
-pure testは17件すべてpassし、`pnpm run quality:check` も成功した。ローカル実サーバーでは `/contact` 200、APIの415/400/413を確認し、production Composeもdummy値でvalidation済みである。残るのは実際のテストTurnstile keyとSlack test webhookを使った正常送信E2E、および本番private channel権限・retention・Cloudflare rate limitという外部運用確認である。これらが完了するまでproductionへdeploy/mergeしない。
+pure testは18件すべてpassし、`pnpm run quality:check` も成功した。ローカル実サーバーでは `/contact` 200、APIの415/400/413を確認し、production Composeもdummy値でvalidation済みである。さらにCloudflare公式always-pass test keyと設定済みSlack Incoming Webhookを使い、`agent-browser` で正常送信E2Eを完了した。`POST /api/contact` 200、Slack Webhook 2xx受理、成功表示、フォームreset、Turnstile resetを確認し、新規browser sessionではconsole errorも無い。
+
+E2E中にCloudflare公式test responseのmissing actionとNext.js Cache Componentsのblocking-route診断を発見し、本番検証を緩めないdevelopment限定処理と`Suspense`境界を追加した。残るのはSlack Webhook障害時のブラウザ確認、および本番private channel権限・retention・Cloudflare rate limitという外部運用確認である。これらが完了するまでproductionへdeploy/mergeしない。
 
 ## Context and Orientation
 
-`src/app/(frontend)/contact/page.tsx` が公開ページの入口である。現在の実装ブランチでは `notFound()` を外し、`await connection()` 後にruntimeの `process.env.TURNSTILE_SITE_KEY` を読み、Client Componentである `ContactPageView` へpropとして渡す。site keyはブラウザから見えてよい値だが、runtimeで差し替えられるよう `NEXT_PUBLIC_` は使わない。Slack private channel、Turnstile本番設定、Cloudflare rate limitなどの運用条件が揃うまでproductionへdeploy/mergeしない。
+`src/app/(frontend)/contact/page.tsx` が公開ページの入口である。現在の実装ブランチでは `notFound()` を外し、`ContactPageRuntime` が `await connection()` 後にruntimeの `process.env.TURNSTILE_SITE_KEY` を読み、Client Componentである `ContactPageView` へpropとして渡す。`cacheComponents: true` でblocking-route診断を出さないよう、`Page` はこのruntime componentを `<Suspense fallback={null}>` で囲む。site keyはブラウザから見えてよい値だが、runtimeで差し替えられるよう `NEXT_PUBLIC_` は使わない。Slack private channel、Turnstile本番設定、Cloudflare rate limitなどの運用条件が揃うまでproductionへdeploy/mergeしない。
 
 `src/modules/contact/ContactPageView.tsx` は問い合わせフォーム本体で、React Client Componentである。現在は9項目の入力に加えてTurnstile widgetを表示し、有効tokenがあるときだけ送信可能にする。`/api/contact` へJSON POSTし、APIを実際に試行した後はTurnstileをresetする。成功時だけフォームを初期化してstatusを表示し、失敗時は入力を保持してalertを表示する。
 
@@ -505,3 +522,5 @@ Revision note (2026-08-25): 実装開始。`feat/contact-slack-notification` ブ
 Revision note (2026-08-25): Milestone 2を完了した。Turnstile response判定とserver verification、Slack `plain_text` payload生成とIncoming Webhook投稿を追加し、pure test 17件、`fmt:check`、`typecheck` の成功を確認した。`server-only` は追加dependencyなしで解決できたため、その発見も記録した。
 
 Revision note (2026-08-25): Milestone 3とMilestone 4のコード・設定作業を完了した。`POST /api/contact`、Turnstile widget、フォーム連携、`/contact` 有効化、production/CI runtime envを追加した。pure test 17件、`quality:check`、API異常系curl、`/contact` 200、production Compose validationを確認済み。外部test webhook/keyを使う正常系E2Eと本番運用条件確認だけを未完了として残した。
+
+Revision note (2026-08-26): 設定済み `.env` を使って `agent-browser` による正常系E2Eを実施した。Cloudflare公式always-pass test keyのSiteverify responseにactionが無いことを発見し、developmentかつ既知test pairの場合だけmissing actionを許容するよう修正した。また `cacheComponents: true` での `connection()` を`Suspense`境界内へ移しblocking-route診断を解消した。E2Eは `/api/contact` 200、Slack Webhook 2xx受理、成功表示、フォーム/Turnstile resetを確認し、pure test 18件と`quality:check`もpassした。
