@@ -19,14 +19,45 @@ const completeValues = (): ContactFormValues => ({
 test("includes all entered contact fields", () => {
   const payload = createSlackContactPayload(completeValues());
   const sectionTexts = payload.blocks
-    .filter((block) => block.type === "section")
+    .filter((block) => block.type === "section" && block.text.type === "plain_text")
     .map((block) => block.text.text);
 
   assert.equal(sectionTexts.length, 9);
-  assert.ok(sectionTexts.some((text) => text.includes("お問い合わせ項目\n落とし物")));
-  assert.ok(sectionTexts.some((text) => text.includes("お名前\n技大 太郎")));
-  assert.ok(sectionTexts.some((text) => text.includes("メールアドレス\nexample@example.com")));
-  assert.ok(sectionTexts.some((text) => text.includes("お問い合わせ内容\n@here <!channel>")));
+  assert.ok(sectionTexts.includes("落とし物"));
+  assert.ok(sectionTexts.includes("技大 太郎"));
+  assert.ok(sectionTexts.includes("example@example.com"));
+  assert.ok(sectionTexts.includes("@here <!channel> <https://example.com|link>"));
+});
+
+test("formats field labels as app-generated mrkdwn", () => {
+  const payload = createSlackContactPayload(completeValues());
+  const mrkdwnTexts = payload.blocks
+    .filter((block) => block.type === "section" && block.text.type === "mrkdwn")
+    .map((block) => block.text.text);
+
+  assert.ok(mrkdwnTexts.includes("*お問い合わせ項目*"));
+  assert.ok(mrkdwnTexts.includes("*お名前*"));
+  assert.ok(mrkdwnTexts.includes("*お問い合わせ内容*"));
+});
+
+test("mentions the registered Slack users for the inquiry type", () => {
+  const payload = createSlackContactPayload(completeValues(), {
+    落とし物: ["U0550MPS3QE", "U0123456789"],
+  });
+  const mentionBlock = payload.blocks.find(
+    (block) => block.type === "section" && block.text.type === "mrkdwn",
+  );
+
+  assert.equal(mentionBlock?.text.text, "担当: <@U0550MPS3QE> <@U0123456789>");
+});
+
+test("falls back to channel mention when no Slack users are registered", () => {
+  const payload = createSlackContactPayload(completeValues());
+  const mentionBlock = payload.blocks.find(
+    (block) => block.type === "section" && block.text.type === "mrkdwn",
+  );
+
+  assert.equal(mentionBlock?.text.text, "担当: <!channel>");
 });
 
 test("omits optional fields that are blank", () => {
@@ -45,10 +76,19 @@ test("omits optional fields that are blank", () => {
   assert.doesNotMatch(allText, /電話番号/);
 });
 
-test("uses plain_text for every block so user input is not mrkdwn", () => {
-  const payload = createSlackContactPayload(completeValues());
+test("keeps user input in plain_text and only app-generated content in mrkdwn", () => {
+  const payload = createSlackContactPayload(completeValues(), {
+    落とし物: ["U0550MPS3QE"],
+  });
+  const mrkdwnTexts = payload.blocks
+    .filter((block) => block.type === "section" && block.text.type === "mrkdwn")
+    .map((block) => block.text.text);
+  const plainTexts = payload.blocks
+    .filter((block) => block.text.type === "plain_text")
+    .map((block) => block.text.text);
 
-  for (const block of payload.blocks) {
-    assert.equal(block.text.type, "plain_text");
-  }
+  assert.ok(mrkdwnTexts.includes("担当: <@U0550MPS3QE>"));
+  assert.ok(mrkdwnTexts.includes("*お問い合わせ内容*"));
+  assert.ok(mrkdwnTexts.every((text) => !text.includes("@here <!channel>")));
+  assert.ok(plainTexts.includes("@here <!channel> <https://example.com|link>"));
 });

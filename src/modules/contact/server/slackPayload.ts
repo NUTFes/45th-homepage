@@ -1,9 +1,15 @@
+import type { InquiryType } from "../constants";
 import type { ContactFormValues } from "../types";
 
 type SlackPlainText = {
   type: "plain_text";
   text: string;
   emoji?: boolean;
+};
+
+type SlackMrkdwn = {
+  type: "mrkdwn";
+  text: string;
 };
 
 type SlackHeaderBlock = {
@@ -13,13 +19,15 @@ type SlackHeaderBlock = {
 
 type SlackSectionBlock = {
   type: "section";
-  text: SlackPlainText;
+  text: SlackPlainText | SlackMrkdwn;
 };
 
 export type SlackContactPayload = {
   text: string;
   blocks: Array<SlackHeaderBlock | SlackSectionBlock>;
 };
+
+export type SlackContactUserIds = Partial<Record<InquiryType, readonly string[]>>;
 
 const FIELD_DEFINITIONS = [
   ["inquiryType", "お問い合わせ項目"],
@@ -33,7 +41,14 @@ const FIELD_DEFINITIONS = [
   ["inquiry", "お問い合わせ内容"],
 ] as const satisfies readonly [keyof ContactFormValues, string][];
 
-export function createSlackContactPayload(values: ContactFormValues): SlackContactPayload {
+export function createSlackContactPayload(
+  values: ContactFormValues,
+  userIdsByInquiryType: SlackContactUserIds = {},
+): SlackContactPayload {
+  const userIds = userIdsByInquiryType[values.inquiryType as InquiryType] ?? [];
+  const mention =
+    userIds.length > 0 ? userIds.map((userId) => `<@${userId}>`).join(" ") : "<!channel>";
+
   const blocks: SlackContactPayload["blocks"] = [
     {
       type: "header",
@@ -41,6 +56,13 @@ export function createSlackContactPayload(values: ContactFormValues): SlackConta
         type: "plain_text",
         text: "新しいお問い合わせが届きました",
         emoji: true,
+      },
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `担当: ${mention}`,
       },
     },
   ];
@@ -51,14 +73,23 @@ export function createSlackContactPayload(values: ContactFormValues): SlackConta
       continue;
     }
 
-    blocks.push({
-      type: "section",
-      text: {
-        type: "plain_text",
-        text: `${label}\n${value}`,
-        emoji: true,
+    blocks.push(
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `*${label}*`,
+        },
       },
-    });
+      {
+        type: "section",
+        text: {
+          type: "plain_text",
+          text: value,
+          emoji: true,
+        },
+      },
+    );
   }
 
   return {

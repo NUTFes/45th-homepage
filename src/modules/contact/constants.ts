@@ -8,6 +8,8 @@ export const INQUIRY_TYPE_OPTIONS = [
   "その他",
 ] as const;
 
+export type InquiryType = (typeof INQUIRY_TYPE_OPTIONS)[number];
+
 export const CONTACT_FIELD_MAX_LENGTHS = {
   name: 100,
   kana: 100,

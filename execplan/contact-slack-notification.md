@@ -129,9 +129,9 @@ Slack投稿が成功したときだけ利用者へ完了表示を出す。Slack�
   Rationale: このリポジトリは `cacheComponents: true` であり、Next.js 16はrequest-time処理をSuspense境界なしでページ全体へ伝播させるとblocking-route診断を出す。同梱docsの推奨構造へ合わせ、runtime env読み取りを維持しつつdevelopment errorを解消する。
   Date/Author: 2026-08-26 / ChatGPT
 
-- Decision: Slackへは現行フォームUIの9項目を入力された範囲で転送し、利用者入力はBlock Kitの `plain_text` として扱う。
-  Rationale: 氏名、ふりがな、性別、年齢、地域、メール、電話、お問い合わせ種別、本文を担当者が確認できるようにする。任意項目が空ならそのsectionだけ省略する。利用者入力を `mrkdwn` へ直接埋め込まず、意図しないメンションやリンク記法の解釈を避ける。
-  Date/Author: 2026-08-25 / ChatGPT
+- Decision: Slackへは現行フォームUIの9項目を入力された範囲で転送し、利用者入力はBlock Kitの `plain_text` として扱う。担当通知と固定の項目ラベルだけはアプリ生成の `mrkdwn` sectionへ分離し、項目ラベルを太字表示する。担当通知は問い合わせ種別ごとの環境変数に登録されたSlack User IDを `<@ID>` でメンションし、担当者が未設定なら `<!channel>` へフォールバックする。
+  Rationale: 氏名、ふりがな、性別、年齢、地域、メール、電話、お問い合わせ種別、本文を担当者が確認できるようにしつつ、利用者入力を `mrkdwn` へ直接埋め込まず意図しないメンションやリンク記法の解釈を避ける。Slack Freeでも使えるUser ID直接メンションとし、担当者変更は環境変数の更新でコード変更を不要にする。複数担当者はカンマ区切りで指定する。
+  Date/Author: 2026-08-26 / ChatGPT
 
 - Decision: 初回実装ではSlack file uploadを行わない。
   Rationale: Incoming Webhookだけではfile uploadできず、追加tokenとscopeが必要になる。本文2000文字ではmessageとして十分である。
@@ -163,7 +163,7 @@ Slack投稿が成功したときだけ利用者へ完了表示を出す。Slack�
 
 ## Outcomes & Retrospective
 
-アプリケーションコードとproduction runtime設定まで実装済みである。`feat/contact-slack-notification` ブランチ上で、runtime parser、domain validation、Turnstile server verification、Slack `plain_text` payload/Incoming Webhook投稿、`POST /api/contact`、Turnstile Client widget、フォーム送信・reset・状態表示、`/contact` 有効化、production/CIの3環境変数追加まで完了した。
+アプリケーションコードとproduction runtime設定まで実装済みである。`feat/contact-slack-notification` ブランチ上で、runtime parser、domain validation、Turnstile server verification、Slack `plain_text` payload/Incoming Webhook投稿、`POST /api/contact`、Turnstile Client widget、フォーム送信・reset・状態表示、`/contact` 有効化、production/CIの必須3環境変数とproduction用の担当者5環境変数追加まで完了した。
 
 pure testは18件すべてpassし、`pnpm run quality:check` も成功した。ローカル実サーバーでは `/contact` 200、APIの415/400/413を確認し、production Composeもdummy値でvalidation済みである。さらにCloudflare公式always-pass test keyと設定済みSlack Incoming Webhookを使い、`agent-browser` で正常送信E2Eを完了した。`POST /api/contact` 200、Slack Webhook 2xx受理、成功表示、フォームreset、Turnstile resetを確認し、新規browser sessionではconsole errorも無い。
 
@@ -189,7 +189,7 @@ E2E中にCloudflare公式test responseのmissing actionとNext.js Cache Componen
 
 新しく `src/modules/contact/server/verifyTurnstile.ts` を作る。これは `import "server-only";` を使い、関数呼び出し時に `TURNSTILE_SECRET_KEY` と既存 `NEXT_PUBLIC_SITE_URL` をruntime environmentから読む。Cloudflare Siteverifyへtokenを送り、成功、固定action、本番hostname一致を確認する。secret、token、Cloudflare生bodyをログへ出さない。
 
-新しく `src/modules/contact/server/slackPayload.ts` を作り、9項目からSlack Block Kit payloadを組み立てるpure functionを置く。任意項目が空ならそのsectionを省略し、利用者入力は `plain_text` objectに入れる。
+新しく `src/modules/contact/server/slackPayload.ts` を作り、9項目からSlack Block Kit payloadを組み立てるpure functionを置く。任意項目が空ならそのsectionを省略し、利用者入力は `plain_text` objectに入れる。固定の項目ラベルは別の `mrkdwn` sectionで太字表示し、担当通知もserver側で環境変数から取得したUser ID配列を使う `mrkdwn` sectionとする。担当者が未設定なら `<!channel>` を使う。
 
 新しく `src/modules/contact/server/postContactToSlack.ts` を作る。これは `import "server-only";` を使い、関数呼び出し時に `SLACK_CONTACT_WEBHOOK_URL` を読む。`slackPayload.ts` のpayloadをIncoming Webhookへtimeout付きでPOSTし、非2xxを失敗にする。PIIとWebhook URLはログへ出さない。
 
@@ -225,7 +225,7 @@ Milestone 1の完了条件は、外部HTTP入力をTypeScript assertionだけで
 
 `src/modules/contact/server/verifyTurnstile.ts` は `import "server-only";` を宣言し、関数呼び出し時に `TURNSTILE_SECRET_KEY` を読む。Siteverify fetchは5秒程度でtimeoutさせる。設定不足、timeout、非正常response、JSON不正、判定失敗はすべてSlack投稿前に失敗させる。
 
-`src/modules/contact/server/slackPayload.ts` はフォーム9項目をBlock Kitへ変換する。任意項目が空なら省略する。利用者入力は `plain_text` とし、`@here`、`<!channel>`、Slackリンク記法等を `mrkdwn` として解釈させない。
+`src/modules/contact/server/slackPayload.ts` はフォーム9項目をBlock Kitへ変換する。任意項目が空なら省略する。利用者入力は `plain_text` とし、`@here`、`<!channel>`、Slackリンク記法等を `mrkdwn` として解釈させない。固定の項目ラベルだけは別 `mrkdwn` sectionで太字表示する。担当通知も `mrkdwn` とし、問い合わせ種別に対応するUser ID配列を `<@ID>` として出力する。`postContactToSlack.ts` が5種類の環境変数からカンマ区切りのUser IDを読み、未設定なら `<!channel>` とする。
 
 `src/modules/contact/server/postContactToSlack.ts` は `import "server-only";` を宣言し、関数呼び出し時に `SLACK_CONTACT_WEBHOOK_URL` を読む。5秒程度のtimeout付きでPOSTし、非2xxを失敗にする。初回実装ではBot token、file upload、retry queueを追加しない。
 
@@ -350,7 +350,7 @@ Slack側では本番用Incoming Webhookを問い合わせ専用private channel�
 
 `Content-Type` が `application/json` でないrequestはHTTP 415となる。invalid JSONはHTTP 400となる。`Content-Length` が存在し16 KiBを超えるrequestはHTTP 413となる。Content-Lengthがないrequestについて、アプリ内でbyte streamを独自に読み厳密な16 KiB上限を保証することは今回の受け入れ条件に含めない。
 
-問い合わせ本文へ `@here`、`<!channel>`、Slackリンク記法を入れても、利用者入力部分は `plain_text` として扱われ、意図しないメンションやmrkdwn展開が起きない。
+問い合わせ本文へ `@here`、`<!channel>`、Slackリンク記法を入れても、利用者入力部分は `plain_text` として扱われ、意図しないメンションやmrkdwn展開が起きない。アプリが生成する担当通知だけは `mrkdwn` とし、登録済みUser IDなら `<@ID>`、未設定なら `<!channel>` が有効になる。
 
 Turnstile tokenを欠落させる、期限切れにする、再利用する、無効値にする、actionを `contact_submit` 以外にする、本番でhostnameが `NEXT_PUBLIC_SITE_URL` のhostnameと一致しない場合はSlackへ投稿されない。利用者にはsecretやCloudflare詳細を含まない固定messageが表示される。
 
@@ -409,9 +409,12 @@ API requestは次の形とする。
       "turnstileToken": "one-time-token"
     }
 
-Slackでは概ね次の情報を表示する。各利用者入力はBlock Kitの `plain_text` とする。
+Slackでは概ね次の情報を表示する。各利用者入力はBlock Kitの `plain_text` とし、担当行と固定の項目ラベルだけをアプリ生成の `mrkdwn` とする。
 
     新しいお問い合わせが届きました
+
+    担当: <@USER_ID> <@ANOTHER_USER_ID>
+    # 未設定の場合は 担当: <!channel>
 
     お問い合わせ項目
     落とし物
