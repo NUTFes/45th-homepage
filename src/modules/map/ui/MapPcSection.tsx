@@ -10,7 +10,7 @@ import { defaultMapMenuSections, getMapDisplayLabel } from "@/modules/map/ui/map
 function MapDisplay({ label }: { label: string }) {
   return (
     <div className="flex w-full flex-col items-center gap-xs">
-      <p className="w-full text-center font-kaisotai text-Ptitle text-white">{label}</p>
+      <p className="w-full text-center text-Ptitle-large text-white">{label}</p>
       <div className="flex aspect-4/3 w-full items-center justify-center border-2 border-main bg-base-dark text-center text-main">
         <div>
           <p className="font-kaisotai text-[28px]">MAP</p>
