@@ -32,9 +32,7 @@ export const defaultMapMenuSections: MapMenuSection[] = [
       { id: "office-area", label: "事務棟エリア" },
       { id: "library-area", label: "図書館エリア" },
       { id: "electrical-area", label: "電気棟エリア" },
-      { id: "outdoor-stage-area", label: "屋外ステージエリア" },
       { id: "mechanical-civil-area", label: "機械建設棟エリア" },
-      { id: "kitchen-car-area", label: "キッチンカーエリア" },
     ],
   },
   {
@@ -44,6 +42,14 @@ export const defaultMapMenuSections: MapMenuSection[] = [
   {
     id: "mystery-solving",
     label: "謎解き",
+  },
+  {
+    id: "exhibits",
+    label: "制作物",
+    items: [
+      { id: "exhibits-overall", label: "制作物全体" },
+      { id: "exhibits-lecture-building-1f", label: "制作物(講義棟　1F)" },
+    ],
   },
 ];
 
