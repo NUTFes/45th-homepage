@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Button } from "@/components/aria/Button";
 import SectionTitle from "@/components/ui/SectionTitle";
+import { CONTACT_FIELD_MAX_LENGTHS, GENDER_OPTIONS, INQUIRY_TYPE_OPTIONS } from "./constants";
 import ContactAccordionSection from "./ui/ContactAccordionSection";
 import ContactSection from "./ui/ContactSection";
 import { useContactForm } from "./useContactForm";
@@ -19,15 +20,6 @@ const DEFAULT_VALUES = {
   inquiryType: "",
   inquiry: "",
 } as const;
-
-const GENDER_OPTIONS = ["男性", "女性", "その他"] as const;
-const INQUIRY_TYPE_OPTIONS = [
-  "ご質問",
-  "ご協賛について",
-  "出店について",
-  "落とし物",
-  "その他",
-] as const;
 
 const validateOnlySubmit = () => undefined;
 
@@ -82,6 +74,7 @@ export default function ContactPageView() {
             required
             placeholder="技大　太郎"
             autoComplete="name"
+            maxLength={CONTACT_FIELD_MAX_LENGTHS.name}
             error={errors.name}
             {...register("name")}
           />
@@ -91,6 +84,7 @@ export default function ContactPageView() {
             required
             placeholder="ぎだい　たろう"
             autoComplete="off"
+            maxLength={CONTACT_FIELD_MAX_LENGTHS.kana}
             error={errors.kana}
             {...register("kana")}
           />
@@ -109,6 +103,7 @@ export default function ContactPageView() {
             inputMode="numeric"
             pattern="[0-9]*"
             autoComplete="off"
+            maxLength={CONTACT_FIELD_MAX_LENGTHS.age}
             error={errors.age}
             {...register("age")}
           />
@@ -117,6 +112,7 @@ export default function ContactPageView() {
             name="region"
             placeholder="新潟県長岡市"
             autoComplete="address-level2"
+            maxLength={CONTACT_FIELD_MAX_LENGTHS.region}
             error={errors.region}
             {...register("region")}
           />
@@ -128,6 +124,7 @@ export default function ContactPageView() {
             placeholder="nutfes@gmail.com"
             inputMode="email"
             autoComplete="email"
+            maxLength={CONTACT_FIELD_MAX_LENGTHS.email}
             error={errors.email}
             {...register("email")}
           />
@@ -139,6 +136,7 @@ export default function ContactPageView() {
             inputMode="numeric"
             pattern="[0-9]*"
             autoComplete="tel"
+            maxLength={CONTACT_FIELD_MAX_LENGTHS.phone}
             error={errors.phone}
             {...register("phone")}
           />
@@ -157,6 +155,7 @@ export default function ContactPageView() {
             required
             type="textarea"
             rows={5}
+            maxLength={CONTACT_FIELD_MAX_LENGTHS.inquiry}
             className="[&_textarea]:h-pl"
             error={errors.inquiry}
             {...register("inquiry")}
