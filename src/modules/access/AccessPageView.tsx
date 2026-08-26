@@ -331,8 +331,8 @@ function AccessPageDesktop() {
             </div>
 
             <div className="relative mx-auto w-full max-w-200">
-              <div className="text-Ptitle-small py-s">駐車場マップ</div>
-              <MapFrame showDecoration={false}/>
+              <div className="py-s text-Ptitle-small">駐車場マップ</div>
+              <MapFrame showDecoration={false} />
               <div className="flex w-full flex-col items-center py-m">
                 <div className="w-100">
                   <ButtonMain
