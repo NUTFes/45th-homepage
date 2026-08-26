@@ -49,10 +49,10 @@ export async function verifyTurnstile(token: string): Promise<boolean> {
   }
 
   const body: unknown = await response.json();
-  const allowTestAction =
+  const allowTestResponseWithoutAction =
     process.env.NODE_ENV !== "production" &&
     process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY === TURNSTILE_ALWAYS_PASS_TEST_SITE_KEY &&
     secret === TURNSTILE_ALWAYS_PASS_TEST_SECRET_KEY;
 
-  return isValidTurnstileResponse(body, { expectedHostname, allowTestAction });
+  return isValidTurnstileResponse(body, { expectedHostname, allowTestResponseWithoutAction });
 }
