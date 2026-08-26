@@ -40,7 +40,7 @@ test("formats field labels as app-generated mrkdwn", () => {
   assert.ok(mrkdwnTexts.includes("*お問い合わせ内容*"));
 });
 
-test("mentions the registered Slack users for the inquiry type", () => {
+test("mentions the channel and registered Slack users for the inquiry type", () => {
   const payload = createSlackContactPayload(completeValues(), {
     落とし物: ["U0550MPS3QE", "U0123456789"],
   });
@@ -48,10 +48,10 @@ test("mentions the registered Slack users for the inquiry type", () => {
     (block) => block.type === "section" && block.text.type === "mrkdwn",
   );
 
-  assert.equal(mentionBlock?.text.text, "担当: <@U0550MPS3QE> <@U0123456789>");
+  assert.equal(mentionBlock?.text.text, "担当: <!channel> <@U0550MPS3QE> <@U0123456789>");
 });
 
-test("falls back to channel mention when no Slack users are registered", () => {
+test("mentions the channel when no Slack users are registered", () => {
   const payload = createSlackContactPayload(completeValues());
   const mentionBlock = payload.blocks.find(
     (block) => block.type === "section" && block.text.type === "mrkdwn",
@@ -87,7 +87,7 @@ test("keeps user input in plain_text and only app-generated content in mrkdwn", 
     .filter((block) => block.text.type === "plain_text")
     .map((block) => block.text.text);
 
-  assert.ok(mrkdwnTexts.includes("担当: <@U0550MPS3QE>"));
+  assert.ok(mrkdwnTexts.includes("担当: <!channel> <@U0550MPS3QE>"));
   assert.ok(mrkdwnTexts.includes("*お問い合わせ内容*"));
   assert.ok(mrkdwnTexts.every((text) => !text.includes("@here <!channel>")));
   assert.ok(plainTexts.includes("@here <!channel> <https://example.com|link>"));

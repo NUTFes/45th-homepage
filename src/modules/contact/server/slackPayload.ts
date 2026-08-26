@@ -46,8 +46,7 @@ export function createSlackContactPayload(
   userIdsByInquiryType: SlackContactUserIds = {},
 ): SlackContactPayload {
   const userIds = userIdsByInquiryType[values.inquiryType as InquiryType] ?? [];
-  const mention =
-    userIds.length > 0 ? userIds.map((userId) => `<@${userId}>`).join(" ") : "<!channel>";
+  const mention = ["<!channel>", ...userIds.map((userId) => `<@${userId}>`)].join(" ");
 
   const blocks: SlackContactPayload["blocks"] = [
     {

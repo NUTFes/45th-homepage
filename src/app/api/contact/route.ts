@@ -1,4 +1,3 @@
-import { CONTACT_REQUEST_MAX_BYTES } from "@/modules/contact/constants";
 import { parseContactRequest } from "@/modules/contact/server/parseContactRequest";
 import { postContactToSlack } from "@/modules/contact/server/postContactToSlack";
 import { verifyTurnstile } from "@/modules/contact/server/verifyTurnstile";
@@ -20,20 +19,9 @@ export async function POST(request: Request): Promise<Response> {
     return Response.json(INVALID_INPUT_RESPONSE, { status: 415 });
   }
 
-  let body: string;
-  try {
-    body = await request.text();
-  } catch {
-    return Response.json(INVALID_INPUT_RESPONSE, { status: 400 });
-  }
-
-  if (new TextEncoder().encode(body).byteLength > CONTACT_REQUEST_MAX_BYTES) {
-    return Response.json(INVALID_INPUT_RESPONSE, { status: 413 });
-  }
-
   let input: unknown;
   try {
-    input = JSON.parse(body);
+    input = await request.json();
   } catch {
     return Response.json(INVALID_INPUT_RESPONSE, { status: 400 });
   }
@@ -48,13 +36,22 @@ export async function POST(request: Request): Promise<Response> {
     return Response.json(INVALID_INPUT_RESPONSE, { status: 400 });
   }
 
-  if (!(await verifyTurnstile(parsed.data.turnstileToken))) {
+  let isVerified: boolean;
+  try {
+    isVerified = await verifyTurnstile(parsed.data.turnstileToken);
+  } catch (error) {
+    console.error("Turnstile verification failed", error);
+    return Response.json(SEND_FAILURE_RESPONSE, { status: 503 });
+  }
+
+  if (!isVerified) {
     return Response.json(INVALID_INPUT_RESPONSE, { status: 400 });
   }
 
   try {
     await postContactToSlack(parsed.data.values);
-  } catch {
+  } catch (error) {
+    console.error("Contact Slack notification failed", error);
     return Response.json(SEND_FAILURE_RESPONSE, { status: 503 });
   }
 

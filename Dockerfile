@@ -51,7 +51,9 @@ ENV NODE_ENV=production
 
 # Build Next.js application
 ARG NEXT_PUBLIC_SITE_URL=https://www.nutfes.net/
+ARG NEXT_PUBLIC_TURNSTILE_SITE_KEY
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
+ENV NEXT_PUBLIC_TURNSTILE_SITE_KEY=$NEXT_PUBLIC_TURNSTILE_SITE_KEY
 RUN corepack enable pnpm && pnpm build
 
 # ============================================

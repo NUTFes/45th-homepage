@@ -98,7 +98,7 @@ jobs:
       CLOUDFLARE_TUNNEL_TOKEN: ci_tunnel_token
       NEXT_PUBLIC_SITE_URL: https://example.com/
       SLACK_CONTACT_WEBHOOK_URL: https://hooks.slack.com/services/ci/dummy/webhook
-      TURNSTILE_SITE_KEY: ci_turnstile_site_key
+      NEXT_PUBLIC_TURNSTILE_SITE_KEY: ci_turnstile_site_key
       TURNSTILE_SECRET_KEY: ci_turnstile_secret_key
       PAYLOAD_IMAGE: 45th-homepage:${{ github.sha }}
     steps:
@@ -122,7 +122,7 @@ jobs:
             "CLOUDFLARE_TUNNEL_TOKEN=$CLOUDFLARE_TUNNEL_TOKEN" \
             "NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL" \
             "SLACK_CONTACT_WEBHOOK_URL=$SLACK_CONTACT_WEBHOOK_URL" \
-            "TURNSTILE_SITE_KEY=$TURNSTILE_SITE_KEY" \
+            "NEXT_PUBLIC_TURNSTILE_SITE_KEY=$NEXT_PUBLIC_TURNSTILE_SITE_KEY" \
             "TURNSTILE_SECRET_KEY=$TURNSTILE_SECRET_KEY" \
             > .env.production
           printf 'PAYLOAD_IMAGE=%s\n' "$PAYLOAD_IMAGE" > .env.release

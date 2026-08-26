@@ -20,6 +20,5 @@ export const CONTACT_FIELD_MAX_LENGTHS = {
   inquiry: 2000,
 } as const;
 
-export const CONTACT_REQUEST_MAX_BYTES = 16 * 1024;
 export const TURNSTILE_TOKEN_MAX_LENGTH = 2048;
 export const TURNSTILE_ACTION = "contact_submit" as const;

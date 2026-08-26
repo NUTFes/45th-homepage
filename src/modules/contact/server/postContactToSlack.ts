@@ -1,6 +1,6 @@
 import "server-only";
 
-import { INQUIRY_TYPE_OPTIONS, type InquiryType } from "../constants";
+import type { InquiryType } from "../constants";
 import type { ContactFormValues } from "../types";
 import { createSlackContactPayload, type SlackContactUserIds } from "./slackPayload";
 
@@ -15,28 +15,24 @@ const CONTACT_SLACK_USER_IDS_ENV = {
   その他: "SLACK_CONTACT_OTHER_USER_IDS",
 } as const satisfies Record<InquiryType, string>;
 
-function parseSlackUserIds(value: string | undefined): string[] {
-  if (!value) {
+function parseSlackUserIds(value: string | undefined, envName: string): string[] {
+  if (!value?.trim()) {
     return [];
   }
 
-  return value
-    .split(",")
-    .map((userId) => userId.trim())
-    .filter((userId) => SLACK_USER_ID_PATTERN.test(userId));
-}
-
-function getContactSlackUserIds(): SlackContactUserIds {
-  const userIdsByInquiryType: SlackContactUserIds = {};
-
-  for (const inquiryType of INQUIRY_TYPE_OPTIONS) {
-    const userIds = parseSlackUserIds(process.env[CONTACT_SLACK_USER_IDS_ENV[inquiryType]]);
-    if (userIds.length > 0) {
-      userIdsByInquiryType[inquiryType] = userIds;
-    }
+  const userIds = value.split(",").map((userId) => userId.trim());
+  if (userIds.some((userId) => !SLACK_USER_ID_PATTERN.test(userId))) {
+    throw new Error(`${envName} contains an invalid Slack user ID`);
   }
 
-  return userIdsByInquiryType;
+  return userIds;
+}
+
+function getContactSlackUserIds(inquiryType: InquiryType): SlackContactUserIds {
+  const envName = CONTACT_SLACK_USER_IDS_ENV[inquiryType];
+  const userIds = parseSlackUserIds(process.env[envName], envName);
+
+  return userIds.length > 0 ? { [inquiryType]: userIds } : {};
 }
 
 export async function postContactToSlack(values: ContactFormValues): Promise<void> {
@@ -50,7 +46,9 @@ export async function postContactToSlack(values: ContactFormValues): Promise<voi
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(createSlackContactPayload(values, getContactSlackUserIds())),
+    body: JSON.stringify(
+      createSlackContactPayload(values, getContactSlackUserIds(values.inquiryType as InquiryType)),
+    ),
     signal: AbortSignal.timeout(SLACK_TIMEOUT_MS),
   });
 

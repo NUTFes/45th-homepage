@@ -29,10 +29,6 @@ const CONTACT_UNAVAILABLE_MESSAGE =
   "現在お問い合わせを送信できません。時間をおいて再度お試しください。";
 const CONTACT_SUCCESS_MESSAGE = "お問い合わせを送信しました。";
 
-type ContactPageViewProps = {
-  siteKey?: string;
-};
-
 type SubmissionState =
   | { kind: "success"; message: string }
   | { kind: "error"; message: string }
@@ -56,7 +52,8 @@ const readApiErrorMessage = async (response: Response): Promise<string> => {
   return CONTACT_SEND_FAILURE_MESSAGE;
 };
 
-export default function ContactPageView({ siteKey }: ContactPageViewProps) {
+export default function ContactPageView() {
+  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileError, setTurnstileError] = useState(false);
   const [submissionState, setSubmissionState] = useState<SubmissionState>(null);

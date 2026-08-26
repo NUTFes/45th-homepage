@@ -27,36 +27,32 @@ const getExpectedHostname = (): string | undefined => {
 export async function verifyTurnstile(token: string): Promise<boolean> {
   const secret = process.env.TURNSTILE_SECRET_KEY;
   if (!secret) {
-    return false;
+    throw new Error("Turnstile secret is not configured");
   }
 
   const expectedHostname = getExpectedHostname();
   if (process.env.NODE_ENV === "production" && !expectedHostname) {
-    return false;
+    throw new Error("Turnstile hostname is not configured");
   }
 
-  try {
-    const response = await fetch(TURNSTILE_SITEVERIFY_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({ secret, response: token }),
-      signal: AbortSignal.timeout(TURNSTILE_TIMEOUT_MS),
-    });
+  const response = await fetch(TURNSTILE_SITEVERIFY_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({ secret, response: token }),
+    signal: AbortSignal.timeout(TURNSTILE_TIMEOUT_MS),
+  });
 
-    if (!response.ok) {
-      return false;
-    }
-
-    const body: unknown = await response.json();
-    const allowTestAction =
-      process.env.NODE_ENV !== "production" &&
-      process.env.TURNSTILE_SITE_KEY === TURNSTILE_ALWAYS_PASS_TEST_SITE_KEY &&
-      secret === TURNSTILE_ALWAYS_PASS_TEST_SECRET_KEY;
-
-    return isValidTurnstileResponse(body, { expectedHostname, allowTestAction });
-  } catch {
-    return false;
+  if (!response.ok) {
+    throw new Error(`Turnstile verification request failed: ${response.status}`);
   }
+
+  const body: unknown = await response.json();
+  const allowTestAction =
+    process.env.NODE_ENV !== "production" &&
+    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY === TURNSTILE_ALWAYS_PASS_TEST_SITE_KEY &&
+    secret === TURNSTILE_ALWAYS_PASS_TEST_SECRET_KEY;
+
+  return isValidTurnstileResponse(body, { expectedHostname, allowTestAction });
 }
