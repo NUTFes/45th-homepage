@@ -69,7 +69,7 @@ export function GreetingPagePCView() {
           />
         </div>
       </div>
-      <div className="border-b-2 border-main px-pl pt-5l pb-m">
+      <div className="border-b-2 border-main pt-5l pb-m">
         <UniversitySection />
       </div>
     </div>
