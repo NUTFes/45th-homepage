@@ -35,7 +35,7 @@ export function GreetingPagePCView() {
             <GreetingSection
               name="鎌土重晴"
               nameEng="SHIGEHARU KAMADO"
-                imageSrc="/image/greeting/picture_kamado.jpg"
+              imageSrc="/image/greeting/picture_kamado.jpg"
               imageAlt="校長挨拶"
               greetingTitle="技大祭へようこそ。頑張る学生に激励を！"
               greetingBody={`第 45 回技大祭へようこそお越しくださいました。技大祭はこれまで地域の皆様に温かく支えられ、本学が誇る理念としての「技学」の魅力や、学生たちの豊かな創造性を学内外へと発信する、活気ある交流の場として成長してまいりました。心より感謝申し上げます。
@@ -88,7 +88,7 @@ export function GreetingPageMobileView() {
           <GreetingSection
             name="鎌土重晴"
             nameEng="SHIGEHARU KAMADO"
-              imageSrc="/image/greeting/picture_kamado.jpg"
+            imageSrc="/image/greeting/picture_kamado.jpg"
             imageAlt="校長挨拶"
             greetingTitle="技大祭へようこそ。頑張る学生に激励を！"
             greetingBody={`第 45 回技大祭へようこそお越しくださいました。技大祭はこれまで地域の皆様に温かく支えられ、本学が誇る理念としての「技学」の魅力や、学生たちの豊かな創造性を学内外へと発信する、活気ある交流の場として成長してまいりました。心より感謝申し上げます。
