@@ -3,6 +3,9 @@ import InfoFrame from "@/components/ui/InfoFrame";
 import Image from "next/image";
 import MapFrame from "@/components/ui/MapFrame";
 import ButtonMain from "@/components/ui/ButtonMain";
+import SponsorAdCarousel from "../sponsors/ui/SponsorAdCarousel";
+import SponsorAdsSection from "../sponsors/ui/SponsorAdsSection";
+import { SponsorRowLabel } from "@/components/admin/SponsorRowLabel";
 //import AdCarousel from "@/components/ui/AdCarousel"; ←まだない
 
 function AccessPageMobile() {
@@ -136,7 +139,15 @@ function AccessPageMobile() {
       </div>
       <div className="flex flex-col gap-y-m">
         <SectionTitle title="駐車場について" />
+
         <div className="flex flex-col justify-center gap-y-ss px-ll text-center text-text">
+                   <div className="text-text text-start">
+            <b>駐車場には限りがございます。</b>
+            当日は大変な混雑が予想されますので、できるだけ公共交通機関をご利用くださいますようお願いいたします。
+            また、近隣住民の皆様のご迷惑となりますので、
+            <span className="text-accent">路上駐車はご遠慮ください。</span>
+            ご協力をお願いいたします。
+          </div>
          <div className="text-button">駐車場マップ</div>
           <MapFrame />
           <div className="w-full flex flex-col items-center py-m">
@@ -146,13 +157,7 @@ function AccessPageMobile() {
 
           </div>
           
-          <div className="text-text text-start">
-            <b>駐車場には限りがございます。</b>
-            当日は大変な混雑が予想されますので、できるだけ公共交通機関をご利用くださいますようお願いいたします。
-            また、近隣住民の皆様のご迷惑となりますので、
-            <span className="text-accent">路上駐車はご遠慮ください。</span>
-            ご協力をお願いいたします。
-          </div>
+
         </div>
       </div>
     </div>
@@ -186,7 +191,7 @@ function AccessPageDesktop() {
                 referrerPolicy="no-referrer-when-downgrade"
               />
             </div>
-            <div className="w-full text-center text-text">「技大前」バス停からすぐ</div>
+            <div className="w-full text-center text-text pb-4l">「技大前」バス停からすぐ</div>
             <div className="relative">
               <Image
                 src="/image/PageBack2.svg"
@@ -201,9 +206,9 @@ function AccessPageDesktop() {
                   <div className="flex justify-center pb-s">
                     <SectionTitle title="開催日" pb />
                   </div>
-                  <div className="text-button">9月19日（土）　10：00～20：00 </div>
-                  <div className="text-button">9月20日（日）　10：00～18：30 </div>
-                  <div className="text-text">
+                  <div className="text-Ptitle-small">9月19日（土）　10：00～20：00 </div>
+                  <div className="text-Ptitle-small">9月20日（日）　10：00～18：30 </div>
+                  <div className="text-textb">
                     ※1日目の出店は17：00まで、2日目の出店は16：00までです
                   </div>
                 </div>
@@ -316,9 +321,6 @@ function AccessPageDesktop() {
             <div className="flex flex-col text-start">
               <b>駐車場には限りがございます。</b>
               当日は大変な混雑が予想されますので、できるだけ公共交通機関をご利用くださいますようお願いいたします。
-              また、近隣住民の皆様のご迷惑となりますので、
-              <span className="text-accent">路上駐車はご遠慮ください。</span>
-              ご協力をお願いいたします。
             </div>
             <div className="flex flex-col gap-y-m text-start">
               <div>
@@ -358,6 +360,6 @@ export default function AccessPageView() {
       <div className="hidden md:block">
         <AccessPageDesktop />
       </div>
-    </>
+      </>
   );
 }
