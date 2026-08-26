@@ -31,8 +31,10 @@ export default function GreetingSection({
             <Image
               src={imageSrc}
               alt={imageAlt}
-              width={96}
-              height={144}
+              width={400}
+              height={600}
+              sizes="(min-width: 1024px) 400px, 50vw"
+              quality={100}
               className={`${itemSize} aspect-[2/3] w-full border border-main object-cover`}
             />
             <div
