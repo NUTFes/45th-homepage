@@ -56,7 +56,7 @@ export function GreetingPagePCView() {
           <GreetingSection
             name="齊藤　翔太"
             nameEng="SHOTA SAITO"
-            imageSrc="/image/greeting/picture_shota.png"
+            imageSrc="/image/greeting/picture_shota.jpg"
             imageAlt="実行委員長挨拶"
             greetingTitle=""
             greetingBody={`皆様、本日は第45回 技大祭にご来場いただき、誠にありがとうございます。実行委員会を代表して、皆様を心より歓迎いたします。また、開催にあたり多大なるご支援をいただきました協賛団体の皆様、参加団体、大学関係者の方々、そして今日まで共に走り抜けてくれた350名を超える実行委員の仲間に、この場をお借りして深く感謝申し上げます。
@@ -88,7 +88,7 @@ export function GreetingPageMobileView() {
           <GreetingSection
             name="鎌土重晴"
             nameEng="SHIGEHARU KAMADO"
-            imageSrc="/image/greeting/picture_kamado.png"
+            imageSrc="/image/greeting/picture_kamado.jpg"
             imageAlt="校長挨拶"
             greetingTitle="技大祭へようこそ。頑張る学生に激励を！"
             greetingBody={`第 45 回技大祭へようこそお越しくださいました。技大祭はこれまで地域の皆様に温かく支えられ、本学が誇る理念としての「技学」の魅力や、学生たちの豊かな創造性を学内外へと発信する、活気ある交流の場として成長してまいりました。心より感謝申し上げます。
