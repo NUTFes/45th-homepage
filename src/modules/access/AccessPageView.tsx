@@ -23,7 +23,7 @@ function AccessPageMobile() {
       </div>
       <InfoFrame className="flex w-full flex-col gap-y-s px-8 text-center">
         <div className="pb-s">
-          <SectionTitle title="開催日" />
+          <SectionTitle title="開催日" pb/>
         </div>
         <div className="text-button">9月19日（土）　10：00～20：00 </div>
         <div className="text-button">9月20日（日）　10：00～18：30 </div>
@@ -181,7 +181,7 @@ function AccessPageDesktop() {
               />
               <InfoFrame className="relative z-10 flex flex-col gap-y-s px-4l text-center">
                 <div className="pb-s">
-                  <SectionTitle title="開催日" />
+                  <SectionTitle title="開催日" pb/>
                 </div>
                 <div className="text-button">9月19日（土）　10：00～20：00 </div>
                 <div className="text-button">9月20日（日）　10：00～18：30 </div>
