@@ -42,9 +42,12 @@ export default function MapPageView() {
         <MapAccordion items={items} />
       </div>
 
-      <div className="hidden flex-col gap-pm pb-5l md:flex">
+      <div className="hidden flex-col gap-pm pb-pm md:flex">
         <MapPcSection />
-        <SponsorAdsBoundary surface="transparent" />
+      </div>
+
+      <div className="pb-4l">
+        <SponsorAdsBoundary />
       </div>
     </div>
   );
