@@ -25,7 +25,7 @@ export default function EventIntroFrame({ title, body, headingLevel = 2 }: Event
           aria-hidden="true"
         />
       ))}
-      <div className="px-xs font-kaisotai md:px-3l">
+      <div className="px-xs font-sans md:px-3l">
         <div className="border-b border-secondary px-s md:px-3l">
           <Heading className="text-center text-title-small md:text-title xl:text-Ptitle">
             {title}
