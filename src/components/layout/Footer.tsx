@@ -6,22 +6,22 @@ const CONTACT_EMAIL_PARTS = ["nutfes.shikobu", "gmail.com"] as const;
 const SNS_LINKS = [
   {
     label: "X",
-    href: "https://x.com/nut_fes",
+    href: "https://t.nutfes.net/?id=nj36xsj&p=x",
     icon: "/icon/X.svg",
   },
   {
     label: "Instagram",
-    href: "https://www.instagram.com/nutfes?igsh=eTJ4cGh0MDVvYmky",
+    href: "https://t.nutfes.net/?id=da4u6cw&p=instagrams",
     icon: "/icon/Instagram.png",
   },
   {
     label: "YouTube",
-    href: "https://youtube.com/channel/UCxpfPMcf4LCWSL1dR8ha5uQ?si=DGby9RdPrTj4b4c3",
+    href: "https://t.nutfes.net/?id=kvg9bni&p=youtube",
     icon: "/icon/YouTube.svg",
   },
   {
     label: "TikTok",
-    href: "http://www.tiktok.com/@nutfes_sns",
+    href: "https://t.nutfes.net/?id=7mcvcat&p=tiktok",
     icon: "/icon/TikTok.svg",
   },
 ] as const;
@@ -101,7 +101,7 @@ export default function Footer() {
                   strokeWidth={2.2}
                 />
                 <a
-                  href="https://www.instagram.com/nutfes?igsh=eTJ4cGh0MDVvYmky"
+                  href="https://t.nutfes.net/?id=da4u6cw&p=instagram"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:underline"
@@ -165,7 +165,7 @@ export default function Footer() {
                     strokeWidth={2.2}
                   />
                   <a
-                    href="https://www.instagram.com/nutfes?igsh=eTJ4cGh0MDVvYmky"
+                    href="https://t.nutfes.net/?id=da4u6cw&p=instagram"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:underline"
