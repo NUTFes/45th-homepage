@@ -24,7 +24,7 @@ export type ProgramDetailPageViewProps = {
 function EventHero({ title, imageSrc, imageAlt, tags }: EventHeroProps) {
   return (
     <div className="flex flex-col gap-ss md:gap-xs">
-      <h1 className="text-center font-sans font-medium text-title wrap-break-word text-font-main md:text-Ptitle">
+      <h1 className="text-center font-sans text-title font-medium wrap-break-word text-font-main md:text-Ptitle">
         {title}
       </h1>
       <div className="flex flex-col gap-s md:px-4l">
