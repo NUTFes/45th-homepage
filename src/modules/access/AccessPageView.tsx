@@ -147,7 +147,7 @@ function AccessPageMobile() {
             ご協力をお願いいたします。
           </div>
           <div className="text-button">駐車場マップ</div>
-          <MapFrame showDecoration={false}/>
+          <MapFrame showDecoration={false} />
           <div className="flex w-full flex-col items-center py-m">
             <div className="w-80">
               <ButtonMain

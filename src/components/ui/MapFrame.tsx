@@ -30,7 +30,7 @@ export default function MapFrame({
             </>
           ) : null}
         </div>
-        
+
         <div className="relative flex aspect-4/3 items-center justify-center overflow-hidden border-2 border-main text-text-large">
           {imageSrc ? (
             <Image
