@@ -26,10 +26,11 @@ export default function MapFrame({
               >
                 <span className="leading-tight wrap-break-word whitespace-normal">{title}</span>
               </div>
-              <div className="-ml-px w-[20px] self-stretch bg-main [clip-path:polygon(0%_0%,20%_0%,100%_100%,0%_100%)]"></div>
+              <div className="-ml-px hidden w-[20px] self-stretch bg-main [clip-path:polygon(0%_0%,20%_0%,100%_100%,0%_100%)] md:block"></div>
             </>
           ) : null}
         </div>
+        
         <div className="relative flex aspect-4/3 items-center justify-center overflow-hidden border-2 border-main text-text-large">
           {imageSrc ? (
             <Image
