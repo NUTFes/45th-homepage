@@ -4,6 +4,7 @@ import Image from "next/image";
 import { type FormEvent, useCallback, useRef, useState } from "react";
 import { Button } from "@/components/aria/Button";
 import SectionTitle from "@/components/ui/SectionTitle";
+import { submitContact as submitContactAction } from "./server/submitContact";
 import { CONTACT_FIELD_MAX_LENGTHS, GENDER_OPTIONS, INQUIRY_TYPE_OPTIONS } from "./constants";
 import ContactAccordionSection from "./ui/ContactAccordionSection";
 import ContactSection from "./ui/ContactSection";
@@ -24,7 +25,6 @@ const DEFAULT_VALUES = {
   inquiry: "",
 } as const;
 
-const CONTACT_SEND_FAILURE_MESSAGE = "送信に失敗しました。時間をおいて再度お試しください。";
 const CONTACT_UNAVAILABLE_MESSAGE =
   "現在お問い合わせを送信できません。時間をおいて再度お試しください。";
 const CONTACT_SUCCESS_MESSAGE = "お問い合わせを送信しました。";
@@ -33,24 +33,6 @@ type SubmissionState =
   | { kind: "success"; message: string }
   | { kind: "error"; message: string }
   | null;
-
-const readApiErrorMessage = async (response: Response): Promise<string> => {
-  try {
-    const body: unknown = await response.json();
-    if (
-      typeof body === "object" &&
-      body !== null &&
-      "message" in body &&
-      typeof body.message === "string"
-    ) {
-      return body.message;
-    }
-  } catch {
-    // Fall back to the fixed message below when the response is not JSON.
-  }
-
-  return CONTACT_SEND_FAILURE_MESSAGE;
-};
 
 export default function ContactPageView() {
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
@@ -66,21 +48,9 @@ export default function ContactPageView() {
       }
 
       try {
-        let response: Response;
-        try {
-          response = await fetch("/api/contact", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ values, turnstileToken }),
-          });
-        } catch {
-          throw new Error(CONTACT_SEND_FAILURE_MESSAGE);
-        }
-
-        if (!response.ok) {
-          throw new Error(await readApiErrorMessage(response));
+        const result = await submitContactAction({ values, turnstileToken });
+        if (!result.ok) {
+          throw new Error(result.message);
         }
       } finally {
         turnstileRef.current?.reset();
