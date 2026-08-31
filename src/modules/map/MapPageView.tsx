@@ -46,7 +46,7 @@ export default function MapPageView() {
         <MapPcSection />
       </div>
 
-      <div className="pb-4l">
+      <div className="pt-4l pb-4l">
         <SponsorAdsBoundary />
       </div>
     </div>
