@@ -159,137 +159,139 @@ export default function ContactPageView() {
           onSubmit={handleFormSubmit}
           className="flex w-full flex-col gap-l md:mx-auto md:max-w-200 md:gap-3l"
         >
-          <ContactSection
-            label="お名前"
-            name="name"
-            required
-            placeholder="技大　太郎"
-            autoComplete="name"
-            maxLength={CONTACT_FIELD_MAX_LENGTHS.name}
-            error={errors.name}
-            {...register("name")}
-          />
-          <ContactSection
-            label="ふりがな"
-            name="kana"
-            required
-            placeholder="ぎだい　たろう"
-            autoComplete="off"
-            maxLength={CONTACT_FIELD_MAX_LENGTHS.kana}
-            error={errors.kana}
-            {...register("kana")}
-          />
-          <ContactAccordionSection
-            label="性別"
-            name="gender"
-            options={GENDER_OPTIONS}
-            placeholder="未選択"
-            error={errors.gender}
-            {...register("gender")}
-          />
-          <ContactSection
-            label="年齢"
-            name="age"
-            placeholder="半角数字"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            autoComplete="off"
-            maxLength={CONTACT_FIELD_MAX_LENGTHS.age}
-            error={errors.age}
-            {...register("age")}
-          />
-          <ContactSection
-            label="お住まいの地域"
-            name="region"
-            placeholder="新潟県長岡市"
-            autoComplete="address-level2"
-            maxLength={CONTACT_FIELD_MAX_LENGTHS.region}
-            error={errors.region}
-            {...register("region")}
-          />
-          <ContactSection
-            label="メールアドレス"
-            name="email"
-            required
-            type="email"
-            placeholder="nutfes@gmail.com"
-            inputMode="email"
-            autoComplete="email"
-            maxLength={CONTACT_FIELD_MAX_LENGTHS.email}
-            error={errors.email}
-            {...register("email")}
-          />
-          <ContactSection
-            label="電話番号"
-            name="phone"
-            type="tel"
-            placeholder="ハイフンなし数字のみ"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            autoComplete="tel"
-            maxLength={CONTACT_FIELD_MAX_LENGTHS.phone}
-            error={errors.phone}
-            {...register("phone")}
-          />
-          <ContactAccordionSection
-            label="お問い合わせ項目"
-            name="inquiryType"
-            required
-            options={INQUIRY_TYPE_OPTIONS}
-            placeholder="未選択"
-            error={errors.inquiryType}
-            {...register("inquiryType")}
-          />
-          <ContactSection
-            label="お問い合わせ内容"
-            name="inquiry"
-            required
-            type="textarea"
-            rows={5}
-            maxLength={CONTACT_FIELD_MAX_LENGTHS.inquiry}
-            className="[&_textarea]:h-pl"
-            error={errors.inquiry}
-            {...register("inquiry")}
-          />
+          <fieldset disabled={isSubmitting} aria-busy={isSubmitting} className="contents">
+            <ContactSection
+              label="お名前"
+              name="name"
+              required
+              placeholder="技大　太郎"
+              autoComplete="name"
+              maxLength={CONTACT_FIELD_MAX_LENGTHS.name}
+              error={errors.name}
+              {...register("name")}
+            />
+            <ContactSection
+              label="ふりがな"
+              name="kana"
+              required
+              placeholder="ぎだい　たろう"
+              autoComplete="off"
+              maxLength={CONTACT_FIELD_MAX_LENGTHS.kana}
+              error={errors.kana}
+              {...register("kana")}
+            />
+            <ContactAccordionSection
+              label="性別"
+              name="gender"
+              options={GENDER_OPTIONS}
+              placeholder="未選択"
+              error={errors.gender}
+              {...register("gender")}
+            />
+            <ContactSection
+              label="年齢"
+              name="age"
+              placeholder="半角数字"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              autoComplete="off"
+              maxLength={CONTACT_FIELD_MAX_LENGTHS.age}
+              error={errors.age}
+              {...register("age")}
+            />
+            <ContactSection
+              label="お住まいの地域"
+              name="region"
+              placeholder="新潟県長岡市"
+              autoComplete="address-level2"
+              maxLength={CONTACT_FIELD_MAX_LENGTHS.region}
+              error={errors.region}
+              {...register("region")}
+            />
+            <ContactSection
+              label="メールアドレス"
+              name="email"
+              required
+              type="email"
+              placeholder="nutfes@gmail.com"
+              inputMode="email"
+              autoComplete="email"
+              maxLength={CONTACT_FIELD_MAX_LENGTHS.email}
+              error={errors.email}
+              {...register("email")}
+            />
+            <ContactSection
+              label="電話番号"
+              name="phone"
+              type="tel"
+              placeholder="ハイフンなし数字のみ"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              autoComplete="tel"
+              maxLength={CONTACT_FIELD_MAX_LENGTHS.phone}
+              error={errors.phone}
+              {...register("phone")}
+            />
+            <ContactAccordionSection
+              label="お問い合わせ項目"
+              name="inquiryType"
+              required
+              options={INQUIRY_TYPE_OPTIONS}
+              placeholder="未選択"
+              error={errors.inquiryType}
+              {...register("inquiryType")}
+            />
+            <ContactSection
+              label="お問い合わせ内容"
+              name="inquiry"
+              required
+              type="textarea"
+              rows={5}
+              maxLength={CONTACT_FIELD_MAX_LENGTHS.inquiry}
+              className="[&_textarea]:h-pl"
+              error={errors.inquiry}
+              {...register("inquiry")}
+            />
 
-          <div className="flex flex-col items-center gap-s pt-ss md:pt-0">
-            {siteKey && (
-              <TurnstileWidget
-                ref={turnstileRef}
-                siteKey={siteKey}
-                onTokenChange={handleTokenChange}
-                onError={() => setTurnstileError(true)}
-              />
-            )}
+            <div className="flex flex-col items-center gap-s pt-ss md:pt-0">
+              {siteKey && (
+                <TurnstileWidget
+                  ref={turnstileRef}
+                  siteKey={siteKey}
+                  onTokenChange={handleTokenChange}
+                  onError={() => setTurnstileError(true)}
+                />
+              )}
 
-            {turnstileUnavailable && (
-              <p role="alert" className="px-ll text-center text-button text-required">
-                {CONTACT_UNAVAILABLE_MESSAGE}
-              </p>
-            )}
+              {turnstileUnavailable && (
+                <p role="alert" className="px-ll text-center text-button text-required">
+                  {CONTACT_UNAVAILABLE_MESSAGE}
+                </p>
+              )}
 
-            {submissionState && (
-              <p
-                role={submissionState.kind === "error" ? "alert" : "status"}
-                className={
-                  submissionState.kind === "error"
-                    ? "px-ll text-center text-button text-required"
-                    : "px-ll text-center text-button text-white"
-                }
+              {submissionState && (
+                <p
+                  role={submissionState.kind === "error" ? "alert" : "status"}
+                  className={
+                    submissionState.kind === "error"
+                      ? "px-ll text-center text-button text-required"
+                      : "px-ll text-center text-button text-white"
+                  }
+                >
+                  {submissionState.message}
+                </p>
+              )}
+
+              <Button
+                type="submit"
+                variant="cta"
+                isPending={isSubmitting}
+                isDisabled={turnstileUnavailable || !turnstileToken}
               >
-                {submissionState.message}
-              </p>
-            )}
-
-            <Button
-              type="submit"
-              variant="cta"
-              isPending={isSubmitting}
-              isDisabled={turnstileUnavailable || !turnstileToken}
-            >
-              送信
-            </Button>
-          </div>
+                送信
+              </Button>
+            </div>
+          </fieldset>
         </form>
       </div>
     </div>

@@ -71,6 +71,13 @@ test("rejects invalid Turnstile token values", () => {
     }),
     { ok: false },
   );
+  assert.deepEqual(
+    parseContactRequest({
+      values,
+      turnstileToken: `${" ".repeat(TURNSTILE_TOKEN_MAX_LENGTH)}a`,
+    }),
+    { ok: false },
+  );
 });
 
 test("accepts a Turnstile token at the maximum length", () => {

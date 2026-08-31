@@ -30,6 +30,30 @@ test("requires the expected action", () => {
   );
 });
 
+test("allows Cloudflare test responses only when explicitly enabled", () => {
+  const testResponse = {
+    success: true,
+    action: "test",
+    hostname: "localhost",
+  };
+
+  assert.equal(isValidTurnstileResponse(testResponse, "localhost"), false);
+  assert.equal(
+    isValidTurnstileResponse(testResponse, "localhost", { allowTestResponse: true }),
+    true,
+  );
+  assert.equal(
+    isValidTurnstileResponse({ success: true }, "localhost", { allowTestResponse: true }),
+    true,
+  );
+  assert.equal(
+    isValidTurnstileResponse({ ...testResponse, success: false }, "localhost", {
+      allowTestResponse: true,
+    }),
+    false,
+  );
+});
+
 test("rejects unsuccessful and mismatched action responses", () => {
   assert.equal(
     isValidTurnstileResponse({ ...validResponse(), success: false }, "example.com"),

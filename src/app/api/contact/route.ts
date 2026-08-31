@@ -1,5 +1,6 @@
 import { parseContactRequest } from "@/modules/contact/server/parseContactRequest";
 import { postContactToSlack } from "@/modules/contact/server/postContactToSlack";
+import { readContactRequestBody } from "@/modules/contact/server/readContactRequestBody";
 import { verifyTurnstile } from "@/modules/contact/server/verifyTurnstile";
 import { validateContactForm } from "@/modules/contact/validation";
 
@@ -19,12 +20,13 @@ export async function POST(request: Request): Promise<Response> {
     return Response.json(INVALID_INPUT_RESPONSE, { status: 415 });
   }
 
-  let input: unknown;
-  try {
-    input = await request.json();
-  } catch {
-    return Response.json(INVALID_INPUT_RESPONSE, { status: 400 });
+  const bodyResult = await readContactRequestBody(request);
+  if (!bodyResult.ok) {
+    const status = bodyResult.reason === "too-large" ? 413 : 400;
+    return Response.json(INVALID_INPUT_RESPONSE, { status });
   }
+
+  const input = bodyResult.data;
 
   const parsed = parseContactRequest(input);
   if (!parsed.ok) {

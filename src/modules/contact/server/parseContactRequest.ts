@@ -43,12 +43,16 @@ export function parseContactRequest(
   }
 
   const values = parseValues(input.values);
-  if (!values || typeof input.turnstileToken !== "string") {
+  if (
+    !values ||
+    typeof input.turnstileToken !== "string" ||
+    input.turnstileToken.length > TURNSTILE_TOKEN_MAX_LENGTH
+  ) {
     return { ok: false };
   }
 
   const turnstileToken = input.turnstileToken.trim();
-  if (turnstileToken.length === 0 || turnstileToken.length > TURNSTILE_TOKEN_MAX_LENGTH) {
+  if (turnstileToken.length === 0) {
     return { ok: false };
   }
 
