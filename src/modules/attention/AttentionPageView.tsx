@@ -89,7 +89,7 @@ export default function AttentionPageView() {
           </div>
 
           <div className="relative flex justify-center">
-            <ButtonMain href="/help" title="案内所・ヘルプページはこちら" />
+            <ButtonMain href="/info" title="案内所・ヘルプページはこちら" />
           </div>
         </div>
       </div>

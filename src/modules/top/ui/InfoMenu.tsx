@@ -19,7 +19,7 @@ const InfoMenuItems: InfoMenuItem[] = [
   {
     name: "代表者挨拶",
     icon: UserStar,
-    disabled: true,
+    href: "/greeting",
   },
   {
     name: "注意事項",
@@ -30,12 +30,12 @@ const InfoMenuItems: InfoMenuItem[] = [
   {
     name: "案内所・ヘルプ",
     icon: MessageCircleQuestionMark,
-    disabled: true,
+    href: "/info",
   },
   {
     name: "アクセス",
     icon: BusFront,
-    disabled: true,
+    href: "/access",
   },
   {
     name: "協賛企業一覧",
