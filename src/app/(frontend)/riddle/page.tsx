@@ -4,7 +4,6 @@ export default function Riddle() {
   return (
     <div>
       <RiddlePageView />
-
     </div>
   );
 }

@@ -88,8 +88,8 @@ export default function RiddlePageView() {
         </div>
       </div>
 
-      <div className="flex-col gap-y-4l hidden min-h-screen items-center justify-center bg-base px-4l text-center text-text-large font-bold text-font-main sm:flex">
-                <div className="pointer-events-none absolute -top-6 -right-2 z-0 opacity-80">
+      <div className="hidden min-h-screen flex-col items-center justify-center gap-y-4l bg-base px-4l text-center text-text-large font-bold text-font-main sm:flex">
+        <div className="pointer-events-none absolute -top-6 -right-2 z-0 opacity-80">
           <Image
             src="/image/greeting/45th-logo-touka.svg"
             width={250}
@@ -99,7 +99,7 @@ export default function RiddlePageView() {
           />
         </div>
         このページはスマートフォンでご覧ください
-        <Button404 title="Go Back"/>
+        <Button404 title="Go Back" />
       </div>
     </>
   );
