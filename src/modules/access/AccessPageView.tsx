@@ -186,7 +186,7 @@ export default function AccessPageView() {
                 <div className="w-80 md:w-100">
                   <ButtonMain
                     title="駐車場の空き状況はこちら"
-                    href="https://t.nutfes.net/?id=r9vi6gg&p=web"
+                    href="https://app-trapa.nutfes.net/"
                     newTab
                     arrow={true}
                   />
