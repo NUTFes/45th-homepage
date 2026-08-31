@@ -3,6 +3,7 @@ import SectionTitle from "@/components/ui/SectionTitle";
 import UniversitySection from "./ui/UniversitySection";
 import GreetingSection from "./ui/GreetingSection";
 import Image from "next/image";
+import SponsorAdsBoundary from "../sponsors/ui/SponsorAdsBoundary";
 
 const greetingEntries = [
   {
@@ -76,6 +77,10 @@ export default function GreetingPageView() {
 
       <div className="border-b-2 border-main pt-5l pb-m">
         <UniversitySection />
+      </div>
+      <div className="md:pt-pm pt-4l">
+             <SponsorAdsBoundary className="relative z-10 mx-auto w-full pb-4l" />
+
       </div>
     </div>
   );
