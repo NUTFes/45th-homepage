@@ -4,23 +4,17 @@ import { isValidTurnstileResponse } from "./turnstileResponse";
 
 const TURNSTILE_SITEVERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 const TURNSTILE_TIMEOUT_MS = 5_000;
-const TURNSTILE_ALWAYS_PASS_TEST_SITE_KEY = "1x00000000000000000000AA";
-const TURNSTILE_ALWAYS_PASS_TEST_SECRET_KEY = "1x0000000000000000000000000000000AA";
 
-const getExpectedHostname = (): string | undefined => {
-  if (process.env.NODE_ENV !== "production") {
-    return undefined;
-  }
-
+const getExpectedHostname = (): string => {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
   if (!siteUrl) {
-    return undefined;
+    throw new Error("Turnstile hostname is not configured");
   }
 
   try {
     return new URL(siteUrl).hostname;
   } catch {
-    return undefined;
+    throw new Error("Turnstile hostname is not configured");
   }
 };
 
@@ -31,9 +25,6 @@ export async function verifyTurnstile(token: string): Promise<boolean> {
   }
 
   const expectedHostname = getExpectedHostname();
-  if (process.env.NODE_ENV === "production" && !expectedHostname) {
-    throw new Error("Turnstile hostname is not configured");
-  }
 
   const response = await fetch(TURNSTILE_SITEVERIFY_URL, {
     method: "POST",
@@ -49,10 +40,5 @@ export async function verifyTurnstile(token: string): Promise<boolean> {
   }
 
   const body: unknown = await response.json();
-  const allowTestResponseWithoutAction =
-    process.env.NODE_ENV !== "production" &&
-    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY === TURNSTILE_ALWAYS_PASS_TEST_SITE_KEY &&
-    secret === TURNSTILE_ALWAYS_PASS_TEST_SECRET_KEY;
-
-  return isValidTurnstileResponse(body, { expectedHostname, allowTestResponseWithoutAction });
+  return isValidTurnstileResponse(body, expectedHostname);
 }

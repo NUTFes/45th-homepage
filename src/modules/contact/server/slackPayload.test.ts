@@ -41,9 +41,7 @@ test("formats field labels as app-generated mrkdwn", () => {
 });
 
 test("mentions the channel and registered Slack users for the inquiry type", () => {
-  const payload = createSlackContactPayload(completeValues(), {
-    落とし物: ["U0550MPS3QE", "U0123456789"],
-  });
+  const payload = createSlackContactPayload(completeValues(), ["U0550MPS3QE", "U0123456789"]);
   const mentionBlock = payload.blocks.find(
     (block) => block.type === "section" && block.text.type === "mrkdwn",
   );
@@ -77,9 +75,7 @@ test("omits optional fields that are blank", () => {
 });
 
 test("keeps user input in plain_text and only app-generated content in mrkdwn", () => {
-  const payload = createSlackContactPayload(completeValues(), {
-    落とし物: ["U0550MPS3QE"],
-  });
+  const payload = createSlackContactPayload(completeValues(), ["U0550MPS3QE"]);
   const mrkdwnTexts = payload.blocks
     .filter((block) => block.type === "section" && block.text.type === "mrkdwn")
     .map((block) => block.text.text);

@@ -1,4 +1,3 @@
-import type { InquiryType } from "../constants";
 import type { ContactFormValues } from "../types";
 
 type SlackPlainText = {
@@ -27,8 +26,6 @@ export type SlackContactPayload = {
   blocks: Array<SlackHeaderBlock | SlackSectionBlock>;
 };
 
-export type SlackContactUserIds = Partial<Record<InquiryType, readonly string[]>>;
-
 const FIELD_DEFINITIONS = [
   ["inquiryType", "お問い合わせ項目"],
   ["name", "お名前"],
@@ -43,9 +40,8 @@ const FIELD_DEFINITIONS = [
 
 export function createSlackContactPayload(
   values: ContactFormValues,
-  userIdsByInquiryType: SlackContactUserIds = {},
+  userIds: readonly string[] = [],
 ): SlackContactPayload {
-  const userIds = userIdsByInquiryType[values.inquiryType as InquiryType] ?? [];
   const mention = ["<!channel>", ...userIds.map((userId) => `<@${userId}>`)].join(" ");
 
   const blocks: SlackContactPayload["blocks"] = [

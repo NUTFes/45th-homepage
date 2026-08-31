@@ -2,7 +2,7 @@ import "server-only";
 
 import type { InquiryType } from "../constants";
 import type { ContactFormValues } from "../types";
-import { createSlackContactPayload, type SlackContactUserIds } from "./slackPayload";
+import { createSlackContactPayload } from "./slackPayload";
 
 const SLACK_TIMEOUT_MS = 5_000;
 const SLACK_USER_ID_PATTERN = /^[UW][A-Z0-9]+$/;
@@ -28,11 +28,9 @@ function parseSlackUserIds(value: string | undefined, envName: string): string[]
   return userIds;
 }
 
-function getContactSlackUserIds(inquiryType: InquiryType): SlackContactUserIds {
+function getContactSlackUserIds(inquiryType: InquiryType): readonly string[] {
   const envName = CONTACT_SLACK_USER_IDS_ENV[inquiryType];
-  const userIds = parseSlackUserIds(process.env[envName], envName);
-
-  return userIds.length > 0 ? { [inquiryType]: userIds } : {};
+  return parseSlackUserIds(process.env[envName], envName);
 }
 
 export async function postContactToSlack(values: ContactFormValues): Promise<void> {
