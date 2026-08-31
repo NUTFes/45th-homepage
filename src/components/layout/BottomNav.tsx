@@ -12,7 +12,7 @@ type NavItem = {
 const NAV_ITEMS: NavItem[] = [
   { label: "ホーム", icon: House, href: "/" },
   { label: "スケジュール", icon: Clock, href: "/schedule" },
-  { label: "マップ", icon: MapPin, disabled: true, href: "/map" },
+  { label: "マップ", icon: MapPin, href: "/map" },
   { label: "企画", icon: CalendarDays, href: "/event" },
 ];
 

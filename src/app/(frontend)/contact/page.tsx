@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-// import ContactPageView from "@/modules/contact/ContactPageView";
-import { notFound } from "next/navigation";
+import ContactPageView from "@/modules/contact/ContactPageView";
 
 export const metadata: Metadata = {
   title: "お問い合わせ",
@@ -11,6 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  // return <ContactPageView />;
-  return notFound();
+  return <ContactPageView />;
 }

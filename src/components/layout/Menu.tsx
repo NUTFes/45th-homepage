@@ -93,7 +93,7 @@ const menuItems: MenuItem[] = [
   {
     label: "マップ",
     icon: MapPin,
-    disabled: true,
+    href: "/map",
   },
   {
     label: "利用案内",
@@ -105,18 +105,18 @@ const menuItems: MenuItem[] = [
       },
       {
         label: "案内所・ヘルプ",
-        disabled: true,
+        href: "/info",
       },
       {
         label: "アクセス",
-        disabled: true,
+        href: "/access",
       },
     ],
   },
   {
     label: "代表者挨拶",
     icon: UserStar,
-    disabled: true,
+    href: "/greeting",
   },
   {
     label: "協賛企業一覧",
@@ -128,7 +128,6 @@ const menuItems: MenuItem[] = [
     icon: Puzzle,
     mobileOnly: true,
     href: "/riddle",
-    disabled: true,
   },
 ];
 

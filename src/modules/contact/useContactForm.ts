@@ -33,6 +33,7 @@ export type UseContactFormReturn = {
   setValue: (name: ContactFormField, value: string) => void;
   setError: (name: ContactFormField, message: string) => void;
   clearError: (name: ContactFormField) => void;
+  reset: () => void;
 };
 
 const omitKey = <T extends Record<string, unknown>, K extends keyof T>(
@@ -70,6 +71,12 @@ export function useContactForm({
   const markTouched = useCallback((name: ContactFormField) => {
     setTouched((prev) => (prev[name] ? prev : { ...prev, [name]: true }));
   }, []);
+
+  const reset = useCallback(() => {
+    setValues(defaultValues);
+    setErrors({});
+    setTouched({});
+  }, [defaultValues]);
 
   const register = useCallback(
     (name: ContactFormField): FieldRegisterProps => ({
@@ -129,5 +136,6 @@ export function useContactForm({
     setValue,
     setError,
     clearError,
+    reset,
   };
 }

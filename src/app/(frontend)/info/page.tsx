@@ -1,5 +1,5 @@
-import { notFound } from "next/navigation";
+import InfoPageView from "@/modules/info/InfoPageView";
 
 export default function Page() {
-  notFound();
+  return <InfoPageView />;
 }

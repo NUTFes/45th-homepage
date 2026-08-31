@@ -86,7 +86,11 @@ export default function Footer() {
           </div>
 
           <div className="flex flex-col gap-ss">
-            <h3 className="text-black">お問い合わせ</h3>
+            <h3 className="text-black">
+              <Link href="/contact" className="hover:underline">
+                お問い合わせ
+              </Link>
+            </h3>
             <address className="pl-xs text-[14px] leading-4.25 not-italic">
               <p>〒940-2188</p>
               <p>新潟県長岡市上富岡町1603-1</p>
@@ -153,7 +157,9 @@ export default function Footer() {
                 >
                   大学ホームページ
                 </a>
-                <div className="text-black">お問い合わせ</div>
+                <Link href="/contact" className="text-black hover:underline">
+                  お問い合わせ
+                </Link>
               </div>
             </div>
             <div className="items-top flex">
