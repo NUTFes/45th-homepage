@@ -3,7 +3,6 @@ import SectionTitle from "@/components/ui/SectionTitle";
 import Image from "next/image";
 import MapAccordion from "../map/ui/MapAccordion";
 import Button404 from "@/components/ui/Button404";
-import ButtonMain from "@/components/ui/ButtonMain";
 
 export default function RiddlePageView() {
   const hintItems = [
@@ -62,7 +61,7 @@ export default function RiddlePageView() {
             width={250}
             height={250}
             alt="技大祭ロゴ"
-            className="h-auto w-[50vw] max-w-[340px] min-w-[120px]"
+            className="h-auto w-[50vw] max-w-85 min-w-pm"
           />
         </div>
 
@@ -95,7 +94,7 @@ export default function RiddlePageView() {
             width={250}
             height={250}
             alt="技大祭ロゴ"
-            className="h-auto w-[50vw] max-w-[340px] min-w-[120px]"
+            className="h-auto w-[50vw] max-w-85 min-w-pm"
           />
         </div>
         このページはスマートフォンでご覧ください
