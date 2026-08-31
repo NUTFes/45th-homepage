@@ -5,20 +5,32 @@ export type MapFrameProps = {
   alt?: string;
   title?: string;
   type?: "short" | "long";
+  showDecoration?: boolean;
 };
 
-export default function MapFrame({ imageSrc, alt, title, type = "long" }: MapFrameProps) {
+export default function MapFrame({
+  imageSrc,
+  alt,
+  title,
+  type = "long",
+  showDecoration = true,
+}: MapFrameProps) {
   return (
     <div className="relative flex w-full flex-col">
       <div className="w-full px-10 md:px-0">
         <div className="flex w-full items-stretch gap-0">
-          <div
-            className={`bg-main px-4 py-1 text-text-large text-base ${type === "short" ? "w-17" : "w-48.5"}`}
-          >
-            <span className="leading-tight wrap-break-word whitespace-normal">{title}</span>
-          </div>
-          <div className="-ml-px w-[20px] self-stretch bg-main [clip-path:polygon(0%_0%,20%_0%,100%_100%,0%_100%)]"></div>
+          {showDecoration ? (
+            <>
+              <div
+                className={`bg-main px-4 py-1 text-text-large text-base ${type === "short" ? "w-17" : "w-48.5"}`}
+              >
+                <span className="leading-tight wrap-break-word whitespace-normal">{title}</span>
+              </div>
+              <div className="-ml-px hidden w-[20px] self-stretch bg-main [clip-path:polygon(0%_0%,20%_0%,100%_100%,0%_100%)] md:block"></div>
+            </>
+          ) : null}
         </div>
+
         <div className="relative flex aspect-4/3 items-center justify-center overflow-hidden border-2 border-main text-text-large">
           {imageSrc ? (
             <Image
