@@ -1,5 +1,5 @@
-import { notFound } from "next/navigation";
+import AccessPageView from "@/modules/access/AccessPageView";
 
 export default function Page() {
-  notFound();
+  return <AccessPageView />;
 }
