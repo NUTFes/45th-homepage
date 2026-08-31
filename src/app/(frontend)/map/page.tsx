@@ -1,5 +1,5 @@
-import { notFound } from "next/navigation";
+import MapPageView from "@/modules/map/MapPageView";
 
 export default function Page() {
-  notFound();
+  return <MapPageView />;
 }

@@ -31,13 +31,13 @@ const headerNavItems: HeaderNavItem[] = [
     ],
   },
   { label: "スケジュール", href: "/schedule" },
-  { label: "マップ", href: "/map", disabled: true },
+  { label: "マップ", href: "/map" },
   {
     label: "利用案内",
     items: [
       { label: "注意事項", href: "/attention" },
-      { label: "案内所・ヘルプ", href: "/#", disabled: true },
-      { label: "アクセス", href: "/access", disabled: true },
+      { label: "案内所・ヘルプ", href: "/info" },
+      { label: "アクセス", href: "/access" },
     ],
   },
 ];
