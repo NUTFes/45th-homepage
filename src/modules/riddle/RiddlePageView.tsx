@@ -2,6 +2,8 @@ import MapFrame from "@/components/ui/MapFrame";
 import SectionTitle from "@/components/ui/SectionTitle";
 import Image from "next/image";
 import MapAccordion from "../map/ui/MapAccordion";
+import Button404 from "@/components/ui/Button404";
+import ButtonMain from "@/components/ui/ButtonMain";
 
 export default function RiddlePageView() {
   const hintItems = [
@@ -52,37 +54,53 @@ export default function RiddlePageView() {
   ];
 
   return (
-    <div className="relative overflow-hidden bg-base py-4l">
-      <div className="pointer-events-none absolute -top-6 -right-2 z-0 opacity-80">
-        <Image
-          src="/image/greeting/45th-logo-touka.svg"
-          width={250}
-          height={250}
-          alt="技大祭ロゴ"
-          className="h-auto w-[50vw] max-w-[340px] min-w-[120px]"
-        />
+    <>
+      <div className="relative overflow-hidden bg-base py-4l sm:hidden">
+        <div className="pointer-events-none absolute -top-6 -right-2 z-0 opacity-80">
+          <Image
+            src="/image/greeting/45th-logo-touka.svg"
+            width={250}
+            height={250}
+            alt="技大祭ロゴ"
+            className="h-auto w-[50vw] max-w-[340px] min-w-[120px]"
+          />
+        </div>
+
+        <div className="relative z-10 flex flex-col gap-y-4l">
+          <div>
+            <SectionTitle title="謎解き" />
+            <div className="flex flex-col px-3l pt-m">
+              <Image
+                src="/image/riddle/riddle_hinto.png"
+                width={329}
+                height={165}
+                alt="キャンパスに散らばった7つの謎を解いて、キーワードを完成させよう！"
+                className="h-auto w-full"
+              />
+            </div>
+            <div className="pt-ll"></div>
+            <MapFrame title="謎解き" />
+          </div>
+          <div className="flex flex-col gap-y-m">
+            <SectionTitle title="ヒント" />
+            <MapAccordion items={hintItems} />
+          </div>
+        </div>
       </div>
 
-      <div className="relative z-10 flex flex-col gap-y-4l">
-        <div>
-          <SectionTitle title="謎解き" />
-          <div className="flex flex-col px-3l pt-m">
-            <Image
-              src="/image/riddle/riddle_hinto.png"
-              width={329}
-              height={165}
-              alt="キャンパスに散らばった7つの謎を解いて、キーワードを完成させよう！"
-              className="h-auto w-full"
-            />
-          </div>
-          <div className="pt-ll"></div>
-          <MapFrame title="謎解き" />
+      <div className="flex-col gap-y-4l hidden min-h-screen items-center justify-center bg-base px-4l text-center text-text-large font-bold text-font-main sm:flex">
+                <div className="pointer-events-none absolute -top-6 -right-2 z-0 opacity-80">
+          <Image
+            src="/image/greeting/45th-logo-touka.svg"
+            width={250}
+            height={250}
+            alt="技大祭ロゴ"
+            className="h-auto w-[50vw] max-w-[340px] min-w-[120px]"
+          />
         </div>
-        <div className="flex flex-col gap-y-m">
-          <SectionTitle title="ヒント" />
-          <MapAccordion items={hintItems} />
-        </div>
+        このページはスマートフォンでご覧ください
+        <Button404 title="Go Back"/>
       </div>
-    </div>
+    </>
   );
 }
