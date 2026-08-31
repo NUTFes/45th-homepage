@@ -78,9 +78,8 @@ export default function GreetingPageView() {
       <div className="border-b-2 border-main pt-5l pb-m">
         <UniversitySection />
       </div>
-      <div className="md:pt-pm pt-4l">
-             <SponsorAdsBoundary className="relative z-10 mx-auto w-full pb-4l" />
-
+      <div className="pt-4l md:pt-pm">
+        <SponsorAdsBoundary className="relative z-10 mx-auto w-full pb-4l" />
       </div>
     </div>
   );
