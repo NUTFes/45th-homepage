@@ -1,6 +1,14 @@
 import type { Media, SponsorsPage } from "@/payload-types";
 
-import type { SponsorDTO, SponsorMediaDTO, SponsorWithImageDTO } from "./types";
+import type { SponsorMediaDTO, SponsorWithImageDTO } from "./types";
+
+export const SPONSOR_NAME_MAX_LENGTH = 80;
+
+export const parseSponsorNameList = (value?: string | null): string[] =>
+  (value ?? "")
+    .split(/\r?\n/)
+    .map((name) => name.trim())
+    .filter(Boolean);
 
 type SponsorRow = NonNullable<SponsorsPage["sponsors"]>[number];
 
@@ -42,23 +50,23 @@ export const toSponsorMediaDTO = (value: SponsorRow["image"]): SponsorMediaDTO |
   };
 };
 
-export const toSponsorDTO = (row: SponsorRow, index: number): SponsorDTO | null => {
+export const toSponsorWithImageDTO = (
+  row: SponsorRow,
+  index: number,
+): SponsorWithImageDTO | null => {
   const companyName = row.companyName.trim();
+  const image = toSponsorMediaDTO(row.image);
 
-  if (!companyName) {
+  if (!companyName || !image) {
     return null;
   }
 
   const href = normalizeHref(row.href);
-  const image = toSponsorMediaDTO(row.image);
 
   return {
     companyName,
     id: row.id ?? `${companyName}-${index}`,
     ...(href ? { href } : {}),
-    ...(image ? { image } : {}),
+    image,
   };
 };
-
-export const hasSponsorImage = (sponsor: SponsorDTO): sponsor is SponsorWithImageDTO =>
-  sponsor.image !== undefined;

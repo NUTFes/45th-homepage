@@ -5,7 +5,7 @@ import { CACHE_TAGS } from "@/lib/cacheTags";
 import config from "@/payload.config";
 
 import type { SponsorsPageData } from "../types";
-import { toSponsorDTO } from "../utils";
+import { parseSponsorNameList, toSponsorWithImageDTO } from "../utils";
 
 const DEFAULT_THANKS_MESSAGE = "第45回技大祭にご協賛いただき、誠にありがとうございます。";
 
@@ -22,8 +22,9 @@ export async function getSponsorsPageData(): Promise<SponsorsPageData> {
   });
 
   return {
+    sponsorNames: parseSponsorNameList(sponsorsPage.sponsorNames),
     sponsors: (sponsorsPage.sponsors ?? [])
-      .map(toSponsorDTO)
+      .map(toSponsorWithImageDTO)
       .filter((sponsor): sponsor is NonNullable<typeof sponsor> => sponsor !== null),
     thanksMessage: sponsorsPage.thanksMessage?.trim() || DEFAULT_THANKS_MESSAGE,
   };
