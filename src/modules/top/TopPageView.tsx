@@ -12,7 +12,6 @@ import NewsItemSkeleton from "@/components/ui/NewsItemSkeleton";
 import NewsRichText from "@/components/ui/NewsRichText";
 import SponsorAdsBoundary from "@/modules/sponsors/ui/SponsorAdsBoundary";
 import LogoInfo from "./ui/LogoInfo";
-import SponsorSection from "./ui/SponsorSection";
 import PickUpFrame from "./ui/PickUpFrame";
 import InfoMenu from "./ui/InfoMenu";
 import PickUpCarouselLazy from "./ui/PickUpCarouselLazy";
@@ -176,43 +175,6 @@ async function TopPageContent() {
         </div>
         <PickUpSection slides={pickUpSlides} />
       </div>
-      <div className="relative flex w-full justify-center">
-        <div className="pointer-events-none absolute -top-23 left-0 -z-10">
-          <Image
-            src="/image/top/TopBack1-2.svg"
-            alt=""
-            width={105}
-            height={170}
-            className="h-auto w-full opacity-80 md:hidden"
-          />
-          <Image
-            src="/image/top/PTopBack1-2.svg"
-            alt=""
-            width={291}
-            height={275}
-            className="hidden h-auto w-full md:block"
-          />
-        </div>
-        <div className="w-full max-w-200 px-ll">
-          <SponsorSection />
-        </div>
-        <div className="pointer-events-none absolute right-0 -bottom-41 -z-10">
-          <Image
-            src="/image/top/TopBack2.svg"
-            alt=""
-            width={198}
-            height={215}
-            className="h-auto w-full opacity-80 md:hidden"
-          />
-          <Image
-            src="/image/top/PTopBack2.svg"
-            alt=""
-            width={291}
-            height={275}
-            className="hidden h-auto w-full md:block"
-          />
-        </div>
-      </div>
       <NewsSection newsItems={latestNews} />
       <SponsorAdsBoundary />
       <InfoSection />
@@ -235,44 +197,6 @@ function TopPageSkeleton() {
           <PickUpFrame>
             <div className="aspect-video w-full animate-pulse bg-base-dark md:mx-auto md:w-[60%]" />
           </PickUpFrame>
-        </div>
-      </div>
-
-      <div className="relative flex w-full justify-center">
-        <div className="pointer-events-none absolute -top-16 left-0 -z-10 w-26.25">
-          <Image
-            src="/image/top/TopBack1-2.svg"
-            alt=""
-            width={105}
-            height={170}
-            className="h-auto w-full opacity-80 md:hidden"
-          />
-          <Image
-            src="/image/top/PTopBack1-2.svg"
-            alt=""
-            width={105}
-            height={170}
-            className="hidden h-auto w-full md:block"
-          />
-        </div>
-        <div className="w-full max-w-200 px-ll">
-          <SponsorSection />
-        </div>
-        <div className="pointer-events-none absolute right-0 -bottom-16 -z-10 w-49.5">
-          <Image
-            src="/image/top/TopBack2.svg"
-            alt=""
-            width={198}
-            height={215}
-            className="h-auto w-full opacity-80 md:hidden"
-          />
-          <Image
-            src="/image/top/PTopBack2.svg"
-            alt=""
-            width={198}
-            height={215}
-            className="hidden h-auto w-full md:block"
-          />
         </div>
       </div>
 

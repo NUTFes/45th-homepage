@@ -26,7 +26,7 @@ export default function MapFrame({
               >
                 <span className="leading-tight wrap-break-word whitespace-normal">{title}</span>
               </div>
-              <div className="-ml-px hidden w-[20px] self-stretch bg-main [clip-path:polygon(0%_0%,20%_0%,100%_100%,0%_100%)] md:block"></div>
+              <div className="-ml-px w-[20px] self-stretch bg-main [clip-path:polygon(0%_0%,20%_0%,100%_100%,0%_100%)]"></div>
             </>
           ) : null}
         </div>
