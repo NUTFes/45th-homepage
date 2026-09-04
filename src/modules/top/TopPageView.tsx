@@ -66,6 +66,127 @@ function TopHero() {
   );
 }
 
+function TopHeroAnime() {
+  return (
+    <div className="flex w-full flex-col items-center">
+      <div className="relative block aspect-1575/2760 w-full md:aspect-4000/2100">
+        <img
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover md:hidden"
+          decoding="async"
+          fetchPriority="high"
+          loading="eager"
+          sizes="100vw"
+          src="/image/top/HeroAll-750.avif"
+          srcSet="/image/top/HeroAll-430.avif 430w, /image/top/HeroAll-750.avif 750w"
+          width={1575}
+          height={2760}
+        />
+        <img
+          src="/image/top/animation/PCback_1.svg"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 hidden h-full w-full object-cover md:block"
+          width={4000}
+          height={2100}
+          style={{ zIndex: 1 }}
+        />
+        <img
+          src="/image/top/animation/PCbackrotation_1.svg"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 hidden h-full w-full origin-[69%_50%] animate-[spin_10s_linear_infinite] object-cover md:block"
+          width={4000}
+          height={2100}
+          style={{ zIndex: 2 }}
+        />
+        <img
+          src="/image/top/animation/PCtown_1.svg"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 hidden h-full w-full object-cover md:block"
+          width={4000}
+          height={2100}
+          style={{ zIndex: 3 }}
+        />
+        <img
+          src="/image/top/animation/PCflower_1.svg"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 hidden h-full w-full object-cover md:block"
+          width={4000}
+          height={2100}
+          style={{ zIndex: 4 }}
+        />
+        <img
+          src="/image/top/animation/PCpeople_2.svg"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 hidden h-full w-full object-cover md:block"
+          width={4000}
+          height={2100}
+          style={{ zIndex: 5 }}
+        />
+        <img
+          src="/image/top/animation/PCtitle_3.svg"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 hidden h-full w-full object-cover duration-[3000ms] ease-out animate-in fade-in slide-in-from-top-4 md:block"
+          width={4000}
+          height={2100}
+          style={{ zIndex: 6 }}
+        />
+        <img
+          src="/image/top/animation/PClogodeco1_1.svg"
+          alt=""
+          aria-hidden="true"
+          className="top-logo-deco-frame absolute inset-0 hidden h-full w-full object-cover md:block"
+          width={4000}
+          height={2100}
+          style={{ zIndex: 7 }}
+        />
+        <img
+          src="/image/top/animation/PClogodeco2_1.svg"
+          alt=""
+          aria-hidden="true"
+          className="top-logo-deco-frame top-logo-deco-frame-2 absolute inset-0 hidden h-full w-full object-cover md:block"
+          width={4000}
+          height={2100}
+          style={{ zIndex: 7 }}
+        />
+        <img
+          src="/image/top/animation/PClogodeco3_1.svg"
+          alt=""
+          aria-hidden="true"
+          className="top-logo-deco-frame top-logo-deco-frame-3 absolute inset-0 hidden h-full w-full object-cover md:block"
+          width={4000}
+          height={2100}
+          style={{ zIndex: 7 }}
+        />
+        <img
+          src="/image/top/animation/PClogodeco4_1.svg"
+          alt=""
+          aria-hidden="true"
+          className="top-logo-deco-frame top-logo-deco-frame-4 absolute inset-0 hidden h-full w-full object-cover md:block"
+          width={4000}
+          height={2100}
+          style={{ zIndex: 7 }}
+        />
+        <img
+          src="/image/top/animation/PClogodeco5_1.svg"
+          alt=""
+          aria-hidden="true"
+          className="top-logo-deco-frame top-logo-deco-frame-5 absolute inset-0 hidden h-full w-full object-cover md:block"
+          width={4000}
+          height={2100}
+          style={{ zIndex: 7 }}
+        />
+      </div>
+      <LogoInfo />
+    </div>
+  );
+}
+
 function ImportantNewsSection({
   body,
 }: {
@@ -309,7 +430,7 @@ export default function TopPageView() {
       className="relative z-0 flex min-h-screen flex-col items-center overflow-x-hidden bg-base"
       id="top"
     >
-      <TopHero />
+      <TopHeroAnime />
       <div className="relative flex w-full flex-col gap-4l">
         <Suspense fallback={<TopPageSkeleton />}>
           <TopPageContent />
