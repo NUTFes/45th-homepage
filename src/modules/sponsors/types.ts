@@ -21,5 +21,6 @@ export type SponsorWithImageDTO = SponsorDTO & {
 
 export type SponsorsPageData = {
   thanksMessage: SponsorsPage["thanksMessage"];
-  sponsors: SponsorDTO[];
+  sponsorNames: string[];
+  sponsors: SponsorWithImageDTO[];
 };

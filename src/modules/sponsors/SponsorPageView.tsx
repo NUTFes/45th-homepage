@@ -1,18 +1,11 @@
 import Image from "next/image";
-import Link from "next/link";
 import { connection } from "next/server";
 
 import SectionTitle from "@/components/ui/SectionTitle";
 
 import { getSponsorsPageData } from "./server/getSponsorsPageData";
+import type { SponsorsPageData } from "./types";
 import SponsorCard from "./ui/SponsorCard";
-
-const splitSponsorsByImage = (
-  sponsors: Awaited<ReturnType<typeof getSponsorsPageData>>["sponsors"],
-) => ({
-  imageSponsors: sponsors.filter((sponsor) => sponsor.image),
-  nameOnlySponsors: sponsors.filter((sponsor) => !sponsor.image),
-});
 
 function ThanksMessage({ message }: { message: string }) {
   return (
@@ -22,11 +15,7 @@ function ThanksMessage({ message }: { message: string }) {
   );
 }
 
-function SponsorImageGrid({
-  sponsors,
-}: {
-  sponsors: ReturnType<typeof splitSponsorsByImage>["imageSponsors"];
-}) {
+function SponsorImageGrid({ sponsors }: { sponsors: SponsorsPageData["sponsors"] }) {
   if (sponsors.length === 0) {
     return null;
   }
@@ -42,36 +31,23 @@ function SponsorImageGrid({
   );
 }
 
-function SponsorNameList({
-  sponsors,
-}: {
-  sponsors: ReturnType<typeof splitSponsorsByImage>["nameOnlySponsors"];
-}) {
-  if (sponsors.length === 0) {
+function SponsorNameList({ sponsorNames }: { sponsorNames: string[] }) {
+  if (sponsorNames.length === 0) {
     return null;
   }
 
   return (
     <section aria-label="協賛企業名一覧" className="w-full px-4l md:px-0">
       <ul className="mx-auto grid w-full max-w-240 grid-cols-1 gap-x-3l gap-y-m sm:grid-cols-[repeat(auto-fit,minmax(17rem,1fr))]">
-        {sponsors.map((sponsor) => (
+        {sponsorNames.map((sponsorName, index) => (
           <li
-            key={sponsor.id}
+            key={`${sponsorName}-${index}`}
             className="flex min-w-0 items-center justify-start gap-2.5 text-font-main md:justify-center"
           >
             <span className="size-4 shrink-0 rounded-full bg-secondary" aria-hidden="true" />
-            {sponsor.href ? (
-              <Link
-                className="min-w-0 text-text-large wrap-break-word transition-opacity hover:opacity-70 focus-visible:opacity-70 md:text-Ptext-large"
-                href={sponsor.href}
-              >
-                {sponsor.companyName}
-              </Link>
-            ) : (
-              <span className="min-w-0 text-text-large wrap-break-word md:text-Ptext-large">
-                {sponsor.companyName}
-              </span>
-            )}
+            <span className="min-w-0 text-text-large wrap-break-word md:text-Ptext-large">
+              {sponsorName}
+            </span>
           </li>
         ))}
       </ul>
@@ -90,9 +66,8 @@ function EmptySponsors() {
 export default async function SponsorPageView() {
   await connection();
 
-  const { sponsors, thanksMessage } = await getSponsorsPageData();
-  const { imageSponsors, nameOnlySponsors } = splitSponsorsByImage(sponsors);
-  const hasSponsors = sponsors.length > 0;
+  const { sponsorNames, sponsors, thanksMessage } = await getSponsorsPageData();
+  const hasSponsors = sponsors.length > 0 || sponsorNames.length > 0;
 
   return (
     <div className="relative z-0 flex min-h-screen flex-col items-center overflow-hidden bg-base py-4l md:py-5l">
@@ -130,8 +105,8 @@ export default async function SponsorPageView() {
 
         {hasSponsors ? (
           <div className="flex w-full flex-col gap-4l md:gap-5l">
-            <SponsorImageGrid sponsors={imageSponsors} />
-            <SponsorNameList sponsors={nameOnlySponsors} />
+            <SponsorImageGrid sponsors={sponsors} />
+            <SponsorNameList sponsorNames={sponsorNames} />
           </div>
         ) : (
           <EmptySponsors />

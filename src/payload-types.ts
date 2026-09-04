@@ -758,7 +758,7 @@ export interface EventsPage {
   createdAt?: string | null;
 }
 /**
- * Manage the thank-you message and sponsor list shown on the sponsors page.
+ * Manage the thank-you message, sponsor advertisements, and sponsor name list shown on the sponsors page.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "sponsors-page".
@@ -770,7 +770,11 @@ export interface SponsorsPage {
    */
   thanksMessage: string;
   /**
-   * Rows are displayed in order. Rows with images become ad cards; rows without images become name-only entries.
+   * Enter one company name per line. You can paste a company-name column from Excel or Google Sheets.
+   */
+  sponsorNames?: string | null;
+  /**
+   * Arrange companies with advertisement images in display order.
    */
   sponsors?:
     | {
@@ -779,9 +783,9 @@ export interface SponsorsPage {
          */
         companyName: string;
         /**
-         * If set, this sponsor is shown as an ad card. If empty, it is shown in the name-only list. Prefer a 4:3 image.
+         * Upload an advertisement image. Prefer a 4:3 image.
          */
-        image?: (number | null) | Media;
+        image: number | Media;
         /**
          * If empty, the advertisement image will not be clickable.
          */
@@ -878,6 +882,7 @@ export interface EventsPageSelect<T extends boolean = true> {
  */
 export interface SponsorsPageSelect<T extends boolean = true> {
   thanksMessage?: T;
+  sponsorNames?: T;
   sponsors?:
     | T
     | {

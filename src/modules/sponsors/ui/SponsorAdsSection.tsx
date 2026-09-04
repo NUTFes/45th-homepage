@@ -4,7 +4,6 @@ import ButtonMain from "@/components/ui/ButtonMain";
 
 import { getSponsorsPageData } from "../server/getSponsorsPageData";
 import type { SponsorDTO } from "../types";
-import { hasSponsorImage } from "../utils";
 import SponsorAdCarousel from "./SponsorAdCarousel";
 import SponsorCard from "./SponsorCard";
 
@@ -58,15 +57,14 @@ export default async function SponsorAdsSection({
   surface = "dark",
 }: SponsorAdsSectionProps) {
   const { sponsors } = await getSponsorsPageData();
-  const sponsorAds = sponsors.filter(hasSponsorImage);
 
   return (
     <section
       className={twMerge("flex w-full flex-col items-center gap-m", className)}
       aria-label="協賛企業広告"
     >
-      {sponsorAds.length > 0 ? (
-        <SponsorAdCarousel sponsors={sponsorAds} surface={surface} />
+      {sponsors.length > 0 ? (
+        <SponsorAdCarousel sponsors={sponsors} surface={surface} />
       ) : (
         <SponsorAdsEmptyState surface={surface} />
       )}

@@ -1,4 +1,5 @@
 import type { GlobalConfig } from "payload";
+import { parseSponsorNameList, SPONSOR_NAME_MAX_LENGTH } from "@/modules/sponsors/utils";
 
 import { revalidateSponsorsPageAfterChange } from "./hooks/revalidateSponsorsPage";
 
@@ -14,8 +15,8 @@ export const SponsorsPage: GlobalConfig = {
       en: "Site Settings",
     },
     description: {
-      ja: "協賛企業一覧ページに表示する謝礼メッセージと企業一覧を管理します。行の並び順がページ上の表示順になります。",
-      en: "Manage the thank-you message and sponsor list shown on the sponsors page.",
+      ja: "協賛企業一覧ページに表示する謝礼メッセージ、広告掲載企業、企業名一覧を管理します。",
+      en: "Manage the thank-you message, sponsor advertisements, and sponsor name list shown on the sponsors page.",
     },
   },
   hooks: {
@@ -39,10 +40,34 @@ export const SponsorsPage: GlobalConfig = {
       },
     },
     {
+      name: "sponsorNames",
+      label: {
+        ja: "協賛企業名一覧",
+        en: "Sponsor Name List",
+      },
+      type: "textarea",
+      required: false,
+      validate: (value) => {
+        const invalidName = parseSponsorNameList(value).find(
+          (name) => name.length > SPONSOR_NAME_MAX_LENGTH,
+        );
+
+        return invalidName
+          ? `企業名は1行${SPONSOR_NAME_MAX_LENGTH}文字以内で入力してください。`
+          : true;
+      },
+      admin: {
+        description: {
+          ja: "企業名を1行に1社ずつ入力してください。ExcelやGoogle Sheetsの企業名列をまとめて貼り付けられます。",
+          en: "Enter one company name per line. You can paste a company-name column from Excel or Google Sheets.",
+        },
+      },
+    },
+    {
       name: "sponsors",
       label: {
-        ja: "協賛企業",
-        en: "Sponsors",
+        ja: "広告掲載企業",
+        en: "Sponsor Advertisements",
       },
       type: "array",
       admin: {
@@ -51,18 +76,18 @@ export const SponsorsPage: GlobalConfig = {
           RowLabel: "/components/admin/SponsorRowLabel#SponsorRowLabel",
         },
         description: {
-          ja: "表示したい順に並べてください。画像ありの行は広告カード、画像なしの行は企業名のみの一覧に表示されます。",
-          en: "Rows are displayed in order. Rows with images become ad cards; rows without images become name-only entries.",
+          ja: "広告画像を掲載する企業を表示順に並べてください。",
+          en: "Arrange companies with advertisement images in display order.",
         },
       },
       labels: {
         singular: {
-          ja: "協賛企業",
-          en: "Sponsor",
+          ja: "広告掲載企業",
+          en: "Sponsor Advertisement",
         },
         plural: {
-          ja: "協賛企業",
-          en: "Sponsors",
+          ja: "広告掲載企業",
+          en: "Sponsor Advertisements",
         },
       },
       fields: [
@@ -74,7 +99,7 @@ export const SponsorsPage: GlobalConfig = {
           },
           type: "text",
           required: true,
-          maxLength: 80,
+          maxLength: SPONSOR_NAME_MAX_LENGTH,
           admin: {
             description: {
               ja: "ページ上に表示する正式な企業名を入力してください。",
@@ -90,11 +115,11 @@ export const SponsorsPage: GlobalConfig = {
           },
           type: "upload",
           relationTo: "media",
-          required: false,
+          required: true,
           admin: {
             description: {
-              ja: "登録すると広告カードとして表示されます。未登録の場合は企業名のみの一覧に表示されます。可能であれば横4:縦3の画像を登録してください。",
-              en: "If set, this sponsor is shown as an ad card. If empty, it is shown in the name-only list. Prefer a 4:3 image.",
+              ja: "広告画像を登録してください。可能であれば横4:縦3の画像を使用してください。",
+              en: "Upload an advertisement image. Prefer a 4:3 image.",
             },
           },
         },
