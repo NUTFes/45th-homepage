@@ -71,16 +71,94 @@ function TopHeroAnime() {
     <div className="flex w-full flex-col items-center">
       <div className="relative block aspect-1575/2760 w-full md:aspect-4000/2100">
         <img
+          src="/image/top/animation/Mback_1.svg"
           alt=""
+          aria-hidden="true"
           className="absolute inset-0 h-full w-full object-cover md:hidden"
-          decoding="async"
-          fetchPriority="high"
-          loading="eager"
-          sizes="100vw"
-          src="/image/top/HeroAll-750.avif"
-          srcSet="/image/top/HeroAll-430.avif 430w, /image/top/HeroAll-750.avif 750w"
-          width={1575}
-          height={2760}
+          width={1585}
+          height={2765}
+          style={{ zIndex: 1 }}
+        />
+        <img
+          src="/image/top/animation/Mbackrotation_1.svg"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full origin-[50%_61%] animate-[spin_50s_linear_infinite] object-cover md:hidden"
+          width={1585}
+          height={2765}
+          style={{ zIndex: 2 }}
+        />
+        <img
+          src="/image/top/animation/Mtown_1.svg"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover md:hidden"
+          width={1585}
+          height={2765}
+          style={{ zIndex: 3 }}
+        />
+        <img
+          src="/image/top/animation/Mpeople_2.svg"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover md:hidden"
+          width={1585}
+          height={2765}
+          style={{ zIndex: 5 }}
+        />
+        <img
+          src="/image/top/animation/Mtitle_3.svg"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 duration-[3000ms] ease-out animate-in fade-in slide-in-from-top-4 md:hidden"
+          width={1585}
+          height={2765}
+          style={{ zIndex: 6 }}
+        />
+        <img
+          src="/image/top/animation/Mlogodeco1_1.svg"
+          alt=""
+          aria-hidden="true"
+          className="top-logo-deco-frame absolute inset-0 h-full w-full object-cover md:hidden"
+          width={1585}
+          height={2765}
+          style={{ zIndex: 7 }}
+        />
+        <img
+          src="/image/top/animation/Mlogodeco2_1.svg"
+          alt=""
+          aria-hidden="true"
+          className="top-logo-deco-frame top-logo-deco-frame-2 absolute inset-0 h-full w-full object-cover md:hidden"
+          width={1585}
+          height={2765}
+          style={{ zIndex: 7 }}
+        />
+        <img
+          src="/image/top/animation/Mlogodeco3_1.svg"
+          alt=""
+          aria-hidden="true"
+          className="top-logo-deco-frame top-logo-deco-frame-3 absolute inset-0 h-full w-full object-cover md:hidden"
+          width={1585}
+          height={2765}
+          style={{ zIndex: 7 }}
+        />
+        <img
+          src="/image/top/animation/Mlogodeco4_1.svg"
+          alt=""
+          aria-hidden="true"
+          className="top-logo-deco-frame top-logo-deco-frame-4 absolute inset-0 h-full w-full object-cover md:hidden"
+          width={1585}
+          height={2765}
+          style={{ zIndex: 7 }}
+        />
+        <img
+          src="/image/top/animation/Mlogodeco5_1.svg"
+          alt=""
+          aria-hidden="true"
+          className="top-logo-deco-frame top-logo-deco-frame-5 absolute inset-0 h-full w-full object-cover md:hidden"
+          width={1585}
+          height={2765}
+          style={{ zIndex: 7 }}
         />
         <img
           src="/image/top/animation/PCback_1.svg"
@@ -95,7 +173,7 @@ function TopHeroAnime() {
           src="/image/top/animation/PCbackrotation_1.svg"
           alt=""
           aria-hidden="true"
-          className="absolute inset-0 hidden h-full w-full origin-[69%_50%] animate-[spin_10s_linear_infinite] object-cover md:block"
+          className="absolute inset-0 hidden h-full w-full origin-[69%_50%] animate-[spin_50s_linear_infinite] object-cover md:block"
           width={4000}
           height={2100}
           style={{ zIndex: 2 }}
