@@ -15,6 +15,38 @@ html {
   scroll-behavior: smooth;
 }
 
+@keyframes top-logo-deco-cycle {
+  0%,
+  19.99% {
+    opacity: 1;
+  }
+
+  20%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.top-logo-deco-frame {
+  animation: top-logo-deco-cycle 5s steps(1, end) infinite;
+}
+
+.top-logo-deco-frame-2 {
+  animation-delay: -4s;
+}
+
+.top-logo-deco-frame-3 {
+  animation-delay: -3s;
+}
+
+.top-logo-deco-frame-4 {
+  animation-delay: -2s;
+}
+
+.top-logo-deco-frame-5 {
+  animation-delay: -1s;
+}
+
 @theme {
   --color-base: #1b339b;
   --color-base-dark: #192085;
