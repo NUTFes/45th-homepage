@@ -10,6 +10,7 @@ export type GuestInformationBlock = {
   id: string;
   title: ReactNode;
   icon: LucideIcon;
+  accent?: boolean;
   body: ReactNode;
 };
 
@@ -22,7 +23,7 @@ type GuestInformationSectionBaseProps = {
 type GuestInformationSectionProps = GuestInformationSectionBaseProps &
   (
     | {
-        status?: "published";
+        status?: "published" | "publishing";
         blocks: readonly GuestInformationBlock[];
       }
     | {
@@ -53,9 +54,14 @@ export default function GuestInformationSection(props: GuestInformationSectionPr
               COMING SOON
             </p>
           ) : (
-            <div className="flex flex-col gap-l">
+            <div className="flex flex-col gap-l md:gap-4l">
               {props.blocks.map((block) => (
-                <InfoBlock icon={block.icon} key={block.id} title={block.title}>
+                <InfoBlock
+                  accent={block.accent}
+                  icon={block.icon}
+                  key={block.id}
+                  title={block.title}
+                >
                   {block.body}
                 </InfoBlock>
               ))}
