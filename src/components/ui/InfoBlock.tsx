@@ -8,7 +8,12 @@ interface InfoBlockProps {
   children: ReactNode;
 }
 
-export default function InfoBlock({ icon: Icon = HelpCircle, title, accent, children }: InfoBlockProps) {
+export default function InfoBlock({
+  icon: Icon = HelpCircle,
+  title,
+  accent,
+  children,
+}: InfoBlockProps) {
   return (
     <div className="flex flex-col gap-ss">
       <div

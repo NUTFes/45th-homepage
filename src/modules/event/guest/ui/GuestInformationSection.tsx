@@ -23,7 +23,7 @@ type GuestInformationSectionBaseProps = {
 type GuestInformationSectionProps = GuestInformationSectionBaseProps &
   (
     | {
-      status?: "published" | "publishing";
+        status?: "published" | "publishing";
         blocks: readonly GuestInformationBlock[];
       }
     | {
@@ -56,7 +56,12 @@ export default function GuestInformationSection(props: GuestInformationSectionPr
           ) : (
             <div className="flex flex-col gap-l md:gap-4l">
               {props.blocks.map((block) => (
-                <InfoBlock accent={block.accent} icon={block.icon} key={block.id} title={block.title}>
+                <InfoBlock
+                  accent={block.accent}
+                  icon={block.icon}
+                  key={block.id}
+                  title={block.title}
+                >
                   {block.body}
                 </InfoBlock>
               ))}

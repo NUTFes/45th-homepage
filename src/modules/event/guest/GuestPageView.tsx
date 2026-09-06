@@ -6,7 +6,7 @@ import {
   DoorOpen,
   Ticket,
   UsersRound,
-  CandyOff
+  CandyOff,
 } from "lucide-react";
 
 import EventInfoCard, { type EventInfoCardProps } from "@/components/ui/EventInfoCard";
@@ -57,45 +57,49 @@ const TICKET_DISTRIBUTION_BLOCKS = [
     id: "ticket-distribution-schedule",
     title: "スケジュール",
     icon: Clock3,
-    body: 
-    <div className="flex flex-col gap-y-s md:gap-y-m md:text-Ptext">
-      <p>ゲストステージの整理券を以下のスケジュールで配布します。</p>
-              <section className="flex flex-col gap-y-s">
+    body: (
+      <div className="flex flex-col gap-y-s md:gap-y-m md:text-Ptext">
+        <p>ゲストステージの整理券を以下のスケジュールで配布します。</p>
+        <section className="flex flex-col gap-y-s">
           <div className="w-fit border-b">場所</div>
           <p className="cd:font-bold">講義棟１階　B講義室</p>
-          <MapFrame/>
+          <MapFrame />
         </section>
-      <section className="flex flex-col gap-y-ss">
+        <section className="flex flex-col gap-y-ss">
           <div className="w-fit border-b">日時</div>
           <div>
-          <div className="text-text flex flex-col gap-y-1 md:text-Ptext">
-          <div className="text-textb md:text-Ptext md:font-bold">9月19日（土）</div>
-          <div>
-            　1部　<span className="text-textb md:text-Ptext md:font-bold">10：00 ～ 11：30</span>　　200枚
-          </div>
-          <div>
-            　2部　<span className="text-textb md:text-Ptext md:font-bold">13：00 ～ 14：30</span>　　200枚
-          </div>
-          </div>
+            <div className="flex flex-col gap-y-1 text-text md:text-Ptext">
+              <div className="text-textb md:text-Ptext md:font-bold">9月19日（土）</div>
               <div>
-          <div className="text-textb pt-xs md:text-Ptext md:font-bold">9月20日（日）</div>
+                　1部　
+                <span className="text-textb md:text-Ptext md:font-bold">10：00 ～ 11：30</span>
+                　　200枚
+              </div>
               <div>
-            　3部　<span className="text-textb pt-1 md:text-Ptext md:font-bold">10：00 ～ 11：30</span>　　100枚
-          </div>
-          </div>
+                　2部　
+                <span className="text-textb md:text-Ptext md:font-bold">13：00 ～ 14：30</span>
+                　　200枚
+              </div>
+            </div>
+            <div>
+              <div className="pt-xs text-textb md:text-Ptext md:font-bold">9月20日（日）</div>
+              <div>
+                　3部　
+                <span className="pt-1 text-textb md:text-Ptext md:font-bold">10：00 ～ 11：30</span>
+                　　100枚
+              </div>
+            </div>
           </div>
         </section>
-
-    </div>
-
-    ,
+      </div>
+    ),
   },
   {
     id: "ticket-distribution-notes",
     title: "注意事項",
     icon: AlertTriangle,
     body: (
-      <div className="flex flex-col gap-y-s md:gap-y-l text-text md:text-Ptext">
+      <div className="flex flex-col gap-y-s text-text md:gap-y-l md:text-Ptext">
         <p>
           <span className="text-textb md:text-Ptext md:font-bold">
             整理券１枚につき１人が入場できます。整理券に記載されている数字は、席の指定ではございません。
@@ -121,19 +125,22 @@ const ADMISSION_BLOCKS = [
     id: "sample-admission",
     title: "整理券での入場方法",
     icon: Ticket,
-  body: (
+    body: (
       <div className="flex flex-col gap-y-2.5 text-text md:text-Ptext">
         <p>整理券を受け取りましたら、以下の整列場所へ指定時間内にお集まりください。</p>
         <div>
-        <p>
-          場所：<span className="text-textb md:text-Ptext md:font-bold">体育館前</span>
-        </p>
-        <p>
-          日付：<span className="text-textb md:text-Ptext md:font-bold">9月20日（日）</span>
-        </p>
-        <p>
-          時間：<span className="text-textb md:text-Ptext md:font-bold">整理券記載の集合時間をご確認ください</span>
-        </p>
+          <p>
+            場所：<span className="text-textb md:text-Ptext md:font-bold">体育館前</span>
+          </p>
+          <p>
+            日付：<span className="text-textb md:text-Ptext md:font-bold">9月20日（日）</span>
+          </p>
+          <p>
+            時間：
+            <span className="text-textb md:text-Ptext md:font-bold">
+              整理券記載の集合時間をご確認ください
+            </span>
+          </p>
         </div>
       </div>
     ),
@@ -165,7 +172,8 @@ const ADMISSION_BLOCKS = [
       <p className="text-text md:text-Ptext">
         飲み物の購入などで会場から一時退場する場合、
         <span className="text-textb md:text-Ptext md:font-bold">
-          会場出口にて再入場券を受け取ってください。<span className="text-accent">再入場券がない場合の再入場はできません</span>
+          会場出口にて再入場券を受け取ってください。
+          <span className="text-accent">再入場券がない場合の再入場はできません</span>
         </span>
         のでご注意ください。
       </p>
@@ -178,20 +186,24 @@ const VENUE_CAUTIONS_BLOCKS = [
     id: "recording-and-photography",
     title: (
       <>
-        <span className=" text-accent">イベント中の</span>
+        <span className="text-accent">イベント中の</span>
         <br className="md:hidden" />
-        <span className=" text-accent">録音・撮影は原則禁止</span>
+        <span className="text-accent">録音・撮影は原則禁止</span>
       </>
     ),
     icon: CameraOff,
     accent: true,
-    body: <p className="text-text md:text-Ptext">※MCやゲストの指示があった場合に限り、録音・撮影が可能です。</p>,
+    body: (
+      <p className="text-text md:text-Ptext">
+        ※MCやゲストの指示があった場合に限り、録音・撮影が可能です。
+      </p>
+    ),
   },
   {
     id: "candy-off",
     title: (
       <>
-        <span className=" text-accent">体育館では食事禁止</span>
+        <span className="text-accent">体育館では食事禁止</span>
         <br className="md:hidden" />
         <span className="text-accent">・水分補給のみ可能</span>
       </>
@@ -199,14 +211,18 @@ const VENUE_CAUTIONS_BLOCKS = [
     icon: CandyOff,
     accent: true,
     body: (
-      <div className="flex flex-col gap-y-2.5 md:gap-y-7 text-text md:text-Ptext">
+      <div className="flex flex-col gap-y-2.5 text-text md:gap-y-7 md:text-Ptext">
         <p>入場時に手荷物検査へのご協力をお願いします。</p>
         <p>
-          <span className="text-textb md:text-Ptext md:font-bold">体育館内の床にフロアシートはありません。</span>
+          <span className="text-textb md:text-Ptext md:font-bold">
+            体育館内の床にフロアシートはありません。
+          </span>
           ご了承ください。各自で座布団等（1人分）のご用意をお願いいたします。
         </p>
         <p>
-          <span className="text-textb md:text-Ptext md:font-bold">会場内は非常に暑くなることが予想されます。</span>
+          <span className="text-textb md:text-Ptext md:font-bold">
+            会場内は非常に暑くなることが予想されます。
+          </span>
           手荷物検査後、机に設けられている「技大祭うちわ」をぜひご利用ください。
         </p>
       </div>
