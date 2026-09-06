@@ -4,13 +4,21 @@ import { HelpCircle, type LucideIcon } from "lucide-react";
 interface InfoBlockProps {
   icon?: LucideIcon;
   title: ReactNode;
+  accent?: boolean;
   children: ReactNode;
 }
 
-export default function InfoBlock({ icon: Icon = HelpCircle, title, children }: InfoBlockProps) {
+export default function InfoBlock({
+  icon: Icon = HelpCircle,
+  title,
+  accent,
+  children,
+}: InfoBlockProps) {
   return (
     <div className="flex flex-col gap-ss">
-      <div className="flex w-fit max-w-full items-center gap-2.5 border-b border-white px-ss pb-1">
+      <div
+        className={`flex w-fit max-w-full items-center gap-2.5 border-b px-ss pb-1 ${accent ? "border-accent text-accent" : "border-white"}`}
+      >
         <Icon aria-hidden="true" className="size-7 shrink-0" />
         <h3 className="min-w-0 text-title-small wrap-break-word text-white lg:text-Ptitle-small">
           {title}
