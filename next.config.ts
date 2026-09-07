@@ -9,7 +9,7 @@ const dirname = path.dirname(__filename);
 const nextConfig: NextConfig = {
   cacheComponents: true,
   experimental: {
-    cssChunking: "strict",
+    cssChunking: true,
     globalNotFound: true,
     inlineCss: true,
     optimizePackageImports: ["react-aria-components", "react-aria"],
