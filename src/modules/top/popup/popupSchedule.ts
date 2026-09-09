@@ -1,5 +1,5 @@
 // 何時から何時の間に一回表示するのかをまとめる
-export const POPUP_WINODWS = [
+export const POPUP_WINDOWS = [
     {start: 11, end: 16}, // 1回目
     {start: 16, end: 27}, // 27 時は、翌３時
 ]
@@ -24,7 +24,7 @@ const nowWindowStart = (now: Date): number | null => {
     }
     
     // 各区間に対して、属するかの検証
-    for(const pWindow of POPUP_WINODWS){
+    for(const pWindow of POPUP_WINDOWS){
         if(nowHours >= pWindow.start && nowHours < pWindow.end){
             return hours2Abstime(pWindow.start); 
         }
