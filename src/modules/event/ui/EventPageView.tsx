@@ -55,25 +55,47 @@ export default function EventPageView({ data, sponsorAds }: EventPageViewProps) 
           filterVariant="event"
           title="企画情報"
         />
-        <section aria-label="ゲスト" className="flex flex-col gap-m md:gap-ll">
-          <div className="md:px-pl">
-            <SectionTitle title="ゲスト" />
-          </div>
-          <div className="flex flex-col gap-m md:gap-3l">
-            <div className="flex justify-center bg-secondary/20">
-              <div className="relative aspect-square w-full md:w-180">
-                <Image
-                  src="/image/event/guest_decoration.webp"
-                  alt="ヨネダ2000"
-                  fill
-                  priority
-                  sizes="(min-width: 768px) 720px, 100vw"
-                  className="object-cover"
-                />
-              </div>
+        <section
+          aria-label="ゲスト"
+          className="relative z-0 flex flex-col gap-m overflow-hidden md:gap-ll"
+        >
+          <Image
+            src="/image/PageBack1.svg"
+            alt=""
+            aria-hidden="true"
+            className="pointer-events-none absolute top-0 right-0 z-0 hidden md:block"
+            width={200}
+            height={200}
+          />
+          <Image
+            src="/image/PageBack2.svg"
+            alt=""
+            aria-hidden="true"
+            className="pointer-events-none absolute bottom-0 left-0 z-0 hidden md:block"
+            width={200}
+            height={200}
+          />
+
+          <div className="relative z-10 flex flex-col gap-m md:gap-ll">
+            <div className="md:px-pl">
+              <SectionTitle title="ゲスト" />
             </div>
-            <div className="flex justify-center">
-              <ButtonMain href="/event/guest" title="ゲストページを見る" />
+            <div className="flex flex-col gap-m md:gap-3l">
+              <div className="flex justify-center bg-secondary/20">
+                <div className="relative aspect-square w-full md:w-180">
+                  <Image
+                    src="/image/event/guest_decoration.webp"
+                    alt="ヨネダ2000"
+                    fill
+                    priority
+                    sizes="(min-width: 768px) 720px, 100vw"
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+              <div className="flex justify-center">
+                <ButtonMain href="/event/guest" title="ゲストページを見る" />
+              </div>
             </div>
           </div>
         </section>
