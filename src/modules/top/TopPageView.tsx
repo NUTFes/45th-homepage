@@ -165,7 +165,26 @@ function UpcomingProgramsSection({
 
 function MapSection() {
   return (
-    <section aria-label="会場マップ" className="flex w-full flex-col items-center gap-m md:gap-ll">
+    <section
+      aria-label="会場マップ"
+      className="relative flex w-full flex-col items-center gap-m md:gap-ll"
+    >
+      <div className="pointer-events-none absolute top-0 left-0 -z-10 w-[105px] md:w-[217px]">
+        <Image
+          src="/image/top/TopBack1-2.svg"
+          alt=""
+          width={105}
+          height={170}
+          className="h-auto w-full opacity-80 md:hidden"
+        />
+        <Image
+          src="/image/top/PTopBack1-2.svg"
+          alt=""
+          width={217}
+          height={744}
+          className="hidden h-auto w-full md:block"
+        />
+      </div>
       <div className={SECTION_TITLE_CLASS_NAME}>
         <SectionTitle title="会場マップ" />
       </div>
@@ -174,6 +193,22 @@ function MapSection() {
           <MapFrame showDecoration={false} />
         </div>
         <ButtonMain href="/map" title="マップを見る" />
+      </div>
+      <div className="pointer-events-none absolute right-0 bottom-0 -z-10 w-[198px] md:w-[262px]">
+        <Image
+          src="/image/top/TopBack2.svg"
+          alt=""
+          width={198}
+          height={215}
+          className="h-auto w-full opacity-80 md:hidden"
+        />
+        <Image
+          src="/image/top/PTopBack2.svg"
+          alt=""
+          width={262}
+          height={296}
+          className="hidden h-auto w-full md:block"
+        />
       </div>
     </section>
   );
