@@ -51,14 +51,6 @@ export default function EventPageView({ data, sponsorAds }: EventPageViewProps) 
     <div className="flex flex-col bg-base pb-4l">
       <div className="relative z-0 overflow-hidden">
         <Image
-          src="/image/PageBack1.svg"
-          alt=""
-          aria-hidden="true"
-          className="pointer-events-none absolute top-[68px] right-0 z-0 hidden md:block"
-          width={200}
-          height={200}
-        />
-        <Image
           src="/image/PageBack2.svg"
           alt=""
           aria-hidden="true"
@@ -69,6 +61,16 @@ export default function EventPageView({ data, sponsorAds }: EventPageViewProps) 
 
         <div className="relative z-10 flex flex-col gap-4l md:gap-5l">
           <ProgramFilterControls
+            barBottomDecoration={
+              <Image
+                src="/image/PageBack1.svg"
+                alt=""
+                aria-hidden="true"
+                className="pointer-events-none absolute top-full right-0 z-0 hidden md:block"
+                width={200}
+                height={200}
+              />
+            }
             controller={filterController}
             filterVariant="event"
             title="企画情報"
