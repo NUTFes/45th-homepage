@@ -3,8 +3,16 @@ import { connection } from "next/server";
 import Image from "next/image";
 import { getImportantNewsBody, getLatestNews } from "@/modules/news/server/getNews";
 import { getPickUpSlides } from "@/modules/top/server/getPickUpSlides";
+import { getEventsPageData } from "@/modules/events/server/getEventsPageData";
+import {
+  findUpcomingProgramGroup,
+  flattenEventCategories,
+  toEventFrameProps,
+} from "@/modules/events/presentation";
+import EventCarousel from "@/modules/event/ui/EventCarousel";
 import ButtonMain from "@/components/ui/ButtonMain";
 import ImportantFrame from "@/components/ui/ImportantFrame";
+import MapFrame from "@/components/ui/MapFrame";
 import NewsItem from "@/components/ui/NewsItem";
 import ImportantFrameSkeleton from "@/components/ui/ImportantFrameSkeleton";
 import SectionTitle from "@/components/ui/SectionTitle";
@@ -24,16 +32,22 @@ const SECTION_TITLE_CLASS_NAME = "w-full max-w-105 md:max-w-full md:self-start m
 async function getTopPageData() {
   await connection();
 
-  const [latestNews, importantNewsBody, pickUpSlides] = await Promise.all([
+  const [latestNews, importantNewsBody, pickUpSlides, eventsPageData] = await Promise.all([
     getLatestNews(LATEST_NEWS_LIMIT),
     getImportantNewsBody(),
     getPickUpSlides(),
+    getEventsPageData(),
   ]);
+  const upcomingProgramGroup = findUpcomingProgramGroup(
+    flattenEventCategories(eventsPageData.categories),
+    new Date(),
+  );
 
   return {
     importantNewsBody,
     latestNews,
     pickUpSlides,
+    upcomingProgramGroup,
   };
 }
 
@@ -284,16 +298,118 @@ function PickUpSection({ slides }: { slides: Awaited<ReturnType<typeof getPickUp
       <div className={SECTION_TITLE_CLASS_NAME}>
         <SectionTitle title="PICK UP" />
       </div>
-      <div className="w-full">
-        <PickUpFrame>
-          {slides.length > 0 ? (
-            <PickUpCarouselLazy slides={slides} autoPlay={{ delay: PICKUP_AUTOPLAY_DELAY_MS }} />
-          ) : (
-            <div className="aspect-video w-full bg-base-dark md:mx-auto md:w-[60%]" />
-          )}
-        </PickUpFrame>
+      <div className="flex w-full flex-col items-center gap-m md:gap-l">
+        <div className="w-full">
+          <PickUpFrame>
+            {slides.length > 0 ? (
+              <PickUpCarouselLazy slides={slides} autoPlay={{ delay: PICKUP_AUTOPLAY_DELAY_MS }} />
+            ) : (
+              <div className="aspect-video w-full bg-base-dark md:mx-auto md:w-[60%]" />
+            )}
+          </PickUpFrame>
+        </div>
+        <ButtonMain href="/event" title="企画一覧を見る" />
       </div>
     </div>
+  );
+}
+
+function UpcomingProgramsSection({
+  group,
+}: {
+  group: Awaited<ReturnType<typeof getTopPageData>>["upcomingProgramGroup"];
+}) {
+  const events =
+    group?.programs.map((program) => ({
+      id: program.id,
+      ...toEventFrameProps(program),
+    })) ?? [];
+
+  return (
+    <section
+      aria-label="まもなく開始の企画"
+      className="flex w-full flex-col items-center gap-m md:gap-ll"
+    >
+      <div className={SECTION_TITLE_CLASS_NAME}>
+        <SectionTitle
+          title={
+            <div className="flex flex-row items-center gap-ss md:gap-l">
+              まもなく開始の企画
+              {group ? (
+                <span className="text-[24px] md:text-[40px]">{`<${group.startTime}～>`}</span>
+              ) : null}
+            </div>
+          }
+        />
+      </div>
+      <div className="flex w-full flex-col gap-m md:gap-l">
+        <div className="bg-base-dark py-l md:py-3l">
+          {events.length > 0 ? (
+            <EventCarousel ariaLabel="まもなく開始の企画カルーセル" events={events} />
+          ) : (
+            <div className="flex h-54 items-center justify-center px-ll md:h-84">
+              <p className="text-center text-text text-font-main md:text-Ptext">
+                まもなく開始の企画はありません
+              </p>
+            </div>
+          )}
+        </div>
+        <div className="flex w-full justify-center">
+          <ButtonMain href="/schedule" title="タイムスケジュールを見る" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MapSection() {
+  return (
+    <section
+      aria-label="会場マップ"
+      className="relative flex w-full flex-col items-center gap-m md:gap-ll"
+    >
+      <div className="pointer-events-none absolute -top-41 left-0 -z-10 w-26.25 md:-top-56 md:w-54.25">
+        <Image
+          src="/image/top/TopBack1-2.svg"
+          alt=""
+          width={105}
+          height={170}
+          className="h-auto w-full opacity-80 md:hidden"
+        />
+        <Image
+          src="/image/top/PTopBack1-2.svg"
+          alt=""
+          width={217}
+          height={744}
+          className="hidden h-auto w-full md:block"
+        />
+      </div>
+      <div className={SECTION_TITLE_CLASS_NAME}>
+        <SectionTitle title="会場マップ" />
+      </div>
+      <div className="flex w-full flex-col items-center gap-m md:gap-l">
+        <div className="w-full md:max-w-200">
+          <MapFrame showDecoration={false} />
+        </div>
+        <ButtonMain href="/map" title="マップを見る" />
+      </div>
+      <div className="pointer-events-none absolute right-0 -bottom-32 -z-10 w-49.5 md:-bottom-pl md:w-65.5">
+        <Image
+          src="/image/top/TopBack2.svg"
+          alt=""
+          width={198}
+          height={215}
+          className="h-auto w-full opacity-80 md:hidden"
+        />
+        <Image
+          src="/image/top/PTopBack2.svg"
+          alt=""
+          width={262}
+          height={296}
+          className="hidden h-auto w-full md:block"
+        />
+      </div>
+    </section>
   );
 }
 
@@ -303,34 +419,30 @@ function NewsSection({ newsItems }: { newsItems: Awaited<ReturnType<typeof getLa
       <div className={SECTION_TITLE_CLASS_NAME}>
         <SectionTitle title="お知らせ" />
       </div>
-      <section className="flex w-full justify-center md:bg-base-dark md:px-pl md:py-3l">
-        <div className="flex w-full flex-col items-center gap-m md:max-w-190 md:items-start">
-          <div className="flex w-full flex-col items-end gap-m md:w-full md:max-w-none md:items-start md:gap-l">
-            <div className="w-full bg-base-dark px-ll py-l md:bg-transparent md:px-ss md:py-0">
-              {newsItems.length > 0 ? (
-                <ul className="flex flex-col gap-m md:gap-l">
-                  {newsItems.map((news) => (
-                    <NewsItem
-                      key={news.id}
-                      date={news.date}
-                      dateTime={news.dateTime}
-                      title={news.title}
-                      content={news.body}
-                      important={news.important}
-                    />
-                  ))}
-                </ul>
-              ) : (
-                <p className="px-ll py-m text-center text-text text-font-main">
-                  お知らせはまだありません
-                </p>
-              )}
-            </div>
-            <div className="flex w-full justify-center pb-ss">
-              <ButtonMain href="/news" title="お知らせ一覧を見る" />
-            </div>
+      <section className="flex w-full flex-col items-center gap-m md:gap-l">
+        <div className="w-full bg-base-dark px-ll py-l md:px-pl md:py-3l">
+          <div className="mx-auto w-full md:max-w-190">
+            {newsItems.length > 0 ? (
+              <ul className="flex flex-col gap-m md:gap-l">
+                {newsItems.map((news) => (
+                  <NewsItem
+                    key={news.id}
+                    date={news.date}
+                    dateTime={news.dateTime}
+                    title={news.title}
+                    content={news.body}
+                    important={news.important}
+                  />
+                ))}
+              </ul>
+            ) : (
+              <p className="px-ll py-m text-center text-text text-font-main">
+                お知らせはまだありません
+              </p>
+            )}
           </div>
         </div>
+        <ButtonMain href="/news" title="お知らせ一覧を見る" />
       </section>
     </div>
   );
@@ -350,10 +462,11 @@ function InfoSection() {
 }
 
 async function TopPageContent() {
-  const { importantNewsBody, latestNews, pickUpSlides } = await getTopPageData();
+  const { importantNewsBody, latestNews, pickUpSlides, upcomingProgramGroup } =
+    await getTopPageData();
 
   return (
-    <div className="flex w-full flex-col gap-4l">
+    <div className="flex w-full flex-col gap-4l md:gap-5l">
       <ImportantNewsSection body={importantNewsBody} />
       <div className="relative w-full">
         <div className="pointer-events-none absolute -top-20 right-0 -z-10 max-w-62.5">
@@ -374,6 +487,8 @@ async function TopPageContent() {
         </div>
         <PickUpSection slides={pickUpSlides} />
       </div>
+      <UpcomingProgramsSection group={upcomingProgramGroup} />
+      <MapSection />
       <NewsSection newsItems={latestNews} />
       <SponsorAdsBoundary />
       <InfoSection />
@@ -383,7 +498,7 @@ async function TopPageContent() {
 
 function TopPageSkeleton() {
   return (
-    <div className="flex w-full flex-col gap-4l">
+    <div className="flex w-full flex-col gap-4l md:gap-5l">
       <div className="w-full max-w-105 md:max-w-none">
         <ImportantFrameSkeleton />
       </div>
@@ -392,32 +507,47 @@ function TopPageSkeleton() {
         <div className={SECTION_TITLE_CLASS_NAME}>
           <SectionTitle title="PICK UP" />
         </div>
-        <div className="w-full">
-          <PickUpFrame>
-            <div className="aspect-video w-full animate-pulse bg-base-dark md:mx-auto md:w-[60%]" />
-          </PickUpFrame>
+        <div className="flex w-full flex-col items-center gap-m md:gap-l">
+          <div className="w-full">
+            <PickUpFrame>
+              <div className="aspect-video w-full animate-pulse bg-base-dark md:mx-auto md:w-[60%]" />
+            </PickUpFrame>
+          </div>
+          <ButtonMain href="/event" title="企画一覧を見る" />
         </div>
       </div>
 
       <div className="flex w-full flex-col items-center gap-m md:gap-ll">
         <div className={SECTION_TITLE_CLASS_NAME}>
+          <SectionTitle title="まもなく開始の企画" />
+        </div>
+        <div className="flex w-full flex-col gap-m md:gap-l">
+          <div className="bg-base-dark py-l md:py-3l">
+            <div className="h-54 animate-pulse md:h-84" />
+          </div>
+          <div className="flex w-full justify-center">
+            <ButtonMain href="/schedule" title="タイムスケジュールを見る" />
+          </div>
+        </div>
+      </div>
+
+      <MapSection />
+
+      <div className="flex w-full flex-col items-center gap-m md:gap-ll">
+        <div className={SECTION_TITLE_CLASS_NAME}>
           <SectionTitle title="お知らせ" />
         </div>
-        <section className="w-full md:bg-base-dark md:px-pl md:py-3l">
-          <div className="flex w-full flex-col items-center gap-m md:max-w-190 md:items-start">
-            <div className="flex w-full flex-col items-end gap-m md:w-full md:max-w-none md:items-start md:gap-l">
-              <div className="w-full bg-base-dark px-ll py-l md:bg-transparent md:px-ss md:py-0">
-                <ul className="flex flex-col gap-m md:gap-l">
-                  <NewsItemSkeleton key="news-skeleton-0" skeletonClassName="bg-base" />
-                  <NewsItemSkeleton key="news-skeleton-1" skeletonClassName="bg-base" />
-                  <NewsItemSkeleton key="news-skeleton-2" skeletonClassName="bg-base" />
-                </ul>
-              </div>
-              <div className="flex w-full justify-center pb-ss">
-                <ButtonMain href="/news" title="お知らせ一覧を見る" />
-              </div>
+        <section className="flex w-full flex-col items-center gap-m md:gap-l">
+          <div className="w-full bg-base-dark px-ll py-l md:px-pl md:py-3l">
+            <div className="mx-auto w-full md:max-w-190">
+              <ul className="flex flex-col gap-m md:gap-l">
+                <NewsItemSkeleton key="news-skeleton-0" skeletonClassName="bg-base" />
+                <NewsItemSkeleton key="news-skeleton-1" skeletonClassName="bg-base" />
+                <NewsItemSkeleton key="news-skeleton-2" skeletonClassName="bg-base" />
+              </ul>
             </div>
           </div>
+          <ButtonMain href="/news" title="お知らせ一覧を見る" />
         </section>
       </div>
 

@@ -1,6 +1,11 @@
 import type { EventSchedule } from "@/components/ui/EventInfoCard";
 import type { EventFrameProps } from "@/components/ui/EventFrame";
-import { FESTIVAL_DAYS, type FestivalDay, type ProgramCategory } from "@/lib/events/constants";
+import {
+  FESTIVAL_DAYS,
+  UPCOMING_PROGRAM_WINDOW_MINUTES,
+  type FestivalDay,
+  type ProgramCategory,
+} from "@/lib/events/constants";
 
 import type { EventProgramDTO, EventScheduleItemDTO, EventsPageCategoryDTO } from "./types";
 
@@ -38,19 +43,57 @@ export function toEventSchedules(scheduleItems: readonly EventScheduleItemDTO[])
 export function flattenEventCategories(
   categories: readonly EventsPageCategoryDTO[],
 ): EventProgramDTO[] {
-  const seenIds = new Set<string>();
+  return categories.flatMap((category) => category.programs);
+}
 
-  return categories.flatMap((category) =>
-    category.programs.filter((program) => {
-      const id = String(program.id);
-      if (seenIds.has(id)) {
+export function findUpcomingProgramGroup(
+  programs: readonly EventProgramDTO[],
+  now: Date,
+): { startTime: string; programs: EventProgramDTO[] } | null {
+  const nowTime = now.getTime();
+  if (!Number.isFinite(nowTime)) {
+    return null;
+  }
+
+  const windowEndTime = nowTime + UPCOMING_PROGRAM_WINDOW_MINUTES * 60_000;
+  let nearestStartTime = Number.POSITIVE_INFINITY;
+  let nearestDay: FestivalDay | null = null;
+  let nearestHour: string | null = null;
+
+  for (const program of programs) {
+    for (const item of program.scheduleItems) {
+      const startTime = Date.parse(toFestivalDateTime(item.day, item.startTime));
+      if (!Number.isFinite(startTime) || startTime <= nowTime || startTime > windowEndTime) {
+        continue;
+      }
+
+      if (startTime < nearestStartTime) {
+        nearestStartTime = startTime;
+        nearestDay = item.day;
+        nearestHour = item.startTime.slice(0, 2);
+      }
+    }
+  }
+
+  if (nearestDay === null || nearestHour === null) {
+    return null;
+  }
+
+  const upcomingPrograms = programs.filter((program) =>
+    program.scheduleItems.some((item) => {
+      if (item.day !== nearestDay || !item.startTime.startsWith(`${nearestHour}:`)) {
         return false;
       }
 
-      seenIds.add(id);
-      return true;
+      const startTime = Date.parse(toFestivalDateTime(item.day, item.startTime));
+      return Number.isFinite(startTime) && startTime > nowTime;
     }),
   );
+
+  return {
+    startTime: `${nearestHour}:00`,
+    programs: upcomingPrograms,
+  };
 }
 
 export function filterEventCategoriesByPrograms(
