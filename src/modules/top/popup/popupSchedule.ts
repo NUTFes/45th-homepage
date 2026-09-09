@@ -6,7 +6,10 @@ export const POPUP_WINODWS = [
 
 // 今が、上記で定義した区間のどれに属するか、その区間の開始時間を計算する
 const nowWindowStart = (now: Date): number | null => {
-    const nowHours = now.getHours();
+    // 27時の判定を入れるため、3時以下の場合は24を加算する
+    const nowHours = now.getHours() <= 3 ? now.getHours() + 24 : now.getHours();
+
+    // 各区間に対して、属するかの検証
     for(let pWindow of POPUP_WINODWS){
         if(nowHours >= pWindow.start && nowHours < pWindow.end){
             return pWindow.start; 
