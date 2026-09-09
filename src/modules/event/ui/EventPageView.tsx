@@ -67,8 +67,8 @@ export default function EventPageView({ data, sponsorAds }: EventPageViewProps) 
                 alt=""
                 aria-hidden="true"
                 className="pointer-events-none absolute top-full right-0 z-0 hidden md:block"
-                width={200}
-                height={200}
+                width={280}
+                height={280}
               />
             }
             controller={filterController}
