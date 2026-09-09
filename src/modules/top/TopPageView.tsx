@@ -169,7 +169,7 @@ function MapSection() {
       aria-label="会場マップ"
       className="relative flex w-full flex-col items-center gap-m md:gap-ll"
     >
-      <div className="pointer-events-none absolute -top-56 left-0 -z-10 w-26.25 md:w-54.25">
+      <div className="pointer-events-none absolute -top-41 left-0 -z-10 w-26.25 md:-top-56 md:w-54.25">
         <Image
           src="/image/top/TopBack1-2.svg"
           alt=""
@@ -194,7 +194,7 @@ function MapSection() {
         </div>
         <ButtonMain href="/map" title="マップを見る" />
       </div>
-      <div className="pointer-events-none absolute right-0 -bottom-pl -z-10 w-49.5 md:w-65.5">
+      <div className="pointer-events-none absolute right-0 -bottom-32 -z-10 w-49.5 md:-bottom-pl md:w-65.5">
         <Image
           src="/image/top/TopBack2.svg"
           alt=""
