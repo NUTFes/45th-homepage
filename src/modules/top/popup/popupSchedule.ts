@@ -4,12 +4,16 @@ export const POPUP_WINDOWS = [
     {start: 16, end: 27}, // 27 時は、翌３時
 ]
 
+// 日付をまたぐ区間のための、24以上の時間表記を定数から算出
+const MAX_HOURS: number = Math.max(...POPUP_WINDOWS.map((w) => w.end));
+const BORDER_HOURS = Math.max(MAX_HOURS-24, 0); 
+
 // 今が、上記で定義した区間のどれに属するか、その区間の開始時間を計算する
 const nowWindowStart = (now: Date): number | null => {
     // 純粋な現時刻を取得
     const h = now.getHours();
-    // 3時以前かどうかのフラグ(Yes の場合は日付を昨日として扱う)
-    const isYesterday:boolean = h <= 3 ;
+    // 24以上の時間を使うかどうかのフラグ(Yes の場合は日付を昨日として扱う)
+    const isYesterday:boolean = h <= BORDER_HOURS;
     // 27時の判定を入れるため、3時以下の場合は24を加算する
     const nowHours = isYesterday ? h + 24 : h;
 
