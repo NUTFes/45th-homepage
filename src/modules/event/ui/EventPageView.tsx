@@ -104,7 +104,7 @@ export default function EventPageView({ data, sponsorAds }: EventPageViewProps) 
       </div>
 
       <section aria-label="イベント・販売">
-        <div className="flex flex-col gap-3l bg-base-dark md:gap-5l md:py-4l">
+        <div className="flex flex-col gap-3l bg-base-dark py-l md:gap-5l md:py-4l">
           {filterController.isCheckingActivePrograms ? (
             <p className="px-ll text-center text-text text-font-main md:text-Ptext">
               開催中の企画を確認しています
