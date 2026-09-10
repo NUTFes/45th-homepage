@@ -6,27 +6,19 @@ import "./styles.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import BottomNavigation from "@/components/layout/BottomNav";
+import { SITE_URL } from "@/lib/siteUrl";
 
 const siteName = "45th NUTFES";
 const siteDescription =
   "2026年9月19日・20日に開催する、長岡技術科学大学の大学祭「技大祭」の公式サイトです。情報は随時更新予定なので、お楽しみに!";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.nutfes.net/";
-
-if (process.env.NODE_ENV === "production" && !siteUrl) {
-  throw new Error("NEXT_PUBLIC_SITE_URL is required in production");
-}
-
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: SITE_URL,
   title: {
     default: siteName,
     template: `%s | ${siteName}`,
   },
   description: siteDescription,
-  alternates: {
-    canonical: "/",
-  },
   openGraph: {
     title: siteName,
     description: siteDescription,
