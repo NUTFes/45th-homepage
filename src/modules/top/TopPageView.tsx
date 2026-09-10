@@ -325,7 +325,7 @@ function NewsSection({ newsItems }: { newsItems: Awaited<ReturnType<typeof getLa
 
 function InfoSection() {
   return (
-    <div className="flex w-full flex-col gap-y-s pb-32.5 md:gap-y-ll">
+    <div className="flex w-full flex-col gap-y-s pb-[calc(130px-var(--spacing-4l))] md:gap-y-ll md:pb-[calc(130px-var(--spacing-5l))]">
       <div className="w-full max-w-105 md:max-w-full md:px-pl">
         <SectionTitle title="ご案内" />
       </div>
