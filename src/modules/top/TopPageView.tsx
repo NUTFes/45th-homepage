@@ -325,7 +325,7 @@ function NewsSection({ newsItems }: { newsItems: Awaited<ReturnType<typeof getLa
 
 function InfoSection() {
   return (
-    <div className="flex w-full flex-col gap-y-s pb-[calc(130px-var(--spacing-4l))] md:gap-y-ll md:pb-[calc(130px-var(--spacing-5l))]">
+    <div className="flex w-full flex-col gap-y-s pb-32.5 md:gap-y-ll">
       <div className="w-full max-w-105 md:max-w-full md:px-pl">
         <SectionTitle title="ご案内" />
       </div>
@@ -444,20 +444,17 @@ export default function TopPageView() {
         <Suspense fallback={<TopPageSkeleton />}>
           <TopPageContent />
         </Suspense>
-        <div className="pointer-events-none absolute bottom-6 left-6 -z-10 md:bottom-0 md:left-0">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-0 left-0 -z-10 hidden h-[calc(585px+var(--spacing-5l))] w-223.75 bg-[#192d85]/50 md:block"
+        />
+        <div className="pointer-events-none absolute bottom-6 left-6 -z-10 md:bottom-ll md:left-25">
           <Image
             src="/image/top/TopBack3-2.svg"
             alt=""
             width={185}
             height={70}
-            className="h-auto w-full opacity-80 md:hidden"
-          />
-          <Image
-            src="/image/top/PTopBack3-2.svg"
-            alt=""
-            width={185}
-            height={70}
-            className="hidden h-auto w-full md:block"
+            className="h-auto w-full opacity-80 md:opacity-100"
           />
         </div>
         <div className="pointer-events-none absolute right-0 bottom-0">
