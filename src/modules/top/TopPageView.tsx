@@ -365,7 +365,7 @@ async function TopPageContent() {
       <UpcomingProgramsSection group={upcomingProgramGroup} />
       <MapSection />
       <NewsSection newsItems={latestNews} />
-      <div className="flex w-full flex-col gap-4l md:gap-0">
+      <div className="flex w-full flex-col gap-4l md:gap-5l">
         <SponsorAdsBoundary />
         <InfoSection />
       </div>
