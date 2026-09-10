@@ -339,6 +339,14 @@ export default function GuestPageView({ data }: GuestPageViewProps) {
             src="/icon/45th-logo-top.svg"
             alt=""
             aria-hidden="true"
+            width={420}
+            height={420}
+            className="pointer-events-none absolute -top-[160px] left-1/2 z-0 max-w-none -translate-x-1/2 opacity-10 brightness-0 invert xl:hidden"
+          />
+          <Image
+            src="/icon/45th-logo-top.svg"
+            alt=""
+            aria-hidden="true"
             width={729}
             height={729}
             className="pointer-events-none absolute -top-[463px] left-[187px] z-0 hidden max-w-none opacity-10 brightness-0 invert xl:block"

@@ -43,8 +43,9 @@ export default function AttentionPageView() {
                   </InfoBlock>
 
                   <InfoBlock title="大学構内は全面禁煙" icon={CigaretteOff}>
-                    <span className="text-textb text-accent">大学構内は全面禁煙です。</span>
-                    ご協力をお願いいたします。
+                    <span className="text-textb text-accent">大学構内の禁煙にご協力ください。</span>
+                    <br />
+                    また、近隣へのご迷惑となりますので、敷地周辺道路等での喫煙はご遠慮ください。
                   </InfoBlock>
 
                   <InfoBlock title="アルコールについて" icon={Beer}>
