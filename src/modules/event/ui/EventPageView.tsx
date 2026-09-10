@@ -6,7 +6,6 @@ import Image from "next/image";
 import EventSection, { type EventSectionEvent } from "@/modules/event/ui/EventSection";
 import ButtonMain from "@/components/ui/ButtonMain";
 import SectionTitle from "@/components/ui/SectionTitle";
-import { TOP_PROGRAM_LIMIT_PER_CATEGORY } from "@/lib/events/constants";
 import ProgramFilterControls, {
   useProgramFilters,
 } from "@/modules/event/programs/ProgramFilterControls";
@@ -33,12 +32,10 @@ export default function EventPageView({ data, sponsorAds }: EventPageViewProps) 
       return [];
     }
 
-    const events: EventSectionEvent[] = category.programs
-      .slice(0, TOP_PROGRAM_LIMIT_PER_CATEGORY)
-      .map((program) => ({
-        id: program.id,
-        ...toEventFrameProps(program),
-      }));
+    const events: EventSectionEvent[] = category.programs.map((program) => ({
+      id: program.id,
+      ...toEventFrameProps(program),
+    }));
 
     return [
       {

@@ -58,10 +58,7 @@ export const TIMETABLE_START_TIME = "10:00";
 export const TIMETABLE_END_TIME = "20:30";
 export const TIMETABLE_DISPLAY_END_TIME = "21:00";
 
-export const TOP_PROGRAM_LIMIT_PER_CATEGORY = 5;
-
-export const UPCOMING_PROGRAM_LIMIT = 5;
-export const UPCOMING_PROGRAM_WINDOW_MINUTES = 30;
+export const UPCOMING_PROGRAM_WINDOW_MINUTES = 60;
 
 export const PROGRAM_SCHEDULE_WEATHERS = [
   { value: "both", label: "晴れ・雨 共通" },
