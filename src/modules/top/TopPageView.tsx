@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { Suspense, type CSSProperties } from "react";
 import { connection } from "next/server";
 import Image from "next/image";
 import { getImportantNewsBody, getLatestNews } from "@/modules/news/server/getNews";
@@ -28,6 +28,13 @@ const LATEST_NEWS_LIMIT = 3;
 const NO_IMPORTANT_NEWS_MESSAGE = "現在、重要なお知らせはありません。";
 const PICKUP_AUTOPLAY_DELAY_MS = 5000;
 const SECTION_TITLE_CLASS_NAME = "w-full max-w-105 md:max-w-full md:self-start md:px-pl";
+const logoDecoFrames = [
+  { mobile: "Mlogodeco1_1.png", desktop: "PClogodeco1_1.png", delay: "0s" },
+  { mobile: "Mlogodeco2_1.png", desktop: "PClogodeco2_1.png", delay: "-4s" },
+  { mobile: "Mlogodeco3_1.png", desktop: "PClogodeco3_1.png", delay: "-3s" },
+  { mobile: "Mlogodeco4_1.png", desktop: "PClogodeco4_1.png", delay: "-2s" },
+  { mobile: "Mlogodeco5_1.png", desktop: "PClogodeco5_1.png", delay: "-1s" },
+] as const;
 
 async function getTopPageData() {
   await connection();
@@ -51,29 +58,112 @@ async function getTopPageData() {
   };
 }
 
-function TopHero() {
+function AnimationLayer({
+  mobileSrc,
+  pcSrc,
+  alt,
+  className,
+  width,
+  height,
+  style,
+}: {
+  mobileSrc: string;
+  pcSrc: string;
+  alt: string;
+  className: string;
+  width: number;
+  height: number;
+  style: CSSProperties;
+}) {
+  return (
+    <picture className="absolute inset-0 block" style={style}>
+      <source media="(min-width: 768px)" srcSet={pcSrc} />
+      <img
+        src={mobileSrc}
+        alt={alt}
+        aria-hidden="true"
+        className={className}
+        width={width}
+        height={height}
+      />
+    </picture>
+  );
+}
+
+function TopHeroAnime() {
   return (
     <div className="flex w-full flex-col items-center">
-      <picture className="block aspect-1575/2760 w-full md:aspect-4000/2100">
-        <source
-          media="(min-width: 768px)"
-          sizes="100vw"
-          srcSet="/image/top/Ps_HeroAll-1024.avif 1024w, /image/top/Ps_HeroAll-1920.avif 1920w"
-          type="image/avif"
+      <div className="relative block aspect-1575/2760 w-full md:aspect-4000/2100">
+        <AnimationLayer
+          mobileSrc="/image/top/animation/Mback_1.png"
+          pcSrc="/image/top/animation/PCback_1.png"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover"
+          width={1585}
+          height={2765}
+          style={{ zIndex: 1 }}
+        />
+        <AnimationLayer
+          mobileSrc="/image/top/animation/Mbackrotation_1.png"
+          pcSrc="/image/top/animation/PCbackrotation_1.png"
+          alt=""
+          className="absolute inset-0 h-full w-full origin-[50%_61%] animate-[spin_50s_linear_infinite] object-cover md:origin-[69%_50%]"
+          width={1585}
+          height={2765}
+          style={{ zIndex: 2 }}
+        />
+        <AnimationLayer
+          mobileSrc="/image/top/animation/Mtown_1.png"
+          pcSrc="/image/top/animation/PCtown_1.png"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover"
+          width={1585}
+          height={2765}
+          style={{ zIndex: 3 }}
         />
         <img
+          src="/image/top/animation/PCflower_1.png"
           alt=""
-          className="h-full w-full object-cover"
-          decoding="async"
-          fetchPriority="high"
-          loading="eager"
-          sizes="100vw"
-          src="/image/top/HeroAll-750.avif"
-          srcSet="/image/top/HeroAll-430.avif 430w, /image/top/HeroAll-750.avif 750w"
-          width={1575}
-          height={2760}
+          aria-hidden="true"
+          className="absolute inset-0 hidden h-full w-full object-cover md:block"
+          width={4000}
+          height={2100}
+          style={{ zIndex: 4 }}
         />
-      </picture>
+        <AnimationLayer
+          mobileSrc="/image/top/animation/Mpeople_2.png"
+          pcSrc="/image/top/animation/PCpeople_2.png"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover"
+          width={1585}
+          height={2765}
+          style={{ zIndex: 5 }}
+        />
+        <AnimationLayer
+          mobileSrc="/image/top/animation/Mtitle_3.png"
+          pcSrc="/image/top/animation/PCtitle_3.png"
+          alt=""
+          className="absolute inset-0 h-full w-full duration-[3000ms] ease-out animate-in fade-in slide-in-from-top-4"
+          width={1585}
+          height={2765}
+          style={{ zIndex: 6 }}
+        />
+        {logoDecoFrames.map((frame) => (
+          <picture
+            key={frame.mobile}
+            className="top-logo-deco-frame absolute inset-0 h-full w-full"
+            style={{ animationDelay: frame.delay, zIndex: 7 }}
+          >
+            <source media="(min-width: 768px)" srcSet={`/image/top/animation/${frame.desktop}`} />
+            <img
+              src={`/image/top/animation/${frame.mobile}`}
+              alt=""
+              aria-hidden="true"
+              className="h-full w-full object-cover"
+            />
+          </picture>
+        ))}
+      </div>
       <LogoInfo />
     </div>
   );
@@ -365,7 +455,7 @@ export default function TopPageView() {
       className="relative z-0 flex min-h-screen flex-col items-center overflow-x-hidden bg-base"
       id="top"
     >
-      <TopHero />
+      <TopHeroAnime />
       <div className="relative flex w-full flex-col gap-4l">
         <Suspense fallback={<TopPageSkeleton />}>
           <TopPageContent />
