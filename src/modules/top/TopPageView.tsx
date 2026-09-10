@@ -22,11 +22,11 @@ const NO_IMPORTANT_NEWS_MESSAGE = "現在、重要なお知らせはありませ
 const PICKUP_AUTOPLAY_DELAY_MS = 5000;
 const SECTION_TITLE_CLASS_NAME = "w-full max-w-105 md:max-w-full md:self-start md:px-pl";
 const logoDecoFrames = [
-  { mobile: "Mlogodeco1_1.svg", desktop: "PClogodeco1_1.svg", delay: "0s" },
-  { mobile: "Mlogodeco2_1.svg", desktop: "PClogodeco2_1.svg", delay: "-4s" },
-  { mobile: "Mlogodeco3_1.svg", desktop: "PClogodeco3_1.svg", delay: "-3s" },
-  { mobile: "Mlogodeco4_1.svg", desktop: "PClogodeco4_1.svg", delay: "-2s" },
-  { mobile: "Mlogodeco5_1.svg", desktop: "PClogodeco5_1.svg", delay: "-1s" },
+  { mobile: "Mlogodeco1_1.png", desktop: "PClogodeco1_1.png", delay: "0s" },
+  { mobile: "Mlogodeco2_1.png", desktop: "PClogodeco2_1.png", delay: "-4s" },
+  { mobile: "Mlogodeco3_1.png", desktop: "PClogodeco3_1.png", delay: "-3s" },
+  { mobile: "Mlogodeco4_1.png", desktop: "PClogodeco4_1.png", delay: "-2s" },
+  { mobile: "Mlogodeco5_1.png", desktop: "PClogodeco5_1.png", delay: "-1s" },
 ] as const;
 
 async function getTopPageData() {
@@ -82,8 +82,8 @@ function TopHeroAnime() {
     <div className="flex w-full flex-col items-center">
       <div className="relative block aspect-1575/2760 w-full md:aspect-4000/2100">
         <AnimationLayer
-          mobileSrc="/image/top/animation/Mback_1.svg"
-          pcSrc="/image/top/animation/PCback_1.svg"
+          mobileSrc="/image/top/animation/Mback_1.png"
+          pcSrc="/image/top/animation/PCback_1.png"
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
           width={1585}
@@ -91,8 +91,8 @@ function TopHeroAnime() {
           style={{ zIndex: 1 }}
         />
         <AnimationLayer
-          mobileSrc="/image/top/animation/Mbackrotation_1.svg"
-          pcSrc="/image/top/animation/PCbackrotation_1.svg"
+          mobileSrc="/image/top/animation/Mbackrotation_1.png"
+          pcSrc="/image/top/animation/PCbackrotation_1.png"
           alt=""
           className="absolute inset-0 h-full w-full origin-[50%_61%] animate-[spin_50s_linear_infinite] object-cover md:origin-[69%_50%]"
           width={1585}
@@ -100,8 +100,8 @@ function TopHeroAnime() {
           style={{ zIndex: 2 }}
         />
         <AnimationLayer
-          mobileSrc="/image/top/animation/Mtown_1.svg"
-          pcSrc="/image/top/animation/PCtown_1.svg"
+          mobileSrc="/image/top/animation/Mtown_1.png"
+          pcSrc="/image/top/animation/PCtown_1.png"
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
           width={1585}
@@ -109,7 +109,7 @@ function TopHeroAnime() {
           style={{ zIndex: 3 }}
         />
         <img
-          src="/image/top/animation/PCflower_1.svg"
+          src="/image/top/animation/PCflower_1.png"
           alt=""
           aria-hidden="true"
           className="absolute inset-0 hidden h-full w-full object-cover md:block"
@@ -118,8 +118,8 @@ function TopHeroAnime() {
           style={{ zIndex: 4 }}
         />
         <AnimationLayer
-          mobileSrc="/image/top/animation/Mpeople_2.svg"
-          pcSrc="/image/top/animation/PCpeople_2.svg"
+          mobileSrc="/image/top/animation/Mpeople_2.png"
+          pcSrc="/image/top/animation/PCpeople_2.png"
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
           width={1585}
@@ -127,8 +127,8 @@ function TopHeroAnime() {
           style={{ zIndex: 5 }}
         />
         <AnimationLayer
-          mobileSrc="/image/top/animation/Mtitle_3.svg"
-          pcSrc="/image/top/animation/PCtitle_3.svg"
+          mobileSrc="/image/top/animation/Mtitle_3.png"
+          pcSrc="/image/top/animation/PCtitle_3.png"
           alt=""
           className="absolute inset-0 h-full w-full duration-[3000ms] ease-out animate-in fade-in slide-in-from-top-4"
           width={1585}
