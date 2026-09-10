@@ -17,7 +17,7 @@ export default function EventIntroFrame({ title, body, headingLevel = 2 }: Event
   const Heading = headingLevel === 1 ? "h1" : "h2";
 
   return (
-    <div className="relative flex w-full flex-col gap-s overflow-hidden border border-main bg-base px-m py-s text-secondary shadow-[0px_2px_6px_0px] shadow-base-shadow md:px-ll md:py-m">
+    <div className="relative flex w-full flex-col gap-s overflow-hidden border border-main bg-base-dark px-m py-s text-secondary shadow-[0px_2px_6px_0px] shadow-base-shadow md:px-ll md:py-m">
       {CORNER_CLASS_NAMES.map((pos, index) => (
         <div
           key={index}

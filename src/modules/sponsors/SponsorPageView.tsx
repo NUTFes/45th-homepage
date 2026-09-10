@@ -38,13 +38,16 @@ function SponsorNameList({ sponsorNames }: { sponsorNames: string[] }) {
 
   return (
     <section aria-label="協賛企業名一覧" className="w-full px-4l md:px-0">
-      <ul className="mx-auto grid w-full max-w-240 grid-cols-1 gap-x-3l gap-y-m sm:grid-cols-[repeat(auto-fit,minmax(17rem,1fr))]">
+      <ul className="mx-auto grid w-full max-w-240 grid-cols-1 gap-x-3l gap-y-m md:grid-cols-3">
         {sponsorNames.map((sponsorName, index) => (
           <li
             key={`${sponsorName}-${index}`}
-            className="flex min-w-0 items-center justify-start gap-2.5 text-font-main md:justify-center"
+            className="flex min-w-0 items-center justify-start gap-2.5 text-font-main md:items-start"
           >
-            <span className="size-4 shrink-0 rounded-full bg-secondary" aria-hidden="true" />
+            <span
+              className="size-4 shrink-0 rounded-full bg-secondary md:mt-2"
+              aria-hidden="true"
+            />
             <span className="min-w-0 text-text-large wrap-break-word md:text-Ptext-large">
               {sponsorName}
             </span>

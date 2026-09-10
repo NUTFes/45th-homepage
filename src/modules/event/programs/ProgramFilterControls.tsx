@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useMemo, useState } from "react";
+import { type ReactNode, useEffect, useId, useMemo, useState } from "react";
 import { Check } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Checkbox, Dialog, Modal, ModalOverlay } from "react-aria-components";
@@ -31,6 +31,7 @@ export type ProgramFilterController = {
 };
 
 type ProgramFilterControlsProps = {
+  barBottomDecoration?: ReactNode;
   controller: ProgramFilterController;
   filterVariant: CategoryMenuVariant;
   title: string;
@@ -115,6 +116,7 @@ export function useProgramFilters(
 }
 
 export default function ProgramFilterControls({
+  barBottomDecoration,
   controller,
   filterVariant,
   title,
@@ -134,7 +136,7 @@ export default function ProgramFilterControls({
         aria-label={`${title}の絞り込み`}
         className="flex flex-col gap-ss bg-base pb-ss md:gap-xs md:pb-xs"
       >
-        <div className="flex items-center justify-between gap-s bg-base-dark px-l py-m shadow-[0_2px_6px_0_var(--color-base)] md:px-pm">
+        <div className="relative flex items-center justify-between gap-s bg-base-dark px-l py-m shadow-[0_2px_6px_0_var(--color-base)] md:px-pm">
           <Checkbox
             aria-label="開催中の企画だけを表示"
             className="group flex cursor-pointer items-center gap-xs rounded-sm text-textb text-font-main focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main md:text-Ptext"
@@ -163,6 +165,7 @@ export default function ProgramFilterControls({
               onPress={() => controller.setIsMenuOpen(true)}
             />
           ) : null}
+          {barBottomDecoration}
         </div>
         {controller.selectedFilterValues.length > 0 ? (
           <div aria-label="選択中のタグ" className="flex flex-wrap gap-ss px-m md:gap-s md:px-pm">

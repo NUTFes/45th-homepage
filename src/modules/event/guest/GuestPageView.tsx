@@ -274,7 +274,7 @@ export default function GuestPageView({ data }: GuestPageViewProps) {
         className="pointer-events-none absolute top-171 left-xs z-0 hidden xl:block"
       />
 
-      <div className="relative z-10 mx-auto grid w-full max-w-[1320px] grid-cols-1 gap-y-4l pb-4l md:pb-pm xl:grid-cols-[minmax(0,1fr)_minmax(320px,540px)] xl:gap-x-5l xl:pl-4l">
+      <div className="relative z-10 mx-auto grid w-full max-w-330 grid-cols-1 gap-y-4l pb-4l md:pb-pm xl:grid-cols-[minmax(0,1fr)_minmax(320px,540px)] xl:gap-x-5l xl:pl-4l">
         <div className="relative isolate xl:col-start-1 xl:row-start-1 xl:pt-5l">
           <Image
             src="/image/PageBack1.svg"
@@ -282,7 +282,7 @@ export default function GuestPageView({ data }: GuestPageViewProps) {
             aria-hidden="true"
             width={287}
             height={333}
-            className="pointer-events-none absolute top-0 -right-[110px] z-0 hidden max-w-none xl:block"
+            className="pointer-events-none absolute top-0 -right-27.5 z-0 hidden max-w-none xl:block"
           />
           <Image
             src="/image/event/guest-main.png"
@@ -339,9 +339,17 @@ export default function GuestPageView({ data }: GuestPageViewProps) {
             src="/icon/45th-logo-top.svg"
             alt=""
             aria-hidden="true"
+            width={318}
+            height={318}
+            className="pointer-events-none absolute -top-48.75 -right-20.25 z-0 max-w-none opacity-10 brightness-0 invert xl:hidden"
+          />
+          <Image
+            src="/icon/45th-logo-top.svg"
+            alt=""
+            aria-hidden="true"
             width={729}
             height={729}
-            className="pointer-events-none absolute -top-[463px] left-[187px] z-0 hidden max-w-none opacity-10 brightness-0 invert xl:block"
+            className="pointer-events-none absolute -top-115.75 left-46.75 z-0 hidden max-w-none opacity-10 brightness-0 invert xl:block"
           />
           <h2 id="guest-performers-heading" className="sr-only">
             出演者情報
