@@ -1,6 +1,6 @@
 import { Suspense, type CSSProperties } from "react";
 import { connection } from "next/server";
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import { getImportantNewsBody, getLatestNews } from "@/modules/news/server/getNews";
 import { getPickUpSlides } from "@/modules/top/server/getPickUpSlides";
 import { getEventsPageData } from "@/modules/events/server/getEventsPageData";
@@ -28,6 +28,11 @@ const LATEST_NEWS_LIMIT = 3;
 const NO_IMPORTANT_NEWS_MESSAGE = "現在、重要なお知らせはありません。";
 const PICKUP_AUTOPLAY_DELAY_MS = 5000;
 const SECTION_TITLE_CLASS_NAME = "w-full max-w-105 md:max-w-full md:self-start md:px-pl";
+const TOP_HERO_IMAGE_QUALITY = 60;
+const TOP_HERO_IMAGE_SIZES = "100vw";
+const TOP_HERO_MOBILE_SIZE = { width: 3170, height: 5530 } as const;
+const TOP_HERO_DESKTOP_SIZE = { width: 8000, height: 4200 } as const;
+const TRANSPARENT_PIXEL = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
 const logoDecoFrames = [
   { mobile: "Mlogodeco1_1.png", desktop: "PClogodeco1_1.png", delay: "0s" },
   { mobile: "Mlogodeco2_1.png", desktop: "PClogodeco2_1.png", delay: "-4s" },
@@ -63,28 +68,73 @@ function AnimationLayer({
   pcSrc,
   alt,
   className,
-  width,
-  height,
+  fetchPriority,
+  pictureClassName = "absolute inset-0 block",
   style,
 }: {
   mobileSrc: string;
   pcSrc: string;
   alt: string;
   className: string;
-  width: number;
-  height: number;
+  fetchPriority?: "high" | "low" | "auto";
+  pictureClassName?: string;
   style: CSSProperties;
 }) {
+  const common = {
+    alt,
+    fetchPriority,
+    quality: TOP_HERO_IMAGE_QUALITY,
+    sizes: TOP_HERO_IMAGE_SIZES,
+  };
+  const {
+    props: { srcSet: pcSrcSet },
+  } = getImageProps({
+    ...common,
+    ...TOP_HERO_DESKTOP_SIZE,
+    src: pcSrc,
+  });
+  const { props: mobileProps } = getImageProps({
+    ...common,
+    ...TOP_HERO_MOBILE_SIZE,
+    src: mobileSrc,
+  });
+
+  return (
+    <picture className={pictureClassName} style={style}>
+      <source media="(min-width: 768px)" srcSet={pcSrcSet} />
+      <img {...mobileProps} aria-hidden="true" className={className} />
+    </picture>
+  );
+}
+
+function DesktopAnimationLayer({
+  src,
+  className,
+  style,
+}: {
+  src: string;
+  className: string;
+  style: CSSProperties;
+}) {
+  const {
+    props: { srcSet, ...imageProps },
+  } = getImageProps({
+    alt: "",
+    quality: TOP_HERO_IMAGE_QUALITY,
+    sizes: TOP_HERO_IMAGE_SIZES,
+    ...TOP_HERO_DESKTOP_SIZE,
+    src,
+  });
+
   return (
     <picture className="absolute inset-0 block" style={style}>
-      <source media="(min-width: 768px)" srcSet={pcSrc} />
+      <source media="(min-width: 768px)" srcSet={srcSet} />
       <img
-        src={mobileSrc}
-        alt={alt}
+        {...imageProps}
+        src={TRANSPARENT_PIXEL}
+        alt=""
         aria-hidden="true"
         className={className}
-        width={width}
-        height={height}
       />
     </picture>
   );
@@ -99,8 +149,7 @@ function TopHeroAnime() {
           pcSrc="/image/top/animation/PCback_1.png"
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
-          width={1585}
-          height={2765}
+          fetchPriority="high"
           style={{ zIndex: 1 }}
         />
         <AnimationLayer
@@ -108,8 +157,6 @@ function TopHeroAnime() {
           pcSrc="/image/top/animation/PCbackrotation_1.png"
           alt=""
           className="absolute inset-0 h-full w-full origin-[50%_61%] animate-[spin_50s_linear_infinite] object-cover md:origin-[69%_50%]"
-          width={1585}
-          height={2765}
           style={{ zIndex: 2 }}
         />
         <AnimationLayer
@@ -117,17 +164,11 @@ function TopHeroAnime() {
           pcSrc="/image/top/animation/PCtown_1.png"
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
-          width={1585}
-          height={2765}
           style={{ zIndex: 3 }}
         />
-        <img
+        <DesktopAnimationLayer
           src="/image/top/animation/PCflower_1.png"
-          alt=""
-          aria-hidden="true"
           className="absolute inset-0 hidden h-full w-full object-cover md:block"
-          width={4000}
-          height={2100}
           style={{ zIndex: 4 }}
         />
         <AnimationLayer
@@ -135,8 +176,6 @@ function TopHeroAnime() {
           pcSrc="/image/top/animation/PCpeople_2.png"
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
-          width={1585}
-          height={2765}
           style={{ zIndex: 5 }}
         />
         <AnimationLayer
@@ -144,24 +183,18 @@ function TopHeroAnime() {
           pcSrc="/image/top/animation/PCtitle_3.png"
           alt=""
           className="absolute inset-0 h-full w-full duration-[3000ms] ease-out animate-in fade-in slide-in-from-top-4"
-          width={1585}
-          height={2765}
           style={{ zIndex: 6 }}
         />
         {logoDecoFrames.map((frame) => (
-          <picture
+          <AnimationLayer
             key={frame.mobile}
-            className="top-logo-deco-frame absolute inset-0 h-full w-full"
+            mobileSrc={`/image/top/animation/${frame.mobile}`}
+            pcSrc={`/image/top/animation/${frame.desktop}`}
+            alt=""
+            className="h-full w-full object-cover"
+            pictureClassName="top-logo-deco-frame absolute inset-0 h-full w-full"
             style={{ animationDelay: frame.delay, zIndex: 7 }}
-          >
-            <source media="(min-width: 768px)" srcSet={`/image/top/animation/${frame.desktop}`} />
-            <img
-              src={`/image/top/animation/${frame.mobile}`}
-              alt=""
-              aria-hidden="true"
-              className="h-full w-full object-cover"
-            />
-          </picture>
+          />
         ))}
       </div>
       <LogoInfo />
