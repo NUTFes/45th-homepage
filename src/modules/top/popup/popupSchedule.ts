@@ -2,15 +2,15 @@
 export const POPUP_WINDOWS = [
     {start: 11, end: 16}, // 1回目
     {start: 16, end: 27}, // 27 時は、翌３時
-]
+] as const;
 
 // 日付をまたぐ区間のための、24以上の時間表記を定数から算出
-const MAX_HOURS: number = Math.max(...POPUP_WINDOWS.map((w) => w.end));
+const MAX_HOURS = Math.max(...POPUP_WINDOWS.map((w) => w.end));
 const BORDER_HOURS = Math.max(MAX_HOURS-24, 0); 
 
 // 今が、上記で定義した区間のどれに属するか、その区間の開始時間を計算する
 export const nowWindowStart = (now: Date): number | null => {
-    // 純粋な現時刻を取得
+    // 純粋な現時刻を取得(現時点では、国内のみ想定で実装)
     const h = now.getHours();
     // 24以上の時間を使うかどうかのフラグ(Yes の場合は日付を昨日として扱う)
     const isYesterday:boolean = h <= BORDER_HOURS;
@@ -21,7 +21,7 @@ export const nowWindowStart = (now: Date): number | null => {
     // 絶対時刻に変換する関数
     const hours2Abstime = (hour: number) : number => {
         const d = new Date(now); //次の行の操作でそのまま now を使うと、大本の Date 自体が書き換わるため、今の Date をコピー 
-        isYesterday && d.setDate(d.getDate() -1);
+        if(isYesterday) d.setDate(d.getDate() -1);
         d.setHours(0, 0, 0, 0);
 
         return d.getTime() + hour * 60 * 60 * 1000;
