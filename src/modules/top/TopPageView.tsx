@@ -490,8 +490,10 @@ async function TopPageContent() {
       <UpcomingProgramsSection group={upcomingProgramGroup} />
       <MapSection />
       <NewsSection newsItems={latestNews} />
-      <SponsorAdsBoundary />
-      <InfoSection />
+      <div className="flex w-full flex-col">
+        <SponsorAdsBoundary />
+        <InfoSection />
+      </div>
     </div>
   );
 }
