@@ -35,3 +35,9 @@ export const nowWindowStart = (now: Date): number | null => {
 
   return null;
 };
+
+// 今回ポップアップを表示するべきか？ bool を返す関数
+export const shouldShow = (now: Date, lastShownAt: number | null ): boolean => {
+  const start = nowWindowStart(now);
+  return start != null && (lastShownAt == null || lastShownAt < start);
+}
