@@ -45,7 +45,6 @@ async function getTopPageData() {
   };
 }
 
-
 function AnimationLayer({
   mobileSrc,
   pcSrc,
@@ -82,9 +81,33 @@ function TopHeroAnime() {
   return (
     <div className="flex w-full flex-col items-center">
       <div className="relative block aspect-1575/2760 w-full md:aspect-4000/2100">
-        <AnimationLayer mobileSrc="/image/top/animation/Mback_1.svg" pcSrc="/image/top/animation/PCback_1.svg" alt="" className="absolute inset-0 h-full w-full object-cover" width={1585} height={2765} style={{ zIndex: 1 }} />
-        <AnimationLayer mobileSrc="/image/top/animation/Mbackrotation_1.svg" pcSrc="/image/top/animation/PCbackrotation_1.svg" alt="" className="absolute inset-0 h-full w-full origin-[50%_61%] animate-[spin_50s_linear_infinite] object-cover md:origin-[69%_50%]" width={1585} height={2765} style={{ zIndex: 2 }} />
-        <AnimationLayer mobileSrc="/image/top/animation/Mtown_1.svg" pcSrc="/image/top/animation/PCtown_1.svg" alt="" className="absolute inset-0 h-full w-full object-cover" width={1585} height={2765} style={{ zIndex: 3 }} />
+        <AnimationLayer
+          mobileSrc="/image/top/animation/Mback_1.svg"
+          pcSrc="/image/top/animation/PCback_1.svg"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover"
+          width={1585}
+          height={2765}
+          style={{ zIndex: 1 }}
+        />
+        <AnimationLayer
+          mobileSrc="/image/top/animation/Mbackrotation_1.svg"
+          pcSrc="/image/top/animation/PCbackrotation_1.svg"
+          alt=""
+          className="absolute inset-0 h-full w-full origin-[50%_61%] animate-[spin_50s_linear_infinite] object-cover md:origin-[69%_50%]"
+          width={1585}
+          height={2765}
+          style={{ zIndex: 2 }}
+        />
+        <AnimationLayer
+          mobileSrc="/image/top/animation/Mtown_1.svg"
+          pcSrc="/image/top/animation/PCtown_1.svg"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover"
+          width={1585}
+          height={2765}
+          style={{ zIndex: 3 }}
+        />
         <img
           src="/image/top/animation/PCflower_1.svg"
           alt=""
@@ -94,18 +117,31 @@ function TopHeroAnime() {
           height={2100}
           style={{ zIndex: 4 }}
         />
-        <AnimationLayer mobileSrc="/image/top/animation/Mpeople_2.svg" pcSrc="/image/top/animation/PCpeople_2.svg" alt="" className="absolute inset-0 h-full w-full object-cover" width={1585} height={2765} style={{ zIndex: 5 }} />
-        <AnimationLayer mobileSrc="/image/top/animation/Mtitle_3.svg" pcSrc="/image/top/animation/PCtitle_3.svg" alt="" className="absolute inset-0 h-full w-full duration-[3000ms] ease-out animate-in fade-in slide-in-from-top-4" width={1585} height={2765} style={{ zIndex: 6 }} />
+        <AnimationLayer
+          mobileSrc="/image/top/animation/Mpeople_2.svg"
+          pcSrc="/image/top/animation/PCpeople_2.svg"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover"
+          width={1585}
+          height={2765}
+          style={{ zIndex: 5 }}
+        />
+        <AnimationLayer
+          mobileSrc="/image/top/animation/Mtitle_3.svg"
+          pcSrc="/image/top/animation/PCtitle_3.svg"
+          alt=""
+          className="absolute inset-0 h-full w-full duration-[3000ms] ease-out animate-in fade-in slide-in-from-top-4"
+          width={1585}
+          height={2765}
+          style={{ zIndex: 6 }}
+        />
         {logoDecoFrames.map((frame) => (
           <picture
             key={frame.mobile}
             className="top-logo-deco-frame absolute inset-0 h-full w-full"
             style={{ animationDelay: frame.delay, zIndex: 7 }}
           >
-            <source
-              media="(min-width: 768px)"
-              srcSet={`/image/top/animation/${frame.desktop}`}
-            />
+            <source media="(min-width: 768px)" srcSet={`/image/top/animation/${frame.desktop}`} />
             <img
               src={`/image/top/animation/${frame.mobile}`}
               alt=""
