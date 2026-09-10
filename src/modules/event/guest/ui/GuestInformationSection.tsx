@@ -54,7 +54,7 @@ export default function GuestInformationSection(props: GuestInformationSectionPr
               COMING SOON
             </p>
           ) : (
-            <div className="flex flex-col gap-l md:gap-4l">
+            <div className="flex flex-col gap-3l md:gap-4l">
               {props.blocks.map((block) => (
                 <InfoBlock
                   accent={block.accent}
