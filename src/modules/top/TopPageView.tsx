@@ -365,7 +365,7 @@ async function TopPageContent() {
       <UpcomingProgramsSection group={upcomingProgramGroup} />
       <MapSection />
       <NewsSection newsItems={latestNews} />
-      <div className="flex w-full flex-col">
+      <div className="flex w-full flex-col gap-4l md:gap-5l">
         <SponsorAdsBoundary />
         <InfoSection />
       </div>
@@ -444,20 +444,17 @@ export default function TopPageView() {
         <Suspense fallback={<TopPageSkeleton />}>
           <TopPageContent />
         </Suspense>
-        <div className="pointer-events-none absolute bottom-6 left-6 -z-10 md:bottom-0 md:left-0">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-0 left-0 -z-10 hidden h-[calc(585px+var(--spacing-5l))] w-223.75 bg-[#192d85]/50 md:block"
+        />
+        <div className="pointer-events-none absolute bottom-6 left-6 -z-10 md:bottom-ll md:left-25">
           <Image
             src="/image/top/TopBack3-2.svg"
             alt=""
             width={185}
             height={70}
-            className="h-auto w-full opacity-80 md:hidden"
-          />
-          <Image
-            src="/image/top/PTopBack3-2.svg"
-            alt=""
-            width={185}
-            height={70}
-            className="hidden h-auto w-full md:block"
+            className="h-auto w-full opacity-80 md:opacity-100"
           />
         </div>
         <div className="pointer-events-none absolute right-0 bottom-0">
