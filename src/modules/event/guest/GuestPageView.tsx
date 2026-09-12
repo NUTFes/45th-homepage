@@ -49,6 +49,8 @@ const GUEST_EVENT_INFO = {
   ],
   map: {
     title: "体育館",
+    imageSrc: "/image/event/kaijo_guest_map.png",
+    alt: "体育館の会場マップ",
   },
 } satisfies EventInfoCardProps;
 
@@ -63,7 +65,12 @@ const TICKET_DISTRIBUTION_BLOCKS = [
         <section className="flex flex-col gap-y-s">
           <div className="w-fit border-b">場所</div>
           <p className="cd:font-bold">講義棟１階　B講義室</p>
-          <MapFrame showDecoration={false} />
+          <MapFrame
+            imageSrc="/image/event/guest_map.png"
+            alt="整理券配布場所のマップ"
+            showDecoration={false}
+            compact
+          />
         </section>
         <section className="flex flex-col gap-y-ss">
           <div className="w-fit border-b">日時</div>

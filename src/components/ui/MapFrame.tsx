@@ -6,6 +6,7 @@ export type MapFrameProps = {
   title?: string;
   type?: "short" | "long";
   showDecoration?: boolean;
+  compact?: boolean;
 };
 
 export default function MapFrame({
@@ -14,10 +15,11 @@ export default function MapFrame({
   title,
   type = "long",
   showDecoration = true,
+  compact = false,
 }: MapFrameProps) {
   return (
     <div className="relative flex w-full flex-col">
-      <div className="w-full px-10 md:px-0">
+      <div className={`w-full ${compact ? "px-0" : "px-10"} md:px-0`}>
         <div className="flex w-full items-stretch gap-0">
           {showDecoration ? (
             <>

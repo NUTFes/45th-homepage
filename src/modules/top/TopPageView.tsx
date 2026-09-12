@@ -264,7 +264,7 @@ function MapSection() {
       </div>
       <div className="flex w-full flex-col items-center gap-m md:gap-l">
         <div className="w-full md:max-w-200">
-          <MapFrame showDecoration={false} />
+          <MapFrame imageSrc="/image/map/all_map.png" alt="会場全体マップ" showDecoration={false} />
         </div>
         <ButtonMain href="/map" title="マップを見る" />
       </div>
