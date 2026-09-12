@@ -128,23 +128,23 @@ export default function AccessPageView() {
           <div className="flex w-full flex-col gap-y-m px-ll md:px-pll">
             <div className="text-text-large">技大前（路線バス乗り場隣）</div>
             <div className="flex flex-col gap-y-m lg:flex-row lg:justify-center lg:gap-x-m">
-            <Image
-              src="/image/access/map_noriba3a_mb.png"
-              alt="乗り場説明3"
-              width={312}
-              height={234}
-              sizes="50vw"
-              className="h-auto w-full max-w-95 self-center lg:aspect-4/3 lg:w-1/2 lg:object-contain xl:max-w-125"
-            />
-            <Image
-              src="/image/access/map_noriba4_mb.png"
-              alt="乗り場説明4"
-              width={312}
-              height={234}
-              sizes="50vw"
-              className="h-auto w-full max-w-95 self-center lg:aspect-4/3 lg:w-1/2 lg:object-contain xl:max-w-125"
-            />
-          </div>
+              <Image
+                src="/image/access/map_noriba3a_mb.png"
+                alt="乗り場説明3"
+                width={312}
+                height={234}
+                sizes="50vw"
+                className="h-auto w-full max-w-95 self-center lg:aspect-4/3 lg:w-1/2 lg:object-contain xl:max-w-125"
+              />
+              <Image
+                src="/image/access/map_noriba4_mb.png"
+                alt="乗り場説明4"
+                width={312}
+                height={234}
+                sizes="50vw"
+                className="h-auto w-full max-w-95 self-center lg:aspect-4/3 lg:w-1/2 lg:object-contain xl:max-w-125"
+              />
+            </div>
           </div>
         </section>
 
