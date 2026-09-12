@@ -9,6 +9,7 @@ const MAP_IMAGE: InfoImageProps = {
   aspect: "aspect-[312/234]",
   alt: "会場マップ",
   caption: "会場マップ",
+  src: "/image/info/kaijo_map.png",
   placeholderTitle: "MAP",
   placeholderNote: "NO IMAGE",
 };
@@ -17,6 +18,7 @@ const TSHIRT_IMAGE: InfoImageProps = {
   aspect: "aspect-[312/234]",
   alt: "技大祭Tシャツ",
   caption: "技大祭Tシャツ",
+  src: "/image/info/45th_tshirt.png",
   placeholderNote: "技大祭Tシャツ画像",
 };
 
@@ -37,6 +39,7 @@ const PAMPHLET_IMAGE: InfoImageProps = {
   aspect: "aspect-[326/201]",
   alt: "パンフレット",
   caption: "パンフレット",
+  src: "/image/info/pamphlet.png",
   placeholderNote: "パンフデジタル画像",
 };
 
@@ -44,6 +47,7 @@ const GUIDEMAP_IMAGE: InfoImageProps = {
   aspect: "aspect-[326/201]",
   alt: "ガイドマップ",
   caption: "ガイドマップ",
+  src: "/image/info/guide_map.png",
   placeholderNote: "ガイドマップデジタル画像",
 };
 

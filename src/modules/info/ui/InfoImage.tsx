@@ -50,7 +50,7 @@ function ImageBox({
           src={src}
           fill
           sizes={fullscreen ? "85vw" : "(min-width: 1024px) 50vw, 100vw"}
-          className={fullscreen ? "object-contain" : "object-cover"}
+          className="object-contain"
         />
       ) : (
         <Placeholder placeholderTitle={placeholderTitle} placeholderNote={placeholderNote} />

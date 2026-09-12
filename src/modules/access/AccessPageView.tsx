@@ -118,8 +118,8 @@ export default function AccessPageView() {
               <Image
                 src="/image/access/map_noriba2_mb.png"
                 alt="乗り場説明2"
-                width={313}
-                height={248}
+                width={312}
+                height={234}
                 sizes="50vw"
                 className="h-auto w-full max-w-95 self-center lg:aspect-4/3 lg:w-1/2 lg:object-contain xl:max-w-125"
               />
@@ -127,15 +127,24 @@ export default function AccessPageView() {
           </div>
           <div className="flex w-full flex-col gap-y-m px-ll md:px-pll">
             <div className="text-text-large">技大前（路線バス乗り場隣）</div>
-            <div>==乗り場説明3の画像==</div>
+            <div className="flex flex-col gap-y-m lg:flex-row lg:justify-center lg:gap-x-m">
+            <Image
+              src="/image/access/map_noriba3a_mb.png"
+              alt="乗り場説明3"
+              width={312}
+              height={234}
+              sizes="50vw"
+              className="h-auto w-full max-w-95 self-center lg:aspect-4/3 lg:w-1/2 lg:object-contain xl:max-w-125"
+            />
             <Image
               src="/image/access/map_noriba4_mb.png"
               alt="乗り場説明4"
-              width={313}
-              height={248}
+              width={312}
+              height={234}
               sizes="50vw"
-              className="h-auto w-full max-w-95 self-center xl:max-w-125"
+              className="h-auto w-full max-w-95 self-center lg:aspect-4/3 lg:w-1/2 lg:object-contain xl:max-w-125"
             />
+          </div>
           </div>
         </section>
 
@@ -179,9 +188,14 @@ export default function AccessPageView() {
               <span className="text-accent">路上駐車はご遠慮ください。</span>{" "}
               ご協力をお願いいたします。
             </div>
-            <div className="relative mx-auto w-full max-w-200">
+            <div className="w-full md:max-w-200">
               <div className="py-s text-button md:text-Ptitle-small">駐車場マップ</div>
-              <MapFrame showDecoration={false} />
+              <MapFrame
+                imageSrc="/image/access/parking_map.png"
+                alt="駐車場マップ"
+                showDecoration={false}
+                compact
+              />
               <div className="flex w-full flex-col items-center py-m">
                 <div className="w-80 md:w-100">
                   <ButtonMain
