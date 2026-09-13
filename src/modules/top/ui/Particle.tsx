@@ -1,170 +1,182 @@
 "use client";
 
 import Script from "next/script";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
-const CREATEJS_SCRIPT_URL = "https://code.createjs.com/1.0.0/createjs.min.js";
+const PARTICLE_MASK_STYLE = {
+  maskImage: "linear-gradient(to top, transparent 0%, transparent 50%, black 100%)",
+  WebkitMaskImage:
+    "linear-gradient(to top, transparent 0%, transparent 50%, black 100%)",
+};
+
 const PARTICLE_SCRIPT_URL =
-  "https://cdn.rawgit.com/ics-creative/ParticleJS/release/1.0.0/libs/particlejs.min.js";
+  "https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js";
 
-type ParticleSystem = {
-  container: unknown;
-  importFromJson: (settings: ParticleSettings) => void;
-  update: () => void;
+const PARTICLE_CONFIG = {
+  particles: {
+    number: {
+      value: 600,
+      density: {
+        enable: true,
+        value_area: 1024.8809561350947,
+      },
+    },
+    color: {
+      value: "#ebabef",
+    },
+    shape: {
+      type: "circle",
+      stroke: {
+        width: 0,
+        color: "#000000",
+      },
+      polygon: {
+        nb_sides: 5,
+      },
+      image: {
+        src: "img/github.svg",
+        width: 100,
+        height: 100,
+      },
+    },
+    opacity: {
+      value: 0.5,
+      random: true,
+      anim: {
+        enable: false,
+        speed: 1,
+        opacity_min: 0.1,
+        sync: false,
+      },
+    },
+    size: {
+      value: 8,
+      random: true,
+      anim: {
+        enable: false,
+        speed: 40,
+        size_min: 0.1,
+        sync: false,
+      },
+    },
+    line_linked: {
+      enable: false,
+      distance: 368,
+      color: "#ffffff",
+      opacity: 0.4,
+      width: 2,
+    },
+    move: {
+      enable: true,
+      speed: 1.2,
+      direction: "bottom",
+      random: false,
+      straight: false,
+      out_mode: "out",
+      bounce: false,
+      attract: {
+        enable: false,
+        rotateX: 600,
+        rotateY: 1200,
+      },
+    },
+  },
+  interactivity: {
+    detect_on: "canvas",
+    events: {
+      onhover: {
+        enable: false,
+        mode: "bubble",
+      },
+      onclick: {
+        enable: false,
+        mode: "repulse",
+      },
+      resize: true,
+    },
+    modes: {
+      grab: {
+        distance: 400,
+        line_linked: {
+          opacity: 0.5,
+        },
+      },
+      bubble: {
+        distance: 400,
+        size: 4,
+        duration: 0.3,
+        opacity: 1,
+        speed: 3,
+      },
+      repulse: {
+        distance: 200,
+        duration: 0.4,
+      },
+      push: {
+        particles_nb: 4,
+      },
+      remove: {
+        particles_nb: 2,
+      },
+    },
+  },
+  retina_detect: true,
 };
 
-type ParticleSettings = {
-  bgColor: string;
-  width: number;
-  height: number;
-  emitFrequency: number;
-  startX: number;
-  startXVariance: number;
-  startY: number;
-  startYVariance: number;
-  initialDirection: number | string;
-  initialDirectionVariance: number | string;
-  initialSpeed: number;
-  initialSpeedVariance: number;
-  friction: number;
-  accelerationSpeed: number | string;
-  accelerationDirection: number;
-  startScale: number;
-  startScaleVariance: number;
-  finishScale: number;
-  finishScaleVariance: number;
-  lifeSpan: number;
-  lifeSpanVariance: number;
-  startAlpha: number;
-  startAlphaVariance: number;
-  finishAlpha: number;
-  finishAlphaVariance: number;
-  shapeIdList: string[];
-  startColor: {
-    hue: number | string;
-    hueVariance: number | string;
-    saturation: number | string;
-    saturationVariance: number | string;
-    luminance: number | string;
-    luminanceVariance: number | string;
+type ParticleInstance = {
+  pJS: {
+    canvas: {
+      el: HTMLCanvasElement;
+    };
+    fn: {
+      vendors: {
+        destroypJS: () => void;
+      };
+    };
   };
-  blendMode: boolean;
-  alphaCurveType: string;
-  VERSION: string;
-};
-
-type CreateJsStage = {
-  addChild: (child: unknown) => void;
-  update: () => void;
-};
-
-type CreateJsTicker = {
-  framerate: number;
-  timingMode: string;
-  RAF: string;
-  addEventListener: (event: "tick", listener: () => void) => void;
-  removeEventListener: (event: "tick", listener: () => void) => void;
 };
 
 declare global {
   interface Window {
-    createjs?: {
-      Stage: new (canvas: HTMLCanvasElement) => CreateJsStage;
-      Ticker: CreateJsTicker;
-    };
-    particlejs?: {
-      ParticleSystem: new () => ParticleSystem;
-    };
+    particlesJS?: (tagId: string, params: typeof PARTICLE_CONFIG) => void;
+    pJSDom?: ParticleInstance[];
   }
 }
-
-const PARTICLE_SETTINGS: ParticleSettings = {
-  bgColor: "transparent",
-  width: 962,
-  height: 431,
-  emitFrequency: 50,
-  startX: 671.7351443123939,
-  startXVariance: 859,
-  startY: 457.47511591962905,
-  startYVariance: 18,
-  initialDirection: 213,
-  initialDirectionVariance: "360",
-  initialSpeed: 7,
-  initialSpeedVariance: 1.9,
-  friction: 0.1165,
-  accelerationSpeed: 0.0975,
-  accelerationDirection: 209.2,
-  startScale: 0.36,
-  startScaleVariance: 1,
-  finishScale: 0.07,
-  finishScaleVariance: 1,
-  lifeSpan: 249,
-  lifeSpanVariance: 332,
-  startAlpha: 0.48,
-  startAlphaVariance: 0.32,
-  finishAlpha: 0.21,
-  finishAlphaVariance: 0.5,
-  shapeIdList: ["blur_circle"],
-  startColor: {
-    hue: 242,
-    hueVariance: 210,
-    saturation: 60,
-    saturationVariance: "0",
-    luminance: 27,
-    luminanceVariance: 100,
-  },
-  blendMode: true,
-  alphaCurveType: "1",
-  VERSION: "1.0.0",
-};
 
 type ParticleProps = {
   className?: string;
 };
 
 export function Particle({ className }: ParticleProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [loadedScripts, setLoadedScripts] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const containerId = useId().replaceAll(":", "");
+  const [scriptLoaded, setScriptLoaded] = useState(false);
 
   useEffect(() => {
-    if (loadedScripts < 2 || !canvasRef.current || !window.createjs || !window.particlejs) {
+    if (!scriptLoaded || !containerRef.current || !window.particlesJS) {
       return;
     }
 
-    const stage = new window.createjs.Stage(canvasRef.current);
-    const particleSystem = new window.particlejs.ParticleSystem();
-    stage.addChild(particleSystem.container);
-    particleSystem.importFromJson(PARTICLE_SETTINGS);
+    window.particlesJS(containerId, PARTICLE_CONFIG);
 
-    const { Ticker } = window.createjs;
-    Ticker.framerate = 60;
-    Ticker.timingMode = Ticker.RAF;
-    const handleTick = () => {
-      particleSystem.update();
-      stage.update();
+    return () => {
+      const instance = window.pJSDom?.find(
+        ({ pJS }) => pJS.canvas.el.parentElement === containerRef.current,
+      );
+      instance?.pJS.fn.vendors.destroypJS();
+      containerRef.current?.replaceChildren();
     };
-    Ticker.addEventListener("tick", handleTick);
-
-    return () => Ticker.removeEventListener("tick", handleTick);
-  }, [loadedScripts]);
-
-  const handleScriptReady = () => setLoadedScripts((count) => count + 1);
+  }, [containerId, scriptLoaded]);
 
   return (
-    <div className={className}>
+    <div className={className} style={PARTICLE_MASK_STYLE}>
       <Script
-        id="createjs"
-        src={CREATEJS_SCRIPT_URL}
-        strategy="afterInteractive"
-        onReady={handleScriptReady}
-      />
-      <Script
-        id="particlejs"
+        id="particles-js"
         src={PARTICLE_SCRIPT_URL}
         strategy="afterInteractive"
-        onReady={handleScriptReady}
+        onReady={() => setScriptLoaded(true)}
       />
-      <canvas ref={canvasRef} width={962} height={431} className="h-full w-full" />
+      <div id={containerId} ref={containerRef} className="h-full w-full" />
     </div>
   );
 }
