@@ -23,6 +23,7 @@ import LogoInfo from "./ui/LogoInfo";
 import PickUpFrame from "./ui/PickUpFrame";
 import InfoMenu from "./ui/InfoMenu";
 import PickUpCarouselLazy from "./ui/PickUpCarouselLazy";
+import { Particle } from "./ui/Particle";
 
 const LATEST_NEWS_LIMIT = 3;
 const NO_IMPORTANT_NEWS_MESSAGE = "現在、重要なお知らせはありません。";
@@ -100,6 +101,7 @@ function TopHeroAnime() {
   return (
     <div className="flex w-full flex-col items-center">
       <div className="relative block aspect-1575/2760 w-full md:aspect-4000/2100">
+        <Particle className="pointer-events-none absolute right-0 bottom-0 z-100 mix-blend-screen" />
         <AnimationLayer
           mobileSrc="/image/top/animation/Mback_1.png"
           pcSrc="/image/top/animation/PCback_1.png"
@@ -440,6 +442,7 @@ export default function TopPageView() {
       id="top"
     >
       <TopHeroAnime />
+
       <div className="relative flex w-full flex-col gap-4l">
         <Suspense fallback={<TopPageSkeleton />}>
           <TopPageContent />
