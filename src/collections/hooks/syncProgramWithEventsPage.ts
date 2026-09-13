@@ -238,7 +238,7 @@ export const syncProgramWithEventsPageAfterChange: CollectionAfterChangeHook = a
   });
 
   const next =
-    doc._status === "published"
+    doc._status === "published" && doc.showInProgramList
       ? syncPublishedProgram(eventsPage, doc)
       : removeProgramFromAllFields(eventsPage, doc.id);
 

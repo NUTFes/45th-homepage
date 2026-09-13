@@ -287,6 +287,10 @@ export interface Program {
   title: string;
   category: 'program' | 'exhibition' | 'food' | 'goods' | 'corporate';
   /**
+   * Turn off to exclude this program from program lists. Timetable listings are unaffected.
+   */
+  showInProgramList: boolean;
+  /**
    * Area used to find the program on the map. This is separate from timetable groups.
    */
   area: 'lecture' | 'gym' | 'outdoor' | 'kitchen_car' | 'other';
@@ -570,6 +574,7 @@ export interface ProgramsSelect<T extends boolean = true> {
   adminLabel?: T;
   title?: T;
   category?: T;
+  showInProgramList?: T;
   area?: T;
   locationName?: T;
   image?: T;

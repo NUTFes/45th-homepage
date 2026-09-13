@@ -133,6 +133,23 @@ export const Programs: CollectionConfig = {
       },
     },
     {
+      name: "showInProgramList",
+      label: {
+        ja: "企画一覧に表示する",
+        en: "Show in Program List",
+      },
+      type: "checkbox",
+      required: true,
+      defaultValue: true,
+      admin: {
+        position: "sidebar",
+        description: {
+          ja: "オフにすると企画一覧から除外されます。タイムスケジュールの掲載設定には影響しません。",
+          en: "Turn off to exclude this program from program lists. Timetable listings are unaffected.",
+        },
+      },
+    },
+    {
       name: "area",
       label: {
         ja: "マップのエリア",
