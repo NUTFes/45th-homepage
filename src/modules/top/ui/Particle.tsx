@@ -5,8 +5,7 @@ import { useEffect, useId, useRef, useState } from "react";
 
 const PARTICLE_MASK_STYLE = {
   maskImage: "linear-gradient(to top, transparent 0%, transparent 50%, black 100%)",
-  WebkitMaskImage:
-    "linear-gradient(to top, transparent 0%, transparent 50%, black 100%)",
+  WebkitMaskImage: "linear-gradient(to top, transparent 0%, transparent 50%, black 100%)",
 };
 
 const PARTICLE_SCRIPT_URL =
