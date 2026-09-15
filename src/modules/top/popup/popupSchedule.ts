@@ -42,7 +42,11 @@ export const shouldShow = (now: Date, lastShownAt: number | null ): boolean => {
   return start != null && (lastShownAt == null || lastShownAt < start);
 }
 
-// ローカルストレージに書かれている、前回いつポップアップを表示したかという情報を正規化して、ありえない数値を「記録なし」として変換する
-export const parseLastShownAt = () => {
-  return null
+// ローカルストレージに書かれている、前回いつポップアップを表示したかという情報を正規化して、ありえない数値を「記録なし(null)」として変換する
+export const parseLastShownAt = (raw: string | null, now: Date): number | null => {
+  if( raw === null) return null
+  let n_raw = Number(raw)
+  if(Number.isNaN(n_raw) ) return null
+  if( n_raw < 0 || now.getTime() < n_raw) return null
+  return n_raw
 };
