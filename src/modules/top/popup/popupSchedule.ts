@@ -39,14 +39,14 @@ export const nowWindowStart = (now: Date): number | null => {
 // 今回ポップアップを表示するべきか？ bool を返す関数
 export const shouldShow = (now: Date, lastShownAt: number | null ): boolean => {
   const start = nowWindowStart(now);
-  return start != null && (lastShownAt == null || lastShownAt < start);
+  return start !== null && (lastShownAt === null || lastShownAt < start);
 }
 
 // ローカルストレージに書かれている、前回いつポップアップを表示したかという情報を正規化して、ありえない数値を「記録なし(null)」として変換する
 export const parseLastShownAt = (raw: string | null, now: Date): number | null => {
   if( raw === null) return null
-  let n_raw = Number(raw)
-  if(Number.isNaN(n_raw) ) return null
-  if( n_raw < 0 || now.getTime() < n_raw) return null
-  return n_raw
+  let numRaw = Number(raw)
+  if(Number.isNaN(numRaw) ) return null
+  if( numRaw < 0 || now.getTime() < numRaw) return null
+  return numRaw
 };
