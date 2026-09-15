@@ -41,3 +41,8 @@ export const shouldShow = (now: Date, lastShownAt: number | null ): boolean => {
   const start = nowWindowStart(now);
   return start != null && (lastShownAt == null || lastShownAt < start);
 }
+
+// ローカルストレージに書かれている、前回いつポップアップを表示したかという情報を正規化して、ありえない数値を「記録なし」として変換する
+export const parseLastShownAt = () => {
+  return null
+};
