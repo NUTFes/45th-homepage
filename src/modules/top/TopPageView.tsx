@@ -439,7 +439,7 @@ export default function TopPageView() {
     <div
       className="relative z-0 flex min-h-screen flex-col items-center overflow-x-hidden bg-base"
       id="top"
-    >       
+    >
       <Particle className="pointer-events-none absolute right-0 bottom-0 z-100 h-full w-full rotate-180" />
 
       <TopHeroAnime />
