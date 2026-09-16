@@ -40,12 +40,9 @@ test("発車時刻ちょうどはその便を返す", () => {
   assert.deepEqual(info.toUniversity, { time: "10:00", type: "shuttle" });
 });
 
-test("発車時刻の分の途中まではその便を返し、次の分で切り替わる", () => {
-  const sameMinute = festivalInfo("2026-09-19T10:30:59+09:00");
-  assert.deepEqual(sameMinute.toStation, { time: "10:30", type: "shuttle" });
-
-  const nextMinute = festivalInfo("2026-09-19T10:31:00+09:00");
-  assert.deepEqual(nextMinute.toStation, { time: "11:02", type: "route" });
+test("発車時刻を過ぎたら同じ分でも次の便を返す", () => {
+  const info = festivalInfo("2026-09-19T10:30:00.001+09:00");
+  assert.deepEqual(info.toStation, { time: "11:02", type: "route" });
 });
 
 test("便間では各方向の次便を独立して返す", () => {
@@ -83,7 +80,7 @@ test("実行環境のローカルタイムゾーンではなく Asia/Tokyo で�
   process.env.TZ = "Pacific/Honolulu";
 
   try {
-    const info = festivalInfo("2026-09-19T01:00:30.000Z");
+    const info = festivalInfo("2026-09-19T01:00:00.000Z");
     assert.deepEqual(info.toUniversity, { time: "10:00", type: "shuttle" });
   } finally {
     if (previousTimezone === undefined) delete process.env.TZ;

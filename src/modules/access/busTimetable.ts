@@ -95,7 +95,10 @@ export const getNextBusInfo = (now: Date): NextBusInfoState => {
     return { kind: "offFestival" };
   }
 
-  const currentMinutes = Number(getPart(parts, "hour")) * 60 + Number(getPart(parts, "minute"));
+  const currentMinutes =
+    Number(getPart(parts, "hour")) * 60 +
+    Number(getPart(parts, "minute")) +
+    (now.getSeconds() * 1000 + now.getMilliseconds()) / 60_000;
 
   return {
     kind: "festival",
