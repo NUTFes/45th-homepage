@@ -7,6 +7,7 @@ export type MapFrameProps = {
   type?: "short" | "long";
   showDecoration?: boolean;
   compact?: boolean;
+  imageFit?: "cover" | "contain";
 };
 
 export default function MapFrame({
@@ -16,6 +17,7 @@ export default function MapFrame({
   type = "long",
   showDecoration = true,
   compact = false,
+  imageFit = "cover",
 }: MapFrameProps) {
   return (
     <div className="relative flex w-full flex-col">
@@ -40,7 +42,7 @@ export default function MapFrame({
               alt={alt || ""}
               fill
               sizes="(min-width: 1280px) 420px, (min-width: 768px) 40vw, 100vw"
-              className="object-cover"
+              className={imageFit === "contain" ? "object-contain" : "object-cover"}
             />
           ) : (
             <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-base text-center text-main">
