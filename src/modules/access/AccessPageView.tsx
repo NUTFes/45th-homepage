@@ -188,7 +188,7 @@ export default function AccessPageView() {
               <span className="text-accent">路上駐車はご遠慮ください。</span>{" "}
               ご協力をお願いいたします。
             </div>
-            <div className="w-full md:max-w-200">
+            <div className="w-full justify-center md:mx-auto md:max-w-200">
               <div className="py-s text-button md:text-Ptitle-small">駐車場マップ</div>
               <MapFrame
                 imageSrc="/image/access/parking_map.png"
