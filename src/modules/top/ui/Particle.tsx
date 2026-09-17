@@ -1,69 +1,56 @@
 "use client";
 
-import Script from "next/script";
-import { useEffect, useId, useRef, useState } from "react";
+import type { Container, Engine, ISourceOptions } from "@tsparticles/engine";
+import { useEffect, useRef } from "react";
+
+const PARTICLE_MASK_IMAGE = [
+  "linear-gradient(to top, transparent 0%, transparent 50%, black 100%)",
+  "linear-gradient(to right, black 0%, black 75%, transparent 100%)",
+].join(", ");
 
 const PARTICLE_MASK_STYLE = {
-  maskImage: "linear-gradient(to top, transparent 0%, transparent 50%, black 100%)",
-  WebkitMaskImage: "linear-gradient(to top, transparent 0%, transparent 50%, black 100%)",
+  maskComposite: "intersect",
+  maskImage: PARTICLE_MASK_IMAGE,
+  WebkitMaskComposite: "source-in",
+  WebkitMaskImage: PARTICLE_MASK_IMAGE,
 };
 
-const PARTICLE_SCRIPT_URL =
-  "https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js";
-
 const PARTICLE_CONFIG = {
+  detectRetina: true,
+  fpsLimit: 30,
+  fullScreen: false,
+  pauseOnBlur: true,
   particles: {
     number: {
       value: 600,
       density: {
         enable: true,
-        value_area: 1024.8809561350947,
-      },
-    },
-    color: {
-      value: "#ebabef",
-    },
-    shape: {
-      type: "circle",
-      stroke: {
-        width: 0,
-        color: "#000000",
-      },
-      polygon: {
-        nb_sides: 5,
-      },
-      image: {
-        src: "img/github.svg",
-        width: 100,
-        height: 100,
+        height: 1000,
+        width: 1024.8809561350947,
       },
     },
     opacity: {
-      value: 0.5,
-      random: true,
-      anim: {
+      value: { min: 0, max: 0.5 },
+      animation: {
         enable: false,
-        speed: 1,
-        opacity_min: 0.1,
-        sync: false,
       },
+    },
+    paint: {
+      color: {
+        value: "#ebabef",
+      },
+      fill: {
+        enable: true,
+      },
+    },
+    shape: {
+      type: "circle",
     },
     size: {
-      value: 8,
-      random: true,
-      anim: {
+      value: { min: 0, max: 8 },
+      animation: {
         enable: false,
-        speed: 40,
-        size_min: 0.1,
-        sync: false,
       },
-    },
-    line_linked: {
-      enable: false,
-      distance: 368,
-      color: "#ffffff",
-      opacity: 0.4,
-      width: 2,
     },
     move: {
       enable: true,
@@ -71,75 +58,26 @@ const PARTICLE_CONFIG = {
       direction: "bottom",
       random: false,
       straight: false,
-      out_mode: "out",
-      bounce: false,
-      attract: {
-        enable: false,
-        rotateX: 600,
-        rotateY: 1200,
+      outModes: {
+        default: "out",
       },
     },
   },
-  interactivity: {
-    detect_on: "canvas",
-    events: {
-      onhover: {
-        enable: false,
-        mode: "bubble",
-      },
-      onclick: {
-        enable: false,
-        mode: "repulse",
-      },
-      resize: true,
-    },
-    modes: {
-      grab: {
-        distance: 400,
-        line_linked: {
-          opacity: 0.5,
-        },
-      },
-      bubble: {
-        distance: 400,
-        size: 4,
-        duration: 0.3,
-        opacity: 1,
-        speed: 3,
-      },
-      repulse: {
-        distance: 200,
-        duration: 0.4,
-      },
-      push: {
-        particles_nb: 4,
-      },
-      remove: {
-        particles_nb: 2,
-      },
-    },
-  },
-  retina_detect: true,
-};
+} satisfies ISourceOptions;
 
-type ParticleInstance = {
-  pJS: {
-    canvas: {
-      el: HTMLCanvasElement;
-    };
-    fn: {
-      vendors: {
-        destroypJS: () => void;
-      };
-    };
-  };
-};
+let particleEnginePromise: Promise<Engine> | undefined;
 
-declare global {
-  interface Window {
-    particlesJS?: (tagId: string, params: typeof PARTICLE_CONFIG) => void;
-    pJSDom?: ParticleInstance[];
-  }
+function getParticleEngine() {
+  particleEnginePromise ??= Promise.all([
+    import("@tsparticles/engine"),
+    import("@tsparticles/basic"),
+  ]).then(async ([{ tsParticles }, { loadBasic }]) => {
+    await loadBasic(tsParticles);
+
+    return tsParticles;
+  });
+
+  return particleEnginePromise;
 }
 
 type ParticleProps = {
@@ -148,34 +86,59 @@ type ParticleProps = {
 
 export function Particle({ className }: ParticleProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const containerId = useId().replaceAll(":", "");
-  const [scriptLoaded, setScriptLoaded] = useState(false);
 
   useEffect(() => {
-    if (!scriptLoaded || !containerRef.current || !window.particlesJS) {
+    const element = containerRef.current;
+
+    if (!element) {
       return;
     }
 
-    window.particlesJS(containerId, PARTICLE_CONFIG);
+    let cancelled = false;
+    let container: Container | undefined;
+    let visibilityObserver: IntersectionObserver | undefined;
+
+    async function initializeParticles(element: HTMLDivElement) {
+      const engine = await getParticleEngine();
+
+      if (cancelled) {
+        return;
+      }
+
+      const loadedContainer = await engine.load({
+        element,
+        options: PARTICLE_CONFIG,
+      });
+
+      if (cancelled) {
+        loadedContainer?.destroy();
+        return;
+      }
+
+      container = loadedContainer;
+
+      visibilityObserver = new IntersectionObserver(([entry]) => {
+        if (entry?.isIntersecting) {
+          loadedContainer?.play();
+        } else {
+          loadedContainer?.pause();
+        }
+      });
+      visibilityObserver.observe(element);
+    }
+
+    void initializeParticles(element);
 
     return () => {
-      const instance = window.pJSDom?.find(
-        ({ pJS }) => pJS.canvas.el.parentElement === containerRef.current,
-      );
-      instance?.pJS.fn.vendors.destroypJS();
-      containerRef.current?.replaceChildren();
+      cancelled = true;
+      visibilityObserver?.disconnect();
+      container?.destroy();
     };
-  }, [containerId, scriptLoaded]);
+  }, []);
 
   return (
     <div className={className} style={PARTICLE_MASK_STYLE}>
-      <Script
-        id="particles-js"
-        src={PARTICLE_SCRIPT_URL}
-        strategy="afterInteractive"
-        onReady={() => setScriptLoaded(true)}
-      />
-      <div id={containerId} ref={containerRef} className="h-full w-full" />
+      <div ref={containerRef} className="h-full w-full" />
     </div>
   );
 }
