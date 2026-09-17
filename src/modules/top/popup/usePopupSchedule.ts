@@ -13,7 +13,7 @@ export const usePopupSchedule = (): { isOpen: boolean; close: () => void } => {
     const lastShownAt = readLastShownAt(now);
 
     if (shouldShow(now, lastShownAt)) {
-      writeLastShownAt(Date.now());
+      writeLastShownAt(now.getTime());
       setIsOpen(true);
     }
   }, []);
