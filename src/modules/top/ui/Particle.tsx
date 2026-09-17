@@ -15,25 +15,22 @@ const PARTICLE_MASK_STYLE = {
   WebkitMaskImage: PARTICLE_MASK_IMAGE,
 };
 
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+
 const PARTICLE_CONFIG = {
-  detectRetina: true,
   fpsLimit: 30,
   fullScreen: false,
-  pauseOnBlur: true,
   particles: {
     number: {
       value: 600,
       density: {
         enable: true,
         height: 1000,
-        width: 1024.8809561350947,
+        width: 1024,
       },
     },
     opacity: {
       value: { min: 0, max: 0.5 },
-      animation: {
-        enable: false,
-      },
     },
     paint: {
       color: {
@@ -48,19 +45,11 @@ const PARTICLE_CONFIG = {
     },
     size: {
       value: { min: 0, max: 8 },
-      animation: {
-        enable: false,
-      },
     },
     move: {
       enable: true,
       speed: 1.2,
       direction: "bottom",
-      random: false,
-      straight: false,
-      outModes: {
-        default: "out",
-      },
     },
   },
 } satisfies ISourceOptions;
@@ -90,7 +79,7 @@ export function Particle({ className }: ParticleProps) {
   useEffect(() => {
     const element = containerRef.current;
 
-    if (!element) {
+    if (!element || window.matchMedia(REDUCED_MOTION_QUERY).matches) {
       return;
     }
 
