@@ -12,3 +12,11 @@ export const readLastShownAt = (now: Date): number | null => {
     return null;
   }
 };
+
+export const writeLastShownAt = (at: number): void => {
+  try {
+    localStorage.setItem(KEY, String(at));
+  } catch {
+    // 書き込めない場合は記録を諦める
+  }
+};
