@@ -1,6 +1,6 @@
-import { Suspense } from "react";
+import { Suspense, type CSSProperties } from "react";
 import { connection } from "next/server";
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import { getImportantNewsBody, getLatestNews } from "@/modules/news/server/getNews";
 import { getPickUpSlides } from "@/modules/top/server/getPickUpSlides";
 import { getEventsPageData } from "@/modules/events/server/getEventsPageData";
@@ -24,11 +24,22 @@ import PickUpFrame from "./ui/PickUpFrame";
 import InfoMenu from "./ui/InfoMenu";
 import PickUpCarouselLazy from "./ui/PickUpCarouselLazy";
 import TopPopup from "./ui/TopPopup";
+import { Particle } from "./ui/Particle";
 
 const LATEST_NEWS_LIMIT = 3;
 const NO_IMPORTANT_NEWS_MESSAGE = "現在、重要なお知らせはありません。";
 const PICKUP_AUTOPLAY_DELAY_MS = 5000;
 const SECTION_TITLE_CLASS_NAME = "w-full max-w-105 md:max-w-full md:self-start md:px-pl";
+const TOP_HERO_IMAGE_QUALITY = 60;
+const TOP_HERO_IMAGE_SIZES = "100vw";
+const TRANSPARENT_PIXEL = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+const logoDecoFrames = [
+  { mobile: "Mlogodeco1_1.png", desktop: "PClogodeco1_1.png", delay: "0s" },
+  { mobile: "Mlogodeco2_1.png", desktop: "PClogodeco2_1.png", delay: "-4s" },
+  { mobile: "Mlogodeco3_1.png", desktop: "PClogodeco3_1.png", delay: "-3s" },
+  { mobile: "Mlogodeco4_1.png", desktop: "PClogodeco4_1.png", delay: "-2s" },
+  { mobile: "Mlogodeco5_1.png", desktop: "PClogodeco5_1.png", delay: "-1s" },
+] as const;
 
 async function getTopPageData() {
   await connection();
@@ -52,29 +63,94 @@ async function getTopPageData() {
   };
 }
 
-function TopHero() {
+function AnimationLayer({
+  mobileSrc,
+  pcSrc,
+  className,
+  fetchPriority,
+  pictureClassName = "absolute inset-0 block",
+  style,
+}: {
+  mobileSrc: string;
+  pcSrc: string;
+  className: string;
+  fetchPriority?: "high" | "low" | "auto";
+  pictureClassName?: string;
+  style: CSSProperties;
+}) {
+  const common = {
+    alt: "",
+    fetchPriority,
+    fill: true,
+    quality: TOP_HERO_IMAGE_QUALITY,
+    sizes: TOP_HERO_IMAGE_SIZES,
+  } as const;
+  const {
+    props: { srcSet: pcSrcSet },
+  } = getImageProps({ ...common, src: pcSrc });
+  const { props: mobileProps } = getImageProps({ ...common, src: mobileSrc });
+
+  return (
+    <picture className={pictureClassName} style={style}>
+      <source media="(min-width: 768px)" srcSet={pcSrcSet} />
+      <img {...mobileProps} aria-hidden="true" className={className} />
+    </picture>
+  );
+}
+
+function TopHeroAnime() {
   return (
     <div className="flex w-full flex-col items-center">
-      <picture className="block aspect-1575/2760 w-full md:aspect-4000/2100">
-        <source
-          media="(min-width: 768px)"
-          sizes="100vw"
-          srcSet="/image/top/Ps_HeroAll-1024.avif 1024w, /image/top/Ps_HeroAll-1920.avif 1920w"
-          type="image/avif"
-        />
-        <img
-          alt=""
-          className="h-full w-full object-cover"
-          decoding="async"
+      <div className="relative block aspect-1575/2760 w-full md:aspect-4000/2100">
+        <Particle className="pointer-events-none absolute right-0 bottom-0 z-100 h-full w-full rotate-180 md:w-1/2" />
+        <AnimationLayer
+          mobileSrc="/image/top/animation/Mback_1.png"
+          pcSrc="/image/top/animation/PCback_1.png"
+          className="object-cover"
           fetchPriority="high"
-          loading="eager"
-          sizes="100vw"
-          src="/image/top/HeroAll-750.avif"
-          srcSet="/image/top/HeroAll-430.avif 430w, /image/top/HeroAll-750.avif 750w"
-          width={1575}
-          height={2760}
+          style={{ zIndex: 1 }}
         />
-      </picture>
+        <AnimationLayer
+          mobileSrc="/image/top/animation/Mbackrotation_1.png"
+          pcSrc="/image/top/animation/PCbackrotation_1.png"
+          className="origin-[50%_61%] animate-[spin_50s_linear_infinite] object-cover md:origin-[69%_50%]"
+          style={{ zIndex: 2 }}
+        />
+        <AnimationLayer
+          mobileSrc="/image/top/animation/Mtown_1.png"
+          pcSrc="/image/top/animation/PCtown_1.png"
+          className="object-cover"
+          style={{ zIndex: 3 }}
+        />
+        <AnimationLayer
+          mobileSrc={TRANSPARENT_PIXEL}
+          pcSrc="/image/top/animation/PCflower_1.png"
+          className="hidden object-cover md:block"
+          style={{ zIndex: 4 }}
+        />
+        <AnimationLayer
+          mobileSrc="/image/top/animation/Mpeople_2.png"
+          pcSrc="/image/top/animation/PCpeople_2.png"
+          className="object-cover"
+          style={{ zIndex: 5 }}
+        />
+        <AnimationLayer
+          mobileSrc="/image/top/animation/Mtitle_3.png"
+          pcSrc="/image/top/animation/PCtitle_3.png"
+          className="duration-[3000ms] ease-out animate-in fade-in slide-in-from-top-4"
+          style={{ zIndex: 6 }}
+        />
+        {logoDecoFrames.map((frame) => (
+          <AnimationLayer
+            key={frame.mobile}
+            mobileSrc={`/image/top/animation/${frame.mobile}`}
+            pcSrc={`/image/top/animation/${frame.desktop}`}
+            className="object-cover"
+            pictureClassName="top-logo-deco-frame absolute inset-0 h-full w-full"
+            style={{ animationDelay: frame.delay, zIndex: 7 }}
+          />
+        ))}
+      </div>
       <LogoInfo />
     </div>
   );
@@ -191,7 +267,7 @@ function MapSection() {
       </div>
       <div className="flex w-full flex-col items-center gap-m md:gap-l">
         <div className="w-full md:max-w-200">
-          <MapFrame showDecoration={false} />
+          <MapFrame imageSrc="/image/map/all_map.png" alt="会場全体マップ" showDecoration={false} />
         </div>
         <ButtonMain href="/map" title="マップを見る" />
       </div>
@@ -292,7 +368,7 @@ async function TopPageContent() {
       <UpcomingProgramsSection group={upcomingProgramGroup} />
       <MapSection />
       <NewsSection newsItems={latestNews} />
-      <div className="flex w-full flex-col">
+      <div className="flex w-full flex-col gap-4l md:gap-5l">
         <SponsorAdsBoundary />
         <InfoSection />
       </div>
@@ -367,25 +443,22 @@ export default function TopPageView() {
       id="top"
     >
       <TopPopup />
-      <TopHero />
+      <TopHeroAnime />
       <div className="relative flex w-full flex-col gap-4l">
         <Suspense fallback={<TopPageSkeleton />}>
           <TopPageContent />
         </Suspense>
-        <div className="pointer-events-none absolute bottom-6 left-6 -z-10 md:bottom-0 md:left-0">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-0 left-0 -z-10 hidden h-[calc(585px+var(--spacing-5l))] w-223.75 bg-[#192d85]/50 md:block"
+        />
+        <div className="pointer-events-none absolute bottom-6 left-6 -z-10 md:bottom-ll md:left-25">
           <Image
             src="/image/top/TopBack3-2.svg"
             alt=""
             width={185}
             height={70}
-            className="h-auto w-full opacity-80 md:hidden"
-          />
-          <Image
-            src="/image/top/PTopBack3-2.svg"
-            alt=""
-            width={185}
-            height={70}
-            className="hidden h-auto w-full md:block"
+            className="h-auto w-full opacity-80 md:opacity-100"
           />
         </div>
         <div className="pointer-events-none absolute right-0 bottom-0">

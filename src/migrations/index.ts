@@ -13,6 +13,7 @@ import * as migration_20260821_190500_enforce_timetable_invariants from './20260
 import * as migration_20260822_143401_normalize_timetable_venues from './20260822_143401_normalize_timetable_venues';
 import * as migration_20260822_155059_allow_arbitrary_program_times from './20260822_155059_allow_arbitrary_program_times';
 import * as migration_20260901_162611_add_sponsor_name_list from './20260901_162611_add_sponsor_name_list';
+import * as migration_20260913_182500_add_program_list_visibility from './20260913_182500_add_program_list_visibility';
 
 export const migrations = [
   {
@@ -89,5 +90,10 @@ export const migrations = [
     up: migration_20260901_162611_add_sponsor_name_list.up,
     down: migration_20260901_162611_add_sponsor_name_list.down,
     name: '20260901_162611_add_sponsor_name_list'
+  },
+  {
+    up: migration_20260913_182500_add_program_list_visibility.up,
+    down: migration_20260913_182500_add_program_list_visibility.down,
+    name: '20260913_182500_add_program_list_visibility'
   },
 ];

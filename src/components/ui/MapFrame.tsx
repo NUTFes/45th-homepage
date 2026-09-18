@@ -6,6 +6,8 @@ export type MapFrameProps = {
   title?: string;
   type?: "short" | "long";
   showDecoration?: boolean;
+  compact?: boolean;
+  imageFit?: "cover" | "contain";
 };
 
 export default function MapFrame({
@@ -14,10 +16,12 @@ export default function MapFrame({
   title,
   type = "long",
   showDecoration = true,
+  compact = false,
+  imageFit = "cover",
 }: MapFrameProps) {
   return (
     <div className="relative flex w-full flex-col">
-      <div className="w-full px-10 md:px-0">
+      <div className={`w-full ${compact ? "px-0" : "px-10"} md:px-0`}>
         <div className="flex w-full items-stretch gap-0">
           {showDecoration ? (
             <>
@@ -38,7 +42,7 @@ export default function MapFrame({
               alt={alt || ""}
               fill
               sizes="(min-width: 1280px) 420px, (min-width: 768px) 40vw, 100vw"
-              className="object-cover"
+              className={imageFit === "contain" ? "object-contain" : "object-cover"}
             />
           ) : (
             <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-base text-center text-main">

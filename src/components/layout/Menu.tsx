@@ -60,10 +60,6 @@ const menuItems: MenuItem[] = [
         href: "/event/guest",
       },
       {
-        label: "コラボ",
-        disabled: true,
-      },
-      {
         label: "企画",
         href: "/event/programs/category/program",
       },

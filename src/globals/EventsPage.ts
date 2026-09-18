@@ -230,9 +230,18 @@ const reconcilePublishedProgramsBeforeChange: GlobalBeforeChangeHook = async ({
       pagination: false,
       req,
       where: {
-        _status: {
-          equals: "published",
-        },
+        and: [
+          {
+            _status: {
+              equals: "published",
+            },
+          },
+          {
+            showInProgramList: {
+              equals: true,
+            },
+          },
+        ],
       },
     }),
   ]);

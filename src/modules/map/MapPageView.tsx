@@ -18,10 +18,23 @@ const items: MapAccordionItem[] = defaultMapMenuSections.flatMap((section) => {
         <div className="-mx-4l flex flex-col gap-3l pt-3l pb-5l">
           {section.items && section.items.length > 0 ? (
             section.items.map((item) => (
-              <MapFrame key={item.id} title={item.label} type={item.type} />
+              <MapFrame
+                key={item.id}
+                title={item.label}
+                type={item.type}
+                imageSrc={item.imageSrc}
+                alt={item.imageAlt}
+                imageFit="contain"
+              />
             ))
           ) : (
-            <MapFrame title={section.label} type={section.type} />
+            <MapFrame
+              title={section.label}
+              type={section.type}
+              imageSrc={section.imageSrc}
+              alt={section.imageAlt}
+              imageFit="contain"
+            />
           )}
         </div>
       ),
@@ -36,7 +49,13 @@ export default function MapPageView() {
         <section className="flex flex-col gap-s">
           <SectionTitle title="マップ" />
           <div className="pb-5l">
-            <MapFrame title="全体" type="short" />
+            <MapFrame
+              title={defaultMapMenuSections[0].label}
+              type="short"
+              imageSrc={defaultMapMenuSections[0].imageSrc}
+              alt={defaultMapMenuSections[0].imageAlt}
+              imageFit="contain"
+            />
           </div>
         </section>
         <MapAccordion items={items} />

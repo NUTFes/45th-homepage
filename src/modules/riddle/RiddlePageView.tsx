@@ -78,7 +78,7 @@ export default function RiddlePageView() {
               />
             </div>
             <div className="pt-ll"></div>
-            <MapFrame title="謎解き" />
+            <MapFrame title="謎解き" imageSrc="/image/map/nazotoki_map.png" alt="謎解きマップ" />
           </div>
           <div className="flex flex-col gap-y-m">
             <SectionTitle title="ヒント" />

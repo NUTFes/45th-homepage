@@ -5,17 +5,39 @@ import Image from "next/image";
 
 import SectionTitle from "@/components/ui/SectionTitle";
 import MapMenu from "@/modules/map/ui/MapMenu";
-import { defaultMapMenuSections, getMapDisplayLabel } from "@/modules/map/ui/mapMenuData";
+import {
+  defaultMapMenuSections,
+  getMapDisplayLabel,
+  getMapEntry,
+} from "@/modules/map/ui/mapMenuData";
 
-function MapDisplay({ label }: { label: string }) {
+type MapDisplayProps = {
+  label: string;
+  imageSrc?: string;
+  imageAlt?: string;
+};
+
+function MapDisplay({ label, imageSrc, imageAlt }: MapDisplayProps) {
   return (
     <div className="flex w-full flex-col items-center gap-xs">
       <p className="w-full text-center text-Ptitle-large text-white">{label}</p>
-      <div className="flex aspect-4/3 w-full items-center justify-center border-2 border-main bg-base-dark text-center text-main">
-        <div>
-          <p className="font-kaisotai text-[28px]">MAP</p>
-          <p className="text-[22px]">NO IMAGE</p>
-        </div>
+      <div className="relative flex aspect-4/3 w-full items-center justify-center overflow-hidden border-2 border-main bg-base-dark text-center text-main">
+        {imageSrc ? (
+          <Image
+            key={imageSrc}
+            src={imageSrc}
+            alt={imageAlt ?? ""}
+            fill
+            sizes="(min-width: 1024px) calc(100vw - 652px), calc(100vw - 580px)"
+            loading="eager"
+            className="object-contain"
+          />
+        ) : (
+          <div>
+            <p className="font-kaisotai text-[28px]">MAP</p>
+            <p className="text-[22px]">NO IMAGE</p>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -24,6 +46,7 @@ function MapDisplay({ label }: { label: string }) {
 export default function MapPcSection() {
   const [selectedId, setSelectedId] = useState<string>(defaultMapMenuSections[0].id);
   const selectedLabel = getMapDisplayLabel(selectedId);
+  const selectedMap = getMapEntry(selectedId);
 
   return (
     <section className="relative flex w-full items-start gap-l border-b-2 border-base-dark pl-5l lg:gap-4l lg:pl-pm">
@@ -48,7 +71,11 @@ export default function MapPcSection() {
           <div className="w-full">
             <SectionTitle title="マップ" />
           </div>
-          <MapDisplay label={selectedLabel} />
+          <MapDisplay
+            label={selectedLabel}
+            imageSrc={selectedMap?.imageSrc}
+            imageAlt={selectedMap?.imageAlt}
+          />
         </div>
       </div>
       <MapMenu selectedId={selectedId} onSelect={setSelectedId} />
