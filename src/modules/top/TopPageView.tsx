@@ -23,6 +23,7 @@ import LogoInfo from "./ui/LogoInfo";
 import PickUpFrame from "./ui/PickUpFrame";
 import InfoMenu from "./ui/InfoMenu";
 import PickUpCarouselLazy from "./ui/PickUpCarouselLazy";
+import TopPopup from "./ui/TopPopup";
 
 const LATEST_NEWS_LIMIT = 3;
 const NO_IMPORTANT_NEWS_MESSAGE = "現在、重要なお知らせはありません。";
@@ -365,6 +366,7 @@ export default function TopPageView() {
       className="relative z-0 flex min-h-screen flex-col items-center overflow-x-hidden bg-base"
       id="top"
     >
+      <TopPopup />
       <TopHero />
       <div className="relative flex w-full flex-col gap-4l">
         <Suspense fallback={<TopPageSkeleton />}>
