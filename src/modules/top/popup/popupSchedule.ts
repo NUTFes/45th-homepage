@@ -36,10 +36,31 @@ export const nowWindowStart = (now: Date): number | null => {
   return null;
 };
 
+// ポップアップ自体を表示する日付の範囲(この2日を含む)。単年開催のため固定値。
+const ACTIVE_PERIOD_START_DATE = "2026-09-19";
+const ACTIVE_PERIOD_END_DATE = "2026-09-26";
+
+// Date を "YYYY-MM-DD" の文字列に変換する(ローカル時刻基準)
+const toDateKey = (date: Date): string => {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+};
+
+// 区間の開始時刻が、表示対象の日付範囲に入っているか。
+// now の生の日付ではなく区間の開始時刻の日付で見ることで、日をまたぐ区間
+// (例: 9/26 16時〜翌3時)の末尾が正しく 9/26 側の扱いになる。
+const isWithinActivePeriod = (windowStart: number): boolean => {
+  const dateKey = toDateKey(new Date(windowStart));
+  return ACTIVE_PERIOD_START_DATE <= dateKey && dateKey <= ACTIVE_PERIOD_END_DATE;
+};
+
 // 今回ポップアップを表示するべきか？ bool を返す関数
 export const shouldShow = (now: Date, lastShownAt: number | null): boolean => {
   const start = nowWindowStart(now);
-  return start !== null && (lastShownAt === null || lastShownAt < start);
+  if (start === null || !isWithinActivePeriod(start)) return false;
+  return lastShownAt === null || lastShownAt < start;
 };
 
 // ローカルストレージに書かれている、前回いつポップアップを表示したかという情報を正規化して、ありえない数値を「記録なし(null)」として変換する

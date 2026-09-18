@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { nowWindowStart } from "./popupSchedule";
+import { nowWindowStart, shouldShow } from "./popupSchedule";
 
 // ローカル時刻で Date を組み立てる。nowWindowStart もローカル時刻で判定するため、
 // 実行環境のタイムゾーンに関係なく同じ結果になる。
@@ -35,4 +35,22 @@ test("no window is active between 3:00 and the first window", () => {
 
 test("midnight belongs to the previous day, not to a gap", () => {
   assert.equal(nowWindowStart(at(10, 0)), at(9, 16).getTime());
+});
+
+test("shouldShow is false before the active period starts", () => {
+  assert.equal(shouldShow(at(18, 11), null), false);
+});
+
+test("shouldShow is true on the first day of the active period", () => {
+  assert.equal(shouldShow(at(19, 11), null), true);
+});
+
+test("shouldShow is true on the last day's second window, even past midnight", () => {
+  // 9/26 の2回目の区間の続き(9/27 の午前2時)。区間の開始日は 9/26 なので対象内。
+  assert.equal(shouldShow(at(27, 2), null), true);
+});
+
+test("shouldShow is false once a fresh window starts after the active period ends", () => {
+  // 9/27 の11時は、区間の開始日が 9/27 になるため対象外。
+  assert.equal(shouldShow(at(27, 11), null), false);
 });
