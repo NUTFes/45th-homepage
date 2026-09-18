@@ -125,7 +125,14 @@ export async function getLatestNews(limit = 3): Promise<NewsItem[]> {
   return result.docs.map(toNewsItem);
 }
 
-export async function getImportantNewsBody(): Promise<News["body"] | null> {
+export type ImportantNewsItem = {
+  id: News["id"];
+  body: News["body"];
+};
+
+const IMPORTANT_NEWS_LIMIT = 5;
+
+export async function getImportantNewsBodies(): Promise<ImportantNewsItem[]> {
   "use cache";
   cacheTag(CACHE_TAGS.news);
   cacheLife("minutes");
@@ -134,9 +141,10 @@ export async function getImportantNewsBody(): Promise<News["body"] | null> {
   const result = await payload.find({
     collection: "news",
     depth: 0,
-    limit: 1,
+    limit: IMPORTANT_NEWS_LIMIT,
     overrideAccess: true,
     select: {
+      id: true,
       body: true,
     },
     sort: "-date",
@@ -156,5 +164,5 @@ export async function getImportantNewsBody(): Promise<News["body"] | null> {
     },
   });
 
-  return result.docs[0]?.body ?? null;
+  return result.docs.map((doc) => ({ id: doc.id, body: doc.body }));
 }
