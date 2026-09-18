@@ -78,6 +78,16 @@ export const sampleNewsItems: NewsItem[] = [
     important: true,
   },
   {
+    id: 7,
+    date: "2026.04.10",
+    dateTime: "2026-04-10",
+    title: "重要なお知らせ(2件目)",
+    body: createRichTextBody(
+      "台風接近に伴い、屋外企画の一部を中止する場合があります。最新情報は当日のアナウンスをご確認ください。",
+    ),
+    important: true,
+  },
+  {
     id: 3,
     date: "2026.04.10",
     dateTime: "2026-04-10",
