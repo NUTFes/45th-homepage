@@ -44,9 +44,6 @@ next-env.d.ts
 .env.production
 .env.release
 
-# 個人ローカルでポートをずらす等のための compose 上書き(docker compose が自動で読む)
-compose.override.yml
-
 /media
 /backups
 

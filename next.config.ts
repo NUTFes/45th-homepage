@@ -6,14 +6,8 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(__filename);
 
-// 個人ローカルで Cloudflare Tunnel 等の一時 URL からスマホ実機確認する際に、
-// DEV_TUNNEL_ORIGIN(.env, 個人ローカル)を指定すると HMR 等の開発用リクエストが
-// 許可される(未指定時は何も追加しない)。
-const devTunnelOrigin = process.env.DEV_TUNNEL_ORIGIN;
-
 const nextConfig: NextConfig = {
   cacheComponents: true,
-  ...(devTunnelOrigin ? { allowedDevOrigins: [devTunnelOrigin] } : {}),
   experimental: {
     cssChunking: true,
     globalNotFound: true,
