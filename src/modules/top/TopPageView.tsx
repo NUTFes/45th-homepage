@@ -25,6 +25,8 @@ import InfoMenu from "./ui/InfoMenu";
 import PickUpCarouselLazy from "./ui/PickUpCarouselLazy";
 import TopPopup from "./ui/TopPopup";
 import { Particle } from "./ui/Particle";
+import { HeroAnimationProvider } from "./ui/HeroAnimationContext";
+import { HeroTitleLayer } from "./ui/HeroTitleLayer";
 
 const LATEST_NEWS_LIMIT = 3;
 const NO_IMPORTANT_NEWS_MESSAGE = "現在、重要なお知らせはありません。";
@@ -134,7 +136,7 @@ function TopHeroAnime() {
           className="object-cover"
           style={{ zIndex: 5 }}
         />
-        <AnimationLayer
+        <HeroTitleLayer
           mobileSrc="/image/top/animation/Mtitle_3.png"
           pcSrc="/image/top/animation/PCtitle_3.png"
           className="duration-[3000ms] ease-out animate-in fade-in slide-in-from-top-4"
@@ -442,8 +444,10 @@ export default function TopPageView() {
       className="relative z-0 flex min-h-screen flex-col items-center overflow-x-hidden bg-base"
       id="top"
     >
-      <TopPopup />
-      <TopHeroAnime />
+      <HeroAnimationProvider>
+        <TopPopup />
+        <TopHeroAnime />
+      </HeroAnimationProvider>
       <div className="relative flex w-full flex-col gap-4l">
         <Suspense fallback={<TopPageSkeleton />}>
           <TopPageContent />
