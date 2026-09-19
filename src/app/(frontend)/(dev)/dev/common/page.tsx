@@ -10,8 +10,8 @@ import {
 import InfoFrame from "@/components/ui/InfoFrame";
 import InfoBlock from "@/components/ui/InfoBlock";
 import ImportantFrame from "@/components/ui/ImportantFrame";
+import ImportantNewsCarousel from "@/components/ui/ImportantNewsCarousel";
 import NewsItem from "@/components/ui/NewsItem";
-import NewsRichText from "@/components/ui/NewsRichText";
 import EventIntroFrame from "@/components/ui/EventIntroFrame";
 import {
   Beer,
@@ -39,7 +39,9 @@ import EventInfoCard, { type EventInfoCardProps } from "@/components/ui/EventInf
 
 const previewSlides = ["Slide 1", "Slide 2", "Slide 3"];
 const noImportantNewsMessage = "現在、重要なお知らせはありません。";
-const sampleImportantNewsBody = sampleNewsItems.find((item) => item.important)?.body;
+const sampleImportantNewsItems = sampleNewsItems
+  .filter((item) => item.important)
+  .map((item) => ({ id: item.id, body: item.body }));
 const eventInfoCardExamples = [
   {
     location: "講義棟1階201教室",
@@ -118,8 +120,8 @@ export default function DevCommonComponentsPage() {
         </DevPanel>
         <DevPanel title="ImportantFrame">
           <ImportantFrame title="重要なお知らせ">
-            {sampleImportantNewsBody ? (
-              <NewsRichText data={sampleImportantNewsBody} />
+            {sampleImportantNewsItems.length > 0 ? (
+              <ImportantNewsCarousel items={sampleImportantNewsItems} />
             ) : (
               <p>{noImportantNewsMessage}</p>
             )}

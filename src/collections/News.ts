@@ -9,7 +9,6 @@ import {
 } from "@payloadcms/richtext-lexical";
 import type { CollectionConfig, TextFieldSingleValidation } from "payload";
 
-import { ensureSingleImportantNewsBeforeChange } from "./hooks/ensureSingleImportantNews";
 import { revalidateNewsAfterChange, revalidateNewsAfterDelete } from "./hooks/revalidateNews";
 
 const INVALID_LINK_MESSAGE =
@@ -82,7 +81,6 @@ export const News: CollectionConfig = {
   },
   defaultSort: "-date",
   hooks: {
-    beforeChange: [ensureSingleImportantNewsBeforeChange],
     afterChange: [revalidateNewsAfterChange],
     afterDelete: [revalidateNewsAfterDelete],
   },
