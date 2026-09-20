@@ -1,7 +1,7 @@
 import { Suspense, type CSSProperties } from "react";
 import { connection } from "next/server";
 import Image, { getImageProps } from "next/image";
-import { getImportantNewsBody, getLatestNews } from "@/modules/news/server/getNews";
+import { getImportantNewsBodies, getLatestNews } from "@/modules/news/server/getNews";
 import { getPickUpSlides } from "@/modules/top/server/getPickUpSlides";
 import { getEventsPageData } from "@/modules/events/server/getEventsPageData";
 import {
@@ -12,18 +12,20 @@ import {
 import EventCarousel from "@/modules/event/ui/EventCarousel";
 import ButtonMain from "@/components/ui/ButtonMain";
 import ImportantFrame from "@/components/ui/ImportantFrame";
+import ImportantNewsCarousel from "@/components/ui/ImportantNewsCarousel";
 import MapFrame from "@/components/ui/MapFrame";
 import NewsItem from "@/components/ui/NewsItem";
 import ImportantFrameSkeleton from "@/components/ui/ImportantFrameSkeleton";
 import SectionTitle from "@/components/ui/SectionTitle";
 import NewsItemSkeleton from "@/components/ui/NewsItemSkeleton";
-import NewsRichText from "@/components/ui/NewsRichText";
 import SponsorAdsBoundary from "@/modules/sponsors/ui/SponsorAdsBoundary";
 import LogoInfo from "./ui/LogoInfo";
 import PickUpFrame from "./ui/PickUpFrame";
 import InfoMenu from "./ui/InfoMenu";
 import PickUpCarouselLazy from "./ui/PickUpCarouselLazy";
+import TopPopup from "./ui/TopPopup";
 import { Particle } from "./ui/Particle";
+import { HERO_TITLE_ANIMATION_MS } from "./heroAnimation";
 
 const LATEST_NEWS_LIMIT = 3;
 const NO_IMPORTANT_NEWS_MESSAGE = "現在、重要なお知らせはありません。";
@@ -43,9 +45,9 @@ const logoDecoFrames = [
 async function getTopPageData() {
   await connection();
 
-  const [latestNews, importantNewsBody, pickUpSlides, eventsPageData] = await Promise.all([
+  const [latestNews, importantNewsItems, pickUpSlides, eventsPageData] = await Promise.all([
     getLatestNews(LATEST_NEWS_LIMIT),
-    getImportantNewsBody(),
+    getImportantNewsBodies(),
     getPickUpSlides(),
     getEventsPageData(),
   ]);
@@ -55,7 +57,7 @@ async function getTopPageData() {
   );
 
   return {
-    importantNewsBody,
+    importantNewsItems,
     latestNews,
     pickUpSlides,
     upcomingProgramGroup,
@@ -136,8 +138,8 @@ function TopHeroAnime() {
         <AnimationLayer
           mobileSrc="/image/top/animation/Mtitle_3.png"
           pcSrc="/image/top/animation/PCtitle_3.png"
-          className="duration-[3000ms] ease-out animate-in fade-in slide-in-from-top-4"
-          style={{ zIndex: 6 }}
+          className="ease-out animate-in fade-in slide-in-from-top-4"
+          style={{ animationDuration: `${HERO_TITLE_ANIMATION_MS}ms`, zIndex: 6 }}
         />
         {logoDecoFrames.map((frame) => (
           <AnimationLayer
@@ -156,14 +158,18 @@ function TopHeroAnime() {
 }
 
 function ImportantNewsSection({
-  body,
+  items,
 }: {
-  body: Awaited<ReturnType<typeof getImportantNewsBody>>;
+  items: Awaited<ReturnType<typeof getImportantNewsBodies>>;
 }) {
   return (
     <div className="w-full md:max-w-none">
       <ImportantFrame title="重要なお知らせ">
-        {body ? <NewsRichText data={body} /> : <p>{NO_IMPORTANT_NEWS_MESSAGE}</p>}
+        {items.length > 0 ? (
+          <ImportantNewsCarousel items={items} />
+        ) : (
+          <p>{NO_IMPORTANT_NEWS_MESSAGE}</p>
+        )}
       </ImportantFrame>
     </div>
   );
@@ -339,12 +345,12 @@ function InfoSection() {
 }
 
 async function TopPageContent() {
-  const { importantNewsBody, latestNews, pickUpSlides, upcomingProgramGroup } =
+  const { importantNewsItems, latestNews, pickUpSlides, upcomingProgramGroup } =
     await getTopPageData();
 
   return (
     <div className="flex w-full flex-col gap-4l md:gap-5l">
-      <ImportantNewsSection body={importantNewsBody} />
+      <ImportantNewsSection items={importantNewsItems} />
       <div className="relative w-full">
         <div className="pointer-events-none absolute -top-20 right-0 -z-10 max-w-62.5">
           <Image
@@ -441,8 +447,8 @@ export default function TopPageView() {
       className="relative z-0 flex min-h-screen flex-col items-center overflow-x-hidden bg-base"
       id="top"
     >
+      <TopPopup />
       <TopHeroAnime />
-
       <div className="relative flex w-full flex-col gap-4l">
         <Suspense fallback={<TopPageSkeleton />}>
           <TopPageContent />

@@ -52,6 +52,7 @@ type CarouselSlideProps = {
   children: ReactNode;
   className?: string;
   index: number;
+  inert?: boolean;
   style?: CSSProperties;
 };
 
@@ -448,6 +449,7 @@ export const CarouselSlide = ({
   children,
   className,
   index,
+  inert,
   style,
 }: CarouselSlideProps) => {
   const { slideCount } = useCarousel();
@@ -458,6 +460,7 @@ export const CarouselSlide = ({
       aria-label={ariaLabel ?? `${index + 1} of ${safeSlideCount}`}
       aria-roledescription="slide"
       className={className}
+      inert={inert}
       style={style}
     >
       {children}

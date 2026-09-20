@@ -2,15 +2,15 @@ import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import SectionTitle from "@/components/ui/SectionTitle";
-import { getImportantNewsBody, getNews, NEWS_PER_PAGE } from "./server/getNews";
+import { getImportantNewsBodies, getNews, NEWS_PER_PAGE } from "./server/getNews";
 import NewsList from "./ui/NewsList";
 import NewsPagination from "./ui/NewsPagination";
 import NewsItemSkeleton from "@/components/ui/NewsItemSkeleton";
 import ImportantFrame from "@/components/ui/ImportantFrame";
 import ImportantFrameSkeleton from "@/components/ui/ImportantFrameSkeleton";
+import ImportantNewsCarousel from "@/components/ui/ImportantNewsCarousel";
 import { toSafePage } from "./utils";
 import ButtonMain from "@/components/ui/ButtonMain";
-import NewsRichText from "@/components/ui/NewsRichText";
 
 type NewsPageViewProps = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -25,9 +25,9 @@ async function NewsPageContent({ searchParams }: NewsPageViewProps) {
   const resolved = await searchParams;
   const pageNum = toSafePage(getSingleParam(resolved.page));
 
-  const [newsData, importantNewsBody] = await Promise.all([
+  const [newsData, importantNewsItems] = await Promise.all([
     getNews(pageNum, NEWS_PER_PAGE),
-    getImportantNewsBody(),
+    getImportantNewsBodies(),
   ]);
 
   if (pageNum > newsData.totalPages && newsData.totalPages > 0) {
@@ -38,8 +38,8 @@ async function NewsPageContent({ searchParams }: NewsPageViewProps) {
     <>
       <div className="w-full">
         <ImportantFrame title="重要なお知らせ">
-          {importantNewsBody ? (
-            <NewsRichText data={importantNewsBody} />
+          {importantNewsItems.length > 0 ? (
+            <ImportantNewsCarousel items={importantNewsItems} />
           ) : (
             <p>{NO_IMPORTANT_NEWS_MESSAGE}</p>
           )}

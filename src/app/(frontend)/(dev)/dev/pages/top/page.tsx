@@ -9,12 +9,19 @@ import SponsorSection from "@/modules/top/ui/SponsorSection";
 import InfoMenu from "@/modules/top/ui/InfoMenu";
 import LogoInfo from "@/modules/top/ui/LogoInfo";
 
+import { PopupPreview } from "./PopupPreview";
+
 export default function DevTopPageModulesPage() {
   return (
     <DevPageContainer
       title="Top Page Modules"
       description="src/modules/top/ui のコンポーネントをページ文脈で確認"
     >
+      <DevSection title="Popup">
+        <DevPanel title="Popup">
+          <PopupPreview />
+        </DevPanel>
+      </DevSection>
       <DevSection title="Top">
         <DevPanel title="PickUpCarousel" fullWidth>
           <PickUpFrame>
