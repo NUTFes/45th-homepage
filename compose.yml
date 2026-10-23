@@ -1,6 +1,6 @@
 services:
   payload:
-    image: node:24-alpine
+    image: node:24.22.1-alpine
     restart: unless-stopped
     ports:
       - "3000:3000"
